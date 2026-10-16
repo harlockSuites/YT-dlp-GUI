@@ -17,3 +17,6 @@ __pycache__/
 *.ytdl
 .yt-dlp-registre.json
 .yt-dlp-archive.titles.tsv
+
+# Clone GitHub Desktop parasite
+YT-dlp-GUI/
