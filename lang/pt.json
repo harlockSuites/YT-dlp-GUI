@@ -467,5 +467,6 @@
   "app_update.btn_close": "Fechar",
   "app_update.notes": "Novidades",
   "app_update.banner": "🔔 Nova versão {version} disponível",
-  "app_update.hint_source": "Você está usando o código-fonte: obtenha a versão mais recente com git pull."
+  "app_update.hint_source": "Você está usando o código-fonte: obtenha a versão mais recente com git pull.",
+  "toolbar.menu_auto_update_check": "Verificar atualizações ao iniciar"
 }

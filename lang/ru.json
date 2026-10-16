@@ -467,5 +467,6 @@
   "app_update.btn_close": "Закрыть",
   "app_update.notes": "Что нового",
   "app_update.banner": "🔔 Доступна новая версия {version}",
-  "app_update.hint_source": "Вы используете исходный код: получите последнюю версию командой git pull."
+  "app_update.hint_source": "Вы используете исходный код: получите последнюю версию командой git pull.",
+  "toolbar.menu_auto_update_check": "Проверять обновления при запуске"
 }

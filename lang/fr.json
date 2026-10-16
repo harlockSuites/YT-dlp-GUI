@@ -467,5 +467,6 @@
   "app_update.btn_close": "Fermer",
   "app_update.notes": "Nouveautés",
   "app_update.banner": "🔔 Nouvelle version {version} disponible",
-  "app_update.hint_source": "Vous utilisez les sources du logiciel : récupérez la dernière version avec git pull."
+  "app_update.hint_source": "Vous utilisez les sources du logiciel : récupérez la dernière version avec git pull.",
+  "toolbar.menu_auto_update_check": "Vérifier les mises à jour au démarrage"
 }

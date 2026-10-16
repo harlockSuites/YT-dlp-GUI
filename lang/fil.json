@@ -467,5 +467,6 @@
   "app_update.btn_close": "Isara",
   "app_update.notes": "Ano ang bago",
   "app_update.banner": "🔔 May bagong bersyon {version}",
-  "app_update.hint_source": "Source code ang ginagamit mo: kunin ang pinakabagong bersyon gamit ang git pull."
+  "app_update.hint_source": "Source code ang ginagamit mo: kunin ang pinakabagong bersyon gamit ang git pull.",
+  "toolbar.menu_auto_update_check": "Suriin ang mga update sa pagsisimula"
 }

@@ -95,6 +95,22 @@ class DocsTests(unittest.TestCase):
                     self.assertTrue(os.path.isfile(os.path.normpath(os.path.join(os.path.dirname(path), n))), n)
                     self.assertIn(".fr.png" if code == "fr" else ".en.png", n)
 
+    def test_license_paragraph_discloses_ai_generated_assets(self):
+        for code, path in _all_docs().items():
+            last = [l for l in _read(path).splitlines() if l.strip()][-1]
+            with self.subTest(lang=code):
+                for needle in ("MIT", "yt-dlp-gui.ico", "assets/", "Harlock S."):
+                    self.assertIn(needle, last)
+
+    def test_update_bullet_names_the_menu_entries_in_the_same_language(self):
+        import json
+        for code, path in _all_docs().items():
+            lang = json.loads(_read(os.path.join(ROOT, "lang", f"{code}.json")))
+            text = _read(path)
+            with self.subTest(lang=code):
+                self.assertIn(lang["toolbar.menu_auto_update_check"], text)
+                self.assertIn(lang["toolbar.menu_check_update"], text)
+
     def test_key_facts_present_in_every_language(self):
         for code, path in _all_docs().items():
             text = _read(path)

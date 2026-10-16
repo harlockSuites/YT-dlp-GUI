@@ -467,5 +467,6 @@
   "app_update.btn_close": "Close",
   "app_update.notes": "What's new",
   "app_update.banner": "🔔 New version {version} available",
-  "app_update.hint_source": "You are running the source code: get the latest version with git pull."
+  "app_update.hint_source": "You are running the source code: get the latest version with git pull.",
+  "toolbar.menu_auto_update_check": "Check for updates at startup"
 }

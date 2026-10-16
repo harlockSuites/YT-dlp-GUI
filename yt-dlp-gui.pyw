@@ -4827,6 +4827,9 @@ class YtDlpGui(tk.Tk):
         menu = tk.Menu(self, tearoff=0)
         menu.add_command(label=t("toolbar.menu_update"), command=self._open_update)
         menu.add_command(label=t("toolbar.menu_check_update"), command=self._open_app_update)
+        self._var_auto_update = tk.BooleanVar(value=bool(load_config().get("update_check", True)))
+        menu.add_checkbutton(label=t("toolbar.menu_auto_update_check"), variable=self._var_auto_update,
+                             command=self._toggle_auto_update)
         menu.add_command(label=t("toolbar.menu_deps"),   command=self._open_deps)
         menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
         menu.add_separator()
@@ -4939,6 +4942,11 @@ class YtDlpGui(tk.Tk):
 
     def _open_app_update(self):
         AppUpdateWindow(self, self._update_info)
+
+    def _toggle_auto_update(self):
+        cfg = load_config()
+        cfg["update_check"] = bool(self._var_auto_update.get())
+        save_config(cfg)
 
     def _maybe_check_updates(self):
         if not should_check_updates(load_config(), time.time()):

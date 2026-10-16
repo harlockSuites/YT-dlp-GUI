@@ -467,5 +467,6 @@
   "app_update.btn_close": "बंद करें",
   "app_update.notes": "नया क्या है",
   "app_update.banner": "🔔 नया संस्करण {version} उपलब्ध है",
-  "app_update.hint_source": "आप स्रोत कोड का उपयोग कर रहे हैं: नवीनतम संस्करण git pull से प्राप्त करें।"
+  "app_update.hint_source": "आप स्रोत कोड का उपयोग कर रहे हैं: नवीनतम संस्करण git pull से प्राप्त करें।",
+  "toolbar.menu_auto_update_check": "शुरू होने पर अपडेट जाँचें"
 }

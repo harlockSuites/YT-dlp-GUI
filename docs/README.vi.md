@@ -43,7 +43,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Trình hướng dẫn cài đặt**: ở lần chạy đầu tiên, nó đề nghị tải yt-dlp và ffmpeg từ kho GitHub chính thức. Tổng kiểm SHA-256 được xác minh và không cần quyền quản trị.
 - **Phụ thuộc**: cửa sổ riêng kiểm tra ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 và deno, và có thể cài chúng bằng Chocolatey.
 - **Cập nhật và chẩn đoán**: cập nhật yt-dlp (`yt-dlp -U`) hoặc thay tệp thực thi của nó, hiển thị phiên bản và kiểm tra các tùy chọn mà giao diện sử dụng.
-- **Cập nhật phần mềm**: kiểm tra hằng ngày (có thể tắt) báo có phiên bản mới bằng một dải thông báo kín đáo; cửa sổ riêng cho biết có gì mới và mở bản tải phù hợp với cách bạn cài đặt (trình cài đặt hoặc bản di động). Không có gì được cài tự động.
+- **Cập nhật phần mềm**: kiểm tra hằng ngày (có thể tắt) báo có phiên bản mới bằng một dải thông báo kín đáo; cửa sổ riêng cho biết có gì mới và mở bản tải phù hợp với cách bạn cài đặt (trình cài đặt hoặc bản di động). Không có gì được cài tự động. Một công tắc trong menu tùy chọn («Kiểm tra cập nhật khi khởi động») bật hoặc tắt việc kiểm tra tự động, còn «Kiểm tra bản cập nhật phần mềm…» chạy kiểm tra theo yêu cầu.
 
 ### Giao diện và ngôn ngữ
 
@@ -81,7 +81,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 
 ## Quyền riêng tư và sử dụng có trách nhiệm
 
-- Phần mềm này không gửi dữ liệu nào cho tác giả và không có telemetry. Các kết nối mạng đi qua yt-dlp (các trang video), trình hướng dẫn cài đặt (GitHub) và công cụ sổ đăng ký (tìm kiếm YouTube). Việc tự động kiểm tra cập nhật cũng kết nối tới GitHub khi khởi động (tối đa mỗi ngày một lần); bạn có thể tắt trong «Kiểm tra bản cập nhật phần mềm…».
+- Phần mềm này không gửi dữ liệu nào cho tác giả và không có telemetry. Các kết nối mạng đi qua yt-dlp (các trang video), trình hướng dẫn cài đặt (GitHub) và công cụ sổ đăng ký (tìm kiếm YouTube). Việc tự động kiểm tra cập nhật cũng kết nối tới GitHub khi khởi động (tối đa mỗi ngày một lần); bạn có thể tắt trong «Kiểm tra cập nhật khi khởi động».
 - Cookie của bạn ở lại trên máy tính của bạn: yt-dlp đọc chúng cục bộ từ trình duyệt đã chọn.
 - Hãy dùng công cụ này tuân thủ bản quyền, điều khoản sử dụng của các trang web và luật pháp nước bạn, và chỉ tải những gì bạn có quyền tải.
 
@@ -105,4 +105,4 @@ Cảm ơn cộng đồng thường xuyên cập nhật [yt-dlp](https://github.c
 
 ## Giấy phép
 
-Mã nguồn được phát hành theo giấy phép [MIT](../LICENSE). Logo và biểu ngữ «Harlock S.» (thư mục `assets/`) là thương hiệu cá nhân của tác giả và không thuộc phạm vi giấy phép này: bảo lưu mọi quyền.
+Mã nguồn được phát hành theo giấy phép [MIT](../LICENSE). Biểu tượng, logo và biểu ngữ «Harlock S.» (tệp `yt-dlp-gui.ico` và thư mục `assets/`) là các tác phẩm gốc do AI tạo ra theo yêu cầu của tác giả. Chúng tạo nên nhận diện hình ảnh của dự án và không thuộc phạm vi giấy phép MIT: vui lòng không dùng lại cho dự án khác hoặc theo cách gây nhầm lẫn.

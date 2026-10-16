@@ -43,7 +43,7 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 - **Assistente de instalação**: na primeira execução, propõe baixar o yt-dlp e o ffmpeg de seus repositórios oficiais no GitHub. A soma SHA-256 é verificada e não são necessários direitos de administrador.
 - **Dependências**: a janela dedicada verifica ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 e deno, e pode instalá-los com o Chocolatey.
 - **Atualização e diagnóstico**: atualiza o yt-dlp (`yt-dlp -U`) ou substitui o seu executável, mostra a versão e verifica as opções usadas pela interface.
-- **Atualização do programa**: uma verificação diária (desativável) avisa sobre uma nova versão com um aviso discreto; a janela dedicada mostra as novidades e abre o download correspondente à sua instalação (instalador ou versão portátil). Nada é instalado automaticamente.
+- **Atualização do programa**: uma verificação diária (desativável) avisa sobre uma nova versão com um aviso discreto; a janela dedicada mostra as novidades e abre o download correspondente à sua instalação (instalador ou versão portátil). Nada é instalado automaticamente. Um interruptor no menu de opções («Verificar atualizações ao iniciar») ativa ou desativa a verificação automática, e «Procurar atualização do programa…» a executa sob demanda.
 
 ### Interface e idiomas
 
@@ -81,7 +81,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 
 ## Privacidade e uso responsável
 
-- Este software não envia nenhum dado ao autor e não contém telemetria. As conexões de rede passam pelo yt-dlp (sites de vídeo), pelo assistente de instalação (GitHub) e pela ferramenta de registro (busca no YouTube). Uma verificação automática de atualizações também contata o GitHub ao iniciar (no máximo uma vez por dia); você pode desativá-la em «Procurar atualização do programa…».
+- Este software não envia nenhum dado ao autor e não contém telemetria. As conexões de rede passam pelo yt-dlp (sites de vídeo), pelo assistente de instalação (GitHub) e pela ferramenta de registro (busca no YouTube). Uma verificação automática de atualizações também contata o GitHub ao iniciar (no máximo uma vez por dia); você pode desativá-la em «Verificar atualizações ao iniciar».
 - Seus cookies ficam no seu computador: o yt-dlp os lê localmente no navegador escolhido.
 - Use esta ferramenta respeitando os direitos autorais, os termos de uso dos sites e as leis do seu país, e baixe apenas o que você tem o direito de baixar.
 
@@ -105,4 +105,4 @@ Obrigado à comunidade que atualiza regularmente o [yt-dlp](https://github.com/y
 
 ## Licença
 
-O código é publicado sob a licença [MIT](../LICENSE). O logotipo e o banner «Harlock S.» (pasta `assets/`) são a marca pessoal do autor e não são cobertos por esta licença: todos os direitos reservados.
+O código é publicado sob a licença [MIT](../LICENSE). O ícone, o logotipo e o banner «Harlock S.» (arquivo `yt-dlp-gui.ico` e pasta `assets/`) são criações originais geradas por IA a pedido do autor. Formam a identidade visual do projeto e não são cobertos pela licença MIT: não os reutilize em outro projeto nem de modo que possa causar confusão.

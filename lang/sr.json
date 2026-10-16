@@ -467,5 +467,6 @@
   "app_update.btn_close": "Zatvori",
   "app_update.notes": "Novosti",
   "app_update.banner": "🔔 Dostupna je nova verzija {version}",
-  "app_update.hint_source": "Koristite izvorni kôd: najnoviju verziju preuzmite komandom git pull."
+  "app_update.hint_source": "Koristite izvorni kôd: najnoviju verziju preuzmite komandom git pull.",
+  "toolbar.menu_auto_update_check": "Proveri ažuriranja pri pokretanju"
 }

@@ -43,7 +43,7 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 - **Asystent instalacji**: przy pierwszym uruchomieniu proponuje pobranie yt-dlp i ffmpeg z ich oficjalnych repozytoriów GitHub. Suma kontrolna SHA-256 jest weryfikowana i nie są potrzebne uprawnienia administratora.
 - **Zależności**: dedykowane okno sprawdza ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno oraz może je zainstalować przez Chocolatey.
 - **Aktualizacja i diagnostyka**: aktualizuje yt-dlp (`yt-dlp -U`) lub podmienia jego plik wykonywalny, pokazuje wersję i sprawdza opcje używane przez interfejs.
-- **Aktualizacja programu**: codzienne sprawdzanie (można je wyłączyć) sygnalizuje nową wersję dyskretnym paskiem; osobne okno pokazuje nowości i otwiera pobieranie odpowiednie dla Twojej instalacji (instalator lub wersja przenośna). Nic nie jest instalowane automatycznie.
+- **Aktualizacja programu**: codzienne sprawdzanie (można je wyłączyć) sygnalizuje nową wersję dyskretnym paskiem; osobne okno pokazuje nowości i otwiera pobieranie odpowiednie dla Twojej instalacji (instalator lub wersja przenośna). Nic nie jest instalowane automatycznie. Przełącznik w menu opcji („Sprawdzaj aktualizacje przy uruchomieniu”) włącza lub wyłącza automatyczne sprawdzanie, a „Sprawdź aktualizację programu…” uruchamia je na żądanie.
 
 ### Interfejs i języki
 
@@ -81,7 +81,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 
 ## Prywatność i odpowiedzialne korzystanie
 
-- To oprogramowanie nie wysyła żadnych danych autorowi i nie zawiera telemetrii. Połączenia sieciowe realizują yt-dlp (serwisy wideo), asystent instalacji (GitHub) i narzędzie rejestru (wyszukiwanie w YouTube). Automatyczne sprawdzanie aktualizacji także łączy się z GitHubem przy uruchomieniu (najwyżej raz dziennie); można je wyłączyć w „Sprawdź aktualizację programu…”.
+- To oprogramowanie nie wysyła żadnych danych autorowi i nie zawiera telemetrii. Połączenia sieciowe realizują yt-dlp (serwisy wideo), asystent instalacji (GitHub) i narzędzie rejestru (wyszukiwanie w YouTube). Automatyczne sprawdzanie aktualizacji także łączy się z GitHubem przy uruchomieniu (najwyżej raz dziennie); można je wyłączyć w „Sprawdzaj aktualizacje przy uruchomieniu”.
 - Twoje ciasteczka pozostają na Twoim komputerze: yt-dlp odczytuje je lokalnie z wybranej przeglądarki.
 - Korzystaj z narzędzia zgodnie z prawem autorskim, regulaminami serwisów i prawem Twojego kraju oraz pobieraj tylko to, do czego masz prawo.
 
@@ -105,4 +105,4 @@ Dziękuję społeczności, która regularnie aktualizuje [yt-dlp](https://github
 
 ## Licencja
 
-Kod jest udostępniony na licencji [MIT](../LICENSE). Logo i baner „Harlock S.” (folder `assets/`) są osobistą marką autora i nie są objęte tą licencją: wszelkie prawa zastrzeżone.
+Kod jest udostępniony na licencji [MIT](../LICENSE). Ikona, logo i baner „Harlock S.” (plik `yt-dlp-gui.ico` i folder `assets/`) to oryginalne twory wygenerowane przez AI na prośbę autora. Stanowią tożsamość wizualną projektu i nie są objęte licencją MIT: nie używaj ich w innym projekcie ani w sposób wprowadzający w błąd.

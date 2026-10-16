@@ -43,7 +43,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Pomoćnik za instalaciju**: pri prvom pokretanju predlaže preuzimanje yt-dlp-a i ffmpeg-a iz njihovih zvaničnih GitHub repozitorijuma. SHA-256 kontrolna suma se proverava i nisu potrebna administratorska prava.
 - **Zavisnosti**: poseban prozor proverava ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno i može da ih instalira preko Chocolatey-ja.
 - **Ažuriranje i dijagnostika**: ažurira yt-dlp (`yt-dlp -U`) ili menja njegov izvršni fajl, prikazuje verziju i proverava opcije koje interfejs koristi.
-- **Ažuriranje programa**: dnevna provera (može se isključiti) diskretnom trakom javlja da postoji nova verzija; poseban prozor prikazuje novosti i otvara preuzimanje koje odgovara vašoj instalaciji (instalater ili prenosiva verzija). Ništa se ne instalira automatski.
+- **Ažuriranje programa**: dnevna provera (može se isključiti) diskretnom trakom javlja da postoji nova verzija; poseban prozor prikazuje novosti i otvara preuzimanje koje odgovara vašoj instalaciji (instalater ili prenosiva verzija). Ništa se ne instalira automatski. Prekidač u meniju opcija („Proveri ažuriranja pri pokretanju”) uključuje ili isključuje automatsku proveru, a „Potraži ažuriranje programa…” je pokreće na zahtev.
 
 ### Interfejs i jezici
 
@@ -81,7 +81,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 
 ## Privatnost i odgovorna upotreba
 
-- Ovaj softver ne šalje nikakve podatke autoru i ne sadrži telemetriju. Mrežne veze idu preko yt-dlp-a (video sajtovi), pomoćnika za instalaciju (GitHub) i alata za evidenciju (pretraga na YouTube-u). Automatska provera ažuriranja takođe se povezuje sa GitHub-om pri pokretanju (najviše jednom dnevno); možete je isključiti u „Potraži ažuriranje programa…”.
+- Ovaj softver ne šalje nikakve podatke autoru i ne sadrži telemetriju. Mrežne veze idu preko yt-dlp-a (video sajtovi), pomoćnika za instalaciju (GitHub) i alata za evidenciju (pretraga na YouTube-u). Automatska provera ažuriranja takođe se povezuje sa GitHub-om pri pokretanju (najviše jednom dnevno); možete je isključiti u „Proveri ažuriranja pri pokretanju”.
 - Vaši kolačići ostaju na vašem računaru: yt-dlp ih čita lokalno iz izabranog pregledača.
 - Koristite alat uz poštovanje autorskih prava, uslova korišćenja sajtova i zakona vaše zemlje, i preuzimajte samo ono što imate pravo da preuzmete.
 
@@ -105,4 +105,4 @@ Hvala zajednici koja redovno ažurira [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 ## Licenca
 
-Kôd je objavljen pod [MIT](../LICENSE) licencom. Logo i baner „Harlock S.” (fascikla `assets/`) lični su brend autora i nisu obuhvaćeni ovom licencom: sva prava zadržana.
+Kôd je objavljen pod [MIT](../LICENSE) licencom. Ikona, logo i baner „Harlock S.” (fajl `yt-dlp-gui.ico` i fascikla `assets/`) originalne su kreacije koje je na zahtev autora generisala veštačka inteligencija. Čine vizuelni identitet projekta i nisu obuhvaćeni MIT licencom: nemojte ih koristiti za drugi projekat niti na način koji može da zavara.

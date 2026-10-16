@@ -467,5 +467,6 @@
   "app_update.btn_close": "Đóng",
   "app_update.notes": "Có gì mới",
   "app_update.banner": "🔔 Có phiên bản mới {version}",
-  "app_update.hint_source": "Bạn đang dùng mã nguồn: hãy lấy phiên bản mới nhất bằng git pull."
+  "app_update.hint_source": "Bạn đang dùng mã nguồn: hãy lấy phiên bản mới nhất bằng git pull.",
+  "toolbar.menu_auto_update_check": "Kiểm tra cập nhật khi khởi động"
 }

@@ -467,5 +467,6 @@
   "app_update.btn_close": "关闭",
   "app_update.notes": "更新内容",
   "app_update.banner": "🔔 有新版本 {version} 可用",
-  "app_update.hint_source": "您正在使用源代码：请使用 git pull 获取最新版本。"
+  "app_update.hint_source": "您正在使用源代码：请使用 git pull 获取最新版本。",
+  "toolbar.menu_auto_update_check": "启动时检查更新"
 }

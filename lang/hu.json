@@ -467,5 +467,6 @@
   "app_update.btn_close": "Bezárás",
   "app_update.notes": "Újdonságok",
   "app_update.banner": "🔔 Új verzió érhető el: {version}",
-  "app_update.hint_source": "A forráskódot használja: a legújabb verziót a git pull paranccsal töltheti le."
+  "app_update.hint_source": "A forráskódot használja: a legújabb verziót a git pull paranccsal töltheti le.",
+  "toolbar.menu_auto_update_check": "Frissítések keresése indításkor"
 }

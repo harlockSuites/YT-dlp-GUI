@@ -43,7 +43,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 - **Katulong sa pag-install**: sa unang pagbukas, iminumungkahi nitong i-download ang yt-dlp at ffmpeg mula sa kanilang opisyal na GitHub repository. Bine-verify ang SHA-256 checksum at hindi kailangan ng administrator rights.
 - **Mga dependency**: sinusuri ng nakalaang window ang ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 at deno, at maaari silang i-install gamit ang Chocolatey.
 - **Update at diagnostic**: ina-update ang yt-dlp (`yt-dlp -U`) o pinapalitan ang executable nito, ipinapakita ang bersyon at sinusuri ang mga opsyong ginagamit ng interface.
-- **Update ng software**: ang araw-araw na pagsusuri (maaaring i-off) ay nagsasaad ng bagong bersyon gamit ang isang banayad na banner; ipinapakita ng nakalaang window ang mga bago at binubuksan ang download na tugma sa iyong pag-install (installer o portable na bersyon). Walang awtomatikong ini-install.
+- **Update ng software**: ang araw-araw na pagsusuri (maaaring i-off) ay nagsasaad ng bagong bersyon gamit ang isang banayad na banner; ipinapakita ng nakalaang window ang mga bago at binubuksan ang download na tugma sa iyong pag-install (installer o portable na bersyon). Walang awtomatikong ini-install. Ino-on o ino-off ng switch sa menu ng mga opsyon ("Suriin ang mga update sa pagsisimula") ang awtomatikong pagsusuri, at pinapatakbo ito kapag hiniling ng "Maghanap ng update ng software…".
 
 ### Interface at mga wika
 
@@ -81,7 +81,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 
 ## Privacy at responsableng paggamit
 
-- Walang ipinapadalang data ang software na ito sa may-akda at walang telemetry. Dumadaan ang mga koneksyon sa network sa yt-dlp (mga video site), sa katulong sa pag-install (GitHub) at sa tool ng talaan (paghahanap sa YouTube). Kumokonekta rin sa GitHub ang awtomatikong pagsusuri ng update sa pagsisimula (isang beses lang kada araw nang pinakamarami); maaari mo itong i-off sa "Maghanap ng update ng software…".
+- Walang ipinapadalang data ang software na ito sa may-akda at walang telemetry. Dumadaan ang mga koneksyon sa network sa yt-dlp (mga video site), sa katulong sa pag-install (GitHub) at sa tool ng talaan (paghahanap sa YouTube). Kumokonekta rin sa GitHub ang awtomatikong pagsusuri ng update sa pagsisimula (isang beses lang kada araw nang pinakamarami); maaari mo itong i-off sa "Suriin ang mga update sa pagsisimula".
 - Nananatili sa iyong computer ang iyong mga cookie: lokal na binabasa ng yt-dlp ang mga ito mula sa napiling browser.
 - Gamitin ang tool na ito alinsunod sa copyright, sa mga tuntunin ng paggamit ng mga site at sa mga batas ng iyong bansa, at i-download lang ang may karapatan kang i-download.
 
@@ -105,4 +105,4 @@ Salamat sa komunidad na regular na nag-a-update ng [yt-dlp](https://github.com/y
 
 ## Lisensya
 
-Inilabas ang code sa ilalim ng lisensyang [MIT](../LICENSE). Ang logo at banner na "Harlock S." (folder na `assets/`) ay personal na tatak ng may-akda at hindi sakop ng lisensyang ito: lahat ng karapatan ay nakalaan.
+Inilabas ang code sa ilalim ng lisensyang [MIT](../LICENSE). Ang icon, logo at banner na "Harlock S." (file na `yt-dlp-gui.ico` at folder na `assets/`) ay orihinal na likha na binuo ng AI sa kahilingan ng may-akda. Bumubuo ang mga ito ng visual na pagkakakilanlan ng proyekto at hindi sakop ng lisensyang MIT: huwag gamitin muli ang mga ito sa ibang proyekto o sa paraang maaaring magdulot ng kalituhan.

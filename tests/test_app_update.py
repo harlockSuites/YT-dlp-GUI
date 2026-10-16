@@ -226,6 +226,31 @@ class UiTests(unittest.TestCase):
             self._pump(lambda: bool(self.app._frm_update.winfo_manager()))
         self.assertTrue(self.app._frm_update.winfo_manager())
 
+    def test_options_menu_has_the_check_now_entry_and_the_auto_switch(self):
+        captured = []
+        with mock.patch.object(m.tk.Menu, "tk_popup", autospec=True,
+                               side_effect=lambda menu, x, y: captured.append(menu)):
+            self.app._open_options_menu()
+        menu = captured[0]
+        labels = [(menu.type(i), menu.entrycget(i, "label")) for i in range(menu.index("end") + 1)
+                  if menu.type(i) in ("command", "checkbutton")]
+        self.assertIn(("command", m.t("toolbar.menu_check_update")), labels)
+        self.assertIn(("checkbutton", m.t("toolbar.menu_auto_update_check")), labels)
+
+    def test_auto_switch_is_saved_and_reflects_the_config(self):
+        m.save_config({"update_check": False})
+        captured = []
+        with mock.patch.object(m.tk.Menu, "tk_popup", autospec=True,
+                               side_effect=lambda menu, x, y: captured.append(menu)):
+            self.app._open_options_menu()
+        self.assertFalse(self.app._var_auto_update.get(), "le menu reflète la config")
+        self.app._var_auto_update.set(True)
+        self.app._toggle_auto_update()
+        self.assertTrue(m.load_config()["update_check"])
+        self.app._var_auto_update.set(False)
+        self.app._toggle_auto_update()
+        self.assertFalse(m.load_config()["update_check"])
+
     def _window(self, **kw):
         win = m.AppUpdateWindow(self.app, **kw)
         win.withdraw()
