@@ -14,6 +14,8 @@ import re
 import sys
 import time
 
+__version__ = "0.1.0"
+
 YTDLP              = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp.exe")
 CONFIG_FILE        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gui-config.json")
 QUEUE_FILE         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "download-queue.json")
@@ -2187,12 +2189,30 @@ class _FlowFrame(ttk.Frame):
         super().__init__(parent)
         self._items = []   # (widget, pleine_largeur)
         self._sig = None
+        self._pending = None
         self.bind("<Configure>", lambda e: self._layout())
+        self.bind("<Destroy>", self._on_destroy, add="+")
+
+    def _on_destroy(self, event):
+        if event.widget is self and self._pending is not None:
+            try:
+                self.after_cancel(self._pending)
+            except tk.TclError:
+                pass
+            self._pending = None
+
+    def _schedule(self):
+        if self._pending is None:
+            self._pending = self.after_idle(self._run_pending)
+
+    def _run_pending(self):
+        self._pending = None
+        self._layout()
 
     def add(self, widget, wide=False):
         self._items.append((widget, wide))
-        widget.bind("<Configure>", lambda e: self.after_idle(self._layout), add="+")
-        self.after_idle(self._layout)
+        widget.bind("<Configure>", lambda e: self._schedule(), add="+")
+        self._schedule()
 
     def _layout(self):
         avail = self.winfo_width()
@@ -3794,7 +3814,7 @@ class YtDlpGui(tk.Tk):
             self.iconbitmap(default=ICON_FILE)   # icône de toutes les fenêtres
         except tk.TclError:
             pass
-        self.title(t("app.window_title"))
+        self.title(f"{t('app.window_title')}  v{__version__}")
         self.resizable(True, True)
         self.minsize(560, 420)
         self._process = None

@@ -38,6 +38,16 @@ La fenêtre « Options, Mise à jour & Dépendances » du logiciel vérifie les 
 | `assets/` | Logo et bannière |
 | `yt-dlp-gui.bat` | Lanceur Windows |
 
+## Développement
+
+Les tests (traductions, registre, construction des commandes, interface) se lancent avec :
+
+```bash
+python -X utf8 -m unittest discover -s tests -t .
+```
+
+Ils tournent aussi automatiquement sur GitHub à chaque envoi. Le numéro de version est défini par `__version__` dans `yt-dlp-gui.pyw` et doit correspondre à l'en-tête de `CHANGELOG.md`.
+
 ## Gratuit et libre
 
 L'utilisation de ce GUI est, a été et restera gratuite et libre d'accès à quiconque. Si l'outil vous est particulièrement utile, vous pouvez soutenir le projet sur [Ko-fi](https://ko-fi.com/harlocksuites).
