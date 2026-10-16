@@ -19,6 +19,7 @@ def load_gui():
     m.QUEUE_FILE = os.path.join(_SESSION_DIR, "download-queue.json")
     m.CUSTOM_BLOCKS_FILE = os.path.join(_SESSION_DIR, "custom-blocks.json")
     m.load_lang("fr")
+    m.YtDlpGui.AUTO_SETUP = False
     return m
 
 

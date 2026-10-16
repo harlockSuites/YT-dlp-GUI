@@ -19,3 +19,6 @@ __pycache__/
 .yt-dlp-archive.titles.tsv
 
 *.tmp
+bin/
+yt-dlp.exe.bak
+yt-dlp.exe.new

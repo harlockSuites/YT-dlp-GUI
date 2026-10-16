@@ -28,6 +28,9 @@ ICON_FILE          = os.path.join(os.path.dirname(os.path.abspath(__file__)), "y
 ASSETS_DIR         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 DONATE_URL         = "https://ko-fi.com/harlocksuites"
 CUSTOM_BLOCKS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "custom-blocks.json")
+LOCAL_BIN          = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bin")   # ffmpeg/ffprobe installés par l'assistant
+if LOCAL_BIN not in os.environ.get("PATH", "").split(os.pathsep):
+    os.environ["PATH"] = LOCAL_BIN + os.pathsep + os.environ.get("PATH", "")
 
 SUBTITLE_FORMATS = ["vtt", "srt", "ass", "best"]
 
@@ -3910,6 +3913,246 @@ class BugReportWindow(tk.Toplevel):
         webbrowser.open(url)
 
 
+# ══════════════════════════════════════════════════════════════════
+#  Assistant d'installation (yt-dlp + ffmpeg), téléchargements vérifiés
+# ══════════════════════════════════════════════════════════════════
+YTDLP_URL       = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"
+YTDLP_SUMS_URL  = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS"
+FFMPEG_ZIP_NAME = "ffmpeg-master-latest-win64-gpl.zip"
+FFMPEG_URL      = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/" + FFMPEG_ZIP_NAME
+FFMPEG_SUMS_URL = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/checksums.sha256"
+
+
+class SetupError(Exception):
+    pass
+
+
+def _open_url(url, timeout=30):
+    import urllib.request
+    req = urllib.request.Request(url, headers={"User-Agent": f"yt-dlp-GUI/{__version__}"})
+    return urllib.request.urlopen(req, timeout=timeout)
+
+
+def _fetch_text(url, timeout=30, opener=_open_url):
+    with opener(url, timeout) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def _download_file(url, dest, progress=None, stop=None, timeout=30, opener=_open_url):
+    """Télécharge url vers dest via un fichier .part ; rien ne reste en cas d'échec ou d'annulation."""
+    os.makedirs(os.path.dirname(dest) or ".", exist_ok=True)
+    tmp = dest + ".part"
+    try:
+        with opener(url, timeout) as r, open(tmp, "wb") as f:
+            total = int(r.headers.get("Content-Length") or 0)
+            done = 0
+            while True:
+                if stop is not None and stop.is_set():
+                    raise SetupError(t("setup.err_cancelled"))
+                chunk = r.read(1 << 16)
+                if not chunk:
+                    break
+                f.write(chunk)
+                done += len(chunk)
+                if progress:
+                    progress(done, total)
+        os.replace(tmp, dest)
+    except BaseException as exc:
+        close = getattr(exc, "close", None)   # HTTPError garde un fichier ouvert
+        if close:
+            close()
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        raise
+    return dest
+
+
+def _sha256_file(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _parse_checksums(text):
+    """Fichier de sommes « hash  nom » (ou « hash *nom ») -> {nom: hash}."""
+    out = {}
+    for line in text.splitlines():
+        parts = line.strip().split(None, 1)
+        if len(parts) == 2 and re.fullmatch(r"[0-9a-fA-F]{64}", parts[0]):
+            out[parts[1].lstrip("*").strip()] = parts[0].lower()
+    return out
+
+
+def _verified_download(url, sums_url, name, dest, progress=None, stop=None, log=None):
+    """Télécharge puis vérifie le SHA-256 publié ; supprime le fichier si la somme ne correspond pas."""
+    expected = _parse_checksums(_fetch_text(sums_url)).get(name)
+    if not expected:
+        raise SetupError(t("setup.err_no_checksum", name=name))
+    if log:
+        log(t("setup.log_downloading", name=name))
+    _download_file(url, dest, progress, stop)
+    if log:
+        log(t("setup.log_verifying", name=name))
+    if _sha256_file(dest) != expected:
+        os.remove(dest)
+        raise SetupError(t("setup.err_checksum", name=name))
+    return dest
+
+
+def _extract_tools(zip_path, dest_dir, names=("ffmpeg.exe", "ffprobe.exe")):
+    """Extrait uniquement ffmpeg/ffprobe (par nom de fichier, jamais par chemin de l'archive)."""
+    import zipfile
+    import posixpath
+    os.makedirs(dest_dir, exist_ok=True)
+    done = []
+    with zipfile.ZipFile(zip_path) as zf:
+        for info in zf.infolist():
+            base = posixpath.basename(info.filename.replace("\\", "/")).lower()
+            if info.is_dir() or base not in names or base in done:
+                continue
+            target = os.path.join(dest_dir, base)
+            with zf.open(info) as src, open(target + ".new", "wb") as dst:
+                shutil.copyfileobj(src, dst)
+            os.replace(target + ".new", target)
+            done.append(base)
+    if not done:
+        raise SetupError(t("setup.err_no_tools"))
+    return done
+
+
+def install_ytdlp(progress=None, stop=None, log=None):
+    tmp = YTDLP + ".new"
+    _verified_download(YTDLP_URL, YTDLP_SUMS_URL, "yt-dlp.exe", tmp, progress, stop, log)
+    if os.path.exists(YTDLP):
+        shutil.copy2(YTDLP, YTDLP + ".bak")
+    os.replace(tmp, YTDLP)
+
+
+def install_ffmpeg(progress=None, stop=None, log=None):
+    import tempfile
+    work = tempfile.mkdtemp(prefix="ytgui-ffmpeg-")
+    try:
+        zip_path = os.path.join(work, FFMPEG_ZIP_NAME)
+        _verified_download(FFMPEG_URL, FFMPEG_SUMS_URL, FFMPEG_ZIP_NAME, zip_path, progress, stop, log)
+        _extract_tools(zip_path, LOCAL_BIN)
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+class SetupWizardWindow(tk.Toplevel):
+    """Télécharge et installe yt-dlp et ffmpeg depuis leurs dépôts officiels."""
+    def __init__(self, parent, on_done=None):
+        super().__init__(parent)
+        self.title(t("setup.window_title"))
+        self.resizable(False, False)
+        self.transient(parent)
+        self._on_done = on_done
+        self._stop = threading.Event()
+        self._busy = False
+
+        frm = ttk.Frame(self, padding=14)
+        frm.pack(fill="both", expand=True)
+        ttk.Label(frm, text=t("setup.intro"), wraplength=520, justify="left").pack(anchor="w")
+
+        frm_items = ttk.Frame(frm)
+        frm_items.pack(fill="x", pady=(12, 4))
+        self._items = {}
+        for key, label, installed in (
+                ("ytdlp", t("setup.item_ytdlp"), os.path.isfile(YTDLP)),
+                ("ffmpeg", t("setup.item_ffmpeg"), dep_installed("ffmpeg") and dep_installed("ffprobe"))):
+            var = tk.BooleanVar(value=not installed)
+            row = ttk.Frame(frm_items)
+            row.pack(fill="x", pady=2)
+            cb = ttk.Checkbutton(row, text=label, variable=var,
+                                 state="disabled" if installed else "normal")
+            cb.pack(side="left")
+            ttk.Label(row, text=t("setup.status_ok") if installed else t("setup.status_missing"),
+                      foreground="#27ae60" if installed else "#c0392b").pack(side="right")
+            self._items[key] = var
+
+        self.var_progress = tk.DoubleVar(value=0)
+        ttk.Progressbar(frm, variable=self.var_progress, maximum=100).pack(fill="x", pady=(10, 2))
+        self.var_info = tk.StringVar()
+        ttk.Label(frm, textvariable=self.var_info, foreground="gray").pack(anchor="w")
+        self.txt = tk.Text(frm, height=7, width=64, font=("Consolas", 9), state="disabled",
+                           bg="#1e1e1e", fg="#d4d4d4")
+        self.txt.pack(fill="x", pady=(6, 0))
+
+        btns = ttk.Frame(frm)
+        btns.pack(fill="x", pady=(10, 0))
+        self.btn_install = ttk.Button(btns, text=t("setup.btn_install"), command=self._install)
+        self.btn_install.pack(side="left", ipadx=8)
+        self.btn_close = ttk.Button(btns, text=t("setup.btn_later"), command=self._close)
+        self.btn_close.pack(side="right", ipadx=8)
+        self.protocol("WM_DELETE_WINDOW", self._close)
+
+    def _ui(self, fn):
+        try:
+            self.after(0, fn)
+        except (tk.TclError, RuntimeError):
+            pass
+
+    def _log(self, text):
+        try:
+            self.txt.configure(state="normal")
+            self.txt.insert("end", text + "\n")
+            self.txt.see("end")
+            self.txt.configure(state="disabled")
+        except tk.TclError:
+            pass
+
+    def _set_progress(self, done, total):
+        if total:
+            self.var_progress.set(done * 100 / total)
+            self.var_info.set(t("setup.progress", done=f"{done / 1048576:.0f}", total=f"{total / 1048576:.0f}"))
+
+    def _install(self):
+        todo = [k for k, v in self._items.items() if v.get()]
+        if not todo or self._busy:
+            if not todo:
+                self._log(t("setup.nothing_selected"))
+            return
+        self._busy = True
+        self.btn_install.configure(state="disabled")
+        self.btn_close.configure(text=t("setup.btn_cancel"))
+        threading.Thread(target=self._run, args=(todo,), daemon=True).start()
+
+    def _run(self, todo):
+        names = {"ytdlp": ("yt-dlp", install_ytdlp), "ffmpeg": ("ffmpeg", install_ffmpeg)}
+        ok = True
+        for key in todo:
+            label, fn = names[key]
+            try:
+                fn(progress=lambda d, tot: self._ui(lambda: self._set_progress(d, tot)),
+                   stop=self._stop, log=lambda msg: self._ui(lambda: self._log(msg)))
+                self._ui(lambda n=label: self._log(t("setup.log_installed", name=n)))
+            except Exception as exc:
+                ok = False
+                self._ui(lambda e=exc: self._log(t("setup.log_error", error=e)))
+                break
+        self._ui(lambda: self._finished(ok))
+
+    def _finished(self, ok):
+        self._busy = False
+        self.btn_close.configure(text=t("setup.btn_close"))
+        if ok:
+            self.var_progress.set(100)
+            self._log(t("setup.log_all_done"))
+        else:
+            self.btn_install.configure(state="normal")
+        if self._on_done:
+            self._on_done()
+
+    def _close(self):
+        self._stop.set()
+        self.destroy()
+
+
 class DonateWindow(tk.Toplevel):
     """Fenêtre de remerciement avec logo, bannière et lien vers le don."""
     def __init__(self, parent):
@@ -3938,6 +4181,8 @@ class DonateWindow(tk.Toplevel):
 
 
 class YtDlpGui(tk.Tk):
+    AUTO_SETUP = True   # ouvre l'assistant au démarrage si yt-dlp.exe est absent
+
     def __init__(self):
         super().__init__()
         try:
@@ -3957,6 +4202,8 @@ class YtDlpGui(tk.Tk):
         self._queue = load_queue()
         self._build_ui()
         self._restore_config()
+        if self.AUTO_SETUP:
+            self.after(400, self._maybe_first_run)
         self._refresh_queue_tv()
         # Résoudre les titres manquants des entrées chargées depuis le disque
         for i, e in enumerate(self._queue):
@@ -4353,6 +4600,7 @@ class YtDlpGui(tk.Tk):
         menu = tk.Menu(self, tearoff=0)
         menu.add_command(label=t("toolbar.menu_update"), command=self._open_update)
         menu.add_command(label=t("toolbar.menu_deps"),   command=self._open_deps)
+        menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
         menu.add_separator()
         menu.add_command(label="🌐  Langue / Language…", command=self._open_lang_dialog)
         menu.tk_popup(self.winfo_pointerx(), self.winfo_pointery())
@@ -4460,6 +4708,13 @@ class YtDlpGui(tk.Tk):
 
     def _open_update(self):
         UpdateWindow(self)
+
+    def _maybe_first_run(self):
+        if not os.path.isfile(YTDLP):
+            self._open_setup()
+
+    def _open_setup(self):
+        SetupWizardWindow(self, on_done=self._check_deps_quick)
 
     def _open_playlist_inspector(self):
         url = self.var_url.get().strip()

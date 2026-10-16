@@ -18,14 +18,14 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 
 - Windows
 - [Python 3](https://www.python.org/) avec Tkinter (inclus dans l'installation standard)
-- `yt-dlp.exe`, à placer dans le même dossier que le logiciel
-- Recommandé : [ffmpeg](https://ffmpeg.org/) (fusion des flux, intégration des sous-titres et des miniatures, durée des fichiers pour l'outil de registre)
+- `yt-dlp.exe` : téléchargé automatiquement par l'assistant d'installation au premier lancement (ou à placer à côté du logiciel)
+- Recommandé : [ffmpeg](https://ffmpeg.org/) (fusion des flux, intégration des sous-titres et des miniatures, durée des fichiers pour l'outil de registre), également proposé par l'assistant
 
 La fenêtre « Options, Mise à jour & Dépendances » du logiciel vérifie les outils utiles (ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2, deno) et aide à les installer.
 
 ## Utilisation
 
-1. Place `yt-dlp.exe` à côté de `yt-dlp-gui.pyw`.
+1. Au premier lancement, l'assistant d'installation propose de télécharger yt-dlp et ffmpeg depuis leurs dépôts officiels GitHub (somme de contrôle SHA-256 vérifiée, aucun droit administrateur requis). Il reste accessible dans le menu des options.
 2. Lance `yt-dlp-gui.bat` (ou `pythonw yt-dlp-gui.pyw`).
 3. La langue se change depuis le menu des options.
 
