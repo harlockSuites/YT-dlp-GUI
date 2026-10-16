@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Neočekivana greška — pogledajte konzolu: {error}",
   "insp.status_err_list": "Greška pri čitanju liste: {error}",
   "insp.status_err_row": "Greška u redu {n}: {error}",
-  "insp.status_err_registry": "Evidencija: {error}"
+  "insp.status_err_registry": "Evidencija: {error}",
+  "common.log_error": "Greška: {error}",
+  "dlq.log_internal_error": "Interna greška: {error}",
+  "upd.log_backup": "Rezervna kopija: {path}",
+  "upd.ver_unknown": "nepoznata",
+  "upd.ver_error": "greška — exe nije pronađen",
+  "upd.log_diag_version_fail": "✘ Nije moguće pročitati verziju: {error}",
+  "upd.log_diag_help_fail": "✘ Nije moguće pročitati --help: {error}",
+  "inspect.log_start": "Pregled: {url}",
+  "inspect.log_bad_json": "Greška: neispravan JSON odgovor",
+  "inspect.log_title": "Naslov: {title}",
+  "inspect.log_duration": "Trajanje: {duration}   Kanal: {uploader}",
+  "inspect.log_audio": "Audio zapisi: {langs}",
+  "inspect.log_subs": "Titlovi: {langs}{auto}",
+  "inspect.none": "nema",
+  "inspect.auto_part": " (auto: {langs})"
 }

@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Erreur inattendue — voir la console : {error}",
   "insp.status_err_list": "Erreur de lecture de la liste : {error}",
   "insp.status_err_row": "Erreur ligne {n} : {error}",
-  "insp.status_err_registry": "Registre : {error}"
+  "insp.status_err_registry": "Registre : {error}",
+  "common.log_error": "Erreur : {error}",
+  "dlq.log_internal_error": "Erreur interne : {error}",
+  "upd.log_backup": "Sauvegarde : {path}",
+  "upd.ver_unknown": "inconnue",
+  "upd.ver_error": "erreur — exe introuvable",
+  "upd.log_diag_version_fail": "✘ Impossible de lire la version : {error}",
+  "upd.log_diag_help_fail": "✘ Impossible de lire --help : {error}",
+  "inspect.log_start": "Inspection : {url}",
+  "inspect.log_bad_json": "Erreur : réponse JSON invalide",
+  "inspect.log_title": "Titre : {title}",
+  "inspect.log_duration": "Durée : {duration}   Chaîne : {uploader}",
+  "inspect.log_audio": "Pistes audio : {langs}",
+  "inspect.log_subs": "Sous-titres : {langs}{auto}",
+  "inspect.none": "aucune",
+  "inspect.auto_part": " (auto : {langs})"
 }

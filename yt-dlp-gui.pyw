@@ -22,42 +22,7 @@ ASSETS_DIR         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "a
 DONATE_URL         = "https://ko-fi.com/harlocksuites"
 CUSTOM_BLOCKS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "custom-blocks.json")
 
-SUBTITLE_LANGS = [
-    ("Désactivés", ""),
-    ("Français (fr)", "fr"),
-    ("Anglais (en)", "en"),
-    ("Espagnol (es)", "es"),
-    ("Allemand (de)", "de"),
-    ("Japonais (ja)", "ja"),
-    ("Coréen (ko)", "ko"),
-    ("Tous disponibles", "all"),
-]
-
 SUBTITLE_FORMATS = ["vtt", "srt", "ass", "best"]
-
-VIDEO_FORMATS = [
-    # ── Flux DASH (vidéo seule + audio EN séparé) ──────────────────────────────
-    ("Meilleure qualité (EN)", "bestvideo+bestaudio/best"),
-    ("1080p H.264 (EN)", "bestvideo[height<=1080][ext=mp4]+bestaudio/best[height<=1080]"),
-    ("720p H.264 (EN)", "bestvideo[height<=720][ext=mp4]+bestaudio/best[height<=720]"),
-    # ── Flux HLS multi-langue (vidéo+audio intégrés, protocole m3u8) ───────────
-    # Sélectionne le meilleur flux HLS pour la langue choisie ;
-    # ffmpeg peut y ajouter une 2e piste audio DASH (ex. EN) via --audio-multistreams
-    ("1080p FR (HLS)", "best[language=fr][height<=1080]"),
-    # Flux HLS FR (vidéo+audio FR) + audio DASH EN séparé (audio-only).
-    # ffmpeg garde la vidéo+audio FR du flux HLS et ajoute l'audio EN comme 2e piste → MKV bi-audio.
-    # Fallback : flux FR seul si l'audio EN DASH n'est pas disponible.
-    ("1080p FR + EN (MKV)", "best[language=fr][height<=1080]+bestaudio[language=en]/best[language=fr][height<=1080]"),
-    ("720p FR (HLS)", "best[language=fr][height<=720]"),
-    ("720p FR + EN (MKV)", "best[language=fr][height<=720]+best[language=en][height<=720]/best[language=fr][height<=720]"),
-    ("1080p EN original (HLS)", "best[language=en][height<=1080]"),
-    # ── Résolutions basses ──────────────────────────────────────────────────────
-    ("480p", "bestvideo[height<=480]+bestaudio/best[height<=480]"),
-    # ── Audio seul ─────────────────────────────────────────────────────────────
-    ("Audio seulement (MP3)", "bestaudio"),
-    ("Audio seulement (M4A)", "bestaudio[ext=m4a]/bestaudio"),
-    ("Personnalisé…", "custom"),
-]
 
 # Bibliothèque de blocs yt-dlp sélectionnables dans les Règles globales
 # (code, label_affiché, [args yt-dlp correspondants])
@@ -161,8 +126,6 @@ SCRIPT_BLOCKS = [
 
 # Index rapide code → args
 SCRIPT_BLOCKS_MAP = {code: args for _, code, _, args in SCRIPT_BLOCKS}
-# Options à plat pour les widgets sans onglets
-SCRIPT_BLOCKS_OPTIONS = [(code, lbl) for _, code, lbl, _ in SCRIPT_BLOCKS]
 # Options groupées par catégorie : {"Post-traitement": [(code, lbl), ...], ...}
 SCRIPT_BLOCKS_BY_TAB = {}
 for _cat, _code, _lbl, _ in SCRIPT_BLOCKS:
@@ -293,13 +256,25 @@ def _load_custom_blocks():
         pass
 
 
+_JSON_WRITE_LOCK = threading.Lock()
+
+
+def _write_json_atomic(path, data):
+    """Écrit `data` en JSON via un fichier temporaire puis os.replace : une coupure
+    en pleine écriture ne laisse jamais un fichier tronqué."""
+    tmp = path + ".tmp"
+    with _JSON_WRITE_LOCK:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        os.replace(tmp, path)
+
+
 def _save_custom_blocks():
     """Sauvegarde CUSTOM_BLOCKS dans custom-blocks.json."""
     data = [{"cat": c, "code": co, "label": l, "args": a}
             for c, co, l, a in CUSTOM_BLOCKS]
     try:
-        with open(CUSTOM_BLOCKS_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        _write_json_atomic(CUSTOM_BLOCKS_FILE, data)
     except Exception:
         pass
 
@@ -405,8 +380,7 @@ def load_config():
 
 def save_config(data):
     try:
-        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+        _write_json_atomic(CONFIG_FILE, data)
     except Exception:
         pass
 
@@ -427,8 +401,7 @@ def load_queue():
 
 def save_queue(queue):
     try:
-        with open(QUEUE_FILE, "w", encoding="utf-8") as f:
-            json.dump(queue, f, indent=2, ensure_ascii=False)
+        _write_json_atomic(QUEUE_FILE, queue)
     except Exception:
         pass
 
@@ -450,6 +423,41 @@ def dep_installed(exe):
                     os.environ["PATH"] = folder + os.pathsep + os.environ.get("PATH", "")
                 return True
     return False
+
+
+def _child_pids(pid):
+    """PID des processus enfants directs (Toolhelp32 ; wmic a disparu des Windows récents)."""
+    import ctypes
+    from ctypes import wintypes
+
+    class PROCESSENTRY32W(ctypes.Structure):
+        _fields_ = [("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
+                    ("th32ProcessID", wintypes.DWORD), ("th32DefaultHeapID", ctypes.c_size_t),
+                    ("th32ModuleID", wintypes.DWORD), ("cntThreads", wintypes.DWORD),
+                    ("th32ParentProcessID", wintypes.DWORD), ("pcPriClassBase", wintypes.LONG),
+                    ("dwFlags", wintypes.DWORD), ("szExeFile", ctypes.c_wchar * 260)]
+
+    k32 = ctypes.windll.kernel32
+    k32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    k32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    k32.Process32FirstW.argtypes = [wintypes.HANDLE, ctypes.POINTER(PROCESSENTRY32W)]
+    k32.Process32NextW.argtypes = [wintypes.HANDLE, ctypes.POINTER(PROCESSENTRY32W)]
+    k32.CloseHandle.argtypes = [wintypes.HANDLE]
+    snap = k32.CreateToolhelp32Snapshot(0x2, 0)   # TH32CS_SNAPPROCESS
+    if not snap or snap == ctypes.c_void_p(-1).value:
+        return []
+    kids = []
+    try:
+        entry = PROCESSENTRY32W()
+        entry.dwSize = ctypes.sizeof(entry)
+        ok = k32.Process32FirstW(snap, ctypes.byref(entry))
+        while ok:
+            if entry.th32ParentProcessID == pid:
+                kids.append(entry.th32ProcessID)
+            ok = k32.Process32NextW(snap, ctypes.byref(entry))
+    finally:
+        k32.CloseHandle(snap)
+    return kids
 
 
 def run_elevated(cmd_str):
@@ -626,16 +634,9 @@ class DepsWindow(tk.Toplevel):
 
 # Flags critiques que le GUI utilise — chacun doit être présent dans --help
 _GUI_FLAGS = [
-    ("--audio-multistreams",   "Multi-pistes audio (FR+EN)"),
-    ("--embed-thumbnail",      "Miniature embarquée"),
-    ("--embed-subs",           "Sous-titres intégrés"),
-    ("--merge-output-format",  "Format de fusion (MKV/MP4)"),
-    ("--flat-playlist",        "Inspection rapide de playlist"),
-    ("--fragment-retries",     "Retries sur fragments HLS"),
-    ("--sleep-interval",       "Délai anti-rate-limit"),
-    ("--sub-format",           "Format de sous-titres"),
-    ("--write-subs",           "Export sous-titres externe"),
-    ("--no-playlist",          "Vidéo seule (ignore playlist)"),
+    "--audio-multistreams", "--embed-thumbnail", "--embed-subs", "--merge-output-format",
+    "--flat-playlist", "--fragment-retries", "--sleep-interval", "--sub-format",
+    "--write-subs", "--no-playlist",
 ]
 
 
@@ -729,9 +730,9 @@ class UpdateWindow(tk.Toplevel):
                 r = subprocess.run([YTDLP, "--version"],
                                    capture_output=True, text=True, encoding="utf-8",
                                    creationflags=subprocess.CREATE_NO_WINDOW)
-                ver = r.stdout.strip() or "inconnue"
+                ver = r.stdout.strip() or t("upd.ver_unknown")
             except Exception:
-                ver = "erreur — exe introuvable"
+                ver = t("upd.ver_error")
             self.after(0, lambda: self.var_ver.set(
                 f"yt-dlp  {ver}   ({YTDLP})"))
         threading.Thread(target=_get, daemon=True).start()
@@ -759,7 +760,7 @@ class UpdateWindow(tk.Toplevel):
                         self.after(0, lambda l=line, c=color: self._log(l, c))
                 proc.wait()
             except Exception as e:
-                self.after(0, lambda e=e: self._log(f"Erreur : {e}", "#f66"))
+                self.after(0, lambda e=e: self._log(t("common.log_error", error=e), "#f66"))
             self.after(0, lambda: self.btn_auto.configure(state="normal"))
             self.after(0, self._show_version)
 
@@ -780,7 +781,7 @@ class UpdateWindow(tk.Toplevel):
             backup = YTDLP + ".bak"
             if os.path.exists(YTDLP):
                 _sh.copy2(YTDLP, backup)
-                self._log(f"Sauvegarde : {backup}", "#888")
+                self._log(t("upd.log_backup", path=backup), "#888")
             _sh.copy2(src, YTDLP)
             self._log(t("upd.log_replace_ok", src=src), "#4ec94e")
             self._log(t("upd.log_replace_check"), "#dcdcaa")
@@ -811,7 +812,7 @@ class UpdateWindow(tk.Toplevel):
                 ver = r.stdout.strip()
                 self.after(0, lambda v=ver: self._log(t("upd.log_diag_version_ok", v=v), "#4ec94e"))
             except Exception as e:
-                self.after(0, lambda e=e: self._log(f"✘ Impossible de lire la version : {e}", "#f66"))
+                self.after(0, lambda e=e: self._log(t("upd.log_diag_version_fail", error=e), "#f66"))
                 self.after(0, lambda: self.btn_diag.configure(state="normal"))
                 return
 
@@ -823,21 +824,21 @@ class UpdateWindow(tk.Toplevel):
                                    creationflags=subprocess.CREATE_NO_WINDOW)
                 help_text = h.stdout + h.stderr
             except Exception as e:
-                self.after(0, lambda e=e: self._log(f"✘ Impossible de lire --help : {e}", "#f66"))
+                self.after(0, lambda e=e: self._log(t("upd.log_diag_help_fail", error=e), "#f66"))
                 self.after(0, lambda: self.btn_diag.configure(state="normal"))
                 return
 
             self.after(0, lambda: self._log(t("upd.log_diag_flags_header"), "#888"))
             all_ok = True
-            for flag, desc in _GUI_FLAGS:
+            for flag in _GUI_FLAGS:
                 present = flag in help_text
                 if present:
-                    self.after(0, lambda f=flag, d=desc:
-                               self._log(f"  ✔ {f:<28}  {d}", "#4ec94e"))
+                    self.after(0, lambda f=flag:
+                               self._log(f"  ✔ {f}", "#4ec94e"))
                 else:
                     all_ok = False
-                    self.after(0, lambda f=flag, d=desc:
-                               self._log(t("upd.log_diag_flag_missing", flag=f, desc=d), "#f66"))
+                    self.after(0, lambda f=flag:
+                               self._log(t("upd.log_diag_flag_missing", flag=f, desc=""), "#f66"))
 
             # 4. ffmpeg
             import shutil as _sh
@@ -1077,12 +1078,7 @@ class DownloadQueueWindow(tk.Toplevel):
             import ctypes
             kernel32 = ctypes.windll.kernel32
             ntdll = ctypes.windll.ntdll
-            result = subprocess.run(
-                ["wmic", "process", "where", f"(ParentProcessId={pid})", "get", "ProcessId"],
-                capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW,
-                timeout=3,
-            )
-            child_pids = [int(x.strip()) for x in result.stdout.split() if x.strip().isdigit()]
+            child_pids = _child_pids(pid)
             for cpid in child_pids:
                 h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
                 if h:
@@ -1104,12 +1100,7 @@ class DownloadQueueWindow(tk.Toplevel):
             if h:
                 ntdll.NtResumeProcess(h)
                 kernel32.CloseHandle(h)
-            result = subprocess.run(
-                ["wmic", "process", "where", f"(ParentProcessId={pid})", "get", "ProcessId"],
-                capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW,
-                timeout=3,
-            )
-            child_pids = [int(x.strip()) for x in result.stdout.split() if x.strip().isdigit()]
+            child_pids = _child_pids(pid)
             for cpid in child_pids:
                 h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
                 if h:
@@ -1119,7 +1110,27 @@ class DownloadQueueWindow(tk.Toplevel):
             pass
 
     def start(self):
-        threading.Thread(target=self._run, daemon=True).start()
+        threading.Thread(target=self._run_guarded, daemon=True).start()
+
+    def _run_guarded(self):
+        try:
+            self._run()
+        except Exception as exc:
+            self._downloading = False
+
+            def _fail(e=exc):
+                try:
+                    self._log(t("dlq.log_internal_error", error=e), "#f66")
+                    self.var_status.set(t("dlq.status_interrupted"))
+                    self.btn_pause.configure(state="disabled")
+                    self.btn_skip.configure(state="disabled")
+                    self.btn_close.configure(text=t("dlq.btn_close_done"))
+                except tk.TclError:
+                    pass
+            try:
+                self.after(0, _fail)
+            except (tk.TclError, RuntimeError):
+                pass
 
     _RE_DEST   = re.compile(r"\[download\] Destination:\s+(.+)")
     _RE_THUMB  = re.compile(r"\[info\] (?:Writing|Downloading) video thumbnail \S+ to:\s+(.+)")
@@ -1171,7 +1182,7 @@ class DownloadQueueWindow(tk.Toplevel):
             self._process.wait()
             return self._process.returncode, lines
         except Exception as e:
-            self.after(0, lambda e=e: self._log(f"Erreur : {e}", "#f66"))
+            self.after(0, lambda e=e: self._log(t("common.log_error", error=e), "#f66"))
             return -1, lines
 
     @staticmethod
@@ -1197,7 +1208,8 @@ class DownloadQueueWindow(tk.Toplevel):
         """
         import concurrent.futures
 
-        browser = self.var_g_browser.get() if hasattr(self, "var_g_browser") else BROWSER_OFF
+        src = self._inspector if self._inspector is not None else self
+        browser = src.var_g_browser.get() if hasattr(src, "var_g_browser") else BROWSER_OFF
         cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
 
         def probe_one(lang):
@@ -1270,7 +1282,7 @@ class DownloadQueueWindow(tk.Toplevel):
                            self._log(t("dlq.log_sub_fail_retry"), "#f5a623"))
                 args_vid = self._build_args(row, skip_subs=True)
                 cmd_str = " ".join(f'"{a}"' if " " in a else a for a in args_vid)
-                self.after(0, lambda s=cmd_str: self._log("[relance ST] $ " + s, "#666"))
+                self.after(0, lambda s=cmd_str: self._log("[retry-subs] $ " + s, "#666"))
                 rc, out_lines = self._run_one(args_vid)
                 sub_dropped = True
 
@@ -1313,7 +1325,7 @@ class DownloadQueueWindow(tk.Toplevel):
                         sub_dropped = True
                     args2 = self._build_args(row, secondary_override=available, skip_subs=True)
                     cmd_str2 = " ".join(f'"{a}"' if " " in a else a for a in args2)
-                    self.after(0, lambda s=cmd_str2: self._log("[relance] $ " + s, "#666"))
+                    self.after(0, lambda s=cmd_str2: self._log("[retry] $ " + s, "#666"))
                     rc, out_lines = self._run_one(args2)
                 else:
                     self.after(0, lambda:
@@ -1325,7 +1337,7 @@ class DownloadQueueWindow(tk.Toplevel):
                 args_subs = self._build_args(row, subs_only=True)
                 if args_subs:
                     cmd_sub = " ".join(f'"{a}"' if " " in a else a for a in args_subs)
-                    self.after(0, lambda s=cmd_sub: self._log("[ST] $ " + s, "#666"))
+                    self.after(0, lambda s=cmd_sub: self._log("[subs] $ " + s, "#666"))
                     rc_sub, sub_lines = self._run_one(args_subs)
                     if rc_sub != 0:
                         sub_dropped = True
@@ -1914,6 +1926,11 @@ def _norm_title(s):
     return re.sub(r"[\W_]+", "", (s or "").casefold())
 
 
+def _tmpl_esc(s):
+    """Échappe % pour un modèle de sortie yt-dlp (-o) construit à partir d'un chemin ou d'un titre."""
+    return s.replace("%", "%%")
+
+
 def _watch_url(vid_id):
     return f"https://www.youtube.com/watch?v={vid_id}"
 
@@ -2240,7 +2257,10 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._build()
         # Charger le dernier navigateur depuis la config partagée
         cfg = load_config()
-        if "browser" in cfg:
+        parent_browser = getattr(parent, "var_browser", None)
+        if parent_browser is not None:
+            self.var_g_browser.set(parent_browser.get())
+        elif "browser" in cfg:
             self.var_g_browser.set(cfg["browser"])
         self._update_cookie_warn_insp()
         self.protocol("WM_DELETE_WINDOW", self._on_inspector_close)
@@ -2250,9 +2270,13 @@ class PlaylistInspectorWindow(tk.Toplevel):
             self.var_g_outdir.set(outdir)
 
     def _on_inspector_close(self):
+        self._stop_flag.set()
         cfg = load_config()
         cfg["browser"] = self.var_g_browser.get()
         save_config(cfg)
+        parent_browser = getattr(self.master, "var_browser", None)
+        if parent_browser is not None:
+            parent_browser.set(self.var_g_browser.get())
         self.destroy()
 
     # ── Journal de debug (fenêtre séparée) ────────────────────────
@@ -3259,7 +3283,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 args += ["--cookies-from-browser", browser]
             out = self.var_g_outdir.get().strip()
             if out:
-                args += ["-o", os.path.join(out, "%(title)s.%(ext)s")]
+                args += ["-o", os.path.join(_tmpl_esc(out), "%(title)s.%(ext)s")]
             args += ["--no-playlist", "--", vid_url]
             return args
 
@@ -3305,6 +3329,8 @@ class PlaylistInspectorWindow(tk.Toplevel):
                     fmt = "bestaudio/best"
                 args = [YTDLP, "-f", fmt,
                         "--extract-audio", "--audio-format", "mp3", "--audio-quality", "0"]
+            primary, secondary = primary_audio, secondary_audio
+            embed_thumb = self.var_g_embed_thumb.get()
         else:
             # ── Construction du format selon les langues ────────────
             prim_lbl = row["var_primary"].get()
@@ -3312,6 +3338,8 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 primary = self._global_primary()
             elif prim_lbl == self._g_opt_no_audio:
                 primary = "__video_only__"
+            elif prim_lbl == self._g_opt_manual:
+                primary = self._global_primary()
             else:
                 # L'étiquette est "XX — Nom" ou parfois juste "XX" (saisie manuelle)
                 primary = prim_lbl.split(" — ")[0].strip().lower()
@@ -3462,7 +3490,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         if unique_path:
             args += ["-o", unique_path]
         elif outdir:
-            args += ["-o", os.path.join(outdir, f"{prefix}%(title)s.%(ext)s")]
+            args += ["-o", os.path.join(_tmpl_esc(outdir), f"{prefix}%(title)s.%(ext)s")]
         elif prefix:
             args += ["-o", f"{prefix}%(title)s.%(ext)s"]
 
@@ -4385,13 +4413,14 @@ class YtDlpGui(tk.Tk):
         while True:
             candidate = f"{safe}_{n}"
             if not _exists(candidate):
-                return os.path.normpath(os.path.join(outdir, f"{candidate}.%(ext)s"))
+                return os.path.normpath(os.path.join(_tmpl_esc(outdir), _tmpl_esc(candidate) + ".%(ext)s"))
             n += 1
 
     def _build_args(self):
         url = self.var_url.get().strip()
         secondary = []
         force_mp4 = False
+        embed_thumb = self.var_embed_thumb.get()
 
         if self.var_audio_only.get():
             primary_code = self._primary_map.get(self.var_primary_lbl.get(), "")
@@ -4432,7 +4461,6 @@ class YtDlpGui(tk.Tk):
                 [c.replace("alang_", "") for c in self._secondary_sel.get_selected()] + block_audio
             ))
 
-            embed_thumb = self.var_embed_thumb.get()
             hf = f"[height<={h}]" if h else ""
             vsel = f"bestvideo{hf}"
             vsel_h264 = f"bestvideo[vcodec^=avc1]{hf}" if embed_thumb else None
@@ -4525,7 +4553,7 @@ class YtDlpGui(tk.Tk):
             insp_url = getattr(self, "_inspected_url", "")
             known_title = getattr(self, "_inspected_title", "") if cur_url == insp_url else ""
             unique = self._unique_output_path(out, known_title) if known_title else None
-            args += ["-o", unique if unique else os.path.join(out, "%(title)s.%(ext)s")]
+            args += ["-o", unique if unique else os.path.join(_tmpl_esc(out), "%(title)s.%(ext)s")]
 
         args += ["--retries", "10", "--fragment-retries", "10",
                  "--sleep-interval", "3", "--max-sleep-interval", "8"]
@@ -4570,7 +4598,7 @@ class YtDlpGui(tk.Tk):
             messagebox.showwarning(t("url.warn_missing_title"), t("url.warn_missing_msg"))
             return
         self._clear_log()
-        self._log(f"Inspection : {url}", "info")
+        self._log(t("inspect.log_start", url=url), "info")
 
         browser = self.var_browser.get()
         cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
@@ -4591,7 +4619,7 @@ class YtDlpGui(tk.Tk):
                 try:
                     info = json.loads(result.stdout)
                 except Exception:
-                    self.after(0, self._log, "Erreur : réponse JSON invalide", "error")
+                    self.after(0, self._log, t("inspect.log_bad_json"), "error")
                     return
 
                 title = info.get("title", "?")
@@ -4599,8 +4627,8 @@ class YtDlpGui(tk.Tk):
                 self._inspected_url   = url
                 duration = info.get("duration_string", "")
                 uploader = info.get("uploader", "")
-                self.after(0, self._log, f"Titre    : {title}", "info")
-                self.after(0, self._log, f"Durée    : {duration}   Chaîne : {uploader}", "info")
+                self.after(0, self._log, t("inspect.log_title", title=title), "info")
+                self.after(0, self._log, t("inspect.log_duration", duration=duration, uploader=uploader), "info")
 
                 # Pistes audio
                 formats = info.get("formats", [])
@@ -4659,10 +4687,12 @@ class YtDlpGui(tk.Tk):
                     self._primary_combo.configure(values=choices)
                     for l in audio_langs:
                         self._primary_map[_lang_label(l)] = l
-                    self._log(f"Pistes audio : {', '.join(audio_langs) or 'aucune'}", "info")
-                    sub_info = ', '.join(all_sub_langs) or 'aucune'
-                    auto_info = f" (auto : {', '.join(sorted(auto_only))})" if auto_only else ""
-                    self._log(f"Sous-titres : {sub_info}{auto_info}", "info")
+                    none = t("inspect.none")
+                    self._log(t("inspect.log_audio", langs=', '.join(audio_langs) or none), "info")
+                    sub_info = ', '.join(all_sub_langs) or none
+                    auto_info = (t("inspect.auto_part", langs=', '.join(sorted(auto_only)))
+                                 if auto_only else "")
+                    self._log(t("inspect.log_subs", langs=sub_info, auto=auto_info), "info")
 
                 self.after(0, _populate)
 
@@ -4680,7 +4710,7 @@ class YtDlpGui(tk.Tk):
                 proc2.wait()
 
             except Exception as e:
-                self.after(0, self._log, f"Erreur : {e}", "error")
+                self.after(0, self._log, t("common.log_error", error=e), "error")
 
         threading.Thread(target=run, daemon=True).start()
 
@@ -4719,7 +4749,7 @@ class YtDlpGui(tk.Tk):
                 self._process.wait()
                 self.after(0, self._on_done, self._process.returncode == 0)
             except Exception as e:
-                self.after(0, self._log, f"Erreur : {e}")
+                self.after(0, self._log, t("common.log_error", error=e))
                 self.after(0, self._on_done, False)
             finally:
                 self._process = None
@@ -4804,22 +4834,30 @@ class YtDlpGui(tk.Tk):
             self._refresh_queue_tv()
             self._queue_run_next()
 
+    def _kill_current_process(self):
+        """Tue le processus yt-dlp en cours (et ses enfants). Retourne False s'il n'y en a pas."""
+        proc = self._process
+        if not proc:
+            return False
+        if self._paused:
+            self._resume_process(proc.pid)
+        try:
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                creationflags=subprocess.CREATE_NO_WINDOW, timeout=5)
+        except Exception:
+            try:
+                proc.terminate()
+            except Exception:
+                pass
+        return True
+
     def _stop(self):
         if self._queue_running:
             self._queue_running = False
             self._queue_skip = False
             self._queue_set_running_ui(False)
-        if self._process:
-            if self._paused:
-                self._resume_process(self._process.pid)
-            try:
-                subprocess.run(
-                    ["taskkill", "/F", "/T", "/PID", str(self._process.pid)],
-                    creationflags=subprocess.CREATE_NO_WINDOW,
-                    timeout=5,
-                )
-            except Exception:
-                self._process.terminate()
+        self._kill_current_process()
         self._cleanup_partial_files()
 
     # ──────────────────────────────────────────────
@@ -4993,7 +5031,7 @@ class YtDlpGui(tk.Tk):
             outdir = ""
             for i, a in enumerate(args):
                 if a == "-o" and i + 1 < len(args):
-                    outdir = os.path.dirname(args[i + 1])
+                    outdir = os.path.dirname(args[i + 1]).replace("%%", "%")
                     break
             if outdir:
                 unique = self._unique_output_path(outdir, title)
@@ -5010,17 +5048,7 @@ class YtDlpGui(tk.Tk):
             return
         self._queue_skip = True
 
-
-        if self._process:
-            if self._paused:
-                self._resume_process(self._process.pid)
-            try:
-                subprocess.run(
-                    ["taskkill", "/F", "/T", "/PID", str(self._process.pid)],
-                    creationflags=subprocess.CREATE_NO_WINDOW, timeout=5)
-            except Exception:
-                self._process.terminate()
-        else:
+        if not self._kill_current_process():
             # Pas de processus actif (cas rare), avancer manuellement
             self._queue_skip = False
             self._queue_index += 1
@@ -5034,15 +5062,7 @@ class YtDlpGui(tk.Tk):
         self._queue_running = False
         self._queue_skip = False
         self._queue_set_running_ui(False)
-        if self._process:
-            if self._paused:
-                self._resume_process(self._process.pid)
-            try:
-                subprocess.run(
-                    ["taskkill", "/F", "/T", "/PID", str(self._process.pid)],
-                    creationflags=subprocess.CREATE_NO_WINDOW, timeout=5)
-            except Exception:
-                self._process.terminate()
+        self._kill_current_process()
         self._cleanup_partial_files()
         self.var_status.set(t("app.status_queue_stopped"))
         self._refresh_queue_tv()
@@ -5185,12 +5205,7 @@ class YtDlpGui(tk.Tk):
             kernel32 = ctypes.windll.kernel32
             ntdll = ctypes.windll.ntdll
             # Suspendre les processus enfants (ex. ffmpeg, aria2c) puis le parent
-            result = subprocess.run(
-                ["wmic", "process", "where", f"(ParentProcessId={pid})", "get", "ProcessId"],
-                capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW,
-                timeout=3,
-            )
-            child_pids = [int(x.strip()) for x in result.stdout.split() if x.strip().isdigit()]
+            child_pids = _child_pids(pid)
             for cpid in child_pids:
                 h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
                 if h:
@@ -5213,12 +5228,7 @@ class YtDlpGui(tk.Tk):
             if h:
                 ntdll.NtResumeProcess(h)
                 kernel32.CloseHandle(h)
-            result = subprocess.run(
-                ["wmic", "process", "where", f"(ParentProcessId={pid})", "get", "ProcessId"],
-                capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW,
-                timeout=3,
-            )
-            child_pids = [int(x.strip()) for x in result.stdout.split() if x.strip().isdigit()]
+            child_pids = _child_pids(pid)
             for cpid in child_pids:
                 h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
                 if h:
@@ -5250,7 +5260,8 @@ class YtDlpGui(tk.Tk):
         self._update_cmd()
 
     def _on_close(self):
-        save_config({
+        cfg = load_config()
+        cfg.update({
             "outdir":      self.var_outdir.get(),
             "quality":     self.var_quality.get(),
             "audio_only":  self.var_audio_only.get(),
@@ -5259,6 +5270,7 @@ class YtDlpGui(tk.Tk):
             "embed_thumb": self.var_embed_thumb.get(),
             "browser":     self.var_browser.get(),
         })
+        save_config(cfg)
         self.destroy()
 
 

@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "意外错误 — 请查看控制台：{error}",
   "insp.status_err_list": "读取列表出错：{error}",
   "insp.status_err_row": "第 {n} 行出错：{error}",
-  "insp.status_err_registry": "记录：{error}"
+  "insp.status_err_registry": "记录：{error}",
+  "common.log_error": "错误：{error}",
+  "dlq.log_internal_error": "内部错误：{error}",
+  "upd.log_backup": "备份：{path}",
+  "upd.ver_unknown": "未知",
+  "upd.ver_error": "错误 — 未找到 exe",
+  "upd.log_diag_version_fail": "✘ 无法读取版本：{error}",
+  "upd.log_diag_help_fail": "✘ 无法读取 --help：{error}",
+  "inspect.log_start": "检查：{url}",
+  "inspect.log_bad_json": "错误：JSON 响应无效",
+  "inspect.log_title": "标题：{title}",
+  "inspect.log_duration": "时长：{duration}   频道：{uploader}",
+  "inspect.log_audio": "音轨：{langs}",
+  "inspect.log_subs": "字幕：{langs}{auto}",
+  "inspect.none": "无",
+  "inspect.auto_part": "（自动：{langs}）"
 }

@@ -20,3 +20,4 @@ __pycache__/
 
 # Clone GitHub Desktop parasite
 YT-dlp-GUI/
+*.tmp

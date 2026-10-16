@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Hindi inaasahang error — tingnan ang console: {error}",
   "insp.status_err_list": "Error sa pagbasa ng listahan: {error}",
   "insp.status_err_row": "Error sa hilera {n}: {error}",
-  "insp.status_err_registry": "Talaan: {error}"
+  "insp.status_err_registry": "Talaan: {error}",
+  "common.log_error": "Error: {error}",
+  "dlq.log_internal_error": "Panloob na error: {error}",
+  "upd.log_backup": "Backup: {path}",
+  "upd.ver_unknown": "hindi alam",
+  "upd.ver_error": "error — hindi makita ang exe",
+  "upd.log_diag_version_fail": "✘ Hindi mabasa ang bersyon: {error}",
+  "upd.log_diag_help_fail": "✘ Hindi mabasa ang --help: {error}",
+  "inspect.log_start": "Sinisiyasat: {url}",
+  "inspect.log_bad_json": "Error: di-wastong JSON na tugon",
+  "inspect.log_title": "Pamagat: {title}",
+  "inspect.log_duration": "Haba: {duration}   Channel: {uploader}",
+  "inspect.log_audio": "Mga audio track: {langs}",
+  "inspect.log_subs": "Mga subtitle: {langs}{auto}",
+  "inspect.none": "wala",
+  "inspect.auto_part": " (auto: {langs})"
 }

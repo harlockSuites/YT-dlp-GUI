@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Lỗi không mong muốn — xem bảng điều khiển: {error}",
   "insp.status_err_list": "Lỗi khi đọc danh sách: {error}",
   "insp.status_err_row": "Lỗi ở dòng {n}: {error}",
-  "insp.status_err_registry": "Sổ đăng ký: {error}"
+  "insp.status_err_registry": "Sổ đăng ký: {error}",
+  "common.log_error": "Lỗi: {error}",
+  "dlq.log_internal_error": "Lỗi nội bộ: {error}",
+  "upd.log_backup": "Bản sao lưu: {path}",
+  "upd.ver_unknown": "không rõ",
+  "upd.ver_error": "lỗi — không tìm thấy exe",
+  "upd.log_diag_version_fail": "✘ Không thể đọc phiên bản: {error}",
+  "upd.log_diag_help_fail": "✘ Không thể đọc --help: {error}",
+  "inspect.log_start": "Kiểm tra: {url}",
+  "inspect.log_bad_json": "Lỗi: phản hồi JSON không hợp lệ",
+  "inspect.log_title": "Tiêu đề: {title}",
+  "inspect.log_duration": "Thời lượng: {duration}   Kênh: {uploader}",
+  "inspect.log_audio": "Rãnh âm thanh: {langs}",
+  "inspect.log_subs": "Phụ đề: {langs}{auto}",
+  "inspect.none": "không có",
+  "inspect.auto_part": " (tự động: {langs})"
 }

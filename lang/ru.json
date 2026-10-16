@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Непредвиденная ошибка — см. консоль: {error}",
   "insp.status_err_list": "Ошибка чтения списка: {error}",
   "insp.status_err_row": "Ошибка в строке {n}: {error}",
-  "insp.status_err_registry": "Реестр: {error}"
+  "insp.status_err_registry": "Реестр: {error}",
+  "common.log_error": "Ошибка: {error}",
+  "dlq.log_internal_error": "Внутренняя ошибка: {error}",
+  "upd.log_backup": "Резервная копия: {path}",
+  "upd.ver_unknown": "неизвестна",
+  "upd.ver_error": "ошибка — exe не найден",
+  "upd.log_diag_version_fail": "✘ Не удалось прочитать версию: {error}",
+  "upd.log_diag_help_fail": "✘ Не удалось прочитать --help: {error}",
+  "inspect.log_start": "Проверка: {url}",
+  "inspect.log_bad_json": "Ошибка: недопустимый ответ JSON",
+  "inspect.log_title": "Название: {title}",
+  "inspect.log_duration": "Длительность: {duration}   Канал: {uploader}",
+  "inspect.log_audio": "Аудиодорожки: {langs}",
+  "inspect.log_subs": "Субтитры: {langs}{auto}",
+  "inspect.none": "нет",
+  "inspect.auto_part": " (авто: {langs})"
 }

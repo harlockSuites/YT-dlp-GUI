@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Errore imprevisto — vedi la console: {error}",
   "insp.status_err_list": "Errore nella lettura dell'elenco: {error}",
   "insp.status_err_row": "Errore alla riga {n}: {error}",
-  "insp.status_err_registry": "Registro: {error}"
+  "insp.status_err_registry": "Registro: {error}",
+  "common.log_error": "Errore: {error}",
+  "dlq.log_internal_error": "Errore interno: {error}",
+  "upd.log_backup": "Backup: {path}",
+  "upd.ver_unknown": "sconosciuta",
+  "upd.ver_error": "errore — exe non trovato",
+  "upd.log_diag_version_fail": "✘ Impossibile leggere la versione: {error}",
+  "upd.log_diag_help_fail": "✘ Impossibile leggere --help: {error}",
+  "inspect.log_start": "Ispezione: {url}",
+  "inspect.log_bad_json": "Errore: risposta JSON non valida",
+  "inspect.log_title": "Titolo: {title}",
+  "inspect.log_duration": "Durata: {duration}   Canale: {uploader}",
+  "inspect.log_audio": "Tracce audio: {langs}",
+  "inspect.log_subs": "Sottotitoli: {langs}{auto}",
+  "inspect.none": "nessuna",
+  "inspect.auto_part": " (auto: {langs})"
 }

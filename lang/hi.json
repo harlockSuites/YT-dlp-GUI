@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "अप्रत्याशित त्रुटि — कंसोल देखें: {error}",
   "insp.status_err_list": "सूची पढ़ने में त्रुटि: {error}",
   "insp.status_err_row": "पंक्ति {n} में त्रुटि: {error}",
-  "insp.status_err_registry": "रजिस्टर: {error}"
+  "insp.status_err_registry": "रजिस्टर: {error}",
+  "common.log_error": "त्रुटि: {error}",
+  "dlq.log_internal_error": "आंतरिक त्रुटि: {error}",
+  "upd.log_backup": "बैकअप: {path}",
+  "upd.ver_unknown": "अज्ञात",
+  "upd.ver_error": "त्रुटि — exe नहीं मिली",
+  "upd.log_diag_version_fail": "✘ संस्करण पढ़ा नहीं जा सका: {error}",
+  "upd.log_diag_help_fail": "✘ --help पढ़ा नहीं जा सका: {error}",
+  "inspect.log_start": "जाँच: {url}",
+  "inspect.log_bad_json": "त्रुटि: अमान्य JSON प्रतिक्रिया",
+  "inspect.log_title": "शीर्षक: {title}",
+  "inspect.log_duration": "अवधि: {duration}   चैनल: {uploader}",
+  "inspect.log_audio": "ऑडियो ट्रैक: {langs}",
+  "inspect.log_subs": "उपशीर्षक: {langs}{auto}",
+  "inspect.none": "कोई नहीं",
+  "inspect.auto_part": " (स्वतः: {langs})"
 }

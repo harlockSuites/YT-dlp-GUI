@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Nieoczekiwany błąd — zobacz konsolę: {error}",
   "insp.status_err_list": "Błąd odczytu listy: {error}",
   "insp.status_err_row": "Błąd w wierszu {n}: {error}",
-  "insp.status_err_registry": "Rejestr: {error}"
+  "insp.status_err_registry": "Rejestr: {error}",
+  "common.log_error": "Błąd: {error}",
+  "dlq.log_internal_error": "Błąd wewnętrzny: {error}",
+  "upd.log_backup": "Kopia zapasowa: {path}",
+  "upd.ver_unknown": "nieznana",
+  "upd.ver_error": "błąd — nie znaleziono exe",
+  "upd.log_diag_version_fail": "✘ Nie można odczytać wersji: {error}",
+  "upd.log_diag_help_fail": "✘ Nie można odczytać --help: {error}",
+  "inspect.log_start": "Inspekcja: {url}",
+  "inspect.log_bad_json": "Błąd: nieprawidłowa odpowiedź JSON",
+  "inspect.log_title": "Tytuł: {title}",
+  "inspect.log_duration": "Czas trwania: {duration}   Kanał: {uploader}",
+  "inspect.log_audio": "Ścieżki audio: {langs}",
+  "inspect.log_subs": "Napisy: {langs}{auto}",
+  "inspect.none": "brak",
+  "inspect.auto_part": " (auto: {langs})"
 }

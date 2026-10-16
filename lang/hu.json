@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Váratlan hiba — lásd a konzolt: {error}",
   "insp.status_err_list": "Hiba a lista olvasásakor: {error}",
   "insp.status_err_row": "Hiba a(z) {n}. sorban: {error}",
-  "insp.status_err_registry": "Nyilvántartás: {error}"
+  "insp.status_err_registry": "Nyilvántartás: {error}",
+  "common.log_error": "Hiba: {error}",
+  "dlq.log_internal_error": "Belső hiba: {error}",
+  "upd.log_backup": "Biztonsági mentés: {path}",
+  "upd.ver_unknown": "ismeretlen",
+  "upd.ver_error": "hiba — az exe nem található",
+  "upd.log_diag_version_fail": "✘ A verzió nem olvasható: {error}",
+  "upd.log_diag_help_fail": "✘ A --help nem olvasható: {error}",
+  "inspect.log_start": "Vizsgálat: {url}",
+  "inspect.log_bad_json": "Hiba: érvénytelen JSON-válasz",
+  "inspect.log_title": "Cím: {title}",
+  "inspect.log_duration": "Hossz: {duration}   Csatorna: {uploader}",
+  "inspect.log_audio": "Hangsávok: {langs}",
+  "inspect.log_subs": "Feliratok: {langs}{auto}",
+  "inspect.none": "nincs",
+  "inspect.auto_part": " (auto: {langs})"
 }

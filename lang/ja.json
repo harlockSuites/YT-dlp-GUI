@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "予期しないエラー — コンソールを確認してください：{error}",
   "insp.status_err_list": "リストの読み取りエラー：{error}",
   "insp.status_err_row": "{n} 行目でエラー：{error}",
-  "insp.status_err_registry": "記録：{error}"
+  "insp.status_err_registry": "記録：{error}",
+  "common.log_error": "エラー：{error}",
+  "dlq.log_internal_error": "内部エラー：{error}",
+  "upd.log_backup": "バックアップ：{path}",
+  "upd.ver_unknown": "不明",
+  "upd.ver_error": "エラー — exe が見つかりません",
+  "upd.log_diag_version_fail": "✘ バージョンを読み取れません：{error}",
+  "upd.log_diag_help_fail": "✘ --help を読み取れません：{error}",
+  "inspect.log_start": "検査：{url}",
+  "inspect.log_bad_json": "エラー：JSON 応答が無効です",
+  "inspect.log_title": "タイトル：{title}",
+  "inspect.log_duration": "長さ：{duration}   チャンネル：{uploader}",
+  "inspect.log_audio": "音声トラック：{langs}",
+  "inspect.log_subs": "字幕：{langs}{auto}",
+  "inspect.none": "なし",
+  "inspect.auto_part": "（自動：{langs}）"
 }

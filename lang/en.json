@@ -400,5 +400,20 @@
   "insp.status_err_unexpected": "Unexpected error — see the console: {error}",
   "insp.status_err_list": "Error reading the list: {error}",
   "insp.status_err_row": "Error on row {n}: {error}",
-  "insp.status_err_registry": "Registry: {error}"
+  "insp.status_err_registry": "Registry: {error}",
+  "common.log_error": "Error: {error}",
+  "dlq.log_internal_error": "Internal error: {error}",
+  "upd.log_backup": "Backup: {path}",
+  "upd.ver_unknown": "unknown",
+  "upd.ver_error": "error — exe not found",
+  "upd.log_diag_version_fail": "✘ Unable to read the version: {error}",
+  "upd.log_diag_help_fail": "✘ Unable to read --help: {error}",
+  "inspect.log_start": "Inspecting: {url}",
+  "inspect.log_bad_json": "Error: invalid JSON response",
+  "inspect.log_title": "Title: {title}",
+  "inspect.log_duration": "Duration: {duration}   Channel: {uploader}",
+  "inspect.log_audio": "Audio tracks: {langs}",
+  "inspect.log_subs": "Subtitles: {langs}{auto}",
+  "inspect.none": "none",
+  "inspect.auto_part": " (auto: {langs})"
 }
