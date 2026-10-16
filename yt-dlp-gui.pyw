@@ -17,6 +17,9 @@ import time
 YTDLP              = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp.exe")
 CONFIG_FILE        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gui-config.json")
 QUEUE_FILE         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "download-queue.json")
+ICON_FILE          = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp-gui.ico")
+ASSETS_DIR         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+DONATE_URL         = "https://ko-fi.com/harlocksuites"
 CUSTOM_BLOCKS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "custom-blocks.json")
 
 SUBTITLE_LANGS = [
@@ -756,7 +759,7 @@ class UpdateWindow(tk.Toplevel):
                         self.after(0, lambda l=line, c=color: self._log(l, c))
                 proc.wait()
             except Exception as e:
-                self.after(0, lambda: self._log(f"Erreur : {e}", "#f66"))
+                self.after(0, lambda e=e: self._log(f"Erreur : {e}", "#f66"))
             self.after(0, lambda: self.btn_auto.configure(state="normal"))
             self.after(0, self._show_version)
 
@@ -808,7 +811,7 @@ class UpdateWindow(tk.Toplevel):
                 ver = r.stdout.strip()
                 self.after(0, lambda v=ver: self._log(t("upd.log_diag_version_ok", v=v), "#4ec94e"))
             except Exception as e:
-                self.after(0, lambda: self._log(f"✘ Impossible de lire la version : {e}", "#f66"))
+                self.after(0, lambda e=e: self._log(f"✘ Impossible de lire la version : {e}", "#f66"))
                 self.after(0, lambda: self.btn_diag.configure(state="normal"))
                 return
 
@@ -820,7 +823,7 @@ class UpdateWindow(tk.Toplevel):
                                    creationflags=subprocess.CREATE_NO_WINDOW)
                 help_text = h.stdout + h.stderr
             except Exception as e:
-                self.after(0, lambda: self._log(f"✘ Impossible de lire --help : {e}", "#f66"))
+                self.after(0, lambda e=e: self._log(f"✘ Impossible de lire --help : {e}", "#f66"))
                 self.after(0, lambda: self.btn_diag.configure(state="normal"))
                 return
 
@@ -1027,9 +1030,9 @@ class DownloadQueueWindow(tk.Toplevel):
                     for f in _gl.glob(os.path.join(d, pat)):
                         _try_remove(f)
 
-        t = threading.Thread(target=_cleanup, args=(files, insp_outdir), daemon=True)
-        self._cleanup_thread = t
-        t.start()
+        _thread = threading.Thread(target=_cleanup, args=(files, insp_outdir), daemon=True)
+        self._cleanup_thread = _thread
+        _thread.start()
 
     def _toggle_pause(self):
         if not self._downloading or not self._process:
@@ -1060,9 +1063,9 @@ class DownloadQueueWindow(tk.Toplevel):
         """Arrête le téléchargement, attend la fin du nettoyage, puis ferme."""
         self._stop()
         def _wait_and_destroy():
-            t = getattr(self, "_cleanup_thread", None)
-            if t:
-                t.join()
+            _thread = getattr(self, "_cleanup_thread", None)
+            if _thread:
+                _thread.join()
             try:
                 self.after(0, self.destroy)
             except Exception:
@@ -1194,8 +1197,8 @@ class DownloadQueueWindow(tk.Toplevel):
         """
         import concurrent.futures
 
-        browser = self.var_g_browser.get() if hasattr(self, "var_g_browser") else "Désactivé"
-        cookie_args = ["--cookies-from-browser", browser] if browser != "Désactivé" else []
+        browser = self.var_g_browser.get() if hasattr(self, "var_g_browser") else BROWSER_OFF
+        cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
 
         def probe_one(lang):
             try:
@@ -1365,9 +1368,9 @@ class DownloadQueueWindow(tk.Toplevel):
             # Attendre la fin du nettoyage avant de lancer la vidéo suivante
             if self._skip_flag.is_set():
                 self.after(0, lambda: self.var_status.set(t("dlq.status_cleanup")))
-                t = getattr(self, "_cleanup_thread", None)
-                if t:
-                    t.join()
+                _thread = getattr(self, "_cleanup_thread", None)
+                if _thread:
+                    _thread.join()
 
         stopped = self._stop_flag.is_set()
         self._downloading = False
@@ -1900,6 +1903,322 @@ class MultiCheckSelect(ttk.Frame):
 # ══════════════════════════════════════════════════════════════════
 #  Inspecteur de playlist
 # ══════════════════════════════════════════════════════════════════
+REGISTRY_NAME = ".yt-dlp-registre.json"       # registre maître : id → url, titre, durée, fichier, date
+ARCHIVE_NAME  = ".yt-dlp-archive.txt"         # dérivé du registre, lu par yt-dlp (--download-archive)
+TITLES_NAME   = ".yt-dlp-archive.titles.tsv"  # boîte de réception écrite par yt-dlp (--print-to-file)
+_MEDIA_EXTS   = {".mp4", ".mkv", ".webm", ".m4a", ".mp3", ".opus", ".mov", ".flv",
+                 ".avi", ".ogg", ".wav", ".aac", ".flac", ".m4v"}
+
+
+def _norm_title(s):
+    return re.sub(r"[\W_]+", "", (s or "").casefold())
+
+
+def _watch_url(vid_id):
+    return f"https://www.youtube.com/watch?v={vid_id}"
+
+
+def _sync_registry(outdir):
+    """Fusionne registre JSON + ids du .txt + boîte de réception TSV, réécrit le JSON
+    et régénère le .txt. Retourne {id: {url, title, duration, file, date}}."""
+    path = os.path.join(outdir, REGISTRY_NAME)
+    videos = {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        if isinstance(data, dict) and isinstance(data.get("videos"), dict):
+            videos = data["videos"]
+    except (OSError, ValueError):
+        pass
+    before = json.dumps(videos, sort_keys=True)
+    now = time.strftime("%Y-%m-%dT%H:%M:%S")
+
+    inbox = os.path.join(outdir, TITLES_NAME)
+    inbox_read = False
+    try:
+        with open(inbox, encoding="utf-8", errors="replace") as f:
+            for line in f:
+                cols = line.rstrip("\r\n").split("\t")
+                if len(cols) < 4 or not cols[0]:
+                    continue
+                try:
+                    dur = int(float(cols[2]))
+                except ValueError:
+                    dur = None
+                e = videos.setdefault(cols[0], {})
+                e.update(url=_watch_url(cols[0]), title=cols[1], duration=dur,
+                         file=os.path.basename(cols[3]))
+                e.setdefault("date", now)
+        inbox_read = True
+    except OSError:
+        pass
+
+    try:
+        with open(os.path.join(outdir, ARCHIVE_NAME), encoding="utf-8", errors="replace") as f:
+            for line in f:
+                parts = line.split()
+                if len(parts) >= 2 and parts[-1] not in videos:
+                    videos[parts[-1]] = {"url": _watch_url(parts[-1]), "title": "",
+                                         "duration": None, "file": "", "date": ""}
+    except OSError:
+        pass
+
+    if json.dumps(videos, sort_keys=True) != before or not os.path.isfile(path):
+        _write_text_atomic(path, json.dumps({"version": 1, "videos": videos},
+                                            ensure_ascii=False, indent=1))
+    archive = "".join(f"youtube {i}\n" for i in sorted(videos))
+    try:
+        with open(os.path.join(outdir, ARCHIVE_NAME), encoding="utf-8") as f:
+            same = f.read() == archive
+    except OSError:
+        same = False
+    if not same and (videos or os.path.isfile(os.path.join(outdir, ARCHIVE_NAME))):
+        _write_text_atomic(os.path.join(outdir, ARCHIVE_NAME), archive)
+    if inbox_read:
+        try:
+            os.remove(inbox)
+        except OSError:
+            pass
+    return videos
+
+
+def _write_text_atomic(path, text):
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+    os.replace(tmp, path)
+
+
+def _find_existing_matches(rows, outdir):
+    """Lignes dont la vidéo semble déjà présente dans outdir mais absente du registre.
+    Retourne [(row, nom_fichier, "title")]."""
+    registry = _sync_registry(outdir)
+    by_title = {}
+    try:
+        names = os.listdir(outdir)
+    except OSError:
+        return []
+    for fn in names:
+        stem, ext = os.path.splitext(fn)
+        if ext.lower() not in _MEDIA_EXTS:
+            continue
+        stem = re.sub(r"\s\(\d+\)$", "", stem)
+        for variant in (stem, re.sub(r"^\d+\s-\s", "", stem)):
+            key = _norm_title(variant)
+            if key:
+                by_title.setdefault(key, fn)
+    found = []
+    for row in rows:
+        vid = row["vid"]
+        if vid["id"] in registry:
+            continue
+        fn = by_title.get(_norm_title(vid.get("title")))
+        if fn:
+            found.append((row, fn, "title"))
+    return found
+
+
+def _register_in_archive(outdir, entries):
+    """entries : [(id, titre, nom_fichier[, durée])] — inscrit au registre (et régénère le .txt)."""
+    registry = _sync_registry(outdir)
+    now = time.strftime("%Y-%m-%dT%H:%M:%S")
+    for vid_id, title, fn, *rest in entries:
+        if not re.fullmatch(r"[\w-]{11}", str(vid_id)):
+            continue
+        e = registry.setdefault(vid_id, {})
+        e.update(url=_watch_url(vid_id), title=title, file=fn)
+        if rest and rest[0]:
+            e["duration"] = int(rest[0])
+        e.setdefault("duration", None)
+        e.setdefault("date", now)
+    _write_text_atomic(os.path.join(outdir, REGISTRY_NAME),
+                       json.dumps({"version": 1, "videos": registry},
+                                  ensure_ascii=False, indent=1))
+    _sync_registry(outdir)
+
+
+def _clean_stem(fn):
+    stem = re.sub(r"\s\(\d+\)$", "", os.path.splitext(fn)[0])
+    return re.sub(r"^\d+\s-\s", "", stem)
+
+
+def _scan_registry_folder(outdir):
+    """Retourne (registre, fichiers_média, fichiers_absents_du_registre, nb_entrées_sans_titre)."""
+    registry = _sync_registry(outdir)
+    known_files = {e.get("file") for e in registry.values() if e.get("file")}
+    known_titles = {_norm_title(e.get("title")) for e in registry.values() if e.get("title")}
+    media, missing = [], []
+    for fn in sorted(os.listdir(outdir)):
+        if os.path.splitext(fn)[1].lower() not in _MEDIA_EXTS:
+            continue
+        media.append(fn)
+        stem = re.sub(r"\s\(\d+\)$", "", os.path.splitext(fn)[0])
+        if (fn in known_files or _norm_title(stem) in known_titles
+                or _norm_title(_clean_stem(fn)) in known_titles):
+            continue
+        missing.append(fn)
+    incomplete = sum(1 for e in registry.values() if not e.get("title"))
+    return registry, media, missing, incomplete
+
+
+def _local_duration(path):
+    exe = shutil.which("ffprobe")
+    if not exe:
+        return None
+    try:
+        r = subprocess.run([exe, "-v", "error", "-show_entries", "format=duration",
+                            "-of", "csv=p=0", path], capture_output=True, text=True,
+                           timeout=20, creationflags=subprocess.CREATE_NO_WINDOW)
+        return float(r.stdout.strip())
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None
+
+
+def _search_video(title, local_dur):
+    """Cherche `title` sur YouTube via yt-dlp. Retourne (cand|None, tag) ;
+    tag dans {"sure", "title", "check", "none"}."""
+    try:
+        r = subprocess.run([YTDLP, "--flat-playlist", "-j", "--no-warnings", "--",
+                            f"ytsearch5:{title}"],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           timeout=60, creationflags=subprocess.CREATE_NO_WINDOW)
+    except (OSError, subprocess.SubprocessError):
+        return None, "none"
+    cands = []
+    for line in r.stdout.splitlines():
+        try:
+            c = json.loads(line)
+        except ValueError:
+            continue
+        if (isinstance(c, dict) and c.get("title")
+                and re.fullmatch(r"[\w-]{11}", str(c.get("id") or ""))):
+            cands.append(c)
+    if not cands:
+        return None, "none"
+    want = _norm_title(title)
+
+    def same_title(c):
+        got = _norm_title(c["title"])
+        return bool(want) and (got == want or want in got or got in want)
+
+    for c in cands:
+        dur_ok = (local_dur is not None and c.get("duration") is not None
+                  and abs(float(c["duration"]) - local_dur) <= 3)
+        if dur_ok and same_title(c):
+            return c, "sure"
+    if local_dur is None:
+        for c in cands:
+            if _norm_title(c["title"]) == want:
+                return c, "title"
+    return cands[0], "check"
+
+
+class _Tip:
+    """Infobulle minimale ; `text` peut être une str ou un callable renvoyant une str."""
+    def __init__(self, widget, text):
+        self._w, self._text, self._tw = widget, text, None
+        widget.bind("<Enter>", self._show, add="+")
+        widget.bind("<Leave>", self._hide, add="+")
+        widget.bind("<ButtonPress>", self._hide, add="+")
+
+    def _show(self, _e=None):
+        txt = self._text() if callable(self._text) else self._text
+        if not txt or self._tw:
+            return
+        self._tw = tw = tk.Toplevel(self._w)
+        tw.wm_overrideredirect(True)
+        tw.wm_geometry(f"+{self._w.winfo_rootx() + 12}+{self._w.winfo_rooty() + self._w.winfo_height() + 4}")
+        tk.Label(tw, text=txt, bg="#ffffe0", fg="#000000", relief="solid",
+                 borderwidth=1, font=("Segoe UI", 9), padx=4, pady=2).pack()
+
+    def _hide(self, _e=None):
+        if self._tw:
+            self._tw.destroy()
+            self._tw = None
+
+
+BROWSER_OFF = "Désactivé"   # valeur interne (config) : l'affichage est traduit par _browser_combo
+
+
+def _browser_combo(parent, var):
+    """Combobox des navigateurs : `var` garde la valeur interne (BROWSER_OFF ou nom du
+    navigateur) tandis que l'affichage de « désactivé » est traduit."""
+    off_lbl = t("opts.cookies_disabled")
+    disp = tk.StringVar()
+
+    def to_disp(*_):
+        disp.set(off_lbl if var.get() in ("", BROWSER_OFF) else var.get())
+
+    def to_var(_e=None):
+        v = disp.get()
+        var.set(BROWSER_OFF if v == off_lbl else v)
+
+    cb = ttk.Combobox(parent, textvariable=disp, state="readonly", width=12,
+                      values=[off_lbl, "chrome", "firefox", "edge", "brave", "opera"])
+    cb.bind("<<ComboboxSelected>>", to_var)
+    var.trace_add("write", to_disp)
+    to_disp()
+    return cb
+
+
+class _FlowFrame(ttk.Frame):
+    """Conteneur qui replie ses enfants sur plusieurs lignes selon la largeur disponible
+    (placement absolu : chaque ligne a ses propres largeurs, sans colonnes partagées)."""
+    GAP_X, GAP_Y = 12, 6
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self._items = []   # (widget, pleine_largeur)
+        self._sig = None
+        self.bind("<Configure>", lambda e: self._layout())
+
+    def add(self, widget, wide=False):
+        self._items.append((widget, wide))
+        widget.bind("<Configure>", lambda e: self.after_idle(self._layout), add="+")
+        self.after_idle(self._layout)
+
+    def _layout(self):
+        avail = self.winfo_width()
+        if avail <= 1:
+            return
+        rows, cur, x = [], [], 0
+        for w, wide in self._items:
+            if wide:
+                if cur:
+                    rows.append(cur)
+                    cur, x = [], 0
+                rows.append([(w, True)])
+                continue
+            need = w.winfo_reqwidth()
+            if cur and x + need > avail:
+                rows.append(cur)
+                cur, x = [], 0
+            cur.append((w, False))
+            x += need + self.GAP_X
+        if cur:
+            rows.append(cur)
+        plan, y = [], 0
+        for row in rows:
+            h = max(w.winfo_reqheight() for w, _ in row)
+            x = 0
+            for w, wide in row:
+                if wide:
+                    plan.append((w, 0, y, avail, h))
+                else:
+                    rw = w.winfo_reqwidth()
+                    plan.append((w, x, y, rw, h))
+                    x += rw + self.GAP_X
+            y += h + self.GAP_Y
+        total = max(y - self.GAP_Y, 1)
+        sig = (tuple((id(w), x, y0, ww, hh) for w, x, y0, ww, hh in plan), total)
+        if sig == self._sig:
+            return
+        self._sig = sig
+        for w, x, y0, ww, hh in plan:
+            w.place(x=x, y=y0, width=ww, height=hh)
+        self.configure(height=total)
+
+
 class PlaylistInspectorWindow(tk.Toplevel):
 
     # Noms d'affichage des codes de langue
@@ -1913,7 +2232,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         super().__init__(parent)
         self.title(t("insp.window_title"))
         self.geometry("1180x720")
-        self.minsize(960, 520)
+        self.minsize(560, 420)
         self._stop_flag = threading.Event()
         self._rows = []
         self._log_visible = False
@@ -2006,74 +2325,149 @@ class PlaylistInspectorWindow(tk.Toplevel):
                                    command=self._toggle_log, width=10)
         self._btn_log.pack(side="right")
 
-        # ── Règles globales ────────────────────────────────────────
-        frm_g = ttk.LabelFrame(
-            self, text=t("insp.rules_frame_label"),
-            padding=8)
-        frm_g.pack(fill="x", padx=8, pady=6)
+        # ── Pied : packé en premier pour rester toujours visible ──
+        frm_foot = ttk.Frame(self, padding=(8, 4, 8, 8))
+        frm_foot.pack(side="bottom", fill="x")
+        ttk.Button(frm_foot, text=t("insp.btn_select_all"),
+                   command=lambda: self._select_all(True)).pack(side="left", ipadx=6)
+        ttk.Button(frm_foot, text=t("insp.btn_deselect_all"),
+                   command=lambda: self._select_all(False)).pack(
+            side="left", padx=(6, 0), ipadx=6)
+        self.var_dl_lbl = tk.StringVar(value=t("insp.btn_download_sel"))
+        self.btn_dl = ttk.Button(frm_foot, textvariable=self.var_dl_lbl,
+                                 command=self._download_selection, state="disabled")
+        self.btn_dl.pack(side="right", ipadx=10, ipady=4)
+        self.var_status = tk.StringVar(value=t("insp.status_initial"))
+        ttk.Label(self, textvariable=self.var_status, anchor="w",
+                  font=("Segoe UI", 9)).pack(side="bottom", fill="x", padx=8, pady=(4, 0))
 
-        # Ligne 0 : qualité / audio / sous-titres / miniature / cookies
-        ttk.Label(frm_g, text=t("insp.label_quality")).grid(row=0, column=0, sticky="w", padx=(0, 4))
+        # ── Page défilante verticalement (règles + légende + tableau) ──
+        frm_page = ttk.Frame(self)
+        frm_page.pack(fill="both", expand=True)
+        self._page_cv = tk.Canvas(frm_page, highlightthickness=0)
+        self._page_vsb = ttk.Scrollbar(frm_page, orient="vertical", command=self._page_cv.yview)
+        self._page_cv.configure(yscrollcommand=self._page_vsb.set)
+        self._page_cv.pack(side="left", fill="both", expand=True)
+        page = ttk.Frame(self._page_cv)
+        page_win = self._page_cv.create_window((0, 0), window=page, anchor="nw")
+        page_state = {"vsb": False}
+
+        def _fit_page(_e=None):
+            cw, ch = self._page_cv.winfo_width(), self._page_cv.winfo_height()
+            need = page.winfo_reqheight()
+            h = max(ch, need)
+            self._page_cv.itemconfigure(page_win, width=cw, height=h)
+            self._page_cv.configure(scrollregion=(0, 0, cw, h))
+            want_vsb = need > ch + 1
+            if want_vsb != page_state["vsb"]:
+                page_state["vsb"] = want_vsb
+                if want_vsb:
+                    self._page_vsb.pack(side="right", fill="y")
+                else:
+                    self._page_vsb.pack_forget()
+                    self._page_cv.yview_moveto(0)
+
+        self._page_cv.bind("<Configure>", _fit_page)
+        page.bind("<Configure>", _fit_page)
+        for w in (self._page_cv, page):
+            w.bind("<MouseWheel>",
+                   lambda e: self._page_cv.yview_scroll(-1 * (e.delta // 120), "units"))
+
+        # ── Règles globales (reflux automatique selon la largeur) ──
+        frm_g_outer = ttk.LabelFrame(page, text=t("insp.rules_frame_label"), padding=8)
+        frm_g_outer.pack(fill="x", padx=8, pady=6)
+        frm_g = _FlowFrame(frm_g_outer)
+        frm_g.pack(fill="x")
+
+        # Qualité
+        g = ttk.Frame(frm_g)
+        ttk.Label(g, text=t("insp.label_quality")).pack(side="left", padx=(0, 4))
         self.var_g_quality = tk.StringVar(value="1080p")
         self._g_quality_combo = ttk.Combobox(
-            frm_g, textvariable=self.var_g_quality,
+            g, textvariable=self.var_g_quality,
             values=[t("opts.quality_best"), "2160p (4K)", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p"],
             state="readonly", width=12)
-        self._g_quality_combo.grid(row=0, column=1, sticky="w", padx=(0, 8))
+        self._g_quality_combo.pack(side="left")
+        frm_g.add(g)
 
+        # Audio seulement
         self.var_g_audio_only = tk.BooleanVar(value=False)
+
         def _on_audio_only(*_):
             state = "disabled" if self.var_g_audio_only.get() else "readonly"
             self._g_quality_combo.configure(state=state)
         self.var_g_audio_only.trace_add("write", _on_audio_only)
-        ttk.Checkbutton(frm_g, text=t("insp.chk_audio_only"),
-                        variable=self.var_g_audio_only).grid(row=0, column=2, padx=(0, 12))
+        g = ttk.Frame(frm_g)
+        ttk.Checkbutton(g, text=t("insp.chk_audio_only"),
+                        variable=self.var_g_audio_only).pack(side="left")
+        frm_g.add(g)
 
-        ttk.Label(frm_g, text=t("insp.label_sub_fmt")).grid(row=0, column=3, sticky="w", padx=(0, 4))
+        # Format ST
+        g = ttk.Frame(frm_g)
+        ttk.Label(g, text=t("insp.label_sub_fmt")).pack(side="left", padx=(0, 4))
         self.var_g_sub_fmt = tk.StringVar(value="srt")
-        ttk.Combobox(frm_g, textvariable=self.var_g_sub_fmt, values=SUBTITLE_FORMATS,
-                     state="readonly", width=6).grid(row=0, column=4, sticky="w", padx=(0, 10))
+        ttk.Combobox(g, textvariable=self.var_g_sub_fmt, values=SUBTITLE_FORMATS,
+                     state="readonly", width=6).pack(side="left")
+        frm_g.add(g)
 
+        # Cases à cocher
         self.var_g_embed_subs = tk.BooleanVar(value=True)
-        ttk.Checkbutton(frm_g, text=t("insp.chk_embed_subs"),
-                        variable=self.var_g_embed_subs).grid(row=0, column=5, padx=(0, 8))
         self.var_g_embed_thumb = tk.BooleanVar(value=True)
-        ttk.Checkbutton(frm_g, text=t("insp.chk_embed_thumb"),
-                        variable=self.var_g_embed_thumb).grid(row=0, column=6, padx=(0, 8))
-
         self.var_g_numbering = tk.BooleanVar(value=False)
-        ttk.Checkbutton(frm_g, text=t("insp.chk_numbering"),
-                        variable=self.var_g_numbering).grid(row=0, column=7, padx=(0, 8))
+        g = ttk.Frame(frm_g)
+        ttk.Checkbutton(g, text=t("insp.chk_embed_subs"),
+                        variable=self.var_g_embed_subs).pack(side="left", padx=(0, 8))
+        ttk.Checkbutton(g, text=t("insp.chk_embed_thumb"),
+                        variable=self.var_g_embed_thumb).pack(side="left", padx=(0, 8))
+        ttk.Checkbutton(g, text=t("insp.chk_numbering"),
+                        variable=self.var_g_numbering).pack(side="left")
+        frm_g.add(g)
 
-        self.var_g_smart_dir = tk.BooleanVar(value=False)
-        ttk.Checkbutton(frm_g, text=t("insp.chk_smart_dir"),
-                        variable=self.var_g_smart_dir).grid(row=0, column=8, padx=(0, 8))
-
-        ttk.Label(frm_g, text=t("insp.label_cookies")).grid(row=0, column=9, sticky="w", padx=(8, 4))
-        self.var_g_browser = tk.StringVar(value="Désactivé")
-        ttk.Combobox(frm_g, textvariable=self.var_g_browser,
-                     values=["Désactivé", "chrome", "firefox", "edge", "brave", "opera"],
-                     state="readonly", width=10).grid(row=0, column=10, sticky="w")
-        self.var_g_browser.trace_add("write", lambda *_: (
-            self._on_browser_change(), self._update_cookie_warn_insp()))
+        # Cookies : menu + voyant + bouton test
+        frm_cookie = ttk.LabelFrame(frm_g, text=t("insp.label_cookies").rstrip(" :："), padding=6)
+        self.var_g_browser = tk.StringVar(value=BROWSER_OFF)
+        _browser_combo(frm_cookie, self.var_g_browser).grid(row=0, column=0, sticky="w")
+        self.var_g_browser.trace_add("write", lambda *_: self._on_browser_change())
+        self._lbl_cookie_dot = tk.Label(frm_cookie, text="●", fg="#e74c3c",
+                                        font=("Segoe UI", 13), cursor="hand2")
+        self._lbl_cookie_dot.grid(row=0, column=1, padx=(6, 0))
+        self._lbl_cookie_dot.bind("<Button-1>", lambda _: self._check_cookie())
+        btn_cookie_refresh = ttk.Button(frm_cookie, text="↻", width=2, command=self._check_cookie)
+        btn_cookie_refresh.grid(row=0, column=2, padx=(2, 0))
+        self._cookie_state = "off"
+        _Tip(btn_cookie_refresh, lambda: t("insp.cookie_tip_refresh"))
+        self._cookie_detail = ""
+        _Tip(self._lbl_cookie_dot, lambda: t(f"insp.cookie_dot_{self._cookie_state}")
+             + ("\n" + self._cookie_detail
+                if self._cookie_state == "fail" and self._cookie_detail else ""))
         self._lbl_cookie_warn_insp = tk.Label(
-            frm_g, text=t("insp.cookie_warn"),
-            fg="#e74c3c", font=("Segoe UI", 8))
-        self._lbl_cookie_warn_insp.grid(row=0, column=11, columnspan=2, sticky="w", padx=(10, 0))
+            frm_cookie, text=t("insp.cookie_warn"), justify="left", anchor="w",
+            fg="#e74c3c", font=("Segoe UI", 8), wraplength=210)
+        self._lbl_cookie_warn_insp.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
+        frm_g.add(frm_cookie)
 
-        # Ligne 1 : sélection des langues
-        ttk.Label(frm_g, text=t("insp.label_primary_lang")).grid(
-            row=1, column=0, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Répertoire intelligent
+        frm_smart = ttk.LabelFrame(frm_g, text=t("insp.chk_smart_dir"), padding=6)
+        self.var_g_smart_dir = tk.BooleanVar(value=False)
+        ttk.Checkbutton(frm_smart, text=t("insp.smart_dir_enable"),
+                        variable=self.var_g_smart_dir).pack(anchor="w")
+        ttk.Button(frm_smart, text=t("insp.btn_registry_tool"),
+                   command=self._open_registry_tool).pack(fill="x", pady=(6, 0))
+        frm_g.add(frm_smart)
+
+        # Langue principale
+        g = ttk.Frame(frm_g)
+        ttk.Label(g, text=t("insp.label_primary_lang")).pack(side="left", padx=(0, 4))
         _g_opt_default  = t("insp.primary_default")
         _g_opt_no_audio = t("insp.primary_no_audio")
         _g_opt_manual   = t("insp.primary_manual")
         self.var_g_primary_lbl = tk.StringVar(value=_g_opt_default)
         self._g_primary_combo = ttk.Combobox(
-            frm_g, textvariable=self.var_g_primary_lbl,
+            g, textvariable=self.var_g_primary_lbl,
             values=[_g_opt_default, _g_opt_no_audio, _g_opt_manual],
             state="readonly", width=26)
-        self._g_primary_combo.grid(row=1, column=1, columnspan=2, sticky="w",
-                                   pady=(8, 0), padx=(0, 14))
+        self._g_primary_combo.pack(side="left")
+        frm_g.add(g)
         self._g_primary_map = {_g_opt_default: "", _g_opt_no_audio: "__video_only__",
                                _g_opt_manual: "__manual__"}
         self._g_opt_manual       = _g_opt_manual
@@ -2091,47 +2485,50 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self.var_g_primary_lbl.trace_add(
             "write", lambda *_: self.after(20, self._refresh_colors))
 
-        ttk.Label(frm_g, text=t("insp.label_secondary_audio")).grid(
-            row=1, column=3, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Audio secondaire(s)
+        g = ttk.Frame(frm_g)
+        ttk.Label(g, text=t("insp.label_secondary_audio")).pack(side="left", padx=(0, 4))
         self._g_secondary = MultiCheckSelect(
-            frm_g, placeholder=t("opts.placeholder_disabled"), width=28,
+            g, placeholder=t("opts.placeholder_disabled"), width=28,
             on_change=self._refresh_colors)
-        self._g_secondary.grid(row=1, column=4, columnspan=2, sticky="w",
-                               pady=(8, 0), padx=(0, 12))
+        self._g_secondary.pack(side="left")
+        frm_g.add(g)
 
-        ttk.Label(frm_g, text=t("insp.label_subs")).grid(
-            row=1, column=6, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Sous-titres
+        g = ttk.Frame(frm_g)
+        ttk.Label(g, text=t("insp.label_subs")).pack(side="left", padx=(0, 4))
         self._g_subs = MultiCheckSelect(
-            frm_g, placeholder=t("opts.placeholder_disabled"), width=26,
+            g, placeholder=t("opts.placeholder_disabled"), width=26,
             on_change=self._refresh_colors)
-        self._g_subs.grid(row=1, column=7, columnspan=2, sticky="w", pady=(8, 0))
+        self._g_subs.pack(side="left")
+        frm_g.add(g)
 
-        # Ligne 2 : blocs de script
-        ttk.Label(frm_g, text=t("insp.label_blocks")).grid(
-            row=2, column=0, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Blocs de script (+ avertissement miniature MKV)
+        g = ttk.Frame(frm_g)
+        ttk.Label(g, text=t("insp.label_blocks")).grid(row=0, column=0, sticky="w", padx=(0, 4))
         self._g_blocks = MultiCheckSelect(
-            frm_g, placeholder=t("opts.placeholder_disabled"), width=32,
+            g, placeholder=t("opts.placeholder_disabled"), width=32,
             tabs=_translated_blocks_tabs())
-        self._g_blocks.grid(row=2, column=1, columnspan=4, sticky="w", pady=(8, 0))
-
-        # Avertissement miniature MKV (visible seulement si secondary + embed_thumb)
+        self._g_blocks.grid(row=0, column=1, sticky="w")
         self._lbl_mkv_warn = ttk.Label(
-            frm_g, text=t("insp.mkv_warn"),
-            foreground="#e67e22", font=("Segoe UI", 8), wraplength=600)
-        self._lbl_mkv_warn.grid(row=2, column=5, columnspan=4, sticky="w", pady=(8, 0))
+            g, text=t("insp.mkv_warn"),
+            foreground="#e67e22", font=("Segoe UI", 8), wraplength=360)
+        self._lbl_mkv_warn.grid(row=0, column=2, sticky="w", padx=(10, 0))
         self._lbl_mkv_warn.grid_remove()
+        frm_g.add(g)
 
-        # Ligne 3 : dossier
-        ttk.Label(frm_g, text=t("insp.label_outdir")).grid(
-            row=3, column=0, sticky="w", padx=(0, 4), pady=(6, 0))
+        # Dossier (pleine largeur)
+        g = ttk.Frame(frm_g)
+        g.columnconfigure(1, weight=1)
+        ttk.Label(g, text=t("insp.label_outdir")).grid(row=0, column=0, sticky="w", padx=(0, 4))
         self.var_g_outdir = tk.StringVar(value=os.path.expanduser("~/Downloads"))
-        ttk.Entry(frm_g, textvariable=self.var_g_outdir, width=54).grid(
-            row=3, column=1, columnspan=7, sticky="ew", pady=(6, 0))
-        ttk.Button(frm_g, text=t("insp.btn_browse"), width=3,
-                   command=self._browse_out).grid(row=3, column=8, pady=(6, 0))
+        ttk.Entry(g, textvariable=self.var_g_outdir, width=54).grid(row=0, column=1, sticky="ew")
+        ttk.Button(g, text=t("insp.btn_browse"), width=3,
+                   command=self._browse_out).grid(row=0, column=2, padx=(4, 0))
+        frm_g.add(g, wide=True)
 
         # Légende couleurs
-        frm_legend = ttk.Frame(self)
+        frm_legend = ttk.Frame(page)
         frm_legend.pack(fill="x", padx=8, pady=(0, 2))
         for bg, txt in [(self._BG_ERROR, t("insp.legend_primary_missing")),
                         (self._BG_WARN,  t("insp.legend_secondary_missing")),
@@ -2139,9 +2536,16 @@ class PlaylistInspectorWindow(tk.Toplevel):
             tk.Label(frm_legend, text=f"  {txt}  ", bg=bg, fg="#d4d4d4",
                      font=("Segoe UI", 8), relief="flat").pack(side="left", padx=(0, 6))
 
-        # ── En-tête grille ─────────────────────────────────────────
-        frm_head = tk.Frame(self, bg="#333")
-        frm_head.pack(fill="x", padx=8)
+        # ── Tableau : en-tête + zone défilante (verticale ET horizontale) ──
+        frm_table = ttk.Frame(page)
+        frm_table.pack(fill="both", expand=True, padx=8, pady=(0, 4))
+        frm_table.columnconfigure(0, weight=1)
+        frm_table.rowconfigure(1, weight=1)
+
+        self._head_cv = tk.Canvas(frm_table, bg="#333", highlightthickness=0, height=26)
+        self._head_cv.grid(row=0, column=0, sticky="ew")
+        frm_head = tk.Frame(self._head_cv, bg="#333")
+        head_win = self._head_cv.create_window((0, 0), window=frm_head, anchor="nw")
         for text, w in [("", 3), (t("insp.grid_col_num"), 3), (t("insp.grid_col_title"), 36), (t("insp.grid_col_audio"), 20),
                         (t("insp.grid_col_subs"), 16), (t("insp.grid_col_primary"), 16),
                         (t("insp.grid_col_secondary"), 22), (t("insp.grid_col_subs_override"), 20)]:
@@ -2149,23 +2553,37 @@ class PlaylistInspectorWindow(tk.Toplevel):
                      font=("Segoe UI", 8, "bold"),
                      width=w, anchor="w").pack(side="left", padx=3, pady=3)
 
-        # ── Zone scrollable ────────────────────────────────────────
-        frm_cv = ttk.Frame(self)
-        frm_cv.pack(fill="both", expand=True, padx=8)
-        self._canvas = tk.Canvas(frm_cv, bg="#252525", highlightthickness=0)
-        vsb = ttk.Scrollbar(frm_cv, orient="vertical", command=self._canvas.yview)
-        self._canvas.configure(yscrollcommand=vsb.set)
-        vsb.pack(side="right", fill="y")
-        self._canvas.pack(side="left", fill="both", expand=True)
+        self._canvas = tk.Canvas(frm_table, bg="#252525", highlightthickness=0, height=240)
+        vsb = ttk.Scrollbar(frm_table, orient="vertical", command=self._canvas.yview)
+        hsb = ttk.Scrollbar(frm_table, orient="horizontal", command=self._canvas.xview)
+
+        def _xscroll(first, last):
+            hsb.set(first, last)
+            self._head_cv.xview_moveto(first)
+
+        self._canvas.configure(yscrollcommand=vsb.set, xscrollcommand=_xscroll)
+        self._canvas.grid(row=1, column=0, sticky="nsew")
+        vsb.grid(row=1, column=1, sticky="ns")
+        hsb.grid(row=2, column=0, sticky="ew")
         self._inner = tk.Frame(self._canvas, bg="#252525")
         self._cwin = self._canvas.create_window((0, 0), window=self._inner, anchor="nw")
-        self._inner.bind("<Configure>",
-                         lambda _: self._canvas.configure(
-                             scrollregion=self._canvas.bbox("all")))
-        self._canvas.bind("<Configure>",
-                          lambda e: self._canvas.itemconfig(self._cwin, width=e.width))
+
+        def _fit_table(_e=None):
+            cw = self._canvas.winfo_width()
+            wid = max(cw, self._inner.winfo_reqwidth(), frm_head.winfo_reqwidth())
+            self._canvas.itemconfigure(self._cwin, width=wid)
+            self._canvas.configure(scrollregion=(0, 0, wid, self._inner.winfo_reqheight()))
+            self._head_cv.itemconfigure(head_win, width=wid)
+            self._head_cv.configure(scrollregion=(0, 0, wid, frm_head.winfo_reqheight()),
+                                    height=frm_head.winfo_reqheight())
+
+        self._inner.bind("<Configure>", _fit_table)
+        frm_head.bind("<Configure>", _fit_table)
+        self._canvas.bind("<Configure>", _fit_table)
         self._canvas.bind("<MouseWheel>",
-                          lambda e: self._canvas.yview_scroll(-1*(e.delta//120), "units"))
+                          lambda e: self._canvas.yview_scroll(-1 * (e.delta // 120), "units"))
+        self._canvas.bind("<Shift-MouseWheel>",
+                          lambda e: self._canvas.xview_scroll(-1 * (e.delta // 120), "units"))
 
         # ── Panneau de log (caché par défaut) ─────────────────────
         self._log_frame = ttk.LabelFrame(self, text=" Journal de debug ", padding=4)
@@ -2178,23 +2596,6 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._log_text.configure(yscrollcommand=log_vsb.set)
         log_vsb.pack(side="right", fill="y")
         self._log_text.pack(fill="both", expand=True)
-
-        # ── Barre d'état + pied ────────────────────────────────────
-        self.var_status = tk.StringVar(value=t("insp.status_initial"))
-        ttk.Label(self, textvariable=self.var_status, anchor="w",
-                  font=("Segoe UI", 9)).pack(fill="x", padx=8, pady=(4, 0))
-
-        frm_foot = ttk.Frame(self, padding=(8, 4, 8, 8))
-        frm_foot.pack(fill="x")
-        ttk.Button(frm_foot, text=t("insp.btn_select_all"),
-                   command=lambda: self._select_all(True)).pack(side="left", ipadx=6)
-        ttk.Button(frm_foot, text=t("insp.btn_deselect_all"),
-                   command=lambda: self._select_all(False)).pack(
-            side="left", padx=(6, 0), ipadx=6)
-        self.var_dl_lbl = tk.StringVar(value=t("insp.btn_download_sel"))
-        self.btn_dl = ttk.Button(frm_foot, textvariable=self.var_dl_lbl,
-                                 command=self._download_selection, state="disabled")
-        self.btn_dl.pack(side="right", ipadx=10, ipady=4)
 
     # ── Popup générique de sélection de langue principale ──────────
     def _open_lang_picker(self, on_confirm):
@@ -2393,8 +2794,8 @@ class PlaylistInspectorWindow(tk.Toplevel):
         except Exception as e:
             import traceback
             msg = traceback.format_exc()
-            self.after(0, lambda m=msg: self.var_status.set(
-                f"Erreur inattendue — voir console : {e}"))
+            self.after(0, lambda m=msg, e=e: self.var_status.set(
+                t("insp.status_err_unexpected", error=e)))
             print(msg)
             self.after(0, lambda: self.btn_analyze.configure(state="normal"))
             self.after(0, lambda: self.btn_stop_an.configure(state="disabled"))
@@ -2410,18 +2811,31 @@ class PlaylistInspectorWindow(tk.Toplevel):
             )
             lines = [l for l in result.stdout.splitlines() if l.strip()]
         except Exception as e:
-            self.after(0, lambda: self.var_status.set(f"Erreur liste plate : {e}"))
+            self.after(0, lambda e=e: self.var_status.set(t("insp.status_err_list", error=e)))
             self.after(0, lambda: self.btn_analyze.configure(state="normal"))
             return
 
         videos = []
+        skipped = 0
         for line in lines:
             try:
                 info = json.loads(line)
-                videos.append({"id": info.get("id", ""),
-                               "title": info.get("title", info.get("id", "?"))})
             except Exception:
                 continue
+            if not isinstance(info, dict):
+                continue
+            vid_id = info.get("id") or ""
+            title = info.get("title") or ""
+            hidden = (not vid_id or not title
+                      or title.startswith(("[Private video]", "[Deleted video]"))
+                      or info.get("availability") in ("private", "premium_only", "subscriber_only"))
+            if hidden:
+                skipped += 1
+                continue
+            videos.append({"id": vid_id, "title": title})
+        if skipped:
+            self.after(0, lambda s=skipped: self._log(
+                f"  [liste] {s} élément(s) masqué(s)/privé(s)/supprimé(s) ignoré(s)"))
 
         if not videos:
             self.after(0, lambda: self.var_status.set(t("insp.status_no_videos")))
@@ -2433,6 +2847,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         for i, vid in enumerate(videos):
             if self._stop_flag.is_set():
                 break
+            vid["title"] = vid.get("title") or vid.get("id") or "?"
             self.after(0, lambda ix=i, tot=n:
                        self.var_status.set(t("insp.status_inspecting", ix=ix+1, tot=tot)))
 
@@ -2442,7 +2857,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
             # Cookies optionnels pour accéder aux pistes doublées
             browser = self.var_g_browser.get()
             cookie_args = ["--cookies-from-browser", browser] \
-                          if browser != "Désactivé" else []
+                          if browser != BROWSER_OFF else []
 
             # Appel yt-dlp -j avec le client par défaut (yt-dlp choisit ios/tv_embedded)
             try:
@@ -2549,7 +2964,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 except Exception as e:
                     import traceback
                     print(traceback.format_exc())
-                    self.var_status.set(f"Erreur ligne {ix+1} : {e}")
+                    self.var_status.set(t("insp.status_err_row", n=ix + 1, error=e))
             self.after(0, _safe_add)
 
         stopped = self._stop_flag.is_set()
@@ -2624,16 +3039,66 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._refresh_colors()
 
     def _cookies_active(self):
-        return self.var_g_browser.get() not in ("", "Désactivé")
+        return self.var_g_browser.get() not in ("", BROWSER_OFF)
 
     def _update_cookie_warn_insp(self):
-        if self.var_g_browser.get() == "Désactivé":
+        disabled = self.var_g_browser.get() == BROWSER_OFF
+        if disabled:
             self._lbl_cookie_warn_insp.grid()
         else:
             self._lbl_cookie_warn_insp.grid_remove()
+        # Voyant: rouge si désactivé, orange si sélectionné mais non testé
+        if disabled or not self._cookies_active():
+            self._set_cookie_state("off")
+        else:
+            self._set_cookie_state("untested")
+
+    def _set_cookie_state(self, state):
+        colors = {"off": "#e74c3c", "untested": "#f5a623", "testing": "#f5a623",
+                  "ok": "#4ec94e", "fail": "#e74c3c"}
+        self._cookie_state = state
+        self._lbl_cookie_dot.configure(fg=colors[state])
+
+    def _check_cookie(self):
+        """Lance un test rapide yt-dlp pour vérifier que le cookie est accessible."""
+        browser = self.var_g_browser.get()
+        if not browser or browser == BROWSER_OFF:
+            self._set_cookie_state("off")
+            return
+        if self._cookie_state == "testing":
+            return
+        self._cookie_detail = ""
+        self._set_cookie_state("testing")
+
+        def _test():
+            detail = ""
+            try:
+                r = subprocess.run(
+                    [YTDLP,
+                     "--cookies-from-browser", browser,
+                     "--simulate", "--no-playlist", "--quiet",
+                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
+                    capture_output=True, timeout=20,
+                    creationflags=subprocess.CREATE_NO_WINDOW)
+                ok = r.returncode == 0
+                if not ok:
+                    err = (r.stderr or b"").decode("utf-8", "replace").strip().splitlines()
+                    detail = err[-1][:160] if err else ""
+            except Exception as exc:
+                ok, detail = False, str(exc)[:160]
+
+            def _done():
+                if self.var_g_browser.get() != browser:   # le choix a changé pendant le test
+                    return
+                self._cookie_detail = detail
+                self._set_cookie_state("ok" if ok else "fail")
+            self.after(0, _done)
+
+        threading.Thread(target=_test, daemon=True).start()
 
     def _on_browser_change(self):
         """Rafraîchit les widgets de langue/audio quand le navigateur (cookie) change."""
+        self._update_cookie_warn_insp()
         cookies_ok = self._cookies_active()
         # Verrouillage global toujours mis à jour, même sans lignes analysées
         self._g_secondary.set_enabled(cookies_ok)
@@ -2790,7 +3255,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
             args += ["--retries", "10", "--fragment-retries", "10",
                      "--sleep-interval", "3", "--max-sleep-interval", "8"]
             browser = self.var_g_browser.get()
-            if browser != "Désactivé":
+            if browser != BROWSER_OFF:
                 args += ["--cookies-from-browser", browser]
             out = self.var_g_outdir.get().strip()
             if out:
@@ -2971,7 +3436,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                  "--sleep-interval", "3", "--max-sleep-interval", "8",
                  "--no-playlist"]
         browser = self.var_g_browser.get()
-        if browser != "Désactivé":
+        if browser != BROWSER_OFF:
             args += ["--cookies-from-browser", browser]
 
         # Blocs de script de la bibliothèque globale
@@ -3002,11 +3467,229 @@ class PlaylistInspectorWindow(tk.Toplevel):
             args += ["-o", f"{prefix}%(title)s.%(ext)s"]
 
         if self.var_g_smart_dir.get() and outdir:
-            archive_path = os.path.join(outdir, ".yt-dlp-archive.txt")
-            args += ["--download-archive", archive_path]
+            args += ["--download-archive", os.path.join(outdir, ARCHIVE_NAME),
+                     "--print-to-file",
+                     "after_move:%(id)s\t%(title)s\t%(duration)s\t%(filepath)s",
+                     os.path.join(outdir, TITLES_NAME)]
 
         args += ["--progress", "--newline", "--", vid_url]
         return args
+
+    # ── Outil « Mettre à jour le registre » ────────────────────────
+    def _open_registry_tool(self):
+        outdir = self.var_g_outdir.get().strip()
+        if not (outdir and os.path.isdir(outdir)):
+            messagebox.showwarning(t("insp.registry_title"), t("insp.registry_empty_dir"), parent=self)
+            return
+        dlg = tk.Toplevel(self)
+        dlg.title(t("insp.registry_title"))
+        dlg.geometry("780x500")
+        dlg.transient(self)
+        state = {"closed": False, "missing": [], "props": []}
+        var_summary = tk.StringVar()
+        var_info = tk.StringVar()
+        ttk.Label(dlg, textvariable=var_summary, justify="left").pack(
+            anchor="w", padx=10, pady=(10, 4))
+        btns = ttk.Frame(dlg)
+        btns.pack(side="bottom", fill="x", padx=10, pady=10)
+        ttk.Label(dlg, textvariable=var_info, foreground="gray").pack(anchor="w", padx=10)
+        body = ttk.Frame(dlg)
+        body.pack(fill="both", expand=True, padx=10, pady=(4, 0))
+        canvas = tk.Canvas(body, highlightthickness=0)
+        sb = ttk.Scrollbar(body, orient="vertical", command=canvas.yview)
+        inner = ttk.Frame(canvas)
+        inner.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        inner_win = canvas.create_window((0, 0), window=inner, anchor="nw")
+        inner.columnconfigure(0, weight=1)
+        canvas.bind("<Configure>", lambda e: canvas.itemconfigure(inner_win, width=e.width))
+        canvas.configure(yscrollcommand=sb.set)
+        canvas.pack(side="left", fill="both", expand=True)
+        sb.pack(side="right", fill="y")
+        dlg.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 if e.delta > 0 else 1, "units"))
+
+        btn_search = ttk.Button(btns, text=t("insp.registry_btn_search"))
+        btn_apply = ttk.Button(btns, text=t("insp.registry_btn_apply"), state="disabled")
+        btn_search.pack(side="left")
+        btn_apply.pack(side="left", padx=(8, 0))
+        ttk.Button(btns, text=t("insp.registry_btn_close"), command=dlg.destroy).pack(side="right")
+
+        def _clear():
+            for w in inner.winfo_children():
+                w.destroy()
+
+        def _refresh():
+            _clear()
+            reg, media, missing, incomplete = _scan_registry_folder(outdir)
+            state["missing"] = missing
+            var_summary.set(t("insp.registry_summary", media=len(media), reg=len(reg),
+                              incomplete=incomplete, missing=len(missing)))
+            if missing:
+                for fn in missing:
+                    ttk.Label(inner, text=fn).pack(anchor="w")
+            else:
+                ttk.Label(inner, text=t("insp.registry_all_ok"), foreground="gray").pack(anchor="w")
+            btn_search.configure(state="normal" if missing else "disabled")
+            btn_apply.configure(state="disabled")
+
+        def _open_local(fn):
+            try:
+                os.startfile(os.path.join(outdir, fn))
+            except OSError as e:
+                var_info.set(str(e))
+
+        def _open_web(vid_id):
+            import webbrowser
+            webbrowser.open(_watch_url(vid_id))
+
+        def _show_proposals(props):
+            if state["closed"]:
+                return
+            _clear()
+            state["props"] = []
+            tag_txt = {"sure": t("insp.registry_tag_sure"), "title": t("insp.registry_tag_title"),
+                       "check": t("insp.registry_tag_check"), "none": t("insp.registry_none")}
+            for i, (fn, cand, tag) in enumerate(props):
+                v = tk.BooleanVar(value=tag in ("sure", "title"))
+                state["props"].append((fn, cand, v))
+                ttk.Checkbutton(inner, text=fn, variable=v,
+                                state="normal" if cand else "disabled").grid(
+                    row=i * 2, column=0, sticky="w", pady=(4, 0))
+                if cand:
+                    dur = cand.get("duration")
+                    d_txt = f" · {int(dur) // 60}:{int(dur) % 60:02d}" if dur else ""
+                    line = f"→ {cand['title']}{d_txt}  ·  {tag_txt[tag]}"
+                    frm_b = ttk.Frame(inner)
+                    frm_b.grid(row=i * 2, column=1, rowspan=2, sticky="e", padx=(8, 4))
+                    ttk.Button(frm_b, text=t("insp.registry_btn_open_file"),
+                               command=lambda f=fn: _open_local(f)).pack(side="left")
+                    ttk.Button(frm_b, text=t("insp.registry_btn_open_web"),
+                               command=lambda c=cand: _open_web(c["id"])).pack(
+                        side="left", padx=(4, 0))
+                else:
+                    line = tag_txt["none"]
+                ttk.Label(inner, text=line, foreground="gray", wraplength=430,
+                          justify="left").grid(
+                    row=i * 2 + 1, column=0, sticky="w", padx=(24, 0))
+            var_info.set("")
+            btn_apply.configure(state="normal")
+
+        def _search():
+            btn_search.configure(state="disabled")
+            missing = list(state["missing"])
+
+            def _progress(k):
+                if not state["closed"]:
+                    var_info.set(t("insp.registry_progress", i=k, n=len(missing)))
+
+            def _worker():
+                props = []
+                for i, fn in enumerate(missing):
+                    if state["closed"]:
+                        return
+                    ldur = _local_duration(os.path.join(outdir, fn))
+                    cand, tag = _search_video(_clean_stem(fn), ldur)
+                    props.append((fn, cand, tag))
+                    self.after(0, lambda k=i + 1: _progress(k))
+                    time.sleep(1.0)
+                self.after(0, lambda: _show_proposals(props))
+
+            threading.Thread(target=_worker, daemon=True).start()
+
+        def _apply():
+            entries = [(c["id"], c["title"], fn, c.get("duration"))
+                       for fn, c, v in state["props"] if c and v.get()]
+            if entries:
+                try:
+                    _register_in_archive(outdir, entries)
+                except OSError as e:
+                    var_info.set(str(e))
+                    return
+            _refresh()
+            var_info.set(t("insp.registry_applied", n=len(entries)))
+
+        def _on_destroy(e):
+            if e.widget is dlg:
+                state["closed"] = True
+
+        btn_search.configure(command=_search)
+        btn_apply.configure(command=_apply)
+        dlg.bind("<Destroy>", _on_destroy)
+        _refresh()
+
+    # ── Rétroaction « Répertoire intelligent » ─────────────────────
+    def _reconcile_smart_dir(self, selected):
+        """Détecte les vidéos déjà présentes dans le dossier mais absentes du registre,
+        laisse l'utilisateur confirmer, puis les inscrit au registre et les décoche.
+        Retourne les lignes à télécharger ([] = rien à faire / abandon)."""
+        outdir = self.var_g_outdir.get().strip()
+        if not (self.var_g_smart_dir.get() and outdir and os.path.isdir(outdir)):
+            return selected
+        matches = _find_existing_matches(selected, outdir)
+        if not matches:
+            return selected
+        chosen = self._ask_reconcile(matches)
+        if chosen is None:
+            return []
+        if chosen:
+            try:
+                _register_in_archive(outdir, [(r["vid"]["id"], r["vid"]["title"], fn)
+                                              for r, fn, _src in chosen])
+            except OSError as e:
+                self.var_status.set(t("insp.status_err_registry", error=e))
+                return []
+            for r, _fn, _src in chosen:
+                r["var_en"].set(False)
+            self.var_status.set(t("insp.reconcile_status_skipped", n=len(chosen)))
+        return [r for r in selected if r["var_en"].get()]
+
+    def _ask_reconcile(self, matches):
+        """Fenêtre de confirmation. Retourne les correspondances cochées,
+        [] pour « télécharger quand même », None si la fenêtre est fermée."""
+        dlg = tk.Toplevel(self)
+        dlg.title(t("insp.reconcile_title"))
+        dlg.geometry("760x440")
+        dlg.transient(self)
+        result = {"chosen": None}
+        ttk.Label(dlg, text=t("insp.reconcile_intro", n=len(matches)),
+                  wraplength=720, justify="left").pack(anchor="w", padx=10, pady=(10, 6))
+
+        btns = ttk.Frame(dlg)
+        btns.pack(side="bottom", fill="x", padx=10, pady=10)
+        body = ttk.Frame(dlg)
+        body.pack(fill="both", expand=True, padx=10)
+        canvas = tk.Canvas(body, highlightthickness=0)
+        sb = ttk.Scrollbar(body, orient="vertical", command=canvas.yview)
+        inner = ttk.Frame(canvas)
+        inner.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=inner, anchor="nw")
+        canvas.configure(yscrollcommand=sb.set)
+        canvas.pack(side="left", fill="both", expand=True)
+        sb.pack(side="right", fill="y")
+        dlg.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 if e.delta > 0 else 1, "units"))
+
+        src_title = t("insp.reconcile_src_title")
+        vars_ = []
+        for i, (row, fn, _src) in enumerate(matches):
+            v = tk.BooleanVar(value=True)
+            vars_.append(v)
+            ttk.Checkbutton(inner, text=row["vid"]["title"], variable=v).grid(
+                row=i * 2, column=0, sticky="w", pady=(4, 0))
+            ttk.Label(inner, text=f"{fn}  ·  {src_title}", foreground="gray").grid(
+                row=i * 2 + 1, column=0, sticky="w", padx=(24, 0))
+
+        def _skip():
+            result["chosen"] = [m for m, v in zip(matches, vars_) if v.get()]
+            dlg.destroy()
+
+        def _ignore():
+            result["chosen"] = []
+            dlg.destroy()
+
+        ttk.Button(btns, text=t("insp.reconcile_btn_skip"), command=_skip).pack(side="left")
+        ttk.Button(btns, text=t("insp.reconcile_btn_ignore"), command=_ignore).pack(side="right")
+        dlg.grab_set()
+        self.wait_window(dlg)
+        return result["chosen"]
 
     # ── Lancement du téléchargement ────────────────────────────────
     def _download_selection(self):
@@ -3018,6 +3701,9 @@ class PlaylistInspectorWindow(tk.Toplevel):
         selected = [r for r in self._rows if r["var_en"].get()]
         if not selected:
             return
+        selected = self._reconcile_smart_dir(selected)
+        if not selected:
+            return
         self.btn_dl.configure(state="disabled")
         win = DownloadQueueWindow(self, selected, self._build_video_args, inspector=self)
         self._dl_window = win
@@ -3026,6 +3712,12 @@ class PlaylistInspectorWindow(tk.Toplevel):
             if event is not None and event.widget is not win:
                 return
             self._dl_window = None
+            out_now = self.var_g_outdir.get().strip()
+            if self.var_g_smart_dir.get() and out_now and os.path.isdir(out_now):
+                try:
+                    _sync_registry(out_now)
+                except OSError:
+                    pass
             try:
                 self.btn_dl.configure(
                     state="normal" if any(r["var_en"].get() for r in self._rows) else "disabled")
@@ -3040,12 +3732,43 @@ class PlaylistInspectorWindow(tk.Toplevel):
 # ══════════════════════════════════════════════════════════════════
 #  Fenêtre principale
 # ══════════════════════════════════════════════════════════════════
+class DonateWindow(tk.Toplevel):
+    """Fenêtre de remerciement avec logo, bannière et lien vers le don."""
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title(t("donate.window_title"))
+        self.transient(parent)
+        self.resizable(False, False)
+        self._images = []   # références : sinon Tk libère les images
+
+        frm_head = ttk.Frame(self, padding=(16, 14, 16, 4))
+        frm_head.pack()
+        for name in ("logo.png", "banner.png"):
+            try:
+                img = tk.PhotoImage(file=os.path.join(ASSETS_DIR, name))
+            except tk.TclError:
+                continue
+            self._images.append(img)
+            ttk.Label(frm_head, image=img).pack(side="left", padx=(0, 12) if name == "logo.png" else 0)
+
+        ttk.Label(self, text=t("donate.text"), justify="left", wraplength=500,
+                  font=("Segoe UI", 10)).pack(padx=24, pady=(10, 14), anchor="w")
+
+        ttk.Button(self, text=t("donate.btn_kofi"),
+                   command=lambda: __import__("webbrowser").open(DONATE_URL)
+                   ).pack(pady=(0, 18), ipadx=14, ipady=5)
+
+
 class YtDlpGui(tk.Tk):
     def __init__(self):
         super().__init__()
+        try:
+            self.iconbitmap(default=ICON_FILE)   # icône de toutes les fenêtres
+        except tk.TclError:
+            pass
         self.title(t("app.window_title"))
         self.resizable(True, True)
-        self.minsize(680, 620)
+        self.minsize(560, 420)
         self._process = None
         self._paused = False
         self._queue_running = False
@@ -3077,8 +3800,39 @@ class YtDlpGui(tk.Tk):
     def _build_ui(self):
         pad = dict(padx=10, pady=5)
 
+        # ── Page défilante verticalement (tout sauf progression/état) ──
+        frm_page = ttk.Frame(self)
+        self._page_cv = tk.Canvas(frm_page, highlightthickness=0)
+        self._page_vsb = ttk.Scrollbar(frm_page, orient="vertical", command=self._page_cv.yview)
+        self._page_cv.configure(yscrollcommand=self._page_vsb.set)
+        self._page_cv.pack(side="left", fill="both", expand=True)
+        page = ttk.Frame(self._page_cv)
+        page_win = self._page_cv.create_window((0, 0), window=page, anchor="nw")
+        page_state = {"vsb": False}
+
+        def _fit_page(_e=None):
+            cw, ch = self._page_cv.winfo_width(), self._page_cv.winfo_height()
+            need = page.winfo_reqheight()
+            h = max(ch, need)
+            self._page_cv.itemconfigure(page_win, width=cw, height=h)
+            self._page_cv.configure(scrollregion=(0, 0, cw, h))
+            want_vsb = need > ch + 1
+            if want_vsb != page_state["vsb"]:
+                page_state["vsb"] = want_vsb
+                if want_vsb:
+                    self._page_vsb.pack(side="right", fill="y")
+                else:
+                    self._page_vsb.pack_forget()
+                    self._page_cv.yview_moveto(0)
+
+        self._page_cv.bind("<Configure>", _fit_page)
+        page.bind("<Configure>", _fit_page)
+        for w in (self._page_cv, page):
+            w.bind("<MouseWheel>",
+                   lambda e: self._page_cv.yview_scroll(-1 * (e.delta // 120), "units"))
+
         # ── Barre d'outils (haut) ──────────────────
-        frm_toolbar = ttk.Frame(self)
+        frm_toolbar = ttk.Frame(page)
         frm_toolbar.pack(fill="x", padx=10, pady=(8, 0))
 
         # Indicateur de dépendances manquantes
@@ -3091,8 +3845,7 @@ class YtDlpGui(tk.Tk):
 
         ttk.Button(
             frm_toolbar, text=t("toolbar.btn_donate"),
-            command=lambda: __import__("webbrowser").open(
-                "https://ko-fi.com/harlocksuites")
+            command=lambda: DonateWindow(self)
         ).pack(side="right")
         ttk.Button(
             frm_toolbar, text=t("toolbar.btn_options"),
@@ -3102,7 +3855,7 @@ class YtDlpGui(tk.Tk):
         self._check_deps_quick()
 
         # ── URL ────────────────────────────────────
-        frm_url = ttk.LabelFrame(self, text=t("url.frame_label"), padding=8)
+        frm_url = ttk.LabelFrame(page, text=t("url.frame_label"), padding=8)
         frm_url.pack(fill="x", **pad)
 
         self.var_url = tk.StringVar()
@@ -3114,7 +3867,7 @@ class YtDlpGui(tk.Tk):
                    command=self._open_playlist_inspector).pack(side="left", padx=(4, 0))
 
         # ── Dossier de destination ──────────────────
-        frm_out = ttk.LabelFrame(self, text=t("opts.outdir_frame_label"), padding=8)
+        frm_out = ttk.LabelFrame(page, text=t("opts.outdir_frame_label"), padding=8)
         frm_out.pack(fill="x", **pad)
 
         self.var_outdir = tk.StringVar(value=os.path.expanduser("~/Downloads"))
@@ -3122,67 +3875,80 @@ class YtDlpGui(tk.Tk):
         ent_out.pack(side="left", fill="x", expand=True, padx=(0, 6))
         ttk.Button(frm_out, text=t("opts.outdir_browse"), command=self._browse_dir).pack(side="left")
 
-        # ── Options de téléchargement ───────────────
-        frm_opts = ttk.LabelFrame(self, text=t("opts.frame_label"), padding=8)
-        frm_opts.pack(fill="x", **pad)
+        # ── Options de téléchargement (reflux automatique selon la largeur) ──
+        frm_opts_box = ttk.LabelFrame(page, text=t("opts.frame_label"), padding=8)
+        frm_opts_box.pack(fill="x", **pad)
+        frm_opts = _FlowFrame(frm_opts_box)
+        frm_opts.pack(fill="x")
 
-        # Ligne 0 : qualité / audio seulement / ST / miniature / cookies
-        ttk.Label(frm_opts, text=t("opts.label_quality")).grid(row=0, column=0, sticky="w", padx=(0, 4))
+        # Qualité
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_quality")).pack(side="left", padx=(0, 4))
         self.var_quality = tk.StringVar(value="1080p")
         self._quality_combo = ttk.Combobox(
-            frm_opts, textvariable=self.var_quality,
+            g, textvariable=self.var_quality,
             values=[t("opts.quality_best"), "2160p (4K)", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p"],
             state="readonly", width=12)
-        self._quality_combo.grid(row=0, column=1, sticky="w", padx=(0, 8))
+        self._quality_combo.pack(side="left")
+        frm_opts.add(g)
 
+        # Audio seulement
         self.var_audio_only = tk.BooleanVar(value=False)
+
         def _on_audio_only_main(*_):
             self._quality_combo.configure(
                 state="disabled" if self.var_audio_only.get() else "readonly")
             self._update_cmd()
         self.var_audio_only.trace_add("write", _on_audio_only_main)
-        ttk.Checkbutton(frm_opts, text=t("opts.chk_audio_only"),
-                        variable=self.var_audio_only).grid(row=0, column=2, padx=(0, 12))
+        g = ttk.Frame(frm_opts)
+        ttk.Checkbutton(g, text=t("opts.chk_audio_only"),
+                        variable=self.var_audio_only).pack(side="left")
+        frm_opts.add(g)
 
-        ttk.Label(frm_opts, text=t("opts.label_sub_fmt")).grid(row=0, column=3, sticky="w", padx=(0, 4))
+        # Format ST
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_sub_fmt")).pack(side="left", padx=(0, 4))
         self.var_sub_fmt = tk.StringVar(value="srt")
-        ttk.Combobox(frm_opts, textvariable=self.var_sub_fmt, values=SUBTITLE_FORMATS,
-                     state="readonly", width=6).grid(row=0, column=4, sticky="w", padx=(0, 10))
+        ttk.Combobox(g, textvariable=self.var_sub_fmt, values=SUBTITLE_FORMATS,
+                     state="readonly", width=6).pack(side="left")
+        frm_opts.add(g)
 
+        # Intégrer ST / Miniature
         self.var_embed_subs = tk.BooleanVar(value=False)
-        ttk.Checkbutton(frm_opts, text=t("opts.chk_embed_subs"),
-                        variable=self.var_embed_subs).grid(row=0, column=5, padx=(0, 8))
-
         self.var_embed_thumb = tk.BooleanVar(value=False)
-        ttk.Checkbutton(frm_opts, text=t("opts.chk_embed_thumb"),
-                        variable=self.var_embed_thumb).grid(row=0, column=6, padx=(0, 8))
+        g = ttk.Frame(frm_opts)
+        ttk.Checkbutton(g, text=t("opts.chk_embed_subs"),
+                        variable=self.var_embed_subs).pack(side="left", padx=(0, 8))
+        ttk.Checkbutton(g, text=t("opts.chk_embed_thumb"),
+                        variable=self.var_embed_thumb).pack(side="left")
+        frm_opts.add(g)
 
-        ttk.Label(frm_opts, text=t("opts.label_cookies")).grid(row=0, column=7, sticky="w", padx=(6, 4))
-        self.var_browser = tk.StringVar(value="Désactivé")
-        ttk.Combobox(frm_opts, textvariable=self.var_browser,
-                     values=["Désactivé", "chrome", "firefox", "edge", "brave", "opera"],
-                     state="readonly", width=10).grid(row=0, column=8, sticky="w")
+        # Cookies (+ avertissement)
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_cookies")).grid(row=0, column=0, sticky="w", padx=(0, 4))
+        self.var_browser = tk.StringVar(value=BROWSER_OFF)
+        _browser_combo(g, self.var_browser).grid(row=0, column=1, sticky="w")
         self._lbl_cookie_warn_main = tk.Label(
-            frm_opts,
-            text=t("opts.cookie_warn"),
-            fg="#e74c3c", font=("Segoe UI", 8))
-        self._lbl_cookie_warn_main.grid(row=0, column=9, columnspan=2, sticky="w", padx=(10, 0))
+            g, text=t("opts.cookie_warn"), justify="left", anchor="w",
+            fg="#e74c3c", font=("Segoe UI", 8), wraplength=280)
+        self._lbl_cookie_warn_main.grid(row=0, column=2, sticky="w", padx=(10, 0))
         self.var_browser.trace_add("write", lambda *_: (
             self._update_cookie_warn_main(), self._update_cmd()))
+        frm_opts.add(g)
 
-        # Ligne 1 : langues
-        ttk.Label(frm_opts, text=t("opts.label_primary_lang")).grid(
-            row=1, column=0, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Langue principale
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_primary_lang")).pack(side="left", padx=(0, 4))
         self._opt_primary_default  = t("opts.primary_lang_default")
         self._opt_primary_no_audio = t("opts.primary_lang_no_audio")
         self._opt_primary_manual   = t("opts.primary_lang_manual")
         self.var_primary_lbl = tk.StringVar(value=self._opt_primary_default)
         self._primary_combo = ttk.Combobox(
-            frm_opts, textvariable=self.var_primary_lbl,
+            g, textvariable=self.var_primary_lbl,
             values=[self._opt_primary_default, self._opt_primary_no_audio, self._opt_primary_manual],
             state="readonly", width=26)
-        self._primary_combo.grid(row=1, column=1, columnspan=2, sticky="w",
-                                 pady=(8, 0), padx=(0, 14))
+        self._primary_combo.pack(side="left")
+        frm_opts.add(g)
         self._primary_map = {self._opt_primary_default: "",
                              self._opt_primary_no_audio: "__video_only__",
                              self._opt_primary_manual: "__manual__"}
@@ -3196,39 +3962,41 @@ class YtDlpGui(tk.Tk):
         self._primary_combo.bind("<<ComboboxSelected>>", _on_primary_main)
         self.var_primary_lbl.trace_add("write", lambda *_: self.after(20, self._update_cmd))
 
-        ttk.Label(frm_opts, text=t("opts.label_secondary_audio")).grid(
-            row=1, column=3, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Audio secondaire(s)
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_secondary_audio")).pack(side="left", padx=(0, 4))
         self._secondary_sel = MultiCheckSelect(
-            frm_opts, placeholder=t("opts.placeholder_disabled"), width=28,
+            g, placeholder=t("opts.placeholder_disabled"), width=28,
             on_change=self._update_cmd)
         self._secondary_sel.set_options(
             [(_c, _tblklbl(_c, _l)) for _c, _l in SCRIPT_BLOCKS_BY_TAB.get("Langue", [])])
-        self._secondary_sel.grid(row=1, column=4, columnspan=2, sticky="w",
-                                 pady=(8, 0), padx=(0, 12))
+        self._secondary_sel.pack(side="left")
+        frm_opts.add(g)
 
-        ttk.Label(frm_opts, text=t("opts.label_subs")).grid(
-            row=1, column=6, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Sous-titres
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_subs")).pack(side="left", padx=(0, 4))
         self._subs_sel = MultiCheckSelect(
-            frm_opts, placeholder=t("opts.placeholder_disabled"), width=22,
+            g, placeholder=t("opts.placeholder_disabled"), width=22,
             on_change=self._update_cmd)
         self._subs_sel.set_options(
             [(_c, _tblklbl(_c, _l)) for _c, _l in SCRIPT_BLOCKS_BY_TAB.get("Langue", [])])
-        self._subs_sel.grid(row=1, column=7, columnspan=3, sticky="w", pady=(8, 0))
+        self._subs_sel.pack(side="left")
+        frm_opts.add(g)
 
-        # Avertissement miniature MKV
-        self._lbl_mkv_warn_main = ttk.Label(
-            frm_opts, text=t("opts.mkv_warn"),
-            foreground="#e67e22", font=("Segoe UI", 8), wraplength=500)
-        self._lbl_mkv_warn_main.grid(row=1, column=9, columnspan=2, sticky="w", pady=(8, 0))
-        self._lbl_mkv_warn_main.grid_remove()
-
-        # Ligne 2 : blocs de script
-        ttk.Label(frm_opts, text=t("opts.label_blocks")).grid(
-            row=2, column=0, sticky="w", padx=(0, 4), pady=(8, 0))
+        # Blocs de script (+ avertissement miniature MKV)
+        g = ttk.Frame(frm_opts)
+        ttk.Label(g, text=t("opts.label_blocks")).grid(row=0, column=0, sticky="w", padx=(0, 4))
         self._blocks_sel = MultiCheckSelect(
-            frm_opts, placeholder=t("opts.placeholder_disabled"), width=32,
+            g, placeholder=t("opts.placeholder_disabled"), width=32,
             tabs=_translated_blocks_tabs(), on_change=self._update_cmd)
-        self._blocks_sel.grid(row=2, column=1, columnspan=5, sticky="w", pady=(8, 0))
+        self._blocks_sel.grid(row=0, column=1, sticky="w")
+        self._lbl_mkv_warn_main = ttk.Label(
+            g, text=t("opts.mkv_warn"),
+            foreground="#e67e22", font=("Segoe UI", 8), wraplength=420)
+        self._lbl_mkv_warn_main.grid(row=0, column=2, sticky="w", padx=(10, 0))
+        self._lbl_mkv_warn_main.grid_remove()
+        frm_opts.add(g)
 
         # Trace mise à jour commande
         for _v in (self.var_quality, self.var_sub_fmt, self.var_embed_subs,
@@ -3236,7 +4004,7 @@ class YtDlpGui(tk.Tk):
             _v.trace_add("write", lambda *_: self._update_cmd())
 
         # ── Commande générée ───────────────────────
-        frm_cmd = ttk.LabelFrame(self, text=t("opts.cmd_frame_label"), padding=8)
+        frm_cmd = ttk.LabelFrame(page, text=t("opts.cmd_frame_label"), padding=8)
         frm_cmd.pack(fill="x", **pad)
 
         self.var_cmd = tk.StringVar()
@@ -3247,7 +4015,7 @@ class YtDlpGui(tk.Tk):
             _v.trace_add("write", lambda *_: self._update_cmd())
 
         # ── Boutons ────────────────────────────────
-        frm_btn = ttk.Frame(self)
+        frm_btn = ttk.Frame(page)
         frm_btn.pack(fill="x", padx=10, pady=(0, 6))
 
         self.btn_dl = ttk.Button(frm_btn, text=t("dl.btn_download"),
@@ -3266,7 +4034,7 @@ class YtDlpGui(tk.Tk):
                    command=self._clear_log).pack(side="right")
 
         # ── File d'attente ─────────────────────────
-        paned = ttk.PanedWindow(self, orient="vertical")
+        paned = ttk.PanedWindow(page, orient="vertical")
         paned.pack(fill="both", expand=True, padx=10, pady=(0, 4))
 
         frm_queue = ttk.LabelFrame(paned, text=t("queue.frame_label"), padding=6)
@@ -3342,12 +4110,13 @@ class YtDlpGui(tk.Tk):
 
         # ── Progression ────────────────────────────
         self.var_progress = tk.DoubleVar(value=0)
-        ttk.Progressbar(self, variable=self.var_progress,
-                        maximum=100, mode="determinate").pack(fill="x", padx=10, pady=(0, 4))
-
         self.var_status = tk.StringVar(value=t("app.status_ready"))
         ttk.Label(self, textvariable=self.var_status, anchor="w",
-                  font=("Segoe UI", 9)).pack(fill="x", padx=10)
+                  font=("Segoe UI", 9)).pack(side="bottom", fill="x", padx=10)
+        ttk.Progressbar(self, variable=self.var_progress,
+                        maximum=100, mode="determinate").pack(
+            side="bottom", fill="x", padx=10, pady=(0, 4))
+        frm_page.pack(fill="both", expand=True)
 
         # ── Journal ────────────────────────────────
         frm_log = ttk.LabelFrame(paned, text=" Journal ", padding=6)
@@ -3747,7 +4516,7 @@ class YtDlpGui(tk.Tk):
 
         # Cookies
         browser = self.var_browser.get()
-        if browser and browser != "Désactivé":
+        if browser and browser != BROWSER_OFF:
             args += ["--cookies-from-browser", browser]
 
         out = self.var_outdir.get().strip()
@@ -3804,7 +4573,7 @@ class YtDlpGui(tk.Tk):
         self._log(f"Inspection : {url}", "info")
 
         browser = self.var_browser.get()
-        cookie_args = ["--cookies-from-browser", browser] if browser != "Désactivé" else []
+        cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
 
         def run():
             try:
@@ -4077,7 +4846,7 @@ class YtDlpGui(tk.Tk):
         if self.var_embed_thumb.get():
             parts.append(t("queue.summary_thumb"))
         browser = self.var_browser.get()
-        if browser and browser != "Désactivé":
+        if browser and browser != BROWSER_OFF:
             parts.append(f"🍪{browser}")
         return " · ".join(parts) if parts else t("queue.summary_default")
 
@@ -4112,7 +4881,7 @@ class YtDlpGui(tk.Tk):
         entry = self._queue[idx]
         url = entry.get("url", "")
         browser = self.var_browser.get()
-        cookie_args = ["--cookies-from-browser", browser] if browser != "Désactivé" else []
+        cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
         try:
             r = subprocess.run(
                 [YTDLP, "--get-title", "--no-playlist"] + cookie_args + ["--", url],
@@ -4391,7 +5160,7 @@ class YtDlpGui(tk.Tk):
         threading.Thread(target=_do_cleanup, args=(files,), daemon=True).start()
 
     def _update_cookie_warn_main(self):
-        if self.var_browser.get() == "Désactivé":
+        if self.var_browser.get() == BROWSER_OFF:
             self._lbl_cookie_warn_main.grid()
         else:
             self._lbl_cookie_warn_main.grid_remove()

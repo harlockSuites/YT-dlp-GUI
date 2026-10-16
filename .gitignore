@@ -15,3 +15,5 @@ __pycache__/
 # Temp / partial downloads
 *.part
 *.ytdl
+.yt-dlp-registre.json
+.yt-dlp-archive.titles.tsv
