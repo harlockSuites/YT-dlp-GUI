@@ -21,14 +21,39 @@ from urllib.parse import quote
 __version__ = "0.1.0"
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
-YTDLP              = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp.exe")
-CONFIG_FILE        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gui-config.json")
-QUEUE_FILE         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "download-queue.json")
-ICON_FILE          = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp-gui.ico")
-ASSETS_DIR         = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+def _resolve_dirs(frozen, executable, script_dir, meipass, env):
+    """Retourne (RESOURCE_DIR, DATA_DIR).
+    - RESOURCE_DIR : fichiers du programme en lecture seule (traductions, images, icône).
+    - DATA_DIR : fichiers modifiables (config, file d'attente, yt-dlp.exe, ffmpeg).
+    Depuis les sources, tout reste à côté du script. Dans l'exécutable : à côté de l'exécutable si
+    le fichier « portable.flag » s'y trouve (version portable), sinon dans %LOCALAPPDATA%\\yt-dlp-GUI
+    (le dossier d'installation, ex. Program Files, n'est pas modifiable sans droits administrateur)."""
+    if not frozen:
+        return script_dir, script_dir
+    exe_dir = os.path.dirname(os.path.abspath(executable))
+    resources = meipass or exe_dir
+    if os.path.isfile(os.path.join(exe_dir, "portable.flag")):
+        return resources, exe_dir
+    base = env.get("LOCALAPPDATA") or os.path.join(os.path.expanduser("~"), "AppData", "Local")
+    return resources, os.path.join(base, "yt-dlp-GUI")
+
+
+RESOURCE_DIR, DATA_DIR = _resolve_dirs(
+    getattr(sys, "frozen", False), sys.executable, os.path.dirname(os.path.abspath(__file__)),
+    getattr(sys, "_MEIPASS", None), os.environ)
+try:
+    os.makedirs(DATA_DIR, exist_ok=True)
+except OSError:
+    pass
+
+YTDLP              = os.path.join(DATA_DIR, "yt-dlp.exe")
+CONFIG_FILE        = os.path.join(DATA_DIR, "gui-config.json")
+QUEUE_FILE         = os.path.join(DATA_DIR, "download-queue.json")
+CUSTOM_BLOCKS_FILE = os.path.join(DATA_DIR, "custom-blocks.json")
+LOCAL_BIN          = os.path.join(DATA_DIR, "bin")   # ffmpeg/ffprobe installés par l'assistant
+ICON_FILE          = os.path.join(RESOURCE_DIR, "yt-dlp-gui.ico")
+ASSETS_DIR         = os.path.join(RESOURCE_DIR, "assets")
 DONATE_URL         = "https://ko-fi.com/harlocksuites"
-CUSTOM_BLOCKS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "custom-blocks.json")
-LOCAL_BIN          = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bin")   # ffmpeg/ffprobe installés par l'assistant
 if LOCAL_BIN not in os.environ.get("PATH", "").split(os.pathsep):
     os.environ["PATH"] = LOCAL_BIN + os.pathsep + os.environ.get("PATH", "")
 
@@ -150,7 +175,7 @@ CUSTOM_BLOCKS = []   # list of (cat, code, label, args_list)
 # ── Internationalisation ──────────────────────────────────────────────────────
 import pathlib as _pathlib
 
-_LANG_DIR = _pathlib.Path(__file__).parent / "lang"
+_LANG_DIR = _pathlib.Path(RESOURCE_DIR) / "lang"
 _STRINGS: dict = {}
 _STRINGS_EN: dict = {}
 _CURRENT_LANG: str = "fr"
@@ -4229,7 +4254,7 @@ class YtDlpGui(tk.Tk):
             log_tail = "\n".join(self.log_text.get("1.0", "end").splitlines()[-60:])
         except tk.TclError:
             log_tail = ""
-        private = [self.var_outdir.get().strip(), os.path.dirname(os.path.abspath(__file__)), os.getcwd()]
+        private = [self.var_outdir.get().strip(), DATA_DIR, RESOURCE_DIR, os.getcwd()]
         report = collect_diagnostics(log_tail, getattr(self, "_last_error", ""), private)
         BugReportWindow(self, report)
 
@@ -4657,11 +4682,11 @@ class YtDlpGui(tk.Tk):
         import json as _json
         import pathlib as _pathlib
         _new_strings: dict = {}
-        _new_path = _pathlib.Path(__file__).parent / "lang" / f"{new_code}.json"
+        _new_path = _LANG_DIR / f"{new_code}.json"
         if _new_path.exists():
             with open(_new_path, encoding="utf-8") as _f:
                 _new_strings = _json.load(_f)
-        _en_path = _pathlib.Path(__file__).parent / "lang" / "en.json"
+        _en_path = _LANG_DIR / "en.json"
         _en_strings: dict = {}
         if _en_path.exists():
             with open(_en_path, encoding="utf-8") as _f:
@@ -4691,7 +4716,7 @@ class YtDlpGui(tk.Tk):
             save_config(cfg)
             dlg.destroy()
             import subprocess, sys
-            subprocess.Popen([sys.executable] + sys.argv)
+            subprocess.Popen([sys.executable] if getattr(sys, "frozen", False) else [sys.executable] + sys.argv)
             self.destroy()
 
         def _cancel():

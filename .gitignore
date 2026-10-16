@@ -22,3 +22,6 @@ __pycache__/
 bin/
 yt-dlp.exe.bak
 yt-dlp.exe.new
+build/
+dist/
+*.spec
