@@ -450,5 +450,22 @@
   "setup.err_checksum": "{name} のチェックサムが無効です：ファイルを削除しました。",
   "setup.err_no_tools": "アーカイブに ffmpeg.exe と ffprobe.exe が見つかりません。",
   "setup.err_cancelled": "キャンセルしました。",
-  "toolbar.menu_setup": "セットアップアシスタント…"
+  "toolbar.menu_setup": "セットアップアシスタント…",
+  "toolbar.menu_check_update": "ソフトウェアの更新を確認…",
+  "app_update.window_title": "ソフトウェアの更新",
+  "app_update.current": "インストール済みのバージョン：{version}",
+  "app_update.checking": "確認中…",
+  "app_update.up_to_date": "最新バージョン（{version}）をお使いです。",
+  "app_update.available": "新しいバージョンがあります：{version}",
+  "app_update.error": "確認できません：{error}",
+  "app_update.error_not_found": "公開されたバージョンはまだありません（またはリポジトリが非公開です）。",
+  "app_update.error_bad_release": "GitHub から予期しない応答がありました。",
+  "app_update.chk_auto": "起動時に自動で確認する",
+  "app_update.btn_page": "GitHub でリリースを見る",
+  "app_update.btn_download": "ダウンロード",
+  "app_update.btn_ignore": "このバージョンを無視",
+  "app_update.btn_close": "閉じる",
+  "app_update.notes": "新機能",
+  "app_update.banner": "🔔 新バージョン {version} が利用可能です",
+  "app_update.hint_source": "ソースコードを使用中です：git pull で最新バージョンを取得してください。"
 }

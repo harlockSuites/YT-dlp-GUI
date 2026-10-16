@@ -450,5 +450,22 @@
   "setup.err_checksum": "{name} के लिए चेकसम अमान्य: फ़ाइल हटाई गई।",
   "setup.err_no_tools": "संग्रह में ffmpeg.exe और ffprobe.exe नहीं मिले।",
   "setup.err_cancelled": "रद्द किया गया।",
-  "toolbar.menu_setup": "इंस्टॉलेशन सहायक…"
+  "toolbar.menu_setup": "इंस्टॉलेशन सहायक…",
+  "toolbar.menu_check_update": "सॉफ़्टवेयर अपडेट खोजें…",
+  "app_update.window_title": "सॉफ़्टवेयर अपडेट",
+  "app_update.current": "इंस्टॉल किया गया संस्करण: {version}",
+  "app_update.checking": "खोज जारी है…",
+  "app_update.up_to_date": "आप नवीनतम संस्करण ({version}) का उपयोग कर रहे हैं।",
+  "app_update.available": "नया संस्करण उपलब्ध है: {version}",
+  "app_update.error": "जाँच नहीं हो सकी: {error}",
+  "app_update.error_not_found": "अभी तक कोई संस्करण प्रकाशित नहीं हुआ है (या रिपॉज़िटरी निजी है)।",
+  "app_update.error_bad_release": "GitHub से अप्रत्याशित प्रतिक्रिया।",
+  "app_update.chk_auto": "शुरू होने पर अपने आप जाँचें",
+  "app_update.btn_page": "GitHub पर संस्करण देखें",
+  "app_update.btn_download": "डाउनलोड करें",
+  "app_update.btn_ignore": "इस संस्करण को अनदेखा करें",
+  "app_update.btn_close": "बंद करें",
+  "app_update.notes": "नया क्या है",
+  "app_update.banner": "🔔 नया संस्करण {version} उपलब्ध है",
+  "app_update.hint_source": "आप स्रोत कोड का उपयोग कर रहे हैं: नवीनतम संस्करण git pull से प्राप्त करें।"
 }

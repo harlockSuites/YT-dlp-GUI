@@ -450,5 +450,22 @@
   "setup.err_checksum": "Somme de contrôle invalide pour {name} : fichier supprimé.",
   "setup.err_no_tools": "ffmpeg.exe et ffprobe.exe introuvables dans l'archive.",
   "setup.err_cancelled": "Annulé.",
-  "toolbar.menu_setup": "Assistant d'installation…"
+  "toolbar.menu_setup": "Assistant d'installation…",
+  "toolbar.menu_check_update": "Rechercher une mise à jour du logiciel…",
+  "app_update.window_title": "Mise à jour du logiciel",
+  "app_update.current": "Version installée : {version}",
+  "app_update.checking": "Recherche en cours…",
+  "app_update.up_to_date": "Vous utilisez la dernière version ({version}).",
+  "app_update.available": "Nouvelle version disponible : {version}",
+  "app_update.error": "Impossible de vérifier : {error}",
+  "app_update.error_not_found": "Aucune version publiée pour le moment (ou dépôt privé).",
+  "app_update.error_bad_release": "Réponse de GitHub inattendue.",
+  "app_update.chk_auto": "Vérifier automatiquement au démarrage",
+  "app_update.btn_page": "Voir la version sur GitHub",
+  "app_update.btn_download": "Télécharger",
+  "app_update.btn_ignore": "Ignorer cette version",
+  "app_update.btn_close": "Fermer",
+  "app_update.notes": "Nouveautés",
+  "app_update.banner": "🔔 Nouvelle version {version} disponible",
+  "app_update.hint_source": "Vous utilisez les sources du logiciel : récupérez la dernière version avec git pull."
 }

@@ -20,6 +20,7 @@ def load_gui():
     m.CUSTOM_BLOCKS_FILE = os.path.join(_SESSION_DIR, "custom-blocks.json")
     m.load_lang("fr")
     m.YtDlpGui.AUTO_SETUP = False
+    m.YtDlpGui.AUTO_UPDATE_CHECK = False
     return m
 
 

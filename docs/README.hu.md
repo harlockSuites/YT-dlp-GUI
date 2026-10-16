@@ -37,6 +37,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 - **Telepítő varázsló**: az első indításkor felajánlja a yt-dlp és az ffmpeg letöltését a hivatalos GitHub-tárolókból. Az SHA-256 ellenőrzőösszeg ellenőrzésre kerül, és nincs szükség rendszergazdai jogosultságra.
 - **Függőségek**: a külön ablak ellenőrzi az ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 és deno meglétét, és Chocolatey segítségével telepítheti őket.
 - **Frissítés és diagnosztika**: frissíti a yt-dlp-t (`yt-dlp -U`) vagy lecseréli a futtatható fájlját, megmutatja a verzióját, és ellenőrzi a felület által használt kapcsolókat.
+- **Programfrissítés**: a naponta végzett (kikapcsolható) ellenőrzés egy diszkrét sávval jelzi az új verziót; a külön ablak megmutatja az újdonságokat, és megnyitja a telepítésének megfelelő letöltést (telepítő vagy hordozható változat). Semmi nem települ automatikusan.
 
 ### Felület és nyelvek
 
@@ -63,7 +64,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 ## Adatvédelem és felelős használat
 
-- Ez a program nem küld adatot a szerzőnek, és nem tartalmaz telemetriát. A hálózati kapcsolatok a yt-dlp (videóoldalak), a telepítő varázsló (GitHub) és a nyilvántartás-eszköz (YouTube-keresés) révén jönnek létre.
+- Ez a program nem küld adatot a szerzőnek, és nem tartalmaz telemetriát. A hálózati kapcsolatok a yt-dlp (videóoldalak), a telepítő varázsló (GitHub) és a nyilvántartás-eszköz (YouTube-keresés) révén jönnek létre. Az automatikus frissítésellenőrzés indításkor szintén a GitHubhoz csatlakozik (naponta legfeljebb egyszer); a „Programfrissítés keresése…” ablakban kikapcsolható.
 - A sütik az Ön számítógépén maradnak: a yt-dlp helyben olvassa őket a kiválasztott böngészőből.
 - Használja az eszközt a szerzői jog, az oldalak felhasználási feltételei és országa törvényei szerint, és csak azt töltse le, amihez joga van.
 

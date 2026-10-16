@@ -450,5 +450,22 @@
   "setup.err_checksum": "Tổng kiểm không hợp lệ cho {name}: đã xóa tệp.",
   "setup.err_no_tools": "Không tìm thấy ffmpeg.exe và ffprobe.exe trong tệp nén.",
   "setup.err_cancelled": "Đã hủy.",
-  "toolbar.menu_setup": "Trình hướng dẫn cài đặt…"
+  "toolbar.menu_setup": "Trình hướng dẫn cài đặt…",
+  "toolbar.menu_check_update": "Kiểm tra bản cập nhật phần mềm…",
+  "app_update.window_title": "Cập nhật phần mềm",
+  "app_update.current": "Phiên bản đã cài: {version}",
+  "app_update.checking": "Đang kiểm tra…",
+  "app_update.up_to_date": "Bạn đang dùng phiên bản mới nhất ({version}).",
+  "app_update.available": "Có phiên bản mới: {version}",
+  "app_update.error": "Không thể kiểm tra: {error}",
+  "app_update.error_not_found": "Chưa có phiên bản nào được phát hành (hoặc kho mã ở chế độ riêng tư).",
+  "app_update.error_bad_release": "Phản hồi bất ngờ từ GitHub.",
+  "app_update.chk_auto": "Tự động kiểm tra khi khởi động",
+  "app_update.btn_page": "Xem bản phát hành trên GitHub",
+  "app_update.btn_download": "Tải xuống",
+  "app_update.btn_ignore": "Bỏ qua phiên bản này",
+  "app_update.btn_close": "Đóng",
+  "app_update.notes": "Có gì mới",
+  "app_update.banner": "🔔 Có phiên bản mới {version}",
+  "app_update.hint_source": "Bạn đang dùng mã nguồn: hãy lấy phiên bản mới nhất bằng git pull."
 }

@@ -450,5 +450,22 @@
   "setup.err_checksum": "Neispravna kontrolna suma za {name}: fajl je obrisan.",
   "setup.err_no_tools": "ffmpeg.exe i ffprobe.exe nisu pronađeni u arhivi.",
   "setup.err_cancelled": "Otkazano.",
-  "toolbar.menu_setup": "Pomoćnik za instalaciju…"
+  "toolbar.menu_setup": "Pomoćnik za instalaciju…",
+  "toolbar.menu_check_update": "Potraži ažuriranje programa…",
+  "app_update.window_title": "Ažuriranje programa",
+  "app_update.current": "Instalirana verzija: {version}",
+  "app_update.checking": "Pretraga…",
+  "app_update.up_to_date": "Koristite najnoviju verziju ({version}).",
+  "app_update.available": "Dostupna je nova verzija: {version}",
+  "app_update.error": "Provera nije uspela: {error}",
+  "app_update.error_not_found": "Još nijedna verzija nije objavljena (ili je repozitorijum privatan).",
+  "app_update.error_bad_release": "Neočekivan odgovor sa GitHub-a.",
+  "app_update.chk_auto": "Automatski proveri pri pokretanju",
+  "app_update.btn_page": "Pogledaj verziju na GitHub-u",
+  "app_update.btn_download": "Preuzmi",
+  "app_update.btn_ignore": "Ignoriši ovu verziju",
+  "app_update.btn_close": "Zatvori",
+  "app_update.notes": "Novosti",
+  "app_update.banner": "🔔 Dostupna je nova verzija {version}",
+  "app_update.hint_source": "Koristite izvorni kôd: najnoviju verziju preuzmite komandom git pull."
 }

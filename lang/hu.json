@@ -450,5 +450,22 @@
   "setup.err_checksum": "Érvénytelen ellenőrzőösszeg ehhez: {name}; a fájl törölve.",
   "setup.err_no_tools": "Az ffmpeg.exe és az ffprobe.exe nem található az archívumban.",
   "setup.err_cancelled": "Megszakítva.",
-  "toolbar.menu_setup": "Telepítő varázsló…"
+  "toolbar.menu_setup": "Telepítő varázsló…",
+  "toolbar.menu_check_update": "Programfrissítés keresése…",
+  "app_update.window_title": "Programfrissítés",
+  "app_update.current": "Telepített verzió: {version}",
+  "app_update.checking": "Keresés…",
+  "app_update.up_to_date": "A legújabb verziót használja ({version}).",
+  "app_update.available": "Új verzió érhető el: {version}",
+  "app_update.error": "Az ellenőrzés nem sikerült: {error}",
+  "app_update.error_not_found": "Még nincs közzétett verzió (vagy a tároló privát).",
+  "app_update.error_bad_release": "Váratlan válasz a GitHubtól.",
+  "app_update.chk_auto": "Automatikus ellenőrzés indításkor",
+  "app_update.btn_page": "A verzió megtekintése a GitHubon",
+  "app_update.btn_download": "Letöltés",
+  "app_update.btn_ignore": "A verzió figyelmen kívül hagyása",
+  "app_update.btn_close": "Bezárás",
+  "app_update.notes": "Újdonságok",
+  "app_update.banner": "🔔 Új verzió érhető el: {version}",
+  "app_update.hint_source": "A forráskódot használja: a legújabb verziót a git pull paranccsal töltheti le."
 }

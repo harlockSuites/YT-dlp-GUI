@@ -37,6 +37,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 - **Assistente di installazione**: al primo avvio propone di scaricare yt-dlp e ffmpeg dai loro repository ufficiali su GitHub. La somma SHA-256 viene verificata e non servono diritti di amministratore.
 - **Dipendenze**: la finestra dedicata controlla ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 e deno e può installarli con Chocolatey.
 - **Aggiornamento e diagnostica**: aggiorna yt-dlp (`yt-dlp -U`) o ne sostituisce l'eseguibile, mostra la versione e verifica le opzioni usate dall'interfaccia.
+- **Aggiornamento del programma**: un controllo giornaliero (disattivabile) segnala una nuova versione con un banner discreto; la finestra dedicata mostra le novità e apre il download corrispondente alla tua installazione (installatore o versione portatile). Nulla viene installato automaticamente.
 
 ### Interfaccia e lingue
 
@@ -63,7 +64,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 
 ## Privacy e uso responsabile
 
-- Questo software non invia alcun dato all'autore e non contiene telemetria. Le connessioni di rete passano da yt-dlp (siti video), dall'assistente di installazione (GitHub) e dallo strumento del registro (ricerca su YouTube).
+- Questo software non invia alcun dato all'autore e non contiene telemetria. Le connessioni di rete passano da yt-dlp (siti video), dall'assistente di installazione (GitHub) e dallo strumento del registro (ricerca su YouTube). Un controllo automatico degli aggiornamenti contatta inoltre GitHub all'avvio (al massimo una volta al giorno); puoi disattivarlo da «Cerca un aggiornamento del programma…».
 - I tuoi cookie restano sul tuo computer: yt-dlp li legge in locale dal browser scelto.
 - Usa questo strumento nel rispetto del diritto d'autore, delle condizioni d'uso dei siti e delle leggi del tuo paese, e scarica solo ciò che hai il diritto di scaricare.
 

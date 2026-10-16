@@ -66,6 +66,14 @@ class DocsTests(unittest.TestCase):
             with self.subTest(lang=code):
                 self.assertEqual(ext(_read(path)), ref)
 
+    def test_privacy_bullet_mentions_the_update_check(self):
+        for code, path in _all_docs().items():
+            lines = _read(path).splitlines()
+            heads = [i for i, l in enumerate(lines) if l.startswith("## ")]
+            bullet = next(l for l in lines[heads[3] + 1:] if l.startswith("- "))
+            with self.subTest(lang=code):
+                self.assertGreaterEqual(bullet.count("GitHub"), 2)
+
     def test_key_facts_present_in_every_language(self):
         for code, path in _all_docs().items():
             text = _read(path)

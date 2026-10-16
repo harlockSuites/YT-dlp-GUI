@@ -450,5 +450,22 @@
   "setup.err_checksum": "Di-wastong checksum para sa {name}: binura ang file.",
   "setup.err_no_tools": "Hindi makita ang ffmpeg.exe at ffprobe.exe sa archive.",
   "setup.err_cancelled": "Kinansela.",
-  "toolbar.menu_setup": "Katulong sa pag-install…"
+  "toolbar.menu_setup": "Katulong sa pag-install…",
+  "toolbar.menu_check_update": "Maghanap ng update ng software…",
+  "app_update.window_title": "Update ng software",
+  "app_update.current": "Naka-install na bersyon: {version}",
+  "app_update.checking": "Sinusuri…",
+  "app_update.up_to_date": "Ginagamit mo ang pinakabagong bersyon ({version}).",
+  "app_update.available": "May bagong bersyon: {version}",
+  "app_update.error": "Hindi masuri: {error}",
+  "app_update.error_not_found": "Wala pang nailathalang bersyon (o pribado ang repository).",
+  "app_update.error_bad_release": "Hindi inaasahang tugon mula sa GitHub.",
+  "app_update.chk_auto": "Awtomatikong suriin sa pagsisimula",
+  "app_update.btn_page": "Tingnan ang bersyon sa GitHub",
+  "app_update.btn_download": "I-download",
+  "app_update.btn_ignore": "Huwag pansinin ang bersyong ito",
+  "app_update.btn_close": "Isara",
+  "app_update.notes": "Ano ang bago",
+  "app_update.banner": "🔔 May bagong bersyon {version}",
+  "app_update.hint_source": "Source code ang ginagamit mo: kunin ang pinakabagong bersyon gamit ang git pull."
 }

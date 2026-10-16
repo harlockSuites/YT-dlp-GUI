@@ -37,6 +37,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Trình hướng dẫn cài đặt**: ở lần chạy đầu tiên, nó đề nghị tải yt-dlp và ffmpeg từ kho GitHub chính thức. Tổng kiểm SHA-256 được xác minh và không cần quyền quản trị.
 - **Phụ thuộc**: cửa sổ riêng kiểm tra ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 và deno, và có thể cài chúng bằng Chocolatey.
 - **Cập nhật và chẩn đoán**: cập nhật yt-dlp (`yt-dlp -U`) hoặc thay tệp thực thi của nó, hiển thị phiên bản và kiểm tra các tùy chọn mà giao diện sử dụng.
+- **Cập nhật phần mềm**: kiểm tra hằng ngày (có thể tắt) báo có phiên bản mới bằng một dải thông báo kín đáo; cửa sổ riêng cho biết có gì mới và mở bản tải phù hợp với cách bạn cài đặt (trình cài đặt hoặc bản di động). Không có gì được cài tự động.
 
 ### Giao diện và ngôn ngữ
 
@@ -63,7 +64,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 ## Quyền riêng tư và sử dụng có trách nhiệm
 
-- Phần mềm này không gửi dữ liệu nào cho tác giả và không có telemetry. Các kết nối mạng đi qua yt-dlp (các trang video), trình hướng dẫn cài đặt (GitHub) và công cụ sổ đăng ký (tìm kiếm YouTube).
+- Phần mềm này không gửi dữ liệu nào cho tác giả và không có telemetry. Các kết nối mạng đi qua yt-dlp (các trang video), trình hướng dẫn cài đặt (GitHub) và công cụ sổ đăng ký (tìm kiếm YouTube). Việc tự động kiểm tra cập nhật cũng kết nối tới GitHub khi khởi động (tối đa mỗi ngày một lần); bạn có thể tắt trong «Kiểm tra bản cập nhật phần mềm…».
 - Cookie của bạn ở lại trên máy tính của bạn: yt-dlp đọc chúng cục bộ từ trình duyệt đã chọn.
 - Hãy dùng công cụ này tuân thủ bản quyền, điều khoản sử dụng của các trang web và luật pháp nước bạn, và chỉ tải những gì bạn có quyền tải.
 

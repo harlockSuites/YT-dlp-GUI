@@ -37,6 +37,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 - **Katulong sa pag-install**: sa unang pagbukas, iminumungkahi nitong i-download ang yt-dlp at ffmpeg mula sa kanilang opisyal na GitHub repository. Bine-verify ang SHA-256 checksum at hindi kailangan ng administrator rights.
 - **Mga dependency**: sinusuri ng nakalaang window ang ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 at deno, at maaari silang i-install gamit ang Chocolatey.
 - **Update at diagnostic**: ina-update ang yt-dlp (`yt-dlp -U`) o pinapalitan ang executable nito, ipinapakita ang bersyon at sinusuri ang mga opsyong ginagamit ng interface.
+- **Update ng software**: ang araw-araw na pagsusuri (maaaring i-off) ay nagsasaad ng bagong bersyon gamit ang isang banayad na banner; ipinapakita ng nakalaang window ang mga bago at binubuksan ang download na tugma sa iyong pag-install (installer o portable na bersyon). Walang awtomatikong ini-install.
 
 ### Interface at mga wika
 
@@ -63,7 +64,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 
 ## Privacy at responsableng paggamit
 
-- Walang ipinapadalang data ang software na ito sa may-akda at walang telemetry. Dumadaan ang mga koneksyon sa network sa yt-dlp (mga video site), sa katulong sa pag-install (GitHub) at sa tool ng talaan (paghahanap sa YouTube).
+- Walang ipinapadalang data ang software na ito sa may-akda at walang telemetry. Dumadaan ang mga koneksyon sa network sa yt-dlp (mga video site), sa katulong sa pag-install (GitHub) at sa tool ng talaan (paghahanap sa YouTube). Kumokonekta rin sa GitHub ang awtomatikong pagsusuri ng update sa pagsisimula (isang beses lang kada araw nang pinakamarami); maaari mo itong i-off sa "Maghanap ng update ng software…".
 - Nananatili sa iyong computer ang iyong mga cookie: lokal na binabasa ng yt-dlp ang mga ito mula sa napiling browser.
 - Gamitin ang tool na ito alinsunod sa copyright, sa mga tuntunin ng paggamit ng mga site at sa mga batas ng iyong bansa, at i-download lang ang may karapatan kang i-download.
 

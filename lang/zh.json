@@ -450,5 +450,22 @@
   "setup.err_checksum": "{name} 的校验和无效：文件已删除。",
   "setup.err_no_tools": "压缩包中未找到 ffmpeg.exe 和 ffprobe.exe。",
   "setup.err_cancelled": "已取消。",
-  "toolbar.menu_setup": "安装向导…"
+  "toolbar.menu_setup": "安装向导…",
+  "toolbar.menu_check_update": "检查软件更新…",
+  "app_update.window_title": "软件更新",
+  "app_update.current": "已安装版本：{version}",
+  "app_update.checking": "正在检查…",
+  "app_update.up_to_date": "您使用的已是最新版本（{version}）。",
+  "app_update.available": "有新版本可用：{version}",
+  "app_update.error": "无法检查：{error}",
+  "app_update.error_not_found": "尚未发布任何版本（或仓库为私有）。",
+  "app_update.error_bad_release": "GitHub 返回了意外的响应。",
+  "app_update.chk_auto": "启动时自动检查",
+  "app_update.btn_page": "在 GitHub 上查看该版本",
+  "app_update.btn_download": "下载",
+  "app_update.btn_ignore": "忽略此版本",
+  "app_update.btn_close": "关闭",
+  "app_update.notes": "更新内容",
+  "app_update.banner": "🔔 有新版本 {version} 可用",
+  "app_update.hint_source": "您正在使用源代码：请使用 git pull 获取最新版本。"
 }

@@ -450,5 +450,22 @@
   "setup.err_checksum": "Soma de verificação inválida para {name}: arquivo excluído.",
   "setup.err_no_tools": "ffmpeg.exe e ffprobe.exe não encontrados no arquivo.",
   "setup.err_cancelled": "Cancelado.",
-  "toolbar.menu_setup": "Assistente de instalação…"
+  "toolbar.menu_setup": "Assistente de instalação…",
+  "toolbar.menu_check_update": "Procurar atualização do programa…",
+  "app_update.window_title": "Atualização do programa",
+  "app_update.current": "Versão instalada: {version}",
+  "app_update.checking": "Procurando…",
+  "app_update.up_to_date": "Você está usando a versão mais recente ({version}).",
+  "app_update.available": "Nova versão disponível: {version}",
+  "app_update.error": "Não foi possível verificar: {error}",
+  "app_update.error_not_found": "Nenhuma versão publicada ainda (ou repositório privado).",
+  "app_update.error_bad_release": "Resposta inesperada do GitHub.",
+  "app_update.chk_auto": "Verificar automaticamente ao iniciar",
+  "app_update.btn_page": "Ver a versão no GitHub",
+  "app_update.btn_download": "Baixar",
+  "app_update.btn_ignore": "Ignorar esta versão",
+  "app_update.btn_close": "Fechar",
+  "app_update.notes": "Novidades",
+  "app_update.banner": "🔔 Nova versão {version} disponível",
+  "app_update.hint_source": "Você está usando o código-fonte: obtenha a versão mais recente com git pull."
 }

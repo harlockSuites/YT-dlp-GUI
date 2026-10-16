@@ -450,5 +450,22 @@
   "setup.err_checksum": "{name}의 체크섬이 올바르지 않습니다: 파일을 삭제했습니다.",
   "setup.err_no_tools": "압축 파일에서 ffmpeg.exe와 ffprobe.exe를 찾을 수 없습니다.",
   "setup.err_cancelled": "취소됨.",
-  "toolbar.menu_setup": "설치 도우미…"
+  "toolbar.menu_setup": "설치 도우미…",
+  "toolbar.menu_check_update": "소프트웨어 업데이트 확인…",
+  "app_update.window_title": "소프트웨어 업데이트",
+  "app_update.current": "설치된 버전: {version}",
+  "app_update.checking": "확인 중…",
+  "app_update.up_to_date": "최신 버전({version})을 사용 중입니다.",
+  "app_update.available": "새 버전을 사용할 수 있습니다: {version}",
+  "app_update.error": "확인할 수 없음: {error}",
+  "app_update.error_not_found": "아직 게시된 버전이 없습니다(또는 저장소가 비공개입니다).",
+  "app_update.error_bad_release": "GitHub에서 예기치 않은 응답이 왔습니다.",
+  "app_update.chk_auto": "시작할 때 자동으로 확인",
+  "app_update.btn_page": "GitHub에서 릴리스 보기",
+  "app_update.btn_download": "다운로드",
+  "app_update.btn_ignore": "이 버전 무시",
+  "app_update.btn_close": "닫기",
+  "app_update.notes": "새로운 기능",
+  "app_update.banner": "🔔 새 버전 {version}을(를) 사용할 수 있습니다",
+  "app_update.hint_source": "소스 코드를 사용 중입니다: git pull로 최신 버전을 받으세요."
 }

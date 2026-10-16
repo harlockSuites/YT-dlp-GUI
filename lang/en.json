@@ -450,5 +450,22 @@
   "setup.err_checksum": "Invalid checksum for {name}: file deleted.",
   "setup.err_no_tools": "ffmpeg.exe and ffprobe.exe not found in the archive.",
   "setup.err_cancelled": "Cancelled.",
-  "toolbar.menu_setup": "Setup assistant…"
+  "toolbar.menu_setup": "Setup assistant…",
+  "toolbar.menu_check_update": "Check for a software update…",
+  "app_update.window_title": "Software update",
+  "app_update.current": "Installed version: {version}",
+  "app_update.checking": "Checking…",
+  "app_update.up_to_date": "You are using the latest version ({version}).",
+  "app_update.available": "New version available: {version}",
+  "app_update.error": "Unable to check: {error}",
+  "app_update.error_not_found": "No version published yet (or private repository).",
+  "app_update.error_bad_release": "Unexpected response from GitHub.",
+  "app_update.chk_auto": "Check automatically at startup",
+  "app_update.btn_page": "View the release on GitHub",
+  "app_update.btn_download": "Download",
+  "app_update.btn_ignore": "Ignore this version",
+  "app_update.btn_close": "Close",
+  "app_update.notes": "What's new",
+  "app_update.banner": "🔔 New version {version} available",
+  "app_update.hint_source": "You are running the source code: get the latest version with git pull."
 }

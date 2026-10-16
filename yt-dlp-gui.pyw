@@ -3952,9 +3952,9 @@ class SetupError(Exception):
     pass
 
 
-def _open_url(url, timeout=30):
+def _open_url(url, timeout=30, headers=None):
     import urllib.request
-    req = urllib.request.Request(url, headers={"User-Agent": f"yt-dlp-GUI/{__version__}"})
+    req = urllib.request.Request(url, headers={"User-Agent": f"yt-dlp-GUI/{__version__}", **(headers or {})})
     return urllib.request.urlopen(req, timeout=timeout)
 
 
@@ -4178,6 +4178,198 @@ class SetupWizardWindow(tk.Toplevel):
         self.destroy()
 
 
+# ══════════════════════════════════════════════════════════════════
+#  Notification de mise à jour du logiciel (dernière release GitHub)
+# ══════════════════════════════════════════════════════════════════
+RELEASES_API_URL = "https://api.github.com/repos/harlockSuites/YT-dlp-GUI/releases/latest"
+UPDATE_CHECK_INTERVAL = 24 * 3600
+_ASSET_PATTERNS = {"installer": "yt-dlp-gui-setup-*.exe", "portable": "yt-dlp-gui-portable-*.zip"}
+
+
+class UpdateError(Exception):
+    def __init__(self, message, not_found=False):
+        super().__init__(message)
+        self.not_found = not_found
+
+
+def _parse_version(text):
+    m = re.fullmatch(r"v?(\d+)\.(\d+)\.(\d+)", (text or "").strip())
+    return tuple(int(x) for x in m.groups()) if m else None
+
+
+def _is_newer(latest, current):
+    a, b = _parse_version(latest), _parse_version(current)
+    return a is not None and b is not None and a > b
+
+
+def _is_github_url(url):
+    from urllib.parse import urlparse
+    u = urlparse(url or "")
+    host = (u.hostname or "").lower()
+    return u.scheme == "https" and (host == "github.com" or host.endswith(".github.com")
+                                    or host.endswith(".githubusercontent.com"))
+
+
+def _install_kind(frozen=None, executable=None):
+    """« source », « portable » ou « installer » : détermine quel fichier proposer."""
+    frozen = getattr(sys, "frozen", False) if frozen is None else frozen
+    if not frozen:
+        return "source"
+    exe_dir = os.path.dirname(os.path.abspath(executable or sys.executable))
+    return "portable" if os.path.isfile(os.path.join(exe_dir, "portable.flag")) else "installer"
+
+
+def should_check_updates(cfg, now):
+    return bool(cfg.get("update_check", True)) and now - float(cfg.get("update_last_check", 0) or 0) >= UPDATE_CHECK_INTERVAL
+
+
+def pick_asset(info, kind):
+    import fnmatch
+    pattern = _ASSET_PATTERNS.get(kind)
+    if not pattern:
+        return None
+    return next((a for a in info["assets"] if fnmatch.fnmatch(a["name"], pattern)), None)
+
+
+def fetch_latest_release(opener=_open_url):
+    """Dernière release publiée sur GitHub, ou UpdateError. Seuls les liens github.com sont conservés."""
+    import urllib.error
+    try:
+        with opener(RELEASES_API_URL, 15, {"Accept": "application/vnd.github+json"}) as r:
+            data = json.loads(r.read().decode("utf-8", "replace"))
+    except urllib.error.HTTPError as e:
+        e.close()
+        if e.code == 404:
+            raise UpdateError(t("app_update.error_not_found"), not_found=True)
+        raise UpdateError(f"HTTP {e.code}")
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        raise UpdateError(str(getattr(e, "reason", e)))
+    version = (data.get("tag_name") or "").lstrip("v")
+    if _parse_version(version) is None:
+        raise UpdateError(t("app_update.error_bad_release"))
+    page = data.get("html_url") or ""
+    assets = [{"name": a.get("name", ""), "url": a.get("browser_download_url", ""), "size": a.get("size", 0)}
+              for a in data.get("assets", []) if _is_github_url(a.get("browser_download_url"))]
+    return {"version": version, "tag": data.get("tag_name"), "name": data.get("name") or "",
+            "notes": data.get("body") or "", "url": page if _is_github_url(page) else REPO_URL + "/releases",
+            "assets": assets}
+
+
+def check_for_update(current=None, opener=_open_url):
+    """Retourne les informations de la release si elle est plus récente que `current`, sinon None."""
+    info = fetch_latest_release(opener)
+    return info if _is_newer(info["version"], current or __version__) else None
+
+
+class AppUpdateWindow(tk.Toplevel):
+    """Recherche de mise à jour du logiciel : informe et ouvre le navigateur, n'installe rien tout seul."""
+    def __init__(self, parent, info=None):
+        super().__init__(parent)
+        self.title(t("app_update.window_title"))
+        self.geometry("560x430")
+        self.minsize(460, 340)
+        self.transient(parent)
+        self._parent = parent
+        self._info = None
+        self._closed = False
+        frm = ttk.Frame(self, padding=12)
+        frm.pack(fill="both", expand=True)
+        ttk.Label(frm, text=t("app_update.current", version=__version__)).pack(anchor="w")
+        self.var_status = tk.StringVar(value=t("app_update.checking"))
+        self.lbl_status = ttk.Label(frm, textvariable=self.var_status, font=("Segoe UI", 10, "bold"))
+        self.lbl_status.pack(anchor="w", pady=(6, 4))
+        self.lbl_hint = ttk.Label(frm, text="", foreground="gray", wraplength=520, justify="left")
+        self.lbl_hint.pack(anchor="w")
+
+        frm_notes = ttk.LabelFrame(frm, text=t("app_update.notes"), padding=6)
+        frm_notes.pack(fill="both", expand=True, pady=(8, 6))
+        sb = ttk.Scrollbar(frm_notes, orient="vertical")
+        self.txt = tk.Text(frm_notes, wrap="word", height=8, state="disabled", font=("Segoe UI", 9),
+                           yscrollcommand=sb.set)
+        sb.configure(command=self.txt.yview)
+        sb.pack(side="right", fill="y")
+        self.txt.pack(side="left", fill="both", expand=True)
+
+        cfg = load_config()
+        self.var_auto = tk.BooleanVar(value=bool(cfg.get("update_check", True)))
+        self.var_auto.trace_add("write", self._save_auto)
+        ttk.Checkbutton(frm, text=t("app_update.chk_auto"), variable=self.var_auto).pack(anchor="w")
+
+        btns = ttk.Frame(frm)
+        btns.pack(fill="x", pady=(8, 0))
+        self.btn_page = ttk.Button(btns, text=t("app_update.btn_page"), command=self._open_page, state="disabled")
+        self.btn_dl = ttk.Button(btns, text=t("app_update.btn_download"), command=self._download, state="disabled")
+        self.btn_ignore = ttk.Button(btns, text=t("app_update.btn_ignore"), command=self._ignore, state="disabled")
+        self.btn_page.pack(side="left")
+        self.btn_dl.pack(side="left", padx=(6, 0))
+        self.btn_ignore.pack(side="left", padx=(6, 0))
+        ttk.Button(btns, text=t("app_update.btn_close"), command=self.destroy).pack(side="right")
+        self.bind("<Destroy>", lambda e: setattr(self, "_closed", True) if e.widget is self else None)
+
+        if info is not None:
+            self._show(info, None)
+        else:
+            threading.Thread(target=self._work, daemon=True).start()
+
+    def _work(self):
+        try:
+            info, err = check_for_update(), None
+        except UpdateError as e:
+            info, err = None, e
+        except Exception as e:
+            info, err = None, UpdateError(str(e))
+        try:
+            self.after(0, lambda: self._show(info, err))
+        except (tk.TclError, RuntimeError):
+            pass
+
+    def _show(self, info, err):
+        if self._closed:
+            return
+        self._info = info
+        if err is not None:
+            self.var_status.set(t("app_update.error", error=err))
+            return
+        self._parent._record_update_check(info)
+        if info is None:
+            self.var_status.set(t("app_update.up_to_date", version=__version__))
+            return
+        self.var_status.set(t("app_update.available", version=info["version"]))
+        self.txt.configure(state="normal")
+        self.txt.delete("1.0", "end")
+        self.txt.insert("1.0", info["notes"].strip() or info["name"] or info["tag"])
+        self.txt.configure(state="disabled")
+        self.btn_page.configure(state="normal")
+        self.btn_ignore.configure(state="normal")
+        if _install_kind() == "source":
+            self.lbl_hint.configure(text=t("app_update.hint_source"))
+        elif pick_asset(info, _install_kind()):
+            self.btn_dl.configure(state="normal")
+
+    def _save_auto(self, *_):
+        cfg = load_config()
+        cfg["update_check"] = bool(self.var_auto.get())
+        save_config(cfg)
+
+    def _open_page(self):
+        if self._info and _is_github_url(self._info["url"]):
+            webbrowser.open(self._info["url"])
+
+    def _download(self):
+        asset = pick_asset(self._info, _install_kind()) if self._info else None
+        if asset and _is_github_url(asset["url"]):
+            webbrowser.open(asset["url"])
+
+    def _ignore(self):
+        if not self._info:
+            return
+        cfg = load_config()
+        cfg["update_ignored"] = self._info["version"]
+        save_config(cfg)
+        self.btn_ignore.configure(state="disabled")
+        self._parent._record_update_check(self._info)
+
+
 class DonateWindow(tk.Toplevel):
     """Fenêtre de remerciement avec logo, bannière et lien vers le don."""
     def __init__(self, parent):
@@ -4207,6 +4399,7 @@ class DonateWindow(tk.Toplevel):
 
 class YtDlpGui(tk.Tk):
     AUTO_SETUP = True   # ouvre l'assistant au démarrage si yt-dlp.exe est absent
+    AUTO_UPDATE_CHECK = True   # vérifie en arrière-plan la présence d'une nouvelle version
 
     def __init__(self):
         super().__init__()
@@ -4229,6 +4422,8 @@ class YtDlpGui(tk.Tk):
         self._restore_config()
         if self.AUTO_SETUP:
             self.after(400, self._maybe_first_run)
+        if self.AUTO_UPDATE_CHECK:
+            self.after(3000, self._maybe_check_updates)
         self._refresh_queue_tv()
         # Résoudre les titres manquants des entrées chargées depuis le disque
         for i, e in enumerate(self._queue):
@@ -4306,6 +4501,13 @@ class YtDlpGui(tk.Tk):
             foreground="#e67e22", font=("Segoe UI", 9)
         )
         self._lbl_dep_warn.pack(side="left")
+        self._update_info = None
+        self._frm_toolbar = frm_toolbar
+        self._frm_update = ttk.Frame(page)   # ligne affichée sous la barre d'outils quand une version est disponible
+        self._lbl_update = tk.Label(self._frm_update, text="", fg="#2980b9", cursor="hand2",
+                                    font=("Segoe UI", 9, "underline"), justify="left", wraplength=700)
+        self._lbl_update.pack(anchor="w")
+        self._lbl_update.bind("<Button-1>", lambda _e: self._open_app_update())
 
         ttk.Button(
             frm_toolbar, text=t("toolbar.btn_donate"),
@@ -4624,6 +4826,7 @@ class YtDlpGui(tk.Tk):
     def _open_options_menu(self):
         menu = tk.Menu(self, tearoff=0)
         menu.add_command(label=t("toolbar.menu_update"), command=self._open_update)
+        menu.add_command(label=t("toolbar.menu_check_update"), command=self._open_app_update)
         menu.add_command(label=t("toolbar.menu_deps"),   command=self._open_deps)
         menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
         menu.add_separator()
@@ -4733,6 +4936,36 @@ class YtDlpGui(tk.Tk):
 
     def _open_update(self):
         UpdateWindow(self)
+
+    def _open_app_update(self):
+        AppUpdateWindow(self, self._update_info)
+
+    def _maybe_check_updates(self):
+        if not should_check_updates(load_config(), time.time()):
+            return
+
+        def work():
+            try:
+                info = check_for_update()
+            except Exception:
+                return   # vérification silencieuse : aucune erreur affichée au démarrage
+            try:
+                self.after(0, lambda: self._record_update_check(info))
+            except (tk.TclError, RuntimeError):
+                pass
+        threading.Thread(target=work, daemon=True).start()
+
+    def _record_update_check(self, info):
+        """Mémorise l'heure de la vérification et affiche (ou masque) le bandeau de nouvelle version."""
+        cfg = load_config()
+        cfg["update_last_check"] = time.time()
+        save_config(cfg)
+        self._update_info = info
+        if info and info["version"] != cfg.get("update_ignored"):
+            self._lbl_update.configure(text=t("app_update.banner", version=info["version"]))
+            self._frm_update.pack(fill="x", padx=10, pady=(4, 0), after=self._frm_toolbar)
+        else:
+            self._frm_update.pack_forget()
 
     def _maybe_first_run(self):
         if not os.path.isfile(YTDLP):

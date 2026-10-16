@@ -37,6 +37,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Pomoćnik za instalaciju**: pri prvom pokretanju predlaže preuzimanje yt-dlp-a i ffmpeg-a iz njihovih zvaničnih GitHub repozitorijuma. SHA-256 kontrolna suma se proverava i nisu potrebna administratorska prava.
 - **Zavisnosti**: poseban prozor proverava ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno i može da ih instalira preko Chocolatey-ja.
 - **Ažuriranje i dijagnostika**: ažurira yt-dlp (`yt-dlp -U`) ili menja njegov izvršni fajl, prikazuje verziju i proverava opcije koje interfejs koristi.
+- **Ažuriranje programa**: dnevna provera (može se isključiti) diskretnom trakom javlja da postoji nova verzija; poseban prozor prikazuje novosti i otvara preuzimanje koje odgovara vašoj instalaciji (instalater ili prenosiva verzija). Ništa se ne instalira automatski.
 
 ### Interfejs i jezici
 
@@ -63,7 +64,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 
 ## Privatnost i odgovorna upotreba
 
-- Ovaj softver ne šalje nikakve podatke autoru i ne sadrži telemetriju. Mrežne veze idu preko yt-dlp-a (video sajtovi), pomoćnika za instalaciju (GitHub) i alata za evidenciju (pretraga na YouTube-u).
+- Ovaj softver ne šalje nikakve podatke autoru i ne sadrži telemetriju. Mrežne veze idu preko yt-dlp-a (video sajtovi), pomoćnika za instalaciju (GitHub) i alata za evidenciju (pretraga na YouTube-u). Automatska provera ažuriranja takođe se povezuje sa GitHub-om pri pokretanju (najviše jednom dnevno); možete je isključiti u „Potraži ažuriranje programa…”.
 - Vaši kolačići ostaju na vašem računaru: yt-dlp ih čita lokalno iz izabranog pregledača.
 - Koristite alat uz poštovanje autorskih prava, uslova korišćenja sajtova i zakona vaše zemlje, i preuzimajte samo ono što imate pravo da preuzmete.
 

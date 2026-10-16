@@ -450,5 +450,22 @@
   "setup.err_checksum": "Неверная контрольная сумма для {name}: файл удалён.",
   "setup.err_no_tools": "ffmpeg.exe и ffprobe.exe не найдены в архиве.",
   "setup.err_cancelled": "Отменено.",
-  "toolbar.menu_setup": "Мастер установки…"
+  "toolbar.menu_setup": "Мастер установки…",
+  "toolbar.menu_check_update": "Проверить обновление программы…",
+  "app_update.window_title": "Обновление программы",
+  "app_update.current": "Установленная версия: {version}",
+  "app_update.checking": "Проверка…",
+  "app_update.up_to_date": "Вы используете последнюю версию ({version}).",
+  "app_update.available": "Доступна новая версия: {version}",
+  "app_update.error": "Не удалось проверить: {error}",
+  "app_update.error_not_found": "Пока не опубликовано ни одной версии (или репозиторий закрытый).",
+  "app_update.error_bad_release": "Неожиданный ответ GitHub.",
+  "app_update.chk_auto": "Проверять автоматически при запуске",
+  "app_update.btn_page": "Открыть версию на GitHub",
+  "app_update.btn_download": "Скачать",
+  "app_update.btn_ignore": "Пропустить эту версию",
+  "app_update.btn_close": "Закрыть",
+  "app_update.notes": "Что нового",
+  "app_update.banner": "🔔 Доступна новая версия {version}",
+  "app_update.hint_source": "Вы используете исходный код: получите последнюю версию командой git pull."
 }
