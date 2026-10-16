@@ -20,9 +20,9 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -47,7 +47,7 @@ jobs:
           python -X utf8 packaging/release_tools.py notes --out dist/release-notes.md
           python -X utf8 packaging/release_tools.py checksums --dir dist --out dist/SHA256SUMS.txt
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: yt-dlp-gui-windows
           path: |
@@ -58,7 +58,7 @@ jobs:
 
       - name: Publier la release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           body_path: dist/release-notes.md
           fail_on_unmatched_files: true
