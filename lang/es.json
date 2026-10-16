@@ -415,5 +415,18 @@
   "inspect.log_audio": "Pistas de audio: {langs}",
   "inspect.log_subs": "Subtítulos: {langs}{auto}",
   "inspect.none": "ninguna",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Informar de un error",
+  "bug.window_title": "Informar de un error",
+  "bug.intro": "Describa el problema. Se adjunta un informe técnico (versión, sistema, últimas líneas del registro); sus carpetas, nombre de usuario y correos electrónicos se ocultan. No se envía nada automáticamente: revíselo y abra la página de GitHub.",
+  "bug.label_summary": "Resumen del problema",
+  "bug.label_description": "¿Qué ocurrió? ¿Qué estaba haciendo?",
+  "bug.label_report": "Informe técnico (editable)",
+  "bug.btn_open": "Abrir en GitHub",
+  "bug.btn_copy": "Copiar el informe",
+  "bug.btn_close": "Cerrar",
+  "bug.copied": "Informe copiado al portapapeles.",
+  "bug.truncated": "El informe es largo: el principio se ha pasado a GitHub y el informe completo está en el portapapeles. Péguelo en el ticket si hace falta.",
+  "bug.ask_report": "¿Desea informar de este error?",
+  "bug.warn_summary": "Añada un resumen antes de abrir GitHub."
 }

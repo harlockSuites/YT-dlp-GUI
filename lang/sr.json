@@ -415,5 +415,18 @@
   "inspect.log_audio": "Audio zapisi: {langs}",
   "inspect.log_subs": "Titlovi: {langs}{auto}",
   "inspect.none": "nema",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Prijavi grešku",
+  "bug.window_title": "Prijavi grešku",
+  "bug.intro": "Opišite problem. Prilaže se tehnički izveštaj (verzija, sistem, poslednje linije dnevnika); vaše fascikle, korisničko ime i e-adrese su sakriveni. Ništa se ne šalje automatski: pregledajte, pa otvorite GitHub stranicu.",
+  "bug.label_summary": "Rezime problema",
+  "bug.label_description": "Šta se desilo? Šta ste radili?",
+  "bug.label_report": "Tehnički izveštaj (može se menjati)",
+  "bug.btn_open": "Otvori na GitHub-u",
+  "bug.btn_copy": "Kopiraj izveštaj",
+  "bug.btn_close": "Zatvori",
+  "bug.copied": "Izveštaj je kopiran u klipbord.",
+  "bug.truncated": "Izveštaj je dug: početak je prosleđen GitHub-u, a ceo izveštaj je u klipbordu. Nalepite ga u prijavu ako treba.",
+  "bug.ask_report": "Želite li da prijavite ovu grešku?",
+  "bug.warn_summary": "Dodajte rezime pre otvaranja GitHub-a."
 }

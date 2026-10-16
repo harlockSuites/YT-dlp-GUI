@@ -415,5 +415,18 @@
   "inspect.log_audio": "Rãnh âm thanh: {langs}",
   "inspect.log_subs": "Phụ đề: {langs}{auto}",
   "inspect.none": "không có",
-  "inspect.auto_part": " (tự động: {langs})"
+  "inspect.auto_part": " (tự động: {langs})",
+  "toolbar.btn_bug": "🐞 Báo lỗi",
+  "bug.window_title": "Báo lỗi",
+  "bug.intro": "Hãy mô tả vấn đề. Một báo cáo kỹ thuật được đính kèm (phiên bản, hệ thống, các dòng nhật ký cuối); thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Không có gì được gửi tự động: hãy xem lại rồi mở trang GitHub.",
+  "bug.label_summary": "Tóm tắt vấn đề",
+  "bug.label_description": "Chuyện gì đã xảy ra? Bạn đang làm gì?",
+  "bug.label_report": "Báo cáo kỹ thuật (có thể chỉnh sửa)",
+  "bug.btn_open": "Mở trên GitHub",
+  "bug.btn_copy": "Sao chép báo cáo",
+  "bug.btn_close": "Đóng",
+  "bug.copied": "Đã sao chép báo cáo vào bảng nhớ tạm.",
+  "bug.truncated": "Báo cáo dài: phần đầu đã chuyển sang GitHub và báo cáo đầy đủ nằm trong bảng nhớ tạm. Hãy dán vào phiếu nếu cần.",
+  "bug.ask_report": "Bạn có muốn báo lỗi này không?",
+  "bug.warn_summary": "Hãy thêm tóm tắt trước khi mở GitHub."
 }

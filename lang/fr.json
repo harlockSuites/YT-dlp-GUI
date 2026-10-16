@@ -415,5 +415,18 @@
   "inspect.log_audio": "Pistes audio : {langs}",
   "inspect.log_subs": "Sous-titres : {langs}{auto}",
   "inspect.none": "aucune",
-  "inspect.auto_part": " (auto : {langs})"
+  "inspect.auto_part": " (auto : {langs})",
+  "toolbar.btn_bug": "🐞 Signaler un bogue",
+  "bug.window_title": "Signaler un bogue",
+  "bug.intro": "Décrivez le problème. Un rapport technique est joint (version, système, dernières lignes du journal) ; vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués. Rien n'est envoyé automatiquement : relisez, puis ouvrez la page GitHub.",
+  "bug.label_summary": "Résumé du problème",
+  "bug.label_description": "Que s'est-il passé ? Que faisiez-vous ?",
+  "bug.label_report": "Rapport technique (modifiable)",
+  "bug.btn_open": "Ouvrir sur GitHub",
+  "bug.btn_copy": "Copier le rapport",
+  "bug.btn_close": "Fermer",
+  "bug.copied": "Rapport copié dans le presse-papiers.",
+  "bug.truncated": "Le rapport est long : le début a été transmis à GitHub et le rapport complet est dans le presse-papiers. Collez-le dans le ticket si besoin.",
+  "bug.ask_report": "Voulez-vous signaler ce bogue ?",
+  "bug.warn_summary": "Ajoutez un résumé avant d'ouvrir GitHub."
 }

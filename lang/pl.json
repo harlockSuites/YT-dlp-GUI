@@ -415,5 +415,18 @@
   "inspect.log_audio": "Ścieżki audio: {langs}",
   "inspect.log_subs": "Napisy: {langs}{auto}",
   "inspect.none": "brak",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Zgłoś błąd",
+  "bug.window_title": "Zgłoś błąd",
+  "bug.intro": "Opisz problem. Dołączony jest raport techniczny (wersja, system, ostatnie linie dziennika); Twoje foldery, nazwa użytkownika i adresy e-mail są zasłonięte. Nic nie jest wysyłane automatycznie: sprawdź raport i otwórz stronę GitHub.",
+  "bug.label_summary": "Podsumowanie problemu",
+  "bug.label_description": "Co się stało? Co robiłeś?",
+  "bug.label_report": "Raport techniczny (do edycji)",
+  "bug.btn_open": "Otwórz w GitHub",
+  "bug.btn_copy": "Kopiuj raport",
+  "bug.btn_close": "Zamknij",
+  "bug.copied": "Raport skopiowany do schowka.",
+  "bug.truncated": "Raport jest długi: początek przekazano do GitHub, a pełny raport jest w schowku. W razie potrzeby wklej go do zgłoszenia.",
+  "bug.ask_report": "Czy chcesz zgłosić ten błąd?",
+  "bug.warn_summary": "Dodaj podsumowanie przed otwarciem GitHub."
 }

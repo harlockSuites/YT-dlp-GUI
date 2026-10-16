@@ -415,5 +415,18 @@
   "inspect.log_audio": "Mga audio track: {langs}",
   "inspect.log_subs": "Mga subtitle: {langs}{auto}",
   "inspect.none": "wala",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Mag-ulat ng bug",
+  "bug.window_title": "Mag-ulat ng bug",
+  "bug.intro": "Ilarawan ang problema. May kalakip na teknikal na ulat (bersyon, sistema, huling linya ng log); nakatago ang iyong mga folder, pangalan ng user at e-mail. Walang awtomatikong ipinapadala: suriin muna, saka buksan ang pahina ng GitHub.",
+  "bug.label_summary": "Buod ng problema",
+  "bug.label_description": "Ano ang nangyari? Ano ang ginagawa mo?",
+  "bug.label_report": "Teknikal na ulat (maaaring i-edit)",
+  "bug.btn_open": "Buksan sa GitHub",
+  "bug.btn_copy": "Kopyahin ang ulat",
+  "bug.btn_close": "Isara",
+  "bug.copied": "Nakopya ang ulat sa clipboard.",
+  "bug.truncated": "Mahaba ang ulat: ang simula ay ipinasa sa GitHub at nasa clipboard ang buong ulat. I-paste ito sa ticket kung kailangan.",
+  "bug.ask_report": "Gusto mo bang iulat ang bug na ito?",
+  "bug.warn_summary": "Magdagdag ng buod bago buksan ang GitHub."
 }

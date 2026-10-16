@@ -415,5 +415,18 @@
   "inspect.log_audio": "Tracce audio: {langs}",
   "inspect.log_subs": "Sottotitoli: {langs}{auto}",
   "inspect.none": "nessuna",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Segnala un bug",
+  "bug.window_title": "Segnala un bug",
+  "bug.intro": "Descrivi il problema. Viene allegato un rapporto tecnico (versione, sistema, ultime righe del registro); le tue cartelle, il nome utente e gli indirizzi e-mail sono oscurati. Nulla viene inviato automaticamente: controlla e poi apri la pagina di GitHub.",
+  "bug.label_summary": "Riepilogo del problema",
+  "bug.label_description": "Cosa è successo? Cosa stavi facendo?",
+  "bug.label_report": "Rapporto tecnico (modificabile)",
+  "bug.btn_open": "Apri su GitHub",
+  "bug.btn_copy": "Copia il rapporto",
+  "bug.btn_close": "Chiudi",
+  "bug.copied": "Rapporto copiato negli appunti.",
+  "bug.truncated": "Il rapporto è lungo: l'inizio è stato passato a GitHub e il rapporto completo è negli appunti. Incollalo nel ticket se serve.",
+  "bug.ask_report": "Vuoi segnalare questo bug?",
+  "bug.warn_summary": "Aggiungi un riepilogo prima di aprire GitHub."
 }

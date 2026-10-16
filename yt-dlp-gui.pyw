@@ -13,8 +13,13 @@ import json
 import re
 import sys
 import time
+import platform
+import getpass
+import webbrowser
+from urllib.parse import quote
 
 __version__ = "0.1.0"
+REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 YTDLP              = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yt-dlp.exe")
 CONFIG_FILE        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gui-config.json")
@@ -3780,6 +3785,131 @@ class PlaylistInspectorWindow(tk.Toplevel):
 # ══════════════════════════════════════════════════════════════════
 #  Fenêtre principale
 # ══════════════════════════════════════════════════════════════════
+_SAFE_CONFIG_KEYS = ("lang", "quality", "audio_only", "sub_fmt", "embed_subs", "embed_thumb", "browser")
+
+
+def _redact(text, private=()):
+    """Masque les dossiers personnels, le nom d'utilisateur et les adresses e-mail."""
+    for p in sorted({x for x in private if x and len(x) > 3}, key=len, reverse=True):
+        for variant in {p, p.replace("\\", "/"), p.replace("/", "\\")}:
+            text = text.replace(variant, "<folder>")
+    home = os.path.expanduser("~")
+    if home and len(home) > 3:
+        for variant in {home, home.replace("\\", "/")}:
+            text = text.replace(variant, "~")
+    try:
+        user = getpass.getuser()
+    except Exception:
+        user = ""
+    if user and len(user) >= 3:
+        text = re.sub(re.escape(user), "<user>", text, flags=re.I)
+    return re.sub(r"[\w.+-]+@[\w-]+\.[\w.-]+", "<email>", text)
+
+
+def _ytdlp_version():
+    try:
+        r = subprocess.run([YTDLP, "--version"], capture_output=True, text=True, timeout=8,
+                           creationflags=subprocess.CREATE_NO_WINDOW)
+        return r.stdout.strip() or "unknown"
+    except Exception:
+        return "not found"
+
+
+def collect_diagnostics(log_tail="", last_error="", private=()):
+    """Texte technique joint à un rapport de bogue : aucune donnée personnelle (masquage inclus)."""
+    cfg = load_config()
+    lines = [
+        f"GUI version: {__version__}",
+        f"Python: {platform.python_version()}",
+        f"OS: {platform.platform()}",
+        f"yt-dlp: {_ytdlp_version()}",
+        f"ffmpeg: {'found' if shutil.which('ffmpeg') else 'missing'}",
+        f"ffprobe: {'found' if shutil.which('ffprobe') else 'missing'}",
+        f"UI language: {_CURRENT_LANG}",
+    ]
+    settings = [f"{k}={cfg[k]}" for k in _SAFE_CONFIG_KEYS if k in cfg]
+    if settings:
+        lines.append("Settings: " + ", ".join(settings))
+    if last_error.strip():
+        lines += ["", "--- Last internal error ---", last_error.strip()]
+    if log_tail.strip():
+        lines += ["", "--- Log (last lines) ---", log_tail.strip()]
+    return _redact("\n".join(lines), private)
+
+
+def _issue_url(title, description, report, limit=6500):
+    """URL de nouveau ticket GitHub préremplie. Retourne (url, tronqué)."""
+    def build(rep):
+        body = f"## Description\n{description or '-'}\n\n## Report\n```\n{rep}\n```\n"
+        return f"{REPO_URL}/issues/new?title={quote(title, safe='')}&body={quote(body, safe='')}"
+    url, truncated = build(report), False
+    while len(url) > limit and len(report) > 200:
+        report = report[:int(len(report) * 0.8)].rstrip() + "\n[truncated]"
+        url, truncated = build(report), True
+    return url, truncated
+
+
+class BugReportWindow(tk.Toplevel):
+    """Rapport de bogue : rien n'est envoyé automatiquement, l'utilisateur relit puis ouvre GitHub."""
+    def __init__(self, parent, report):
+        super().__init__(parent)
+        self.title(t("bug.window_title"))
+        self.geometry("640x640")
+        self.minsize(520, 480)
+        self.transient(parent)
+        frm = ttk.Frame(self, padding=12)
+        frm.pack(fill="both", expand=True)
+
+        ttk.Label(frm, text=t("bug.intro"), wraplength=580, justify="left").pack(anchor="w")
+        ttk.Label(frm, text=t("bug.label_summary")).pack(anchor="w", pady=(10, 2))
+        self.var_summary = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.var_summary).pack(fill="x")
+        ttk.Label(frm, text=t("bug.label_description")).pack(anchor="w", pady=(10, 2))
+        self.txt_desc = tk.Text(frm, height=6, wrap="word", font=("Segoe UI", 10))
+        self.txt_desc.pack(fill="x")
+
+        ttk.Label(frm, text=t("bug.label_report")).pack(anchor="w", pady=(10, 2))
+        frm_btn = ttk.Frame(frm)
+        frm_btn.pack(side="bottom", fill="x", pady=(10, 0))
+        self.var_info = tk.StringVar()
+        ttk.Label(frm, textvariable=self.var_info, foreground="gray",
+                  wraplength=580, justify="left").pack(side="bottom", anchor="w")
+        frm_rep = ttk.Frame(frm)
+        frm_rep.pack(fill="both", expand=True)
+        sb = ttk.Scrollbar(frm_rep, orient="vertical")
+        self.txt_report = tk.Text(frm_rep, wrap="word", font=("Consolas", 9), yscrollcommand=sb.set)
+        sb.configure(command=self.txt_report.yview)
+        sb.pack(side="right", fill="y")
+        self.txt_report.pack(side="left", fill="both", expand=True)
+        self.txt_report.insert("1.0", report)
+
+        ttk.Button(frm_btn, text=t("bug.btn_open"), command=self._open).pack(side="left", ipadx=6)
+        ttk.Button(frm_btn, text=t("bug.btn_copy"), command=self._copy).pack(side="left", padx=(6, 0), ipadx=6)
+        ttk.Button(frm_btn, text=t("bug.btn_close"), command=self.destroy).pack(side="right", ipadx=6)
+
+    def _full_text(self):
+        desc = self.txt_desc.get("1.0", "end").strip()
+        report = self.txt_report.get("1.0", "end").strip()
+        return f"## Description\n{desc or '-'}\n\n## Report\n```\n{report}\n```\n"
+
+    def _copy(self):
+        self.clipboard_clear()
+        self.clipboard_append(self._full_text())
+        self.var_info.set(t("bug.copied"))
+
+    def _open(self):
+        summary = self.var_summary.get().strip()
+        if not summary:
+            messagebox.showwarning(t("bug.window_title"), t("bug.warn_summary"), parent=self)
+            return
+        url, truncated = _issue_url(summary, self.txt_desc.get("1.0", "end").strip(),
+                                    self.txt_report.get("1.0", "end").strip())
+        if truncated:
+            self._copy()
+            self.var_info.set(t("bug.truncated"))
+        webbrowser.open(url)
+
+
 class DonateWindow(tk.Toplevel):
     """Fenêtre de remerciement avec logo, bannière et lien vers le don."""
     def __init__(self, parent):
@@ -3840,7 +3970,21 @@ class YtDlpGui(tk.Tk):
         import traceback
         msg = "".join(traceback.format_exception(exc, val, tb))
         print(msg)  # console si lancé en python (pas pythonw)
-        messagebox.showerror(t("app.error_internal_title"), t("app.error_internal_msg", exc_name=exc.__name__, val=val), parent=self)
+        self._last_error = msg
+        if messagebox.askyesno(
+                t("app.error_internal_title"),
+                t("app.error_internal_msg", exc_name=exc.__name__, val=val)
+                + "\n\n" + t("bug.ask_report"), parent=self):
+            self._open_bug_report()
+
+    def _open_bug_report(self):
+        try:
+            log_tail = "\n".join(self.log_text.get("1.0", "end").splitlines()[-60:])
+        except tk.TclError:
+            log_tail = ""
+        private = [self.var_outdir.get().strip(), os.path.dirname(os.path.abspath(__file__)), os.getcwd()]
+        report = collect_diagnostics(log_tail, getattr(self, "_last_error", ""), private)
+        BugReportWindow(self, report)
 
     # ──────────────────────────────────────────────
     #  Construction de l'interface
@@ -3898,6 +4042,10 @@ class YtDlpGui(tk.Tk):
         ttk.Button(
             frm_toolbar, text=t("toolbar.btn_options"),
             command=self._open_options_menu
+        ).pack(side="right", padx=(0, 6))
+        ttk.Button(
+            frm_toolbar, text=t("toolbar.btn_bug"),
+            command=self._open_bug_report
         ).pack(side="right", padx=(0, 6))
 
         self._check_deps_quick()

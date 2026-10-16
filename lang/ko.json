@@ -415,5 +415,18 @@
   "inspect.log_audio": "오디오 트랙: {langs}",
   "inspect.log_subs": "자막: {langs}{auto}",
   "inspect.none": "없음",
-  "inspect.auto_part": " (자동: {langs})"
+  "inspect.auto_part": " (자동: {langs})",
+  "toolbar.btn_bug": "🐞 버그 신고",
+  "bug.window_title": "버그 신고",
+  "bug.intro": "문제를 설명해 주세요. 기술 보고서(버전, 시스템, 로그 마지막 줄)가 첨부되며, 폴더, 사용자 이름, 이메일 주소는 가려집니다. 자동으로 전송되는 것은 없습니다. 내용을 검토한 후 GitHub 페이지를 여세요.",
+  "bug.label_summary": "문제 요약",
+  "bug.label_description": "무슨 일이 있었나요? 무엇을 하고 있었나요?",
+  "bug.label_report": "기술 보고서(편집 가능)",
+  "bug.btn_open": "GitHub에서 열기",
+  "bug.btn_copy": "보고서 복사",
+  "bug.btn_close": "닫기",
+  "bug.copied": "보고서를 클립보드에 복사했습니다.",
+  "bug.truncated": "보고서가 길어 앞부분만 GitHub로 전달했고, 전체 보고서는 클립보드에 있습니다. 필요하면 이슈에 붙여 넣으세요.",
+  "bug.ask_report": "이 버그를 신고하시겠습니까?",
+  "bug.warn_summary": "GitHub를 열기 전에 요약을 입력하세요."
 }

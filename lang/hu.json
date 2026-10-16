@@ -415,5 +415,18 @@
   "inspect.log_audio": "Hangsávok: {langs}",
   "inspect.log_subs": "Feliratok: {langs}{auto}",
   "inspect.none": "nincs",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Hiba jelentése",
+  "bug.window_title": "Hiba jelentése",
+  "bug.intro": "Írja le a problémát. Műszaki jelentés is csatolódik (verzió, rendszer, a napló utolsó sorai); a mappái, felhasználóneve és e-mail-címei el vannak takarva. Semmi nem megy el automatikusan: nézze át, majd nyissa meg a GitHub-oldalt.",
+  "bug.label_summary": "A probléma összefoglalása",
+  "bug.label_description": "Mi történt? Mit csinált?",
+  "bug.label_report": "Műszaki jelentés (szerkeszthető)",
+  "bug.btn_open": "Megnyitás a GitHubon",
+  "bug.btn_copy": "Jelentés másolása",
+  "bug.btn_close": "Bezárás",
+  "bug.copied": "A jelentés a vágólapra másolva.",
+  "bug.truncated": "A jelentés hosszú: az eleje átkerült a GitHubra, a teljes jelentés a vágólapon van. Szükség esetén illessze be a hibajegybe.",
+  "bug.ask_report": "Szeretné jelenteni ezt a hibát?",
+  "bug.warn_summary": "Adjon meg összefoglalót a GitHub megnyitása előtt."
 }

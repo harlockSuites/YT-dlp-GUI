@@ -415,5 +415,18 @@
   "inspect.log_audio": "音轨：{langs}",
   "inspect.log_subs": "字幕：{langs}{auto}",
   "inspect.none": "无",
-  "inspect.auto_part": "（自动：{langs}）"
+  "inspect.auto_part": "（自动：{langs}）",
+  "toolbar.btn_bug": "🐞 报告错误",
+  "bug.window_title": "报告错误",
+  "bug.intro": "请描述问题。将附带一份技术报告（版本、系统、日志最后几行）；您的文件夹、用户名和电子邮件地址已被隐藏。不会自动发送任何内容：请先检查，再打开 GitHub 页面。",
+  "bug.label_summary": "问题摘要",
+  "bug.label_description": "发生了什么？您当时在做什么？",
+  "bug.label_report": "技术报告（可编辑）",
+  "bug.btn_open": "在 GitHub 上打开",
+  "bug.btn_copy": "复制报告",
+  "bug.btn_close": "关闭",
+  "bug.copied": "报告已复制到剪贴板。",
+  "bug.truncated": "报告较长：开头部分已传给 GitHub，完整报告在剪贴板中。必要时请粘贴到问题中。",
+  "bug.ask_report": "是否要报告此错误？",
+  "bug.warn_summary": "打开 GitHub 之前请添加摘要。"
 }

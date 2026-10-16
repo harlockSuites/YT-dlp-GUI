@@ -415,5 +415,18 @@
   "inspect.log_audio": "音声トラック：{langs}",
   "inspect.log_subs": "字幕：{langs}{auto}",
   "inspect.none": "なし",
-  "inspect.auto_part": "（自動：{langs}）"
+  "inspect.auto_part": "（自動：{langs}）",
+  "toolbar.btn_bug": "🐞 不具合を報告",
+  "bug.window_title": "不具合を報告",
+  "bug.intro": "問題を説明してください。技術レポート（バージョン、システム、ログの最後の数行）が添付されます。フォルダ、ユーザー名、メールアドレスは伏せ字になります。自動的に送信されることはありません。内容を確認してから GitHub のページを開いてください。",
+  "bug.label_summary": "問題の概要",
+  "bug.label_description": "何が起きましたか？ 何をしていましたか？",
+  "bug.label_report": "技術レポート（編集可）",
+  "bug.btn_open": "GitHub で開く",
+  "bug.btn_copy": "レポートをコピー",
+  "bug.btn_close": "閉じる",
+  "bug.copied": "レポートをクリップボードにコピーしました。",
+  "bug.truncated": "レポートが長いため、冒頭部分を GitHub に渡し、全文はクリップボードにあります。必要ならチケットに貼り付けてください。",
+  "bug.ask_report": "この不具合を報告しますか？",
+  "bug.warn_summary": "GitHub を開く前に概要を入力してください。"
 }

@@ -415,5 +415,18 @@
   "inspect.log_audio": "Faixas de áudio: {langs}",
   "inspect.log_subs": "Legendas: {langs}{auto}",
   "inspect.none": "nenhuma",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Relatar um erro",
+  "bug.window_title": "Relatar um erro",
+  "bug.intro": "Descreva o problema. Um relatório técnico é anexado (versão, sistema, últimas linhas do registro); suas pastas, nome de usuário e e-mails são ocultados. Nada é enviado automaticamente: revise e abra a página do GitHub.",
+  "bug.label_summary": "Resumo do problema",
+  "bug.label_description": "O que aconteceu? O que você estava fazendo?",
+  "bug.label_report": "Relatório técnico (editável)",
+  "bug.btn_open": "Abrir no GitHub",
+  "bug.btn_copy": "Copiar o relatório",
+  "bug.btn_close": "Fechar",
+  "bug.copied": "Relatório copiado para a área de transferência.",
+  "bug.truncated": "O relatório é longo: o início foi passado ao GitHub e o relatório completo está na área de transferência. Cole-o no ticket se necessário.",
+  "bug.ask_report": "Deseja relatar este erro?",
+  "bug.warn_summary": "Adicione um resumo antes de abrir o GitHub."
 }

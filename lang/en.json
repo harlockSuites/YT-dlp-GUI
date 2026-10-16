@@ -415,5 +415,18 @@
   "inspect.log_audio": "Audio tracks: {langs}",
   "inspect.log_subs": "Subtitles: {langs}{auto}",
   "inspect.none": "none",
-  "inspect.auto_part": " (auto: {langs})"
+  "inspect.auto_part": " (auto: {langs})",
+  "toolbar.btn_bug": "🐞 Report a bug",
+  "bug.window_title": "Report a bug",
+  "bug.intro": "Describe the problem. A technical report is attached (version, system, last log lines); your folders, user name and e-mail addresses are masked. Nothing is sent automatically: review it, then open the GitHub page.",
+  "bug.label_summary": "Summary of the problem",
+  "bug.label_description": "What happened? What were you doing?",
+  "bug.label_report": "Technical report (editable)",
+  "bug.btn_open": "Open on GitHub",
+  "bug.btn_copy": "Copy the report",
+  "bug.btn_close": "Close",
+  "bug.copied": "Report copied to the clipboard.",
+  "bug.truncated": "The report is long: the beginning was passed to GitHub and the full report is in the clipboard. Paste it into the issue if needed.",
+  "bug.ask_report": "Do you want to report this bug?",
+  "bug.warn_summary": "Add a summary before opening GitHub."
 }

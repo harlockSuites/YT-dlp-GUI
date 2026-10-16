@@ -14,3 +14,4 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - Fenêtre de don, icône, logo et bannière.
 - Numéro de version affiché dans le titre de la fenêtre principale.
 - Suite de tests automatiques (`python -m unittest discover -s tests`).
+- Bouton « Signaler un bogue » : rapport technique masqué (dossiers, nom d'utilisateur, e-mails), relu par l'utilisateur puis ouvert sur GitHub ; proposé aussi après une erreur interne.
