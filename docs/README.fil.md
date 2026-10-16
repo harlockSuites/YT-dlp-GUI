@@ -6,6 +6,10 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 
 > **Ginagawa pa ang proyekto.** Maaaring magbago, hindi pa kumpleto o may mga bug ang ilang feature.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Mga feature
 
 ### Indibidwal na downloader at pila
@@ -27,6 +31,8 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 - **Pagsusuring pabalik**: kung nasa folder na ang mga napiling video pero wala sa talaan, mag-aalok ang isang window na itala at laktawan ang mga ito (sa pamamagitan ng paghahambing ng mga pamagat). Maaari mong alisin ang tsek sa mga maling tugma.
 - **I-update ang talaan**: binibilang ang mga video sa folder, sa talaan at ang mga kulang, saka hinahanap sa YouTube ang kulang na impormasyon (pamagat, at haba sa pamamagitan ng ffprobe). Walang itinatala nang walang pagkumpirma mo, at binubuksan ng dalawang button ang lokal na file o ang nahanap na YouTube link para masuri mo.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Mga cookie ng browser
 
 - Piliin ang browser (Chrome, Firefox, Edge, Brave, Opera) na ang mga cookie ay lokal na binabasa ng yt-dlp: kailangan ang mga ito para sa mga pangalawang audio track at ilang subtitle.
@@ -47,6 +53,17 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 ### Mag-ulat ng bug
 
 - Naghahanda ang button na "Mag-ulat ng bug" ng teknikal na ulat: mga bersyon ng software, Python, Windows at yt-dlp, mga hindi mapanganib na setting at ang mga huling linya ng log. Nakatago ang iyong mga folder, pangalan ng user at mga e-mail address.
+## Pag-install
+
+- **Installer (inirerekomenda)**: i-download ang `yt-dlp-gui-setup-X.Y.Z.exe` mula sa [pahina ng mga release](https://github.com/harlockSuites/YT-dlp-GUI/releases) at patakbuhin ito. Windows 10 o 11 (64-bit), walang kailangang administrator rights; hindi kailangan ang Python.
+- **Portable na bersyon**: i-download ang `yt-dlp-gui-portable-X.Y.Z.zip`, i-extract kahit saan at patakbuhin ang `yt-dlp-gui.exe`; nananatili ang mga setting sa folder na iyon.
+- **Mula sa source code**: tingnan ang mga seksyong "Mga kinakailangan" at "Mabilis na simula" sa ibaba.
+- **Babala ng Windows SmartScreen**: hindi digitally signed ang installer, kaya maaaring magpakita ang Windows ng "Windows protected your PC". I-click ang "More info", saka ang "Run anyway". Para tiyaking totoo ang file, ihambing ang SHA-256 sum nito sa nasa `SHA256SUMS.txt` na inilalathala kasama ng bawat release:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Walang awtomatikong ipinapadala: sinusuri at ine-edit mo ang ulat, saka magbubukas ng paunang-punong GitHub issue page (o kokopyahin ang ulat).
 
 ## Mga kinakailangan

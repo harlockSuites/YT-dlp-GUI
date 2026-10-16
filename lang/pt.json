@@ -430,7 +430,7 @@
   "bug.ask_report": "Deseja relatar este erro?",
   "bug.warn_summary": "Adicione um resumo antes de abrir o GitHub.",
   "setup.window_title": "Assistente de instalação",
-  "setup.intro": "Este programa precisa do yt-dlp (download) e recomenda o ffmpeg (união de áudio/vídeo, legendas, miniaturas). As ferramentas são baixadas de seus repositórios oficiais no GitHub e a soma SHA-256 é verificada. Elas são instaladas na pasta do programa, sem direitos de administrador.",
+  "setup.intro": "Este programa precisa do yt-dlp (download) e recomenda o ffmpeg (união de áudio/vídeo, legendas, miniaturas). As ferramentas são baixadas de seus repositórios oficiais no GitHub e a soma SHA-256 é verificada. Elas são instaladas na pasta de dados do programa, sem direitos de administrador.",
   "setup.item_ytdlp": "yt-dlp — baixador (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — união e conversão (~200 MB)",
   "setup.status_ok": "✔ instalado",

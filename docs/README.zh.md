@@ -6,6 +6,10 @@
 
 > **项目仍在开发中。** 部分功能可能会变化、尚不完整或存在错误。
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## 功能
 
 ### 单个下载与队列
@@ -27,6 +31,8 @@
 - **回溯检查**：如果所选视频已在文件夹中但未登记，会弹出窗口建议将其登记并跳过（通过比较标题）。您可以取消勾选误判项。
 - **更新登记**：统计文件夹中的视频、登记中的视频和缺失的视频，然后在 YouTube 上查找缺失的信息（标题，以及通过 ffprobe 获取的时长）。未经您确认不会登记任何内容，两个按钮可打开本地文件或找到的 YouTube 链接以便核对。
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### 浏览器 Cookie
 
 - 选择 yt-dlp 在本地读取其 Cookie 的浏览器（Chrome、Firefox、Edge、Brave、Opera）：次要音轨和部分字幕需要它们。
@@ -47,6 +53,17 @@
 ### 报告错误
 
 - “报告错误”按钮会准备一份技术报告：软件、Python、Windows 和 yt-dlp 的版本、无害的设置以及日志的最后几行。您的文件夹、用户名和电子邮件地址会被隐藏。
+## 安装
+
+- **安装程序（推荐）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-setup-X.Y.Z.exe` 并运行。适用于 Windows 10 或 11（64 位），无需管理员权限，也无需 Python。
+- **便携版**：下载 `yt-dlp-gui-portable-X.Y.Z.zip`，解压到任意位置并运行 `yt-dlp-gui.exe`；设置保存在该文件夹中。
+- **从源代码运行**：请参阅下方的“系统要求”和“快速开始”。
+- **Windows SmartScreen 警告**：安装程序没有数字签名，因此 Windows 可能显示“Windows 已保护你的电脑”。请点击“更多信息”，再点击“仍要运行”。若要核实文件的真实性，请将其 SHA-256 校验和与每个版本附带的 `SHA256SUMS.txt` 中的值进行比较：
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - 不会自动发送任何内容：您先查看并编辑报告，然后打开已预先填写的 GitHub 问题页面（或复制报告）。
 
 ## 系统要求

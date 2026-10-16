@@ -6,6 +6,10 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 > **Fejlesztés alatt álló projekt.** Egyes funkciók változhatnak, hiányosak lehetnek vagy hibákat tartalmazhatnak.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Funkciók
 
 ### Egyedi letöltő és sor
@@ -27,6 +31,8 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 - **Visszamenőleges ellenőrzés**: ha a kijelölt videók már a mappában vannak, de a nyilvántartásban nem szerepelnek, egy ablak felajánlja a felvételüket és a kihagyásukat (a címek összehasonlításával). A téves találatok kijelölését megszüntetheti.
 - **Nyilvántartás frissítése**: megszámolja a mappában, a nyilvántartásban lévő és a hiányzó videókat, majd a YouTube-on megkeresi a hiányzó adatokat (cím, valamint hossz az ffprobe segítségével). A megerősítése nélkül semmi nem kerül be, és két gomb megnyitja a helyi fájlt vagy a megtalált YouTube-hivatkozást az ellenőrzéshez.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Böngészősütik
 
 - Válassza ki azt a böngészőt (Chrome, Firefox, Edge, Brave, Opera), amelynek sütijeit a yt-dlp helyben olvassa: a másodlagos hangsávokhoz és egyes feliratokhoz szükségesek.
@@ -47,6 +53,17 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 ### Hiba jelentése
 
 - A „Hiba jelentése” gomb műszaki jelentést készít: a program, a Python, a Windows és a yt-dlp verziója, ártalmatlan beállítások és a napló utolsó sorai. A mappái, a felhasználóneve és az e-mail-címei el vannak takarva.
+## Telepítés
+
+- **Telepítő (ajánlott)**: töltse le a `yt-dlp-gui-setup-X.Y.Z.exe` fájlt a [kiadások oldaláról](https://github.com/harlockSuites/YT-dlp-GUI/releases), és futtassa. Windows 10 vagy 11 (64 bites), rendszergazdai jogosultság nélkül; Python nem szükséges.
+- **Hordozható változat**: töltse le a `yt-dlp-gui-portable-X.Y.Z.zip` fájlt, csomagolja ki bárhová, és futtassa a `yt-dlp-gui.exe` fájlt; a beállítások ebben a mappában maradnak.
+- **Forráskódból**: lásd lentebb a „Követelmények” és a „Gyors kezdés” részt.
+- **Windows SmartScreen figyelmeztetés**: a telepítő nincs digitálisan aláírva, ezért a Windows megjelenítheti: „A Windows megvédte a számítógépét”. Kattintson a „További információ”, majd a „Futtatás mindenképpen” lehetőségre. A fájl hitelességét ellenőrizheti, ha összeveti az SHA-256 összegét a minden kiadással közzétett `SHA256SUMS.txt` fájlban szereplővel:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Semmi nem megy el automatikusan: Ön átnézi és szerkeszti a jelentést, majd megnyit egy előre kitöltött GitHub-hibajegyoldalt (vagy kimásolja a jelentést).
 
 ## Követelmények

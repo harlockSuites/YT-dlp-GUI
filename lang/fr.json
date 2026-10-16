@@ -430,7 +430,7 @@
   "bug.ask_report": "Voulez-vous signaler ce bogue ?",
   "bug.warn_summary": "Ajoutez un résumé avant d'ouvrir GitHub.",
   "setup.window_title": "Assistant d'installation",
-  "setup.intro": "Ce logiciel a besoin de yt-dlp (téléchargement) et recommande ffmpeg (fusion audio/vidéo, sous-titres, miniatures). Les outils sont téléchargés depuis leurs dépôts officiels GitHub et leur somme de contrôle SHA-256 est vérifiée. Ils sont installés dans le dossier du logiciel, sans droits administrateur.",
+  "setup.intro": "Ce logiciel a besoin de yt-dlp (téléchargement) et recommande ffmpeg (fusion audio/vidéo, sous-titres, miniatures). Les outils sont téléchargés depuis leurs dépôts officiels GitHub et leur somme de contrôle SHA-256 est vérifiée. Ils sont installés dans le dossier de données du logiciel, sans droits administrateur.",
   "setup.item_ytdlp": "yt-dlp — téléchargeur (~20 Mo)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — fusion et conversion (~200 Mo)",
   "setup.status_ok": "✔ installé",

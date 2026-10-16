@@ -430,7 +430,7 @@
   "bug.ask_report": "是否要报告此错误？",
   "bug.warn_summary": "打开 GitHub 之前请添加摘要。",
   "setup.window_title": "安装向导",
-  "setup.intro": "本软件需要 yt-dlp（下载），并推荐安装 ffmpeg（合并音视频、字幕、缩略图）。工具从其 GitHub 官方仓库下载，并验证 SHA-256 校验和。它们安装在软件所在文件夹中，无需管理员权限。",
+  "setup.intro": "本软件需要 yt-dlp（下载），并推荐安装 ffmpeg（合并音视频、字幕、缩略图）。工具从其 GitHub 官方仓库下载，并验证 SHA-256 校验和。它们安装在软件的数据文件夹中，无需管理员权限。",
   "setup.item_ytdlp": "yt-dlp — 下载器（约 20 MB）",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — 合并与转换（约 200 MB）",
   "setup.status_ok": "✔ 已安装",

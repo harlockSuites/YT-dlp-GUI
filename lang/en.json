@@ -430,7 +430,7 @@
   "bug.ask_report": "Do you want to report this bug?",
   "bug.warn_summary": "Add a summary before opening GitHub.",
   "setup.window_title": "Setup assistant",
-  "setup.intro": "This software needs yt-dlp (downloading) and recommends ffmpeg (merging audio/video, subtitles, thumbnails). The tools are downloaded from their official GitHub repositories and their SHA-256 checksum is verified. They are installed in the software folder, without administrator rights.",
+  "setup.intro": "This software needs yt-dlp (downloading) and recommends ffmpeg (merging audio/video, subtitles, thumbnails). The tools are downloaded from their official GitHub repositories and their SHA-256 checksum is verified. They are installed in the software's data folder, without administrator rights.",
   "setup.item_ytdlp": "yt-dlp — downloader (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — merging and conversion (~200 MB)",
   "setup.status_ok": "✔ installed",

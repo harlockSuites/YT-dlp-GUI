@@ -430,7 +430,7 @@
   "bug.ask_report": "Bạn có muốn báo lỗi này không?",
   "bug.warn_summary": "Hãy thêm tóm tắt trước khi mở GitHub.",
   "setup.window_title": "Trình hướng dẫn cài đặt",
-  "setup.intro": "Phần mềm này cần yt-dlp (tải xuống) và khuyến nghị ffmpeg (ghép âm thanh/video, phụ đề, ảnh thu nhỏ). Các công cụ được tải từ kho GitHub chính thức và tổng kiểm SHA-256 được xác minh. Chúng được cài vào thư mục của phần mềm, không cần quyền quản trị.",
+  "setup.intro": "Phần mềm này cần yt-dlp (tải xuống) và khuyến nghị ffmpeg (ghép âm thanh/video, phụ đề, ảnh thu nhỏ). Các công cụ được tải từ kho GitHub chính thức và tổng kiểm SHA-256 được xác minh. Chúng được cài vào thư mục dữ liệu của phần mềm, không cần quyền quản trị.",
   "setup.item_ytdlp": "yt-dlp — trình tải (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — ghép và chuyển đổi (~200 MB)",
   "setup.status_ok": "✔ đã cài",

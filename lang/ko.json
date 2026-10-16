@@ -430,7 +430,7 @@
   "bug.ask_report": "이 버그를 신고하시겠습니까?",
   "bug.warn_summary": "GitHub를 열기 전에 요약을 입력하세요.",
   "setup.window_title": "설치 도우미",
-  "setup.intro": "이 소프트웨어에는 yt-dlp(다운로드)가 필요하며 ffmpeg(오디오/비디오 병합, 자막, 썸네일)를 권장합니다. 도구는 공식 GitHub 저장소에서 내려받고 SHA-256 체크섬을 검증합니다. 관리자 권한 없이 소프트웨어 폴더에 설치됩니다.",
+  "setup.intro": "이 소프트웨어에는 yt-dlp(다운로드)가 필요하며 ffmpeg(오디오/비디오 병합, 자막, 썸네일)를 권장합니다. 도구는 공식 GitHub 저장소에서 내려받고 SHA-256 체크섬을 검증합니다. 관리자 권한 없이 소프트웨어 데이터 폴더에 설치됩니다.",
   "setup.item_ytdlp": "yt-dlp — 다운로더 (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — 병합 및 변환 (~200 MB)",
   "setup.status_ok": "✔ 설치됨",

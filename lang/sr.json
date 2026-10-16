@@ -430,7 +430,7 @@
   "bug.ask_report": "Želite li da prijavite ovu grešku?",
   "bug.warn_summary": "Dodajte rezime pre otvaranja GitHub-a.",
   "setup.window_title": "Pomoćnik za instalaciju",
-  "setup.intro": "Ovaj program zahteva yt-dlp (preuzimanje) i preporučuje ffmpeg (spajanje zvuka/videa, titlovi, sličice). Alati se preuzimaju iz zvaničnih GitHub repozitorijuma i proverava se njihova SHA-256 suma. Instaliraju se u fasciklu programa, bez administratorskih prava.",
+  "setup.intro": "Ovaj program zahteva yt-dlp (preuzimanje) i preporučuje ffmpeg (spajanje zvuka/videa, titlovi, sličice). Alati se preuzimaju iz zvaničnih GitHub repozitorijuma i proverava se njihova SHA-256 suma. Instaliraju se u fasciklu sa podacima programa, bez administratorskih prava.",
   "setup.item_ytdlp": "yt-dlp — preuzimač (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — spajanje i konverzija (~200 MB)",
   "setup.status_ok": "✔ instalirano",

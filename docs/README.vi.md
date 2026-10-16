@@ -6,6 +6,10 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 > **Dự án đang được phát triển.** Một số tính năng có thể thay đổi, chưa hoàn chỉnh hoặc còn lỗi.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Tính năng
 
 ### Trình tải đơn lẻ và hàng đợi
@@ -27,6 +31,8 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Kiểm tra hồi tố**: nếu các video trong phần đã chọn đã có trong thư mục nhưng chưa có trong sổ đăng ký, một cửa sổ đề nghị ghi chúng vào và bỏ qua (so sánh tiêu đề). Bạn có thể bỏ chọn các trường hợp khớp sai.
 - **Cập nhật sổ đăng ký**: đếm số video trong thư mục, trong sổ đăng ký và còn thiếu, rồi tìm thông tin còn thiếu trên YouTube (tiêu đề và thời lượng qua ffprobe). Không có gì được ghi nếu bạn chưa xác nhận, và hai nút mở tệp cục bộ hoặc liên kết YouTube tìm được để bạn kiểm tra.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Cookie của trình duyệt
 
 - Chọn trình duyệt (Chrome, Firefox, Edge, Brave, Opera) mà yt-dlp đọc cookie cục bộ: cần cho các rãnh âm thanh phụ và một số phụ đề.
@@ -47,6 +53,17 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 ### Báo lỗi
 
 - Nút «Báo lỗi» chuẩn bị một báo cáo kỹ thuật: phiên bản phần mềm, Python, Windows và yt-dlp, các cài đặt vô hại và những dòng nhật ký cuối. Thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi.
+## Cài đặt
+
+- **Trình cài đặt (khuyến nghị)**: tải `yt-dlp-gui-setup-X.Y.Z.exe` từ [trang các bản phát hành](https://github.com/harlockSuites/YT-dlp-GUI/releases) rồi chạy. Windows 10 hoặc 11 (64 bit), không cần quyền quản trị; không cần Python.
+- **Bản di động**: tải `yt-dlp-gui-portable-X.Y.Z.zip`, giải nén ở bất cứ đâu rồi chạy `yt-dlp-gui.exe`; cài đặt nằm trong thư mục đó.
+- **Từ mã nguồn**: xem các mục «Yêu cầu» và «Bắt đầu nhanh» bên dưới.
+- **Cảnh báo Windows SmartScreen**: trình cài đặt chưa được ký số nên Windows có thể hiện «Windows đã bảo vệ PC của bạn». Bấm «Thông tin thêm», rồi «Vẫn chạy». Để kiểm tra tính xác thực của tệp, hãy so sánh tổng SHA-256 của nó với tổng trong `SHA256SUMS.txt` được công bố cùng mỗi bản phát hành:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Không có gì được gửi tự động: bạn xem lại và chỉnh sửa báo cáo, rồi mở trang phiếu GitHub đã điền sẵn (hoặc sao chép báo cáo).
 
 ## Yêu cầu

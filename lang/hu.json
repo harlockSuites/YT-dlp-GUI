@@ -430,7 +430,7 @@
   "bug.ask_report": "Szeretné jelenteni ezt a hibát?",
   "bug.warn_summary": "Adjon meg összefoglalót a GitHub megnyitása előtt.",
   "setup.window_title": "Telepítő varázsló",
-  "setup.intro": "Ennek a programnak szüksége van a yt-dlp-re (letöltés), és ajánlja az ffmpeg-et (hang/videó egyesítése, feliratok, indexképek). Az eszközök a hivatalos GitHub-tárolókból töltődnek le, és ellenőrizzük az SHA-256 ellenőrzőösszegüket. A program mappájába települnek, rendszergazdai jogosultság nélkül.",
+  "setup.intro": "Ennek a programnak szüksége van a yt-dlp-re (letöltés), és ajánlja az ffmpeg-et (hang/videó egyesítése, feliratok, indexképek). Az eszközök a hivatalos GitHub-tárolókból töltődnek le, és ellenőrizzük az SHA-256 ellenőrzőösszegüket. A program adatmappájába települnek, rendszergazdai jogosultság nélkül.",
   "setup.item_ytdlp": "yt-dlp — letöltő (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — egyesítés és átalakítás (~200 MB)",
   "setup.status_ok": "✔ telepítve",

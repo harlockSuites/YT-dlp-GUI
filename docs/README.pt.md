@@ -6,6 +6,10 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 
 > **Projeto em desenvolvimento.** Alguns recursos podem mudar, estar incompletos ou conter erros.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Recursos
 
 ### Downloader individual e fila
@@ -27,6 +31,8 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 - **Verificação retroativa**: se vídeos da seleção já estiverem na pasta sem constar no registro, uma janela propõe registrá-los e pulá-los (comparando os títulos). Você pode desmarcar os falsos positivos.
 - **Atualizar o registro**: conta os vídeos da pasta, os do registro e os que faltam, e depois procura no YouTube as informações ausentes (título e duração via ffprobe). Nada é registrado sem a sua confirmação, e dois botões abrem o arquivo local ou o link do YouTube encontrado para você conferir.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Cookies do navegador
 
 - Escolha o navegador (Chrome, Firefox, Edge, Brave, Opera) cujos cookies o yt-dlp lê localmente: eles são necessários para as faixas de áudio secundárias e algumas legendas.
@@ -47,6 +53,17 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 ### Relatar um erro
 
 - O botão «Relatar um erro» prepara um relatório técnico: versões do programa, do Python, do Windows e do yt-dlp, configurações inofensivas e as últimas linhas do registro. Suas pastas, seu nome de usuário e seus e-mails são ocultados.
+## Instalação
+
+- **Instalador (recomendado)**: baixe `yt-dlp-gui-setup-X.Y.Z.exe` na [página de versões](https://github.com/harlockSuites/YT-dlp-GUI/releases) e execute-o. Windows 10 ou 11 (64 bits), sem direitos de administrador; o Python não é necessário.
+- **Versão portátil**: baixe `yt-dlp-gui-portable-X.Y.Z.zip`, extraia onde quiser e execute `yt-dlp-gui.exe`; as configurações ficam nessa pasta.
+- **A partir do código-fonte**: veja as seções «Requisitos» e «Início rápido» abaixo.
+- **Aviso do Windows SmartScreen**: o instalador não é assinado digitalmente, então o Windows pode exibir «O Windows protegeu o computador». Clique em «Mais informações» e depois em «Executar assim mesmo». Para verificar a autenticidade do arquivo, compare a soma SHA-256 com a de `SHA256SUMS.txt`, publicada com cada versão:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Nada é enviado automaticamente: você revisa e edita o relatório e depois abre uma página de ticket do GitHub já preenchida (ou copia o relatório).
 
 ## Requisitos

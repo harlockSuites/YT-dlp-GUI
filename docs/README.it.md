@@ -6,6 +6,10 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 
 > **Progetto in sviluppo.** Alcune funzioni potrebbero cambiare, essere incomplete o contenere errori.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Funzioni
 
 ### Downloader singolo e coda
@@ -27,6 +31,8 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 - **Controllo retroattivo**: se video della selezione sono già presenti nella cartella ma non nel registro, una finestra propone di registrarli e saltarli (confrontando i titoli). Puoi deselezionare i falsi positivi.
 - **Aggiorna il registro**: conta i video della cartella, quelli del registro e quelli mancanti, poi cerca su YouTube le informazioni mancanti (titolo e durata tramite ffprobe). Nulla viene registrato senza la tua conferma, e due pulsanti aprono il file locale o il link YouTube trovato per verificare.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Cookie del browser
 
 - Scegli il browser (Chrome, Firefox, Edge, Brave, Opera) di cui yt-dlp legge i cookie in locale: servono per le tracce audio secondarie e alcuni sottotitoli.
@@ -47,6 +53,17 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 ### Segnala un bug
 
 - Il pulsante «Segnala un bug» prepara un rapporto tecnico: versioni del programma, di Python, di Windows e di yt-dlp, impostazioni innocue e ultime righe del registro. Le tue cartelle, il nome utente e gli indirizzi e-mail vengono oscurati.
+## Installazione
+
+- **Installatore (consigliato)**: scarica `yt-dlp-gui-setup-X.Y.Z.exe` dalla [pagina delle versioni](https://github.com/harlockSuites/YT-dlp-GUI/releases) e avvialo. Windows 10 o 11 (64 bit), senza diritti di amministratore; Python non è necessario.
+- **Versione portatile**: scarica `yt-dlp-gui-portable-X.Y.Z.zip`, estrailo dove vuoi e avvia `yt-dlp-gui.exe`; le impostazioni restano in quella cartella.
+- **Dal codice sorgente**: vedi le sezioni «Requisiti» e «Avvio rapido» qui sotto.
+- **Avviso di Windows SmartScreen**: l'installatore non è firmato digitalmente, quindi Windows può mostrare «Windows ha protetto il PC». Fai clic su «Ulteriori informazioni», poi su «Esegui comunque». Per verificare l'autenticità del file, confronta la sua somma SHA-256 con quella di `SHA256SUMS.txt`, pubblicata con ogni versione:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Nulla viene inviato automaticamente: rivedi e modifichi il rapporto, poi apri una pagina di segnalazione GitHub già compilata (o copi il rapporto).
 
 ## Requisiti

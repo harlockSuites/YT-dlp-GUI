@@ -430,7 +430,7 @@
   "bug.ask_report": "Gusto mo bang iulat ang bug na ito?",
   "bug.warn_summary": "Magdagdag ng buod bago buksan ang GitHub.",
   "setup.window_title": "Katulong sa pag-install",
-  "setup.intro": "Kailangan ng software na ito ang yt-dlp (pag-download) at inirerekomenda ang ffmpeg (pagsasama ng audio/video, subtitle, thumbnail). Ang mga tool ay dina-download mula sa kanilang opisyal na GitHub repository at bine-verify ang kanilang SHA-256 checksum. Ini-install ang mga ito sa folder ng software, nang walang administrator rights.",
+  "setup.intro": "Kailangan ng software na ito ang yt-dlp (pag-download) at inirerekomenda ang ffmpeg (pagsasama ng audio/video, subtitle, thumbnail). Ang mga tool ay dina-download mula sa kanilang opisyal na GitHub repository at bine-verify ang kanilang SHA-256 checksum. Ini-install ang mga ito sa data folder ng software, nang walang administrator rights.",
   "setup.item_ytdlp": "yt-dlp — downloader (~20 MB)",
   "setup.item_ffmpeg": "ffmpeg + ffprobe — pagsasama at conversion (~200 MB)",
   "setup.status_ok": "✔ naka-install",

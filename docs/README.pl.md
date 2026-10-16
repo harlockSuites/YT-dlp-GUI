@@ -6,6 +6,10 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 
 > **Projekt w trakcie rozwoju.** Niektóre funkcje mogą się zmienić, być niekompletne lub zawierać błędy.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Funkcje
 
 ### Pojedyncze pobieranie i kolejka
@@ -27,6 +31,8 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 - **Kontrola wsteczna**: jeśli filmy z zaznaczenia są już w folderze, ale nie ma ich w rejestrze, okno proponuje ich wpisanie i pominięcie (porównanie tytułów). Fałszywe dopasowania można odznaczyć.
 - **Aktualizuj rejestr**: zlicza filmy w folderze, w rejestrze i brakujące, a następnie wyszukuje brakujące informacje w YouTube (tytuł oraz czas trwania przez ffprobe). Nic nie jest wpisywane bez Twojego potwierdzenia, a dwa przyciski otwierają plik lokalny lub znaleziony link YouTube, aby sprawdzić.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Ciasteczka przeglądarki
 
 - Wybierz przeglądarkę (Chrome, Firefox, Edge, Brave, Opera), z której yt-dlp lokalnie odczytuje ciasteczka: są potrzebne do dodatkowych ścieżek audio i niektórych napisów.
@@ -47,6 +53,17 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 ### Zgłoś błąd
 
 - Przycisk „Zgłoś błąd” przygotowuje raport techniczny: wersje programu, Pythona, Windows i yt-dlp, niegroźne ustawienia i ostatnie linie dziennika. Twoje foldery, nazwa użytkownika i adresy e-mail są zasłaniane.
+## Instalacja
+
+- **Instalator (zalecany)**: pobierz `yt-dlp-gui-setup-X.Y.Z.exe` ze [strony wydań](https://github.com/harlockSuites/YT-dlp-GUI/releases) i uruchom go. Windows 10 lub 11 (64-bitowy), bez uprawnień administratora; Python nie jest potrzebny.
+- **Wersja przenośna**: pobierz `yt-dlp-gui-portable-X.Y.Z.zip`, rozpakuj w dowolnym miejscu i uruchom `yt-dlp-gui.exe`; ustawienia zostają w tym folderze.
+- **Z kodu źródłowego**: zobacz sekcje „Wymagania” i „Szybki start” poniżej.
+- **Ostrzeżenie Windows SmartScreen**: instalator nie jest podpisany cyfrowo, więc Windows może wyświetlić „System Windows ochronił ten komputer”. Kliknij „Więcej informacji”, a następnie „Uruchom mimo to”. Aby sprawdzić autentyczność pliku, porównaj jego sumę SHA-256 z sumą z pliku `SHA256SUMS.txt` publikowanego z każdą wersją:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Nic nie jest wysyłane automatycznie: sprawdzasz i edytujesz raport, a następnie otwierasz wstępnie wypełnioną stronę zgłoszenia GitHub (lub kopiujesz raport).
 
 ## Wymagania

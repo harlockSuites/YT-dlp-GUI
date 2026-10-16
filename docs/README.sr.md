@@ -6,6 +6,10 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 
 > **Projekat je u razvoju.** Neke funkcije mogu se menjati, biti nepotpune ili sadržati greške.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Funkcije
 
 ### Pojedinačno preuzimanje i red čekanja
@@ -27,6 +31,8 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Naknadna provera**: ako su video snimci iz izbora već u fascikli, a nisu u evidenciji, prozor predlaže da se upišu i preskoče (poređenjem naslova). Pogrešna poklapanja možete isključiti.
 - **Ažuriraj evidenciju**: broji video snimke u fascikli, one u evidenciji i one koji nedostaju, a zatim na YouTube-u traži podatke koji nedostaju (naslov i trajanje preko ffprobe). Ništa se ne upisuje bez vaše potvrde, a dva dugmeta otvaraju lokalni fajl ili pronađeni YouTube link radi provere.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Kolačići pregledača
 
 - Izaberite pregledač (Chrome, Firefox, Edge, Brave, Opera) čije kolačiće yt-dlp čita lokalno: potrebni su za dodatne audio zapise i neke titlove.
@@ -47,6 +53,17 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 ### Prijavi grešku
 
 - Dugme „Prijavi grešku” priprema tehnički izveštaj: verzije programa, Pythona, Windowsa i yt-dlp-a, bezopasna podešavanja i poslednje linije dnevnika. Vaše fascikle, korisničko ime i e-adrese su sakriveni.
+## Instalacija
+
+- **Instalater (preporučeno)**: preuzmite `yt-dlp-gui-setup-X.Y.Z.exe` sa [stranice izdanja](https://github.com/harlockSuites/YT-dlp-GUI/releases) i pokrenite ga. Windows 10 ili 11 (64-bitni), bez administratorskih prava; Python nije potreban.
+- **Prenosiva verzija**: preuzmite `yt-dlp-gui-portable-X.Y.Z.zip`, raspakujte ga gde želite i pokrenite `yt-dlp-gui.exe`; podešavanja ostaju u toj fascikli.
+- **Iz izvornog koda**: pogledajte odeljke „Zahtevi” i „Brzi početak” ispod.
+- **Upozorenje Windows SmartScreen**: instalater nije digitalno potpisan, pa Windows može da prikaže „Windows je zaštitio vaš računar”. Kliknite na „Više informacija”, a zatim na „Ipak pokreni”. Da proverite autentičnost fajla, uporedite njegovu SHA-256 sumu sa onom iz `SHA256SUMS.txt`, objavljenog uz svako izdanje:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Ništa se ne šalje automatski: pregledate i menjate izveštaj, pa otvarate unapred popunjenu stranicu GitHub prijave (ili kopirate izveštaj).
 
 ## Zahtevi

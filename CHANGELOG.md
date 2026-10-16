@@ -2,7 +2,7 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [0.1.0] — en préparation
+## [0.1.0] — 2026-10-16
 
 ### Ajouté
 - Téléchargeur individuel avec file d'attente (pause, reprise, plage, relance en cas d'échec de format).
@@ -20,3 +20,4 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - Empaquetage Windows : exécutable PyInstaller, installateur Inno Setup (sans droits administrateur, 10 langues) et version portable `.zip` (`python packaging/build.py`). Les données de l'utilisateur vont dans `%LOCALAPPDATA%\yt-dlp-GUI` (ou à côté de l'exécutable en mode portable).
 - Publication automatique : l'étiquette `vX.Y.Z` déclenche un workflow GitHub qui lance les tests, construit l'installateur et la version portable, calcule les sommes SHA-256 et crée la release avec les notes du CHANGELOG.
 - Notification de mise à jour : vérification quotidienne (désactivable) de la dernière release GitHub, bandeau discret, fenêtre « Rechercher une mise à jour du logiciel… » avec les nouveautés et le téléchargement adapté à l'installation ; rien n'est installé automatiquement.
+- Documentation : section « Installation » (installateur, version portable, avertissement SmartScreen et vérification SHA-256) et captures d'écran, dans les 15 langues.

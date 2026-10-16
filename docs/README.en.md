@@ -6,6 +6,10 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 
 > **Work in progress.** Some features may change, be incomplete or contain bugs.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Features
 
 ### Single downloader and queue
@@ -27,6 +31,8 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 - **Retroactive check**: if videos in the selection are already in the folder but missing from the registry, a window offers to register and skip them (by comparing titles). You can untick false matches.
 - **Update the registry**: counts the videos in the folder, those in the registry and those missing, then looks up the missing information on YouTube (title, and duration via ffprobe). Nothing is registered without your confirmation, and two buttons open the local file or the YouTube link found so you can check.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Browser cookies
 
 - Choose the browser (Chrome, Firefox, Edge, Brave, Opera) whose cookies yt-dlp reads locally: they are needed for secondary audio tracks and some subtitles.
@@ -47,6 +53,17 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 ### Report a bug
 
 - The "Report a bug" button prepares a technical report: versions of the software, Python, Windows and yt-dlp, harmless settings and the last log lines. Your folders, user name and e-mail addresses are masked.
+## Installation
+
+- **Installer (recommended)**: download `yt-dlp-gui-setup-X.Y.Z.exe` from the [releases page](https://github.com/harlockSuites/YT-dlp-GUI/releases) and run it. Windows 10 or 11 (64-bit), no administrator rights needed; Python is not required.
+- **Portable version**: download `yt-dlp-gui-portable-X.Y.Z.zip`, extract it anywhere and run `yt-dlp-gui.exe`; settings stay in that folder.
+- **From source**: see the "Requirements" and "Quick start" sections below.
+- **Windows SmartScreen warning**: the installer is not digitally signed, so Windows may show "Windows protected your PC". Click "More info", then "Run anyway". To check the file's authenticity, compare its SHA-256 sum with the one in `SHA256SUMS.txt`, published with every release:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - Nothing is sent automatically: you review and edit the report, then open a pre-filled GitHub issue page (or copy the report).
 
 ## Requirements

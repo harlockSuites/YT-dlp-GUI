@@ -6,6 +6,10 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 
 > **Proyecto en desarrollo.** Algunas funciones pueden cambiar, estar incompletas o contener errores.
 
+![yt-dlp GUI](img/main.en.png)
+
+![yt-dlp GUI](img/inspector.en.png)
+
 ## Funciones
 
 ### Descargador individual y cola
@@ -27,6 +31,8 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 - **Comprobación retroactiva**: si hay vídeos de la selección que ya están en la carpeta pero no figuran en el registro, una ventana propone registrarlos y omitirlos (comparando los títulos). Puede desmarcar los falsos positivos.
 - **Actualizar el registro**: cuenta los vídeos de la carpeta, los del registro y los que faltan, y luego busca en YouTube la información que falta (título y duración mediante ffprobe). No se registra nada sin su confirmación, y dos botones abren el archivo local o el enlace de YouTube encontrado para que pueda comprobarlo.
 
+![yt-dlp GUI](img/registry.en.png)
+
 ### Cookies del navegador
 
 - Elija el navegador (Chrome, Firefox, Edge, Brave, Opera) cuyas cookies lee yt-dlp en local: son necesarias para las pistas de audio secundarias y algunos subtítulos.
@@ -47,6 +53,17 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 ### Informar de un error
 
 - El botón «Informar de un error» prepara un informe técnico: versiones del programa, de Python, de Windows y de yt-dlp, ajustes inofensivos y las últimas líneas del registro. Se ocultan sus carpetas, su nombre de usuario y sus direcciones de correo.
+## Instalación
+
+- **Instalador (recomendado)**: descargue `yt-dlp-gui-setup-X.Y.Z.exe` desde la [página de versiones](https://github.com/harlockSuites/YT-dlp-GUI/releases) y ejecútelo. Windows 10 u 11 (64 bits), sin permisos de administrador; no hace falta Python.
+- **Versión portable**: descargue `yt-dlp-gui-portable-X.Y.Z.zip`, descomprímalo donde quiera y ejecute `yt-dlp-gui.exe`; los ajustes se quedan en esa carpeta.
+- **Desde el código fuente**: consulte las secciones «Requisitos» e «Inicio rápido» más abajo.
+- **Aviso de Windows SmartScreen**: el instalador no está firmado digitalmente, por lo que Windows puede mostrar «Windows protegió su PC». Haga clic en «Más información» y luego en «Ejecutar de todas formas». Para comprobar la autenticidad del archivo, compare su suma SHA-256 con la de `SHA256SUMS.txt`, publicada con cada versión:
+
+```powershell
+Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
+```
+
 - No se envía nada automáticamente: usted revisa y edita el informe y luego abre una página de incidencia de GitHub ya rellenada (o copia el informe).
 
 ## Requisitos
