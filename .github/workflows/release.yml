@@ -1,0 +1,68 @@
+# Publication d'une version.
+#
+# Pour publier : 1) augmenter __version__ dans yt-dlp-gui.pyw ; 2) dater la section de cette version
+# dans CHANGELOG.md ; 3) commiter et pousser ; 4) créer et pousser l'étiquette correspondante :
+#     git tag v0.1.0 && git push origin v0.1.0
+# Le workflow lance les tests, construit l'installateur et la version portable, calcule les sommes
+# SHA-256 puis crée la release GitHub avec les notes tirées du CHANGELOG.
+# Lancé à la main (« Run workflow »), il construit seulement les fichiers sans publier.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Vérifier que l'étiquette correspond à la version du code
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: python -X utf8 packaging/release_tools.py check-tag "${{ github.ref_name }}"
+
+      - name: Installer les outils de construction
+        run: python -m pip install -r packaging/requirements-build.txt
+
+      - name: Tests
+        run: python -X utf8 -m unittest discover -s tests -t .
+
+      - name: Installer Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Construire l'exécutable, la version portable et l'installateur
+        run: python -X utf8 packaging/build.py
+
+      - name: Notes de version et sommes de contrôle
+        run: |
+          python -X utf8 packaging/release_tools.py notes --out dist/release-notes.md
+          python -X utf8 packaging/release_tools.py checksums --dir dist --out dist/SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yt-dlp-gui-windows
+          path: |
+            dist/yt-dlp-gui-setup-*.exe
+            dist/yt-dlp-gui-portable-*.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+
+      - name: Publier la release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: dist/release-notes.md
+          fail_on_unmatched_files: true
+          files: |
+            dist/yt-dlp-gui-setup-*.exe
+            dist/yt-dlp-gui-portable-*.zip
+            dist/SHA256SUMS.txt
