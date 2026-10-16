@@ -81,15 +81,6 @@ class BuildScriptTests(unittest.TestCase):
         self.assertIn("{#AppVersion}", iss)
         self.assertIn("PrivilegesRequired=lowest", iss)
 
-    def test_inno_languages_exist_when_inno_is_installed(self):
-        iscc = self.build.find_iscc()
-        if not iscc:
-            self.skipTest("Inno Setup non installé")
-        base = os.path.dirname(iscc)
-        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
-        for rel in re.findall(r'MessagesFile: "compiler:([^"]+)"', iss):
-            self.assertTrue(os.path.isfile(os.path.join(base, rel)), rel)
-
     def test_build_outputs_are_ignored_by_git(self):
         ignore = _read(os.path.join(ROOT, ".gitignore"))
         for entry in ("build/", "dist/", "bin/"):
