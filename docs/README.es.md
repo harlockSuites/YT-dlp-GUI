@@ -1,0 +1,90 @@
+# yt-dlp GUI
+
+[Français](../README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [Italiano](README.it.md) · [Polski](README.pl.md) · [Magyar](README.hu.md) · [Srpski](README.sr.md) · [Русский](README.ru.md) · [Tiếng Việt](README.vi.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Filipino](README.fil.md)
+
+Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para que sea accesible a todos y aproveche al máximo sus capacidades.
+
+> **Proyecto en desarrollo.** Algunas funciones pueden cambiar, estar incompletas o contener errores.
+
+## Funciones
+
+### Descargador individual y cola
+
+- **Opciones**: calidad máxima (hasta 4K), solo audio (MP3), subtítulos (formatos vtt, srt, ass), incrustación de subtítulos y miniatura, idioma de audio principal, pistas de audio secundarias (archivo MKV multipista) y una biblioteca de «bloques de script» (posprocesado, exportación, red, comportamiento) que puede ampliar con sus propios bloques.
+- **Comando generado**: el comando de yt-dlp correspondiente a sus elecciones se muestra en directo.
+- **Cola**: añada la URL actual y luego ejecute toda la cola, desde un elemento, un solo vídeo o un intervalo; pausa y reanudación, omitir el elemento en curso, detener con limpieza de los archivos parciales. La cola se conserva entre sesiones.
+
+### Inspector de listas de reproducción
+
+- **Análisis** de una lista de reproducción: cada vídeo aparece con sus pistas de audio y subtítulos disponibles; los elementos ocultos, privados o eliminados se ignoran sin bloquear el resto.
+- **Reglas globales** (calidad, solo audio, formato e incrustación de subtítulos, miniatura, numeración, idiomas, bloques de script, carpeta de salida) con **excepciones por vídeo** para el idioma principal, las pistas secundarias y los subtítulos.
+- **Código de colores**: rojo cuando falta el idioma principal, naranja cuando falta una pista secundaria o un subtítulo.
+- **Descarga de la selección** con registro, pausa, reanudación y omisión; si las pistas solicitadas no existen, el vídeo se reintenta sin ellas y después un **resumen** indica qué se logró, qué se ajustó o qué falló.
+
+### Directorio inteligente y registro
+
+- **Directorio inteligente**: yt-dlp omite los vídeos ya descargados gracias a un registro guardado en la carpeta de salida. El archivo `.yt-dlp-registre.json` contiene el identificador, la URL, el título, la duración, el nombre de archivo y la fecha de cada vídeo; `.yt-dlp-archive.txt`, leído por yt-dlp, se deriva de él.
+- **Comprobación retroactiva**: si hay vídeos de la selección que ya están en la carpeta pero no figuran en el registro, una ventana propone registrarlos y omitirlos (comparando los títulos). Puede desmarcar los falsos positivos.
+- **Actualizar el registro**: cuenta los vídeos de la carpeta, los del registro y los que faltan, y luego busca en YouTube la información que falta (título y duración mediante ffprobe). No se registra nada sin su confirmación, y dos botones abren el archivo local o el enlace de YouTube encontrado para que pueda comprobarlo.
+
+### Cookies del navegador
+
+- Elija el navegador (Chrome, Firefox, Edge, Brave, Opera) cuyas cookies lee yt-dlp en local: son necesarias para las pistas de audio secundarias y algunos subtítulos.
+- Un **indicador** muestra el estado: rojo si está desactivado o ha fallado, naranja si no se ha probado o está en curso, verde si las cookies están cargadas. El botón ↻ lanza una prueba y la información emergente explica el estado o el error.
+
+### Asistente de instalación, dependencias y actualizaciones de yt-dlp
+
+- **Asistente de instalación**: en el primer inicio propone descargar yt-dlp y ffmpeg desde sus repositorios oficiales de GitHub. Se verifica la suma SHA-256 y no se necesitan permisos de administrador.
+- **Dependencias**: la ventana dedicada comprueba ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 y deno, y puede instalarlos con Chocolatey.
+- **Actualización y diagnóstico**: actualiza yt-dlp (`yt-dlp -U`) o sustituye su ejecutable, muestra su versión y comprueba las opciones que usa la interfaz.
+
+### Interfaz e idiomas
+
+- Los controles se reorganizan según el ancho de la ventana; el contenido se desplaza en vertical y la tabla del inspector también en horizontal.
+- Interfaz en **15 idiomas**: francés, inglés, español, portugués, italiano, polaco, húngaro, serbio, ruso, vietnamita, chino, hindi, japonés, coreano y filipino. El cambio de idioma se aplica al reiniciar, con la posibilidad de reiniciar de inmediato.
+
+### Informar de un error
+
+- El botón «Informar de un error» prepara un informe técnico: versiones del programa, de Python, de Windows y de yt-dlp, ajustes inofensivos y las últimas líneas del registro. Se ocultan sus carpetas, su nombre de usuario y sus direcciones de correo.
+- No se envía nada automáticamente: usted revisa y edita el informe y luego abre una página de incidencia de GitHub ya rellenada (o copia el informe).
+
+## Requisitos
+
+- Windows
+- [Python 3](https://www.python.org/) con Tkinter (incluido en la instalación estándar)
+- `yt-dlp.exe` y, preferiblemente, [ffmpeg](https://ffmpeg.org/): el asistente de instalación los descarga en el primer inicio
+
+## Inicio rápido
+
+1. Descargue o clone este repositorio y vaya a su carpeta.
+2. Ejecute `yt-dlp-gui.bat` (o `pythonw yt-dlp-gui.pyw`).
+3. En el primer inicio, deje que el asistente instale yt-dlp y ffmpeg; sigue disponible en el menú de opciones.
+4. Pegue una URL, elija sus opciones y luego descargue, añada a la cola o abra el inspector para una lista de reproducción.
+
+## Privacidad y uso responsable
+
+- Este software no envía ningún dato al autor ni contiene telemetría. Las conexiones de red pasan por yt-dlp (sitios de vídeo), el asistente de instalación (GitHub) y la herramienta de registro (búsqueda en YouTube).
+- Sus cookies permanecen en su ordenador: yt-dlp las lee en local desde el navegador elegido.
+- Use esta herramienta respetando los derechos de autor, las condiciones de uso de los sitios y las leyes de su país, y descargue solo lo que tenga derecho a descargar.
+
+## Desarrollo
+
+Las pruebas (traducciones, registro, construcción de comandos, interfaz, asistente de instalación, documentación) se ejecutan con:
+
+```bash
+python -X utf8 -m unittest discover -s tests -t .
+```
+
+También se ejecutan automáticamente en GitHub con cada envío. El número de versión se define con `__version__` en `yt-dlp-gui.pyw` y debe coincidir con el encabezado de [CHANGELOG.md](../CHANGELOG.md). Los archivos de traducción de la interfaz están en `lang/` y los de esta documentación en `docs/`; las revisiones de hablantes nativos son bienvenidas.
+
+## Apoyar el proyecto
+
+Usar esta interfaz es, ha sido y seguirá siendo gratuito y de libre acceso para cualquiera. Si la herramienta le resulta especialmente útil, puede apoyar el proyecto en [Ko-fi](https://ko-fi.com/harlocksuites).
+
+## Agradecimientos
+
+Gracias a la comunidad que actualiza con regularidad [yt-dlp](https://github.com/yt-dlp/yt-dlp), sin el cual nada de esto sería posible.
+
+## Licencia
+
+El código se publica bajo licencia [MIT](../LICENSE). El logotipo y el banner «Harlock S.» (carpeta `assets/`) son la marca personal del autor y no están cubiertos por esta licencia: todos los derechos reservados.

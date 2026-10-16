@@ -1,54 +1,83 @@
 # yt-dlp GUI
 
+[Français](README.md) · [English](docs/README.en.md) · [Español](docs/README.es.md) · [Português](docs/README.pt.md) · [Italiano](docs/README.it.md) · [Polski](docs/README.pl.md) · [Magyar](docs/README.hu.md) · [Srpski](docs/README.sr.md) · [Русский](docs/README.ru.md) · [Tiếng Việt](docs/README.vi.md) · [中文](docs/README.zh.md) · [हिन्दी](docs/README.hi.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Filipino](docs/README.fil.md)
+
 Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pour rendre son utilisation accessible à tous tout en exploitant pleinement ses capacités.
 
 > **Projet en cours de développement.** Certaines fonctionnalités peuvent changer, être incomplètes ou contenir des bogues.
 
 ## Fonctionnalités
 
-- **Téléchargeur individuel** : qualité maximale, audio seul, sous-titres (format au choix, intégrés ou non), miniature intégrée, langue principale, pistes audio secondaires et blocs de script.
-- **File d'attente** : lancement de toute la file, à partir d'un élément ou d'une plage, avec pause et reprise.
-- **Inspecteur de playlist** : analyse d'une playlist, disponibilité des pistes audio et des sous-titres par vidéo, règles globales avec exceptions par vidéo, éléments masqués ou privés ignorés.
-- **Répertoire intelligent** : un registre propre à chaque dossier (`.yt-dlp-registre.json`) mémorise les vidéos déjà téléchargées pour ne pas les retélécharger. Un outil de mise à jour retrouve les vidéos déjà présentes dans un dossier et recherche leurs informations manquantes sur YouTube, avec confirmation avant toute inscription.
-- **Cookies du navigateur** : voyant d'état et bouton de test pour vérifier que les cookies sont bien lisibles.
-- **Interface adaptative** : les contrôles se replient selon la largeur de la fenêtre, avec défilement vertical et horizontal si nécessaire.
-- **15 langues** : français, anglais, espagnol, portugais, italien, polonais, hongrois, serbe, russe, vietnamien, chinois, hindi, japonais, coréen et filipino.
+### Téléchargeur individuel et file d'attente
+
+- **Options** : qualité maximale (jusqu'à la 4K), audio seul (MP3), sous-titres (formats vtt, srt, ass), intégration des sous-titres et de la miniature, langue audio principale, pistes audio secondaires (fichier MKV multi-pistes) et bibliothèque de « blocs de script » (post-traitement, export, réseau, comportement) que vous pouvez compléter avec vos propres blocs.
+- **Commande générée** : la commande yt-dlp correspondant à vos choix s'affiche en direct.
+- **File d'attente** : ajoutez l'URL courante, puis lancez toute la file, à partir d'un élément, une seule vidéo ou une plage ; pause et reprise, saut de l'élément en cours, arrêt avec nettoyage des fichiers partiels. La file est conservée d'une session à l'autre.
+
+### Inspecteur de playlist
+
+- **Analyse** d'une playlist : chaque vidéo est listée avec ses pistes audio et ses sous-titres disponibles ; les éléments masqués, privés ou supprimés sont ignorés sans bloquer le reste.
+- **Règles globales** (qualité, audio seul, format et intégration des sous-titres, miniature, numérotation, langues, blocs de script, dossier de sortie) avec des **exceptions par vidéo** pour la langue principale, les pistes secondaires et les sous-titres.
+- **Code couleur** : rouge quand la langue principale est absente, orange quand une piste secondaire ou un sous-titre manque.
+- **Téléchargement de la sélection** avec journal, pause, reprise et saut ; si des pistes demandées n'existent pas, la vidéo est relancée sans elles, puis un **bilan** indique ce qui a réussi, a été ajusté ou a échoué.
+
+### Répertoire intelligent et registre
+
+- **Répertoire intelligent** : yt-dlp saute les vidéos déjà téléchargées grâce à un registre stocké dans le dossier de sortie. Le fichier `.yt-dlp-registre.json` contient l'identifiant, l'URL, le titre, la durée, le nom du fichier et la date de chaque vidéo ; `.yt-dlp-archive.txt`, lu par yt-dlp, en est dérivé.
+- **Rétroaction** : si des vidéos de la sélection sont déjà présentes dans le dossier sans figurer au registre, une fenêtre vous propose de les inscrire et de les sauter (comparaison des titres). Vous pouvez décocher les faux positifs.
+- **Mettre à jour le registre** : compte les vidéos du dossier, celles du registre et celles qui manquent, puis cherche les informations manquantes sur YouTube (titre, et durée via ffprobe). Rien n'est inscrit sans votre confirmation, et deux boutons ouvrent le fichier local ou le lien YouTube trouvé pour vérifier.
+
+### Cookies du navigateur
+
+- Choisissez le navigateur (Chrome, Firefox, Edge, Brave, Opera) dont yt-dlp lit les cookies, en local : ils sont nécessaires pour les pistes audio secondaires et certains sous-titres.
+- Un **voyant** indique l'état : rouge si désactivé ou en échec, orange si non testé ou en cours, vert si les cookies sont chargés. Le bouton ↻ lance un test et l'infobulle explique l'état ou l'erreur.
+
+### Assistant d'installation, dépendances et mises à jour de yt-dlp
+
+- **Assistant d'installation** : au premier lancement, il propose de télécharger yt-dlp et ffmpeg depuis leurs dépôts officiels GitHub. La somme de contrôle SHA-256 est vérifiée et aucun droit administrateur n'est requis.
+- **Dépendances** : la fenêtre dédiée vérifie ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 et deno, et peut les installer avec Chocolatey.
+- **Mise à jour et diagnostic** : met à jour yt-dlp (`yt-dlp -U`) ou remplace son exécutable, affiche sa version et vérifie les options utilisées par le GUI.
+
+### Interface et langues
+
+- Les contrôles se replient selon la largeur de la fenêtre ; le contenu défile verticalement, et le tableau de l'inspecteur aussi horizontalement.
+- Interface en **15 langues** : français, anglais, espagnol, portugais, italien, polonais, hongrois, serbe, russe, vietnamien, chinois, hindi, japonais, coréen et filipino. Le changement de langue s'applique au redémarrage, avec la possibilité de redémarrer tout de suite.
+
+### Signaler un bogue
+
+- Le bouton « Signaler un bogue » prépare un rapport technique : versions du logiciel, de Python, de Windows et de yt-dlp, réglages sans danger et dernières lignes du journal. Vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués.
+- Rien n'est envoyé automatiquement : vous relisez et modifiez le rapport, puis vous ouvrez une page de ticket GitHub déjà remplie (ou vous copiez le rapport).
 
 ## Prérequis
 
 - Windows
 - [Python 3](https://www.python.org/) avec Tkinter (inclus dans l'installation standard)
-- `yt-dlp.exe` : téléchargé automatiquement par l'assistant d'installation au premier lancement (ou à placer à côté du logiciel)
-- Recommandé : [ffmpeg](https://ffmpeg.org/) (fusion des flux, intégration des sous-titres et des miniatures, durée des fichiers pour l'outil de registre), également proposé par l'assistant
+- `yt-dlp.exe` et, de préférence, [ffmpeg](https://ffmpeg.org/) : l'assistant d'installation les télécharge au premier lancement
 
-La fenêtre « Options, Mise à jour & Dépendances » du logiciel vérifie les outils utiles (ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2, deno) et aide à les installer.
+## Démarrage rapide
 
-## Utilisation
+1. Téléchargez ou clonez ce dépôt et placez-vous dans son dossier.
+2. Lancez `yt-dlp-gui.bat` (ou `pythonw yt-dlp-gui.pyw`).
+3. Au premier lancement, laissez l'assistant installer yt-dlp et ffmpeg ; il reste accessible dans le menu des options.
+4. Collez une URL, choisissez vos options, puis téléchargez, ajoutez à la file ou ouvrez l'inspecteur pour une playlist.
 
-1. Au premier lancement, l'assistant d'installation propose de télécharger yt-dlp et ffmpeg depuis leurs dépôts officiels GitHub (somme de contrôle SHA-256 vérifiée, aucun droit administrateur requis). Il reste accessible dans le menu des options.
-2. Lance `yt-dlp-gui.bat` (ou `pythonw yt-dlp-gui.pyw`).
-3. La langue se change depuis le menu des options.
+## Confidentialité et usage responsable
 
-## Structure
-
-| Élément | Rôle |
-|---|---|
-| `yt-dlp-gui.pyw` | Application principale |
-| `lang/` | Fichiers de traduction (un fichier JSON par langue) |
-| `assets/` | Logo et bannière |
-| `yt-dlp-gui.bat` | Lanceur Windows |
+- Ce logiciel n'envoie aucune donnée à l'auteur et ne contient aucune télémétrie. Les connexions réseau passent par yt-dlp (sites vidéo), l'assistant d'installation (GitHub) et l'outil de registre (recherche YouTube).
+- Vos cookies restent sur votre ordinateur : yt-dlp les lit localement dans le navigateur choisi.
+- Utilisez cet outil dans le respect du droit d'auteur, des conditions d'utilisation des sites et des lois de votre pays, et ne téléchargez que ce que vous avez le droit de télécharger.
 
 ## Développement
 
-Les tests (traductions, registre, construction des commandes, interface) se lancent avec :
+Les tests (traductions, registre, construction des commandes, interface, assistant d'installation, documentation) se lancent avec :
 
 ```bash
 python -X utf8 -m unittest discover -s tests -t .
 ```
 
-Ils tournent aussi automatiquement sur GitHub à chaque envoi. Le numéro de version est défini par `__version__` dans `yt-dlp-gui.pyw` et doit correspondre à l'en-tête de `CHANGELOG.md`.
+Ils tournent aussi automatiquement sur GitHub à chaque envoi. Le numéro de version est défini par `__version__` dans `yt-dlp-gui.pyw` et doit correspondre à l'en-tête de [CHANGELOG.md](CHANGELOG.md). Les fichiers de traduction de l'interface sont dans `lang/` et ceux de cette documentation dans `docs/` ; les relectures par des locuteurs natifs sont les bienvenues.
 
-## Gratuit et libre
+## Soutenir le projet
 
 L'utilisation de ce GUI est, a été et restera gratuite et libre d'accès à quiconque. Si l'outil vous est particulièrement utile, vous pouvez soutenir le projet sur [Ko-fi](https://ko-fi.com/harlocksuites).
 
