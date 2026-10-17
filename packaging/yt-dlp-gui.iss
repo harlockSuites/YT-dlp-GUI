@@ -32,6 +32,7 @@ LicenseFile=..\LICENSE
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+DisableWelcomePage=no
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany=Harlock S.
 VersionInfoDescription={#AppName} - installation
@@ -47,6 +48,11 @@ Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
+; Traductions copiées dans packaging\languages (voir README.md de ce dossier)
+Name: "chinesesimplified"; MessagesFile: "languages\ChineseSimplified.isl"
+Name: "vietnamese"; MessagesFile: "languages\Vietnamese.isl"
+Name: "serbianlatin"; MessagesFile: "languages\SerbianLatin.isl"
+Name: "hindi"; MessagesFile: "languages\Hindi.islu"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -61,3 +67,25 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopico
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent
+
+[CustomMessages]
+; Le filipino n'a pas de traduction Inno Setup : une phrase en filipino, affichée dans toutes les
+; langues de l'installateur, indique que le logiciel lui-même est disponible en filipino.
+FilipinoNote=Nag-aalok ang programang ito ng salin sa Filipino sa loob ng software.
+
+[Code]
+procedure InitializeWizard;
+var
+  Note: TNewStaticText;
+begin
+  Note := TNewStaticText.Create(WizardForm);
+  Note.Parent := WizardForm.WelcomePage;
+  Note.AutoSize := False;
+  Note.WordWrap := True;
+  Note.Left := WizardForm.WelcomeLabel2.Left;
+  Note.Width := WizardForm.WelcomeLabel2.Width;
+  Note.Height := ScaleY(32);
+  Note.Top := WizardForm.WelcomePage.Height - Note.Height - ScaleY(4);
+  Note.Font.Style := [fsItalic];
+  Note.Caption := CustomMessage('FilipinoNote');
+end;

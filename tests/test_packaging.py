@@ -81,6 +81,24 @@ class BuildScriptTests(unittest.TestCase):
         self.assertIn("{#AppVersion}", iss)
         self.assertIn("PrivilegesRequired=lowest", iss)
 
+    def test_installer_offers_fourteen_languages_and_local_translations_exist(self):
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        entries = re.findall(r'^Name: "(\w+)"; MessagesFile: "([^"]+)"', iss, re.M)
+        self.assertEqual(len(entries), 14)
+        local = [rel for _name, rel in entries if not rel.startswith("compiler:")]
+        self.assertEqual(sorted(os.path.basename(r) for r in local),
+                         ["ChineseSimplified.isl", "Hindi.islu", "SerbianLatin.isl", "Vietnamese.isl"])
+        for rel in local:
+            self.assertTrue(os.path.isfile(os.path.join(ROOT, "packaging", rel.replace("\\", os.sep))), rel)
+        self.assertTrue(os.path.isfile(os.path.join(ROOT, "packaging", "languages", "README.md")))
+
+    def test_installer_shows_the_filipino_note_on_the_welcome_page(self):
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        self.assertIn("DisableWelcomePage=no", iss)
+        self.assertIn("FilipinoNote=Nag-aalok ang programang ito ng salin sa Filipino sa loob ng software.", iss)
+        self.assertIn("CustomMessage('FilipinoNote')", iss)
+        self.assertIn("WizardForm.WelcomePage", iss)
+
     def test_build_outputs_are_ignored_by_git(self):
         ignore = _read(os.path.join(ROOT, ".gitignore"))
         for entry in ("build/", "dist/", "bin/"):

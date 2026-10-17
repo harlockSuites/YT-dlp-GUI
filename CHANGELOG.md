@@ -2,6 +2,12 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [0.1.1] — 2026-10-17
+
+### Ajouté
+- Installateur : 14 langues au lieu de 10 (ajout du chinois simplifié, du vietnamien, du serbe latin et du hindi). Une page d'accueil indique en filipino que le logiciel est disponible en filipino : Inno Setup n'a aucune traduction pour cette langue.
+- README : une version Linux est annoncée à moyen terme (français et anglais).
+
 ## [0.1.0] — 2026-10-16
 
 ### Ajouté
