@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "Suriin ang mga update sa pagsisimula",
   "cookie.hint_locked": "Ni-lock ng {browser} ang cookie database nito habang bukas ito. Isara ito nang buo (pati sa notification area), saka subukan muli. Ang Firefox, na inirerekomenda namin, ay walang ganitong limitasyon.",
   "cookie.hint_decrypt": "Hindi ma-decrypt ang mga cookie ng {browser} (bagong proteksyon ng mga browser na Chrome, Edge at Brave). Gamitin ang Firefox (inirerekomenda).",
-  "cookie.hint_notfound": "Walang nakitang profile ng {browser}: buksan ito kahit isang beses at mag-sign in sa YouTube, o pumili ng ibang browser."
+  "cookie.hint_notfound": "Walang nakitang profile ng {browser}: buksan ito kahit isang beses at mag-sign in sa YouTube, o pumili ng ibang browser.",
+  "cookie.note_blocked": "Ine-encrypt ng Chrome, Edge at Brave ang kanilang mga cookie: madalas pumalya ang pagbasa, kahit sarado ang browser. Inirerekomenda ang Firefox.",
+  "cookie.note_closed": "Gumagana lang ang detection kapag sarado ang browser: isara ito nang buo (pati sa notification area)."
 }

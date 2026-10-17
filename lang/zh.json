@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "启动时检查更新",
   "cookie.hint_locked": "{browser} 在运行时会锁定其 Cookie 数据库。请将其完全关闭（包括通知区域中的图标）后重试。推荐使用的 Firefox 没有此限制。",
   "cookie.hint_decrypt": "无法解密 {browser} 的 Cookie（Chrome、Edge 和 Brave 浏览器的新保护机制）。请使用 Firefox（推荐）。",
-  "cookie.hint_notfound": "未找到 {browser} 的配置文件：请至少打开一次并登录 YouTube，或选择其他浏览器。"
+  "cookie.hint_notfound": "未找到 {browser} 的配置文件：请至少打开一次并登录 YouTube，或选择其他浏览器。",
+  "cookie.note_blocked": "Chrome、Edge 和 Brave 会加密其 Cookie：即使浏览器已关闭，读取也常常失败。推荐使用 Firefox。",
+  "cookie.note_closed": "仅在浏览器关闭时才能检测：请将其完全关闭（包括通知区域中的图标）。"
 }

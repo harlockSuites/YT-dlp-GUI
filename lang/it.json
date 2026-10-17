@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "Verifica gli aggiornamenti all'avvio",
   "cookie.hint_locked": "{browser} tiene bloccato il database dei cookie finché è aperto. Chiudilo completamente (anche nell'area di notifica) e riprova. Firefox, consigliato, non ha questo limite.",
   "cookie.hint_decrypt": "Impossibile decrittare i cookie di {browser} (protezione recente dei browser Chrome, Edge e Brave). Usa Firefox (consigliato).",
-  "cookie.hint_notfound": "Nessun profilo di {browser} trovato: aprilo almeno una volta e accedi a YouTube, oppure scegli un altro browser."
+  "cookie.hint_notfound": "Nessun profilo di {browser} trovato: aprilo almeno una volta e accedi a YouTube, oppure scegli un altro browser.",
+  "cookie.note_blocked": "Chrome, Edge e Brave cifrano i cookie: la lettura spesso fallisce, anche a browser chiuso. Si consiglia Firefox.",
+  "cookie.note_closed": "Il rilevamento funziona solo a browser chiuso: chiudilo completamente (anche nell'area di notifica)."
 }

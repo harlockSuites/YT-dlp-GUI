@@ -15,6 +15,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 ### Indibidwal na downloader at pila
 
 - **Mga opsyon**: pinakamataas na kalidad (hanggang 4K), audio lang (MP3), mga subtitle (mga format na vtt, srt, ass), pag-embed ng mga subtitle at thumbnail, pangunahing wika ng audio, mga pangalawang audio track (multi-track na MKV file) at isang aklatan ng mga "script block" (post-processing, export, network, gawi) na maaari mong dagdagan ng sarili mong mga block.
+- **Maraming audio track**: sa MKV file, walang pangalan ng wika ang mga audio track. Maaaring ipakita ng player ang mga ito bilang "Track 1", "Track 2"… o walang label ng wika. Isa itong kilalang limitasyon.
 - **Nabuong command**: ipinapakita nang live ang yt-dlp command na tugma sa mga pinili mo.
 - **Pila**: idagdag ang kasalukuyang URL, saka patakbuhin ang buong pila, mula sa isang item pasulong, isang video lang o isang saklaw; pause at resume, paglaktaw sa kasalukuyang item, paghinto na may paglilinis ng mga hindi kumpletong file. Napapanatili ang pila sa pagitan ng mga session.
 
@@ -35,7 +36,8 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 
 ### Mga cookie ng browser
 
-- Piliin ang browser (Chrome, Firefox, Edge, Brave, Opera) na ang mga cookie ay lokal na binabasa ng yt-dlp: kailangan ang mga ito para sa mga pangalawang audio track at ilang subtitle. Sa Chrome, Edge o Brave, isara nang buo ang browser bago mag-download: ni-lo-lock nito ang cookie database habang bukas, at ipapakita ng yt-dlp ang "Could not copy Chrome cookie database". **Inirerekomenda ang Firefox**: walang ganitong limitasyon.
+- Piliin ang browser (Chrome, Firefox, Edge, Brave, Opera) na ang mga cookie ay lokal na binabasa ng yt-dlp: kailangan ang mga ito para sa mga pangalawang audio track at ilang subtitle. **Inirerekomenda ang Firefox.**
+- **Mga resulta ng aming mga pagsubok** (Windows 11, Oktubre 2026, naka-sign in ang YouTube account sa bawat browser): gumagana ang **Firefox**, bukas man o sarado ang browser. Gumagana ang **Opera** **kapag sarado lang ang browser**: ni-lo-lock nito ang cookie database habang bukas, at ipapakita ng yt-dlp ang "Could not copy Chrome cookie database". Pumapalya ang **Chrome, Edge at Brave** kahit sarado: ine-encrypt nila ang mga cookie sa paraang hindi laging nababasa ng yt-dlp. Ang mga limitasyong ito ay mula sa mga browser at yt-dlp, hindi sa software na ito, at maaaring magbago sa mga update nila.
 - Kung naka-set ang browser na **burahin ang mga cookie kapag isinara** (o nagba-browse ka sa private mode), walang matitirang cookie sa disk na mababasa: wala nang makukuha ang yt-dlp, gamit man ang Chrome, Edge, Brave o Firefox. Sa Chrome, Edge at Brave, isa itong bitag: kailangang isara ang browser, at buburahin nito ang mga cookie. I-off ang opsyong iyon, o panatilihin ang mga cookie ng youtube.com at google.com.
 - Ipinapakita ng isang **ilaw na indikasyon** ang kalagayan: pula kung naka-disable o nabigo, kahel kung hindi pa nasusubok o isinasagawa, berde kung na-load ang mga cookie. Nagpapatakbo ng pagsubok ang button na ↻ at ipinaliliwanag ng tooltip ang kalagayan o error.
 

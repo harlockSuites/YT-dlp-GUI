@@ -15,6 +15,7 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 ### Single downloader and queue
 
 - **Options**: maximum quality (up to 4K), audio only (MP3), subtitles (vtt, srt, ass formats), embedding of subtitles and thumbnail, main audio language, secondary audio tracks (multi-track MKV file) and a library of "script blocks" (post-processing, export, network, behavior) that you can extend with your own blocks.
+- **Multiple audio tracks**: in the MKV file, the audio tracks do not carry the name of their language. Your player may show them as "Track 1", "Track 2"… or without a language label. This is a known limitation.
 - **Generated command**: the yt-dlp command matching your choices is displayed live.
 - **Queue**: add the current URL, then run the whole queue, from one item onward, a single video or a range; pause and resume, skip the current item, stop with cleanup of partial files. The queue is kept between sessions.
 
@@ -35,7 +36,8 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 
 ### Browser cookies
 
-- Choose the browser (Chrome, Firefox, Edge, Brave, Opera) whose cookies yt-dlp reads locally: they are needed for secondary audio tracks and some subtitles. With Chrome, Edge or Brave, close the browser completely before downloading: it locks its cookie database while open, and yt-dlp then shows "Could not copy Chrome cookie database". **Firefox is recommended**: it does not have this limitation.
+- Choose the browser (Chrome, Firefox, Edge, Brave, Opera) whose cookies yt-dlp reads locally: they are needed for secondary audio tracks and some subtitles. **Firefox is recommended.**
+- **Our test results** (Windows 11, October 2026, YouTube account signed in on each browser): **Firefox** works, whether the browser is open or closed. **Opera** works **only with the browser closed**: it locks its cookie database while open, and yt-dlp then shows "Could not copy Chrome cookie database". **Chrome, Edge and Brave** fail even when closed: they encrypt their cookies in a way yt-dlp cannot always read. These limits come from the browsers and yt-dlp, not from this software, and may change with their updates.
 - If your browser is set to **delete cookies when it closes** (or you browse in private mode), no cookie remains on disk to read: yt-dlp cannot recover anything, whether with Chrome, Edge, Brave or Firefox. With Chrome, Edge and Brave this is a trap: the browser must be closed, which then erases the cookies. Turn that option off, or keep the cookies of youtube.com and google.com.
 - A **status light** shows the state: red if disabled or failed, orange if untested or in progress, green if the cookies are loaded. The ↻ button runs a test and the tooltip explains the state or the error.
 

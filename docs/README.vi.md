@@ -15,6 +15,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 ### Trình tải đơn lẻ và hàng đợi
 
 - **Tùy chọn**: chất lượng tối đa (đến 4K), chỉ âm thanh (MP3), phụ đề (định dạng vtt, srt, ass), nhúng phụ đề và ảnh thu nhỏ, ngôn ngữ âm thanh chính, các rãnh âm thanh phụ (tệp MKV nhiều rãnh) và thư viện «khối script» (xử lý sau, xuất, mạng, hành vi) mà bạn có thể bổ sung bằng khối của riêng mình.
+- **Nhiều track âm thanh**: trong tệp MKV, các track âm thanh không mang tên ngôn ngữ của chúng. Trình phát có thể hiển thị chúng là «Track 1», «Track 2»… hoặc không có nhãn ngôn ngữ. Đây là một hạn chế đã biết.
 - **Lệnh được tạo**: lệnh yt-dlp tương ứng với lựa chọn của bạn được hiển thị trực tiếp.
 - **Hàng đợi**: thêm URL hiện tại, rồi chạy toàn bộ hàng đợi, từ một mục trở đi, một video hoặc một khoảng; tạm dừng và tiếp tục, bỏ qua mục đang chạy, dừng và dọn các tệp dở dang. Hàng đợi được giữ lại giữa các phiên.
 
@@ -35,7 +36,8 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 ### Cookie của trình duyệt
 
-- Chọn trình duyệt (Chrome, Firefox, Edge, Brave, Opera) mà yt-dlp đọc cookie cục bộ: cần cho các rãnh âm thanh phụ và một số phụ đề. Với Chrome, Edge hoặc Brave, hãy đóng hoàn toàn trình duyệt trước khi tải: nó khóa cơ sở dữ liệu cookie khi đang mở và yt-dlp sẽ hiện «Could not copy Chrome cookie database». **Nên dùng Firefox**: trình duyệt này không có giới hạn đó.
+- Chọn trình duyệt (Chrome, Firefox, Edge, Brave, Opera) mà yt-dlp đọc cookie cục bộ: cần cho các rãnh âm thanh phụ và một số phụ đề. **Nên dùng Firefox.**
+- **Kết quả thử nghiệm của chúng tôi** (Windows 11, tháng 10 năm 2026, đã đăng nhập tài khoản YouTube trên từng trình duyệt): **Firefox** hoạt động, dù trình duyệt đang mở hay đã đóng. **Opera** chỉ hoạt động **khi trình duyệt đã đóng**: nó khóa cơ sở dữ liệu cookie khi đang mở và yt-dlp sẽ hiện «Could not copy Chrome cookie database». **Chrome, Edge và Brave** thất bại ngay cả khi đã đóng: chúng mã hóa cookie theo cách yt-dlp không phải lúc nào cũng đọc được. Những giới hạn này đến từ trình duyệt và yt-dlp chứ không phải từ phần mềm, và có thể thay đổi khi chúng cập nhật.
 - Nếu trình duyệt được đặt để **xóa cookie khi đóng** (hoặc bạn duyệt ở chế độ riêng tư), sẽ không còn cookie nào trên ổ đĩa để đọc: yt-dlp không thể lấy gì, dù dùng Chrome, Edge, Brave hay Firefox. Với Chrome, Edge và Brave, đây là cái bẫy: phải đóng trình duyệt, và việc đó xóa cookie. Hãy tắt tùy chọn này hoặc giữ lại cookie của youtube.com và google.com.
 - Một **đèn báo** cho biết trạng thái: đỏ nếu tắt hoặc lỗi, cam nếu chưa kiểm tra hoặc đang chạy, xanh nếu cookie đã được tải. Nút ↻ chạy kiểm tra và chú giải giải thích trạng thái hoặc lỗi.
 

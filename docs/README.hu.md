@@ -15,6 +15,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 ### Egyedi letöltő és sor
 
 - **Beállítások**: maximális minőség (akár 4K), csak hang (MP3), feliratok (vtt, srt, ass formátum), feliratok és indexkép beágyazása, fő hangnyelv, másodlagos hangsávok (többsávos MKV-fájl) és „szkriptblokkok” könyvtára (utófeldolgozás, exportálás, hálózat, viselkedés), amelyet saját blokkokkal bővíthet.
+- **Több hangsáv**: az MKV-fájlban a hangsávok nem viselik a nyelvük nevét. A lejátszó „1. sáv”, „2. sáv”… néven, vagy nyelvmegjelölés nélkül jelenítheti meg őket. Ez ismert korlátozás.
 - **Előállított parancs**: a választásainak megfelelő yt-dlp-parancs élőben látható.
 - **Sor**: adja hozzá az aktuális URL-t, majd indítsa el az egész sort, egy elemtől kezdve, egyetlen videót vagy egy tartományt; szüneteltetés és folytatás, az aktuális elem kihagyása, leállítás a részleges fájlok takarításával. A sor munkamenetek között megmarad.
 
@@ -35,7 +36,8 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 ### Böngészősütik
 
-- Válassza ki azt a böngészőt (Chrome, Firefox, Edge, Brave, Opera), amelynek sütijeit a yt-dlp helyben olvassa: a másodlagos hangsávokhoz és egyes feliratokhoz szükségesek. Chrome, Edge vagy Brave esetén letöltés előtt zárja be teljesen a böngészőt: megnyitva zárolja a sütiadatbázisát, és a yt-dlp ilyenkor a „Could not copy Chrome cookie database” üzenetet jeleníti meg. **A Firefox ajánlott**: neki nincs ilyen korlátja.
+- Válassza ki azt a böngészőt (Chrome, Firefox, Edge, Brave, Opera), amelynek sütijeit a yt-dlp helyben olvassa: a másodlagos hangsávokhoz és egyes feliratokhoz szükségesek. **A Firefox ajánlott.**
+- **Tesztjeink eredményei** (Windows 11, 2026. október, minden böngészőben bejelentkezett YouTube-fiókkal): a **Firefox** működik, nyitott és zárt böngészővel is. Az **Opera** **csak zárt böngészővel** működik: nyitva zárolja a sütiadatbázisát, és a yt-dlp ilyenkor a „Could not copy Chrome cookie database” üzenetet jeleníti meg. A **Chrome, az Edge és a Brave** zárt állapotban is hibázik: úgy titkosítják a sütiket, hogy a yt-dlp nem mindig tudja beolvasni őket. Ezek a korlátok a böngészőktől és a yt-dlp-től származnak, nem a programtól, és a frissítéseikkel változhatnak.
 - Ha a böngésző úgy van beállítva, hogy **bezáráskor törli a sütiket** (vagy privát módban böngészik), nem marad olvasható süti a lemezen: a yt-dlp semmit sem tud kinyerni, sem Chrome-mal, Edge-dzsel, Brave-vel, sem Firefoxszal. Chrome, Edge és Brave esetén ez csapda: be kell zárni a böngészőt, ami törli a sütiket. Kapcsolja ki ezt a beállítást, vagy tartsa meg a youtube.com és a google.com sütijeit.
 - Egy **jelzőfény** mutatja az állapotot: piros, ha ki van kapcsolva vagy hibás, narancs, ha nincs tesztelve vagy folyamatban van, zöld, ha a sütik betöltődtek. A ↻ gomb tesztet indít, a buborékszöveg pedig elmagyarázza az állapotot vagy a hibát.
 

@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "Proveri ažuriranja pri pokretanju",
   "cookie.hint_locked": "{browser} drži bazu kolačića zaključanom dok je otvoren. Potpuno ga zatvorite (i u oblasti za obaveštenja) pa pokušajte ponovo. Firefox, koji preporučujemo, nema to ograničenje.",
   "cookie.hint_decrypt": "Nije moguće dešifrovati kolačiće pregledača {browser} (nova zaštita u pregledačima Chrome, Edge i Brave). Koristite Firefox (preporučuje se).",
-  "cookie.hint_notfound": "Nije pronađen nijedan profil pregledača {browser}: otvorite ga bar jednom i prijavite se na YouTube ili izaberite drugi pregledač."
+  "cookie.hint_notfound": "Nije pronađen nijedan profil pregledača {browser}: otvorite ga bar jednom i prijavite se na YouTube ili izaberite drugi pregledač.",
+  "cookie.note_blocked": "Chrome, Edge i Brave šifruju kolačiće: čitanje često ne uspeva, čak i kada je pregledač zatvoren. Preporučuje se Firefox.",
+  "cookie.note_closed": "Otkrivanje radi samo sa zatvorenim pregledačem: potpuno ga zatvorite (i u oblasti za obaveštenja)."
 }

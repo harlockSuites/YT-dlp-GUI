@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "시작할 때 업데이트 확인",
   "cookie.hint_locked": "{browser}은(는) 실행 중일 때 쿠키 데이터베이스를 잠급니다. 알림 영역까지 완전히 종료한 뒤 다시 시도하세요. 권장하는 Firefox에는 이 제한이 없습니다.",
   "cookie.hint_decrypt": "{browser}의 쿠키를 해독할 수 없습니다(Chrome, Edge, Brave 브라우저의 최신 보호 기능). Firefox를 사용하세요(권장).",
-  "cookie.hint_notfound": "{browser} 프로필을 찾을 수 없습니다. 한 번 이상 실행해 YouTube에 로그인하거나 다른 브라우저를 선택하세요."
+  "cookie.hint_notfound": "{browser} 프로필을 찾을 수 없습니다. 한 번 이상 실행해 YouTube에 로그인하거나 다른 브라우저를 선택하세요.",
+  "cookie.note_blocked": "Chrome, Edge, Brave는 쿠키를 암호화하므로 브라우저를 닫아도 읽기에 실패하는 경우가 많습니다. Firefox를 권장합니다.",
+  "cookie.note_closed": "감지는 브라우저를 닫았을 때만 작동합니다. 알림 영역까지 완전히 종료하세요."
 }

@@ -15,6 +15,7 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 ### Descargador individual y cola
 
 - **Opciones**: calidad máxima (hasta 4K), solo audio (MP3), subtítulos (formatos vtt, srt, ass), incrustación de subtítulos y miniatura, idioma de audio principal, pistas de audio secundarias (archivo MKV multipista) y una biblioteca de «bloques de script» (posprocesado, exportación, red, comportamiento) que puede ampliar con sus propios bloques.
+- **Varias pistas de audio**: en el archivo MKV, las pistas de audio no llevan el nombre de su idioma. Su reproductor puede mostrarlas como «Pista 1», «Pista 2»… o sin etiqueta de idioma. Es una limitación conocida.
 - **Comando generado**: el comando de yt-dlp correspondiente a sus elecciones se muestra en directo.
 - **Cola**: añada la URL actual y luego ejecute toda la cola, desde un elemento, un solo vídeo o un intervalo; pausa y reanudación, omitir el elemento en curso, detener con limpieza de los archivos parciales. La cola se conserva entre sesiones.
 
@@ -35,7 +36,8 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 
 ### Cookies del navegador
 
-- Elija el navegador (Chrome, Firefox, Edge, Brave, Opera) cuyas cookies lee yt-dlp en local: son necesarias para las pistas de audio secundarias y algunos subtítulos. Con Chrome, Edge o Brave, cierre el navegador por completo antes de descargar: bloquea su base de cookies mientras está abierto y yt-dlp muestra entonces «Could not copy Chrome cookie database». **Se recomienda Firefox**: no tiene esta limitación.
+- Elija el navegador (Chrome, Firefox, Edge, Brave, Opera) cuyas cookies lee yt-dlp en local: son necesarias para las pistas de audio secundarias y algunos subtítulos. **Se recomienda Firefox.**
+- **Resultados de nuestras pruebas** (Windows 11, octubre de 2026, cuenta de YouTube iniciada en cada navegador): **Firefox** funciona, con el navegador abierto o cerrado. **Opera** solo funciona **con el navegador cerrado**: bloquea su base de cookies mientras está abierto y yt-dlp muestra entonces «Could not copy Chrome cookie database». **Chrome, Edge y Brave** fallan incluso cerrados: cifran sus cookies de una forma que yt-dlp no siempre sabe leer. Estos límites proceden de los navegadores y de yt-dlp, no del programa, y pueden cambiar con sus actualizaciones.
 - Si su navegador está configurado para **borrar las cookies al cerrarse** (o navega en modo privado), no queda ninguna cookie en el disco: yt-dlp no puede recuperar nada, ni con Chrome, Edge, Brave ni Firefox. Con Chrome, Edge y Brave es una trampa: hay que cerrar el navegador, y eso borra las cookies. Desactive esa opción o conserve las cookies de youtube.com y google.com.
 - Un **indicador** muestra el estado: rojo si está desactivado o ha fallado, naranja si no se ha probado o está en curso, verde si las cookies están cargadas. El botón ↻ lanza una prueba y la información emergente explica el estado o el error.
 

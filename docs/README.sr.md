@@ -15,6 +15,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 ### Pojedinačno preuzimanje i red čekanja
 
 - **Opcije**: maksimalan kvalitet (do 4K), samo zvuk (MP3), titlovi (formati vtt, srt, ass), ugrađivanje titlova i sličice, glavni jezik zvuka, dodatni audio zapisi (višezapisni MKV fajl) i biblioteka „blokova skripti” (naknadna obrada, izvoz, mreža, ponašanje) koju možete dopuniti sopstvenim blokovima.
+- **Više audio traka**: u MKV datoteci audio trake ne nose naziv svog jezika. Vaš plejer ih može prikazati kao „Traka 1”, „Traka 2”… ili bez oznake jezika. To je poznato ograničenje.
 - **Generisana komanda**: yt-dlp komanda koja odgovara vašim izborima prikazuje se uživo.
 - **Red čekanja**: dodajte trenutni URL, pa pokrenite ceo red, od jedne stavke nadalje, samo jedan video ili opseg; pauza i nastavak, preskakanje trenutne stavke, zaustavljanje sa brisanjem delimičnih fajlova. Red se čuva između sesija.
 
@@ -35,7 +36,8 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 
 ### Kolačići pregledača
 
-- Izaberite pregledač (Chrome, Firefox, Edge, Brave, Opera) čije kolačiće yt-dlp čita lokalno: potrebni su za dodatne audio zapise i neke titlove. Sa Chrome-om, Edge-om ili Brave-om potpuno zatvorite pregledač pre preuzimanja: dok je otvoren zaključava bazu kolačića, a yt-dlp tada prikazuje „Could not copy Chrome cookie database”. **Preporučuje se Firefox**: nema to ograničenje.
+- Izaberite pregledač (Chrome, Firefox, Edge, Brave, Opera) čije kolačiće yt-dlp čita lokalno: potrebni su za dodatne audio zapise i neke titlove. **Preporučuje se Firefox.**
+- **Rezultati naših testova** (Windows 11, oktobar 2026, YouTube nalog prijavljen u svakom pregledaču): **Firefox** radi, bilo da je pregledač otvoren ili zatvoren. **Opera** radi **samo sa zatvorenim pregledačem**: dok je otvorena zaključava bazu kolačića, a yt-dlp tada prikazuje „Could not copy Chrome cookie database”. **Chrome, Edge i Brave** ne rade ni kada su zatvoreni: šifruju kolačiće na način koji yt-dlp ne može uvek da pročita. Ova ograničenja potiču od pregledača i yt-dlp-a, a ne od programa, i mogu se promeniti njihovim ažuriranjima.
 - Ako je pregledač podešen da **briše kolačiće pri zatvaranju** (ili koristite privatni režim), na disku ne ostaje nijedan kolačić: yt-dlp ne može ništa da povrati, ni sa Chrome-om, Edge-om, Brave-om ni Firefox-om. Kod Chrome-a, Edge-a i Brave-a to je zamka: pregledač treba zatvoriti, a to briše kolačiće. Isključite tu opciju ili sačuvajte kolačiće sajtova youtube.com i google.com.
 - **Signalna lampica** pokazuje stanje: crvena ako je isključeno ili neuspešno, narandžasta ako nije testirano ili je u toku, zelena ako su kolačići učitani. Dugme ↻ pokreće test, a opis prikazuje stanje ili grešku.
 

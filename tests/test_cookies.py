@@ -138,6 +138,21 @@ class CookieFrameTests(unittest.TestCase):
         self.assertFalse(frame.warn.winfo_manager(), "avertissement masqué quand un navigateur est choisi")
         self.app.var_browser.set(m.BROWSER_OFF)
 
+    def test_known_browser_limits_are_shown_under_the_menu(self):
+        frame = self.app._cookie_frame
+        for browser in ("chrome", "edge", "brave"):
+            self.app.var_browser.set(browser)
+            self.assertTrue(frame.note.winfo_manager(), browser)
+            self.assertEqual(frame.note.cget("text"), m.t("cookie.note_blocked"))
+        self.assertIn("Firefox", m.t("cookie.note_blocked"))
+        self.app.var_browser.set("opera")
+        self.assertTrue(frame.note.winfo_manager())
+        self.assertEqual(frame.note.cget("text"), m.t("cookie.note_closed"))
+        for browser in ("firefox", m.BROWSER_OFF):
+            self.app.var_browser.set(browser)
+            self.assertFalse(frame.note.winfo_manager(), browser)
+        self.app.var_browser.set(m.BROWSER_OFF)
+
     def test_check_success_turns_green(self):
         frame = self.app._cookie_frame
         self.app.var_browser.set("firefox")

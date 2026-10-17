@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "Frissítések keresése indításkor",
   "cookie.hint_locked": "A(z) {browser} zárolva tartja a sütiadatbázisát, amíg meg van nyitva. Zárja be teljesen (az értesítési területen is), majd próbálja újra. A Firefoxnak, amelyet ajánlunk, nincs ilyen korlátja.",
   "cookie.hint_decrypt": "A(z) {browser} sütijei nem fejthetők vissza (a Chrome, az Edge és a Brave böngészők új védelme). Használja a Firefoxot (ajánlott).",
-  "cookie.hint_notfound": "Nem található {browser}-profil: nyissa meg legalább egyszer, és jelentkezzen be a YouTube-ra, vagy válasszon másik böngészőt."
+  "cookie.hint_notfound": "Nem található {browser}-profil: nyissa meg legalább egyszer, és jelentkezzen be a YouTube-ra, vagy válasszon másik böngészőt.",
+  "cookie.note_blocked": "A Chrome, az Edge és a Brave titkosítja a sütiket: az olvasás gyakran akkor is sikertelen, ha a böngésző zárva van. A Firefox ajánlott.",
+  "cookie.note_closed": "Az észlelés csak zárt böngészővel működik: zárja be teljesen (az értesítési területen is)."
 }

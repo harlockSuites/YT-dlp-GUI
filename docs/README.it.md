@@ -15,6 +15,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 ### Downloader singolo e coda
 
 - **Opzioni**: qualità massima (fino al 4K), solo audio (MP3), sottotitoli (formati vtt, srt, ass), incorporamento di sottotitoli e miniatura, lingua audio principale, tracce audio secondarie (file MKV multitraccia) e una libreria di «blocchi di script» (post-elaborazione, esportazione, rete, comportamento) che puoi ampliare con blocchi personalizzati.
+- **Più tracce audio**: nel file MKV le tracce audio non riportano il nome della loro lingua. Il lettore può mostrarle come «Traccia 1», «Traccia 2»… o senza indicazione della lingua. È un limite noto.
 - **Comando generato**: il comando yt-dlp corrispondente alle tue scelte viene mostrato in tempo reale.
 - **Coda**: aggiungi l'URL corrente, poi avvia tutta la coda, da un elemento in poi, un solo video o un intervallo; pausa e ripresa, salto dell'elemento in corso, arresto con pulizia dei file parziali. La coda viene conservata tra una sessione e l'altra.
 
@@ -35,7 +36,8 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 
 ### Cookie del browser
 
-- Scegli il browser (Chrome, Firefox, Edge, Brave, Opera) di cui yt-dlp legge i cookie in locale: servono per le tracce audio secondarie e alcuni sottotitoli. Con Chrome, Edge o Brave, chiudi completamente il browser prima di scaricare: blocca il database dei cookie finché è aperto e yt-dlp mostra allora «Could not copy Chrome cookie database». **Si consiglia Firefox**: non ha questo limite.
+- Scegli il browser (Chrome, Firefox, Edge, Brave, Opera) di cui yt-dlp legge i cookie in locale: servono per le tracce audio secondarie e alcuni sottotitoli. **Si consiglia Firefox.**
+- **Risultati dei nostri test** (Windows 11, ottobre 2026, account YouTube connesso in ogni browser): **Firefox** funziona, con il browser aperto o chiuso. **Opera** funziona **solo a browser chiuso**: blocca il database dei cookie finché è aperto e yt-dlp mostra allora «Could not copy Chrome cookie database». **Chrome, Edge e Brave** falliscono anche da chiusi: cifrano i cookie in un modo che yt-dlp non sempre riesce a leggere. Questi limiti dipendono dai browser e da yt-dlp, non dal programma, e possono cambiare con i loro aggiornamenti.
 - Se il browser è impostato per **eliminare i cookie alla chiusura** (o navighi in modalità privata), sul disco non resta alcun cookie: yt-dlp non può recuperare nulla, né con Chrome, Edge, Brave né con Firefox. Con Chrome, Edge e Brave è una trappola: il browser va chiuso, e questo cancella i cookie. Disattiva l'opzione o conserva i cookie di youtube.com e google.com.
 - Una **spia** indica lo stato: rossa se disattivato o in errore, arancione se non testato o in corso, verde se i cookie sono caricati. Il pulsante ↻ avvia un test e il suggerimento spiega lo stato o l'errore.
 

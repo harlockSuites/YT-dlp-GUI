@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "起動時に更新を確認",
   "cookie.hint_locked": "{browser} は起動中、Cookie データベースをロックします。通知領域も含めて完全に終了してから、もう一度お試しください。推奨する Firefox にはこの制限はありません。",
   "cookie.hint_decrypt": "{browser} の Cookie を復号できません（Chrome、Edge、Brave の新しい保護機能）。Firefox をお使いください（推奨）。",
-  "cookie.hint_notfound": "{browser} のプロファイルが見つかりません：一度起動して YouTube にサインインするか、別のブラウザを選んでください。"
+  "cookie.hint_notfound": "{browser} のプロファイルが見つかりません：一度起動して YouTube にサインインするか、別のブラウザを選んでください。",
+  "cookie.note_blocked": "Chrome、Edge、Brave は Cookie を暗号化するため、ブラウザを閉じていても読み取りに失敗することがよくあります。Firefox を推奨します。",
+  "cookie.note_closed": "検出はブラウザを閉じているときだけ動作します。通知領域も含めて完全に終了してください。"
 }

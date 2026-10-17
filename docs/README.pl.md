@@ -15,6 +15,7 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 ### Pojedyncze pobieranie i kolejka
 
 - **Opcje**: maksymalna jakość (do 4K), tylko dźwięk (MP3), napisy (formaty vtt, srt, ass), osadzanie napisów i miniatury, główny język ścieżki dźwiękowej, dodatkowe ścieżki audio (wielościeżkowy plik MKV) oraz biblioteka „bloków skryptów” (postprodukcja, eksport, sieć, zachowanie), którą można uzupełnić własnymi blokami.
+- **Wiele ścieżek audio**: w pliku MKV ścieżki audio nie mają nazwy swojego języka. Odtwarzacz może pokazywać je jako „Ścieżka 1”, „Ścieżka 2”… lub bez oznaczenia języka. To znane ograniczenie.
 - **Wygenerowane polecenie**: polecenie yt-dlp odpowiadające Twoim wyborom jest wyświetlane na bieżąco.
 - **Kolejka**: dodaj bieżący adres URL, a następnie uruchom całą kolejkę, od wybranej pozycji, pojedynczy film lub zakres; pauza i wznowienie, pominięcie bieżącej pozycji, zatrzymanie z usunięciem plików częściowych. Kolejka jest zachowywana między sesjami.
 
@@ -35,7 +36,8 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 
 ### Ciasteczka przeglądarki
 
-- Wybierz przeglądarkę (Chrome, Firefox, Edge, Brave, Opera), z której yt-dlp lokalnie odczytuje ciasteczka: są potrzebne do dodatkowych ścieżek audio i niektórych napisów. W przypadku Chrome, Edge lub Brave zamknij przeglądarkę całkowicie przed pobieraniem: blokuje ona bazę ciasteczek, dopóki jest otwarta, a yt-dlp wyświetla wtedy „Could not copy Chrome cookie database”. **Zalecamy Firefoksa**: nie ma tego ograniczenia.
+- Wybierz przeglądarkę (Chrome, Firefox, Edge, Brave, Opera), z której yt-dlp lokalnie odczytuje ciasteczka: są potrzebne do dodatkowych ścieżek audio i niektórych napisów. **Zalecamy Firefoksa.**
+- **Wyniki naszych testów** (Windows 11, październik 2026, konto YouTube zalogowane w każdej przeglądarce): **Firefox** działa, niezależnie od tego, czy przeglądarka jest otwarta, czy zamknięta. **Opera** działa **tylko przy zamkniętej przeglądarce**: blokuje bazę ciasteczek, dopóki jest otwarta, a yt-dlp wyświetla wtedy „Could not copy Chrome cookie database”. **Chrome, Edge i Brave** zawodzą nawet po zamknięciu: szyfrują ciasteczka w sposób, którego yt-dlp nie zawsze potrafi odczytać. Te ograniczenia pochodzą od przeglądarek i yt-dlp, nie od programu, i mogą się zmienić wraz z ich aktualizacjami.
 - Jeśli przeglądarka jest ustawiona na **usuwanie ciasteczek przy zamknięciu** (lub używasz trybu prywatnego), na dysku nie zostaje żadne ciasteczko: yt-dlp nie odzyska niczego, ani z Chrome, Edge, Brave, ani z Firefoksa. W Chrome, Edge i Brave to pułapka: przeglądarkę trzeba zamknąć, co usuwa ciasteczka. Wyłącz tę opcję lub zachowaj ciasteczka youtube.com i google.com.
 - **Wskaźnik** pokazuje stan: czerwony, gdy wyłączone lub błąd, pomarańczowy, gdy nie przetestowano lub trwa test, zielony, gdy ciasteczka są wczytane. Przycisk ↻ uruchamia test, a podpowiedź wyjaśnia stan lub błąd.
 

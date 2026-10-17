@@ -471,5 +471,7 @@
   "toolbar.menu_auto_update_check": "Verificar atualizações ao iniciar",
   "cookie.hint_locked": "{browser} mantém o banco de cookies bloqueado enquanto está aberto. Feche-o completamente (inclusive na área de notificação) e tente novamente. O Firefox, recomendado, não tem essa limitação.",
   "cookie.hint_decrypt": "Não foi possível descriptografar os cookies do {browser} (proteção recente dos navegadores Chrome, Edge e Brave). Use o Firefox (recomendado).",
-  "cookie.hint_notfound": "Nenhum perfil do {browser} encontrado: abra-o pelo menos uma vez e entre no YouTube, ou escolha outro navegador."
+  "cookie.hint_notfound": "Nenhum perfil do {browser} encontrado: abra-o pelo menos uma vez e entre no YouTube, ou escolha outro navegador.",
+  "cookie.note_blocked": "Chrome, Edge e Brave criptografam seus cookies: a leitura costuma falhar, mesmo com o navegador fechado. Recomendamos o Firefox.",
+  "cookie.note_closed": "A detecção só funciona com o navegador fechado: feche-o completamente (inclusive na área de notificação)."
 }

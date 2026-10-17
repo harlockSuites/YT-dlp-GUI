@@ -2299,6 +2299,10 @@ def _cookie_hint(text, browser=""):
     return ""
 
 
+# Résultats d'essais (Windows 11, 2026-10) : ces navigateurs chiffrent leurs cookies d'une façon que
+# yt-dlp ne lit pas toujours, même fermés ; Opera n'est lisible que fermé ; Firefox toujours.
+_COOKIE_ENCRYPTED_BROWSERS = ("chrome", "edge", "brave")
+_COOKIE_CLOSED_BROWSERS = ("opera",)
 _COOKIE_COLORS = {"off": "#e74c3c", "untested": "#f5a623", "testing": "#f5a623",
                   "ok": "#4ec94e", "fail": "#e74c3c"}
 
@@ -2322,8 +2326,20 @@ class CookieFrame(ttk.LabelFrame):
         self.warn = tk.Label(self, text=t(warn_key), justify="left", anchor="w",
                              fg="#e74c3c", font=("Segoe UI", 8), wraplength=warn_wrap)
         self.warn.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
+        self.note = tk.Label(self, text="", justify="left", anchor="w",
+                             fg="#f5a623", font=("Segoe UI", 8), wraplength=warn_wrap)
+        self.note.grid(row=2, column=0, columnspan=3, sticky="w", pady=(4, 0))
         var.trace_add("write", lambda *_: self.refresh())
         self.refresh()
+
+    def _note_key(self):
+        """Limite connue du navigateur choisi (clé de traduction) ou chaîne vide."""
+        browser = self._var.get()
+        if browser in _COOKIE_ENCRYPTED_BROWSERS:
+            return "cookie.note_blocked"
+        if browser in _COOKIE_CLOSED_BROWSERS:
+            return "cookie.note_closed"
+        return ""
 
     def _tip_text(self):
         text = t(f"insp.cookie_dot_{self.state}")
@@ -2336,6 +2352,12 @@ class CookieFrame(ttk.LabelFrame):
 
     def refresh(self):
         """Avertissement visible si les cookies sont désactivés ; voyant remis à « non testé »."""
+        key = self._note_key()
+        if key:
+            self.note.configure(text=t(key))
+            self.note.grid()
+        else:
+            self.note.grid_remove()
         if self.active():
             self.warn.grid_remove()
             self.set_state("untested")
