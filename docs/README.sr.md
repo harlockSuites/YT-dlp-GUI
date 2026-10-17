@@ -61,6 +61,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Instalater (preporučeno)**: preuzmite `yt-dlp-gui-setup-X.Y.Z.exe` sa [stranice izdanja](https://github.com/harlockSuites/YT-dlp-GUI/releases) i pokrenite ga. Windows 10 ili 11 (64-bitni), bez administratorskih prava; Python nije potreban.
 - **Prenosiva verzija**: preuzmite `yt-dlp-gui-portable-X.Y.Z.zip`, raspakujte ga gde želite i pokrenite `yt-dlp-gui.exe`; podešavanja ostaju u toj fascikli.
 - **Iz izvornog koda**: pogledajte odeljke „Zahtevi” i „Brzi početak” ispod.
+- **Deinstalacija**: Windows Podešavanja › Aplikacije › Instalirane aplikacije › yt-dlp GUI ili prečica „Deinstaliraj” u meniju Start. Program nudi da obriše i svoje podatke (podešavanja, red čekanja, preuzeti yt-dlp i ffmpeg); vaši video snimci se nikada ne brišu. Pošto je instalacija vezana za svaki Windows nalog, program se pojavljuje samo na listi naloga koji ga je instalirao. Kod prenosive verzije dovoljno je obrisati njen folder. Alati instalirani zasebno preko Chocolatey-ja (ffmpeg, Deno…) se ne uklanjaju.
 - **Upozorenje Windows SmartScreen**: instalater nije digitalno potpisan, pa Windows može da prikaže „Windows je zaštitio vaš računar”. Kliknite na „Više informacija”, a zatim na „Ipak pokreni”. Da proverite autentičnost fajla, uporedite njegovu SHA-256 sumu sa onom iz `SHA256SUMS.txt`, objavljenog uz svako izdanje:
 
 ```powershell

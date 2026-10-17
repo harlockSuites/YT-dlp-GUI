@@ -61,6 +61,7 @@
 - **설치 프로그램(권장)**: [릴리스 페이지](https://github.com/harlockSuites/YT-dlp-GUI/releases)에서 `yt-dlp-gui-setup-X.Y.Z.exe`를 내려받아 실행하세요. Windows 10 또는 11(64비트)에서 관리자 권한 없이 설치되며 Python은 필요하지 않습니다.
 - **휴대용 버전**: `yt-dlp-gui-portable-X.Y.Z.zip`을 내려받아 원하는 곳에 압축을 풀고 `yt-dlp-gui.exe`를 실행하세요. 설정은 그 폴더에 저장됩니다.
 - **소스에서 실행**: 아래의 '요구 사항'과 '빠른 시작'을 참고하세요.
+- **제거**: Windows 설정 › 앱 › 설치된 앱 › yt-dlp GUI, 또는 시작 메뉴의 '제거' 바로 가기. 소프트웨어가 자체 데이터(설정, 대기열, 내려받은 yt-dlp와 ffmpeg)도 삭제할지 묻습니다. 동영상은 절대 삭제되지 않습니다. 설치는 Windows 계정별로 이루어지므로, 소프트웨어는 설치한 계정의 목록에만 나타납니다. 포터블 버전은 폴더만 삭제하면 됩니다. Chocolatey로 따로 설치한 도구(ffmpeg, Deno 등)는 제거되지 않습니다.
 - **Windows SmartScreen 경고**: 설치 프로그램에는 디지털 서명이 없어 Windows에 'Windows의 PC 보호' 화면이 나타날 수 있습니다. '추가 정보'를 누른 다음 '실행'을 선택하세요. 파일의 진위를 확인하려면 각 릴리스와 함께 게시되는 `SHA256SUMS.txt`의 SHA-256 값과 비교하세요:
 
 ```powershell

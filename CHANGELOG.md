@@ -2,6 +2,16 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- Désinstallation : le désinstalleur propose de supprimer aussi les données du logiciel (réglages, file d'attente, yt-dlp et ffmpeg téléchargés, dossier `%LOCALAPPDATA%\yt-dlp-GUI`), « Non » par défaut ; les vidéos téléchargées ne sont jamais supprimées. En mode silencieux, les données sont conservées sauf avec `/DELETEDATA=1`. Message traduit dans les 14 langues de l'installateur.
+- Installateur et désinstalleur : le logiciel en cours d'exécution est détecté (mutex nommé) et l'utilisateur est invité à le fermer ; nom affiché explicite dans « Applications installées ».
+- README (15 langues) : puce « Désinstallation » (chemin dans Windows, installation propre à chaque compte, version portable, outils Chocolatey conservés) et note sur les pistes audio du MKV sans nom de langue.
+
+### Modifié
+- Cookies : note sous le menu des navigateurs (Chrome, Edge et Brave : lecture souvent impossible même fermés ; Opera : détection seulement navigateur fermé) et résultats d'essais dans les README ; Firefox est recommandé.
+
 ## [0.1.2] — 2026-10-17
 
 ### Corrigé

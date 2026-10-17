@@ -61,6 +61,7 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 - **Installateur (recommandé)** : téléchargez `yt-dlp-gui-setup-X.Y.Z.exe` depuis la page des [versions publiées](https://github.com/harlockSuites/YT-dlp-GUI/releases) et lancez-le. Windows 10 ou 11 (64 bits), sans droits administrateur ; Python n'est pas nécessaire.
 - **Version portable** : téléchargez `yt-dlp-gui-portable-X.Y.Z.zip`, décompressez-le où vous voulez et lancez `yt-dlp-gui.exe` ; les réglages restent dans ce dossier.
 - **Depuis les sources** : voir les sections « Prérequis » et « Démarrage rapide » ci-dessous.
+- **Désinstallation** : Paramètres Windows › Applications › Applications installées › yt-dlp GUI, ou le raccourci « Désinstaller » du menu Démarrer. Le logiciel propose de supprimer aussi ses données (réglages, file d'attente, yt-dlp et ffmpeg téléchargés) ; vos vidéos ne sont jamais supprimées. L'installation étant propre à chaque compte Windows, le logiciel n'apparaît que dans la liste du compte qui l'a installé. Pour la version portable, supprimez simplement son dossier. Les outils installés à part avec Chocolatey (ffmpeg, Deno…) ne sont pas retirés.
 - **Avertissement Windows SmartScreen** : l'installateur n'est pas signé numériquement, donc Windows peut afficher « Windows a protégé votre ordinateur ». Cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ». Pour vérifier l'authenticité du fichier, comparez sa somme SHA-256 avec celle de `SHA256SUMS.txt`, publié avec chaque version :
 
 ```powershell

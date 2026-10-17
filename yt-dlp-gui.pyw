@@ -6115,8 +6115,25 @@ class YtDlpGui(tk.Tk):
         self.destroy()
 
 
+RUN_MUTEX_NAME = "yt-dlp-GUI-Running"   # identique à AppMutex dans packaging/yt-dlp-gui.iss
+_run_mutex = None
+
+
+def _acquire_run_mutex():
+    """Mutex nommé : l'installateur et le désinstalleur détectent le logiciel en cours d'exécution et
+    demandent de le fermer, au lieu d'échouer sur un fichier verrouillé. Sans effet hors Windows."""
+    global _run_mutex
+    try:
+        import ctypes
+        _run_mutex = ctypes.windll.kernel32.CreateMutexW(None, False, RUN_MUTEX_NAME)
+    except Exception:
+        _run_mutex = None
+    return _run_mutex
+
+
 # ══════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
+    _acquire_run_mutex()
     _load_custom_blocks()
     _boot_cfg = load_config()
     load_lang(_boot_cfg.get("lang", "fr"))

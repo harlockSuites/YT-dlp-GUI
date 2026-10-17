@@ -99,6 +99,41 @@ class BuildScriptTests(unittest.TestCase):
         self.assertIn("CustomMessage('FilipinoNote')", iss)
         self.assertIn("WizardForm.WelcomePage", iss)
 
+    def test_uninstaller_offers_to_delete_the_data_in_every_language(self):
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        langs = [n for n, _rel in re.findall(r'^Name: "(\w+)"; MessagesFile: "([^"]+)"', iss, re.M)]
+        self.assertEqual(len(langs), 14)
+        for lang in ["", *[f"{n}." for n in langs if n != "english"]]:
+            line = next((l for l in iss.splitlines() if l.startswith(f"{lang}DeleteDataPrompt=")), None)
+            self.assertIsNotNone(line, f"message manquant : {lang or 'english'}")
+            self.assertIn("%1", line, "chemin du dossier")
+            self.assertGreater(len(line), 40)
+        self.assertIn("procedure CurUninstallStepChanged", iss)
+        self.assertIn("usPostUninstall", iss)
+        self.assertIn("MB_DEFBUTTON2", iss, "« Non » est le choix par défaut")
+        self.assertIn("{param:DELETEDATA|0}", iss, "désinstallation silencieuse : données conservées par défaut")
+        self.assertTrue(iss.startswith("﻿"), "BOM UTF-8 : les messages contiennent des caractères non ASCII")
+
+    def test_data_folder_matches_the_application(self):
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        self.assertIn('#define DataDirName "yt-dlp-GUI"', iss)
+        source = _read(m.__file__)
+        self.assertIn('"yt-dlp-GUI"', source, "dossier des données dans %LOCALAPPDATA% (_resolve_dirs)")
+
+    def test_installer_detects_the_running_application(self):
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        self.assertIn(f"AppMutex={m.RUN_MUTEX_NAME}", iss)
+        self.assertIn("UninstallDisplayName={#AppName}", iss)
+
+    @unittest.skipUnless(os.name == "nt", "mutex nommé Windows")
+    def test_application_holds_the_named_mutex(self):
+        import ctypes
+        handle = m._acquire_run_mutex()
+        self.assertTrue(handle)
+        opened = ctypes.windll.kernel32.OpenMutexW(0x00100000, False, m.RUN_MUTEX_NAME)   # SYNCHRONIZE
+        self.assertTrue(opened, "visible par un autre processus (l'installateur)")
+        ctypes.windll.kernel32.CloseHandle(opened)
+
     def test_build_outputs_are_ignored_by_git(self):
         ignore = _read(os.path.join(ROOT, ".gitignore"))
         for entry in ("build/", "dist/", "bin/"):

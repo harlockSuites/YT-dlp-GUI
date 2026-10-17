@@ -61,6 +61,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Trình cài đặt (khuyến nghị)**: tải `yt-dlp-gui-setup-X.Y.Z.exe` từ [trang các bản phát hành](https://github.com/harlockSuites/YT-dlp-GUI/releases) rồi chạy. Windows 10 hoặc 11 (64 bit), không cần quyền quản trị; không cần Python.
 - **Bản di động**: tải `yt-dlp-gui-portable-X.Y.Z.zip`, giải nén ở bất cứ đâu rồi chạy `yt-dlp-gui.exe`; cài đặt nằm trong thư mục đó.
 - **Từ mã nguồn**: xem các mục «Yêu cầu» và «Bắt đầu nhanh» bên dưới.
+- **Gỡ cài đặt**: Cài đặt Windows › Ứng dụng › Ứng dụng đã cài đặt › yt-dlp GUI, hoặc lối tắt «Gỡ cài đặt» trong menu Start. Phần mềm đề nghị xóa luôn dữ liệu của nó (cài đặt, hàng đợi, yt-dlp và ffmpeg đã tải); video của bạn không bao giờ bị xóa. Vì việc cài đặt gắn với từng tài khoản Windows, phần mềm chỉ xuất hiện trong danh sách của tài khoản đã cài đặt. Với bản portable, chỉ cần xóa thư mục của nó. Các công cụ cài riêng bằng Chocolatey (ffmpeg, Deno…) không bị gỡ.
 - **Cảnh báo Windows SmartScreen**: trình cài đặt chưa được ký số nên Windows có thể hiện «Windows đã bảo vệ PC của bạn». Bấm «Thông tin thêm», rồi «Vẫn chạy». Để kiểm tra tính xác thực của tệp, hãy so sánh tổng SHA-256 của nó với tổng trong `SHA256SUMS.txt` được công bố cùng mỗi bản phát hành:
 
 ```powershell

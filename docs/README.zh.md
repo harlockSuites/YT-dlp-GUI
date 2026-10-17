@@ -61,6 +61,7 @@
 - **安装程序（推荐）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-setup-X.Y.Z.exe` 并运行。适用于 Windows 10 或 11（64 位），无需管理员权限，也无需 Python。
 - **便携版**：下载 `yt-dlp-gui-portable-X.Y.Z.zip`，解压到任意位置并运行 `yt-dlp-gui.exe`；设置保存在该文件夹中。
 - **从源代码运行**：请参阅下方的“系统要求”和“快速开始”。
+- **卸载**：Windows 设置 › 应用 › 已安装的应用 › yt-dlp GUI，或开始菜单中的“卸载”快捷方式。软件会询问是否一并删除其数据（设置、队列、已下载的 yt-dlp 和 ffmpeg）；您的视频绝不会被删除。由于安装属于各个 Windows 账户，软件只出现在安装它的账户的列表中。便携版只需删除其文件夹。通过 Chocolatey 单独安装的工具（ffmpeg、Deno 等）不会被移除。
 - **Windows SmartScreen 警告**：安装程序没有数字签名，因此 Windows 可能显示“Windows 已保护你的电脑”。请点击“更多信息”，再点击“仍要运行”。若要核实文件的真实性，请将其 SHA-256 校验和与每个版本附带的 `SHA256SUMS.txt` 中的值进行比较：
 
 ```powershell

@@ -61,6 +61,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 - **Telepítő (ajánlott)**: töltse le a `yt-dlp-gui-setup-X.Y.Z.exe` fájlt a [kiadások oldaláról](https://github.com/harlockSuites/YT-dlp-GUI/releases), és futtassa. Windows 10 vagy 11 (64 bites), rendszergazdai jogosultság nélkül; Python nem szükséges.
 - **Hordozható változat**: töltse le a `yt-dlp-gui-portable-X.Y.Z.zip` fájlt, csomagolja ki bárhová, és futtassa a `yt-dlp-gui.exe` fájlt; a beállítások ebben a mappában maradnak.
 - **Forráskódból**: lásd lentebb a „Követelmények” és a „Gyors kezdés” részt.
+- **Eltávolítás**: Windows Beállítások › Alkalmazások › Telepített alkalmazások › yt-dlp GUI, vagy a Start menü „Eltávolítás” parancsikonja. A program felajánlja az adatai (beállítások, várólista, letöltött yt-dlp és ffmpeg) törlését is; a videóid soha nem törlődnek. Mivel a telepítés Windows-fiókonként külön van, a program csak azon fiók listájában jelenik meg, amelyik telepítette. A hordozható változatnál elég a mappáját törölni. A Chocolatey-vel külön telepített eszközök (ffmpeg, Deno…) nem törlődnek.
 - **Windows SmartScreen figyelmeztetés**: a telepítő nincs digitálisan aláírva, ezért a Windows megjelenítheti: „A Windows megvédte a számítógépét”. Kattintson a „További információ”, majd a „Futtatás mindenképpen” lehetőségre. A fájl hitelességét ellenőrizheti, ha összeveti az SHA-256 összegét a minden kiadással közzétett `SHA256SUMS.txt` fájlban szereplővel:
 
 ```powershell
