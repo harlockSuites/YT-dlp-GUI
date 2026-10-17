@@ -35,7 +35,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 ### Böngészősütik
 
-- Válassza ki azt a böngészőt (Chrome, Firefox, Edge, Brave, Opera), amelynek sütijeit a yt-dlp helyben olvassa: a másodlagos hangsávokhoz és egyes feliratokhoz szükségesek.
+- Válassza ki azt a böngészőt (Chrome, Firefox, Edge, Brave, Opera), amelynek sütijeit a yt-dlp helyben olvassa: a másodlagos hangsávokhoz és egyes feliratokhoz szükségesek. Chrome, Edge vagy Brave esetén letöltés előtt zárja be teljesen a böngészőt: megnyitva zárolja a sütiadatbázisát, és a yt-dlp ilyenkor a „Could not copy Chrome cookie database” üzenetet jeleníti meg. A Firefoxnak nincs ilyen korlátja.
 - Egy **jelzőfény** mutatja az állapotot: piros, ha ki van kapcsolva vagy hibás, narancs, ha nincs tesztelve vagy folyamatban van, zöld, ha a sütik betöltődtek. A ↻ gomb tesztet indít, a buborékszöveg pedig elmagyarázza az állapotot vagy a hibát.
 
 ### Telepítő varázsló, függőségek és a yt-dlp frissítései

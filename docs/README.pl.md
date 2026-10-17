@@ -35,7 +35,7 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 
 ### Ciasteczka przeglądarki
 
-- Wybierz przeglądarkę (Chrome, Firefox, Edge, Brave, Opera), z której yt-dlp lokalnie odczytuje ciasteczka: są potrzebne do dodatkowych ścieżek audio i niektórych napisów.
+- Wybierz przeglądarkę (Chrome, Firefox, Edge, Brave, Opera), z której yt-dlp lokalnie odczytuje ciasteczka: są potrzebne do dodatkowych ścieżek audio i niektórych napisów. W przypadku Chrome, Edge lub Brave zamknij przeglądarkę całkowicie przed pobieraniem: blokuje ona bazę ciasteczek, dopóki jest otwarta, a yt-dlp wyświetla wtedy „Could not copy Chrome cookie database”. Firefox nie ma tego ograniczenia.
 - **Wskaźnik** pokazuje stan: czerwony, gdy wyłączone lub błąd, pomarańczowy, gdy nie przetestowano lub trwa test, zielony, gdy ciasteczka są wczytane. Przycisk ↻ uruchamia test, a podpowiedź wyjaśnia stan lub błąd.
 
 ### Asystent instalacji, zależności i aktualizacje yt-dlp

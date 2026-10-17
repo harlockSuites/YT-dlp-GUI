@@ -35,7 +35,7 @@
 
 ### 브라우저 쿠키
 
-- yt-dlp가 로컬에서 쿠키를 읽을 브라우저(Chrome, Firefox, Edge, Brave, Opera)를 선택하세요. 보조 오디오 트랙과 일부 자막에 필요합니다.
+- yt-dlp가 로컬에서 쿠키를 읽을 브라우저(Chrome, Firefox, Edge, Brave, Opera)를 선택하세요. 보조 오디오 트랙과 일부 자막에 필요합니다. Chrome, Edge 또는 Brave를 사용할 때는 다운로드 전에 브라우저를 완전히 종료하세요. 실행 중에는 쿠키 데이터베이스가 잠겨 yt-dlp에 'Could not copy Chrome cookie database'가 표시됩니다. Firefox에는 이 제한이 없습니다.
 - **표시등**이 상태를 보여 줍니다: 비활성 또는 실패는 빨간색, 미테스트 또는 진행 중은 주황색, 쿠키가 로드되면 초록색. ↻ 버튼은 테스트를 실행하고, 툴팁이 상태나 오류를 설명합니다.
 
 ### 설치 도우미, 종속성, yt-dlp 업데이트

@@ -468,5 +468,8 @@
   "app_update.notes": "Co nowego",
   "app_update.banner": "🔔 Dostępna nowa wersja {version}",
   "app_update.hint_source": "Używasz kodu źródłowego: pobierz najnowszą wersję poleceniem git pull.",
-  "toolbar.menu_auto_update_check": "Sprawdzaj aktualizacje przy uruchomieniu"
+  "toolbar.menu_auto_update_check": "Sprawdzaj aktualizacje przy uruchomieniu",
+  "cookie.hint_locked": "{browser} blokuje bazę ciasteczek, dopóki jest otwarty. Zamknij go całkowicie (także w obszarze powiadomień) i spróbuj ponownie. Firefox nie ma tego ograniczenia.",
+  "cookie.hint_decrypt": "Nie można odszyfrować ciasteczek przeglądarki {browser} (nowa ochrona w przeglądarkach Chrome, Edge i Brave). Spróbuj Firefoksa.",
+  "cookie.hint_notfound": "Nie znaleziono profilu przeglądarki {browser}: otwórz ją co najmniej raz i zaloguj się do YouTube albo wybierz inną przeglądarkę."
 }

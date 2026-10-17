@@ -57,6 +57,50 @@ DONATE_URL         = "https://ko-fi.com/harlocksuites"
 if LOCAL_BIN not in os.environ.get("PATH", "").split(os.pathsep):
     os.environ["PATH"] = LOCAL_BIN + os.pathsep + os.environ.get("PATH", "")
 
+
+def _registry_path_dirs():
+    """Dossiers du PATH utilisateur et système lus dans le registre : un processus déjà lancé
+    ne voit pas les outils installés après son démarrage (Deno, ffmpeg…)."""
+    try:
+        import winreg
+    except ImportError:
+        return []
+    dirs = []
+    for root, sub in ((winreg.HKEY_CURRENT_USER, "Environment"),
+                      (winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Control\Session Manager\Environment")):
+        try:
+            with winreg.OpenKey(root, sub) as key:
+                value, _kind = winreg.QueryValueEx(key, "Path")
+        except OSError:
+            continue
+        dirs += [os.path.expandvars(x.strip().strip('"')) for x in str(value).split(";") if x.strip()]
+    return dirs
+
+
+def _merge_path(current, extra):
+    """Ajoute à `current` les dossiers existants de `extra` qui n'y figurent pas encore."""
+    parts = [x for x in current.split(os.pathsep) if x]
+    seen = {os.path.normcase(os.path.normpath(x)) for x in parts}
+    for d in extra:
+        key = os.path.normcase(os.path.normpath(d)) if d else ""
+        if d and key not in seen and os.path.isdir(d):
+            parts.append(d)
+            seen.add(key)
+    return os.pathsep.join(parts)
+
+
+def _refresh_process_path():
+    home = os.path.expanduser("~")
+    extra = _registry_path_dirs() + [
+        os.path.join(home, ".deno", "bin"),
+        os.path.join(os.environ.get("LOCALAPPDATA", ""), "Microsoft", "WinGet", "Links"),
+        os.path.join(os.environ.get("ProgramData", ""), "chocolatey", "bin"),
+    ]
+    os.environ["PATH"] = _merge_path(os.environ.get("PATH", ""), extra)
+
+
+_refresh_process_path()
+
 SUBTITLE_FORMATS = ["vtt", "srt", "ass", "best"]
 
 # Bibliothèque de blocs yt-dlp sélectionnables dans les Règles globales
@@ -446,6 +490,9 @@ def choco_available():
 
 
 def dep_installed(exe):
+    if shutil.which(exe) is not None:
+        return True
+    _refresh_process_path()   # outil installé depuis le lancement du logiciel
     if shutil.which(exe) is not None:
         return True
     # Fallback : vérifier les chemins connus et injecter dans PATH si trouvé
@@ -1215,6 +1262,12 @@ class DownloadQueueWindow(tk.Toplevel):
                          "#dcdcaa" if line.startswith(("[ffmpeg]", "[Merger]")) else None)
                 self.after(0, lambda l=line, c=color: self._log(l, c))
             self._process.wait()
+            if self._process.returncode != 0:
+                src = self._inspector
+                browser = src.var_g_browser.get() if src is not None and hasattr(src, "var_g_browser") else ""
+                hint = _cookie_hint("\n".join(lines), browser)
+                if hint:
+                    self.after(0, lambda h=hint: self._log(h, "#f5a623"))
             return self._process.returncode, lines
         except Exception as e:
             self.after(0, lambda e=e: self._log(t("common.log_error", error=e), "#f66"))
@@ -2213,6 +2266,106 @@ def _browser_combo(parent, var):
     return cb
 
 
+def _cookie_hint(text, browser=""):
+    """Explication claire d'une erreur de lecture des cookies (sinon chaîne vide)."""
+    low = (text or "").lower()
+    name = (browser or "").capitalize()
+    if "database is locked" in low or ("could not copy" in low and "cookie" in low):
+        return t("cookie.hint_locked", browser=name)
+    if "failed to decrypt" in low or "dpapi" in low:
+        return t("cookie.hint_decrypt", browser=name)
+    if "could not find" in low and "cookies database" in low:
+        return t("cookie.hint_notfound", browser=name)
+    return ""
+
+
+_COOKIE_COLORS = {"off": "#e74c3c", "untested": "#f5a623", "testing": "#f5a623",
+                  "ok": "#4ec94e", "fail": "#e74c3c"}
+
+
+class CookieFrame(ttk.LabelFrame):
+    """Cadre « Cookies » : navigateur, voyant d'état (●), bouton de test (↻) et avertissement."""
+
+    def __init__(self, parent, var, label_key, warn_key, warn_wrap=210):
+        super().__init__(parent, text=t(label_key).rstrip(" :："), padding=6)
+        self._var = var
+        self.state = "off"
+        self.detail = ""
+        _browser_combo(self, var).grid(row=0, column=0, sticky="w")
+        self.dot = tk.Label(self, text="●", fg=_COOKIE_COLORS["off"], font=("Segoe UI", 13), cursor="hand2")
+        self.dot.grid(row=0, column=1, padx=(6, 0))
+        self.dot.bind("<Button-1>", lambda _e: self.check())
+        self.button = ttk.Button(self, text="↻", width=2, command=self.check)
+        self.button.grid(row=0, column=2, padx=(2, 0))
+        _Tip(self.button, lambda: t("insp.cookie_tip_refresh"))
+        _Tip(self.dot, self._tip_text)
+        self.warn = tk.Label(self, text=t(warn_key), justify="left", anchor="w",
+                             fg="#e74c3c", font=("Segoe UI", 8), wraplength=warn_wrap)
+        self.warn.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
+        var.trace_add("write", lambda *_: self.refresh())
+        self.refresh()
+
+    def _tip_text(self):
+        text = t(f"insp.cookie_dot_{self.state}")
+        if self.state == "fail" and self.detail:
+            text += "\n" + self.detail
+        return text
+
+    def active(self):
+        return self._var.get() not in ("", BROWSER_OFF)
+
+    def refresh(self):
+        """Avertissement visible si les cookies sont désactivés ; voyant remis à « non testé »."""
+        if self.active():
+            self.warn.grid_remove()
+            self.set_state("untested")
+        else:
+            self.warn.grid()
+            self.set_state("off")
+
+    def set_state(self, state):
+        self.state = state
+        self.dot.configure(fg=_COOKIE_COLORS[state])
+
+    def check(self):
+        """Lance un test rapide yt-dlp pour vérifier que les cookies sont lisibles."""
+        browser = self._var.get()
+        if not browser or browser == BROWSER_OFF:
+            self.set_state("off")
+            return
+        if self.state == "testing":
+            return
+        self.detail = ""
+        self.set_state("testing")
+
+        def _test():
+            detail = ""
+            try:
+                r = subprocess.run(
+                    [YTDLP, "--cookies-from-browser", browser, "--simulate", "--no-playlist", "--quiet",
+                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
+                    capture_output=True, timeout=20, creationflags=subprocess.CREATE_NO_WINDOW)
+                ok = r.returncode == 0
+                if not ok:
+                    text = (r.stderr or b"").decode("utf-8", "replace").strip()
+                    lines = text.splitlines()
+                    detail = _cookie_hint(text, browser) or (lines[-1][:160] if lines else "")
+            except Exception as exc:
+                ok, detail = False, str(exc)[:160]
+
+            def _done():
+                if self._var.get() != browser:   # le choix a changé pendant le test
+                    return
+                self.detail = detail
+                self.set_state("ok" if ok else "fail")
+            try:
+                self.after(0, _done)
+            except (tk.TclError, RuntimeError):
+                pass
+
+        threading.Thread(target=_test, daemon=True).start()
+
+
 class _FlowFrame(ttk.Frame):
     """Conteneur qui replie ses enfants sur plusieurs lignes selon la largeur disponible
     (placement absolu : chaque ligne a ses propres largeurs, sans colonnes partagées)."""
@@ -2501,27 +2654,10 @@ class PlaylistInspectorWindow(tk.Toplevel):
         frm_g.add(g)
 
         # Cookies : menu + voyant + bouton test
-        frm_cookie = ttk.LabelFrame(frm_g, text=t("insp.label_cookies").rstrip(" :："), padding=6)
         self.var_g_browser = tk.StringVar(value=BROWSER_OFF)
-        _browser_combo(frm_cookie, self.var_g_browser).grid(row=0, column=0, sticky="w")
+        self._cookie_frame = CookieFrame(frm_g, self.var_g_browser, "insp.label_cookies", "insp.cookie_warn")
         self.var_g_browser.trace_add("write", lambda *_: self._on_browser_change())
-        self._lbl_cookie_dot = tk.Label(frm_cookie, text="●", fg="#e74c3c",
-                                        font=("Segoe UI", 13), cursor="hand2")
-        self._lbl_cookie_dot.grid(row=0, column=1, padx=(6, 0))
-        self._lbl_cookie_dot.bind("<Button-1>", lambda _: self._check_cookie())
-        btn_cookie_refresh = ttk.Button(frm_cookie, text="↻", width=2, command=self._check_cookie)
-        btn_cookie_refresh.grid(row=0, column=2, padx=(2, 0))
-        self._cookie_state = "off"
-        _Tip(btn_cookie_refresh, lambda: t("insp.cookie_tip_refresh"))
-        self._cookie_detail = ""
-        _Tip(self._lbl_cookie_dot, lambda: t(f"insp.cookie_dot_{self._cookie_state}")
-             + ("\n" + self._cookie_detail
-                if self._cookie_state == "fail" and self._cookie_detail else ""))
-        self._lbl_cookie_warn_insp = tk.Label(
-            frm_cookie, text=t("insp.cookie_warn"), justify="left", anchor="w",
-            fg="#e74c3c", font=("Segoe UI", 8), wraplength=210)
-        self._lbl_cookie_warn_insp.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
-        frm_g.add(frm_cookie)
+        frm_g.add(self._cookie_frame)
 
         # Répertoire intelligent
         frm_smart = ttk.LabelFrame(frm_g, text=t("insp.chk_smart_dir"), padding=6)
@@ -2944,6 +3080,10 @@ class PlaylistInspectorWindow(tk.Toplevel):
                     creationflags=subprocess.CREATE_NO_WINDOW, timeout=45,
                 )
                 rc = r.returncode
+                if rc != 0:
+                    hint = _cookie_hint(r.stderr, browser)
+                    if hint:
+                        self.after(0, lambda h=hint: (self.var_status.set(h), self._log(h)))
                 stdout_len = len(r.stdout.strip())
                 self.after(0, lambda t=vid["title"][:25], c=rc, l=stdout_len:
                            self._log(f"  [json] returncode={c} stdout={l}o → '{t}'"))
@@ -3119,59 +3259,17 @@ class PlaylistInspectorWindow(tk.Toplevel):
         return self.var_g_browser.get() not in ("", BROWSER_OFF)
 
     def _update_cookie_warn_insp(self):
-        disabled = self.var_g_browser.get() == BROWSER_OFF
-        if disabled:
-            self._lbl_cookie_warn_insp.grid()
-        else:
-            self._lbl_cookie_warn_insp.grid_remove()
-        # Voyant: rouge si désactivé, orange si sélectionné mais non testé
-        if disabled or not self._cookies_active():
-            self._set_cookie_state("off")
-        else:
-            self._set_cookie_state("untested")
+        self._cookie_frame.refresh()
 
     def _set_cookie_state(self, state):
-        colors = {"off": "#e74c3c", "untested": "#f5a623", "testing": "#f5a623",
-                  "ok": "#4ec94e", "fail": "#e74c3c"}
-        self._cookie_state = state
-        self._lbl_cookie_dot.configure(fg=colors[state])
+        self._cookie_frame.set_state(state)
 
     def _check_cookie(self):
-        """Lance un test rapide yt-dlp pour vérifier que le cookie est accessible."""
-        browser = self.var_g_browser.get()
-        if not browser or browser == BROWSER_OFF:
-            self._set_cookie_state("off")
-            return
-        if self._cookie_state == "testing":
-            return
-        self._cookie_detail = ""
-        self._set_cookie_state("testing")
+        self._cookie_frame.check()
 
-        def _test():
-            detail = ""
-            try:
-                r = subprocess.run(
-                    [YTDLP,
-                     "--cookies-from-browser", browser,
-                     "--simulate", "--no-playlist", "--quiet",
-                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
-                    capture_output=True, timeout=20,
-                    creationflags=subprocess.CREATE_NO_WINDOW)
-                ok = r.returncode == 0
-                if not ok:
-                    err = (r.stderr or b"").decode("utf-8", "replace").strip().splitlines()
-                    detail = err[-1][:160] if err else ""
-            except Exception as exc:
-                ok, detail = False, str(exc)[:160]
-
-            def _done():
-                if self.var_g_browser.get() != browser:   # le choix a changé pendant le test
-                    return
-                self._cookie_detail = detail
-                self._set_cookie_state("ok" if ok else "fail")
-            self.after(0, _done)
-
-        threading.Thread(target=_test, daemon=True).start()
+    @property
+    def _cookie_state(self):
+        return self._cookie_frame.state
 
     def _on_browser_change(self):
         """Rafraîchit les widgets de langue/audio quand le navigateur (cookie) change."""
@@ -4416,10 +4514,12 @@ class YtDlpGui(tk.Tk):
         self._queue_index = -1
         self._queue_end_index = -1
         self._queue_skip = False
+        self._cookie_hint_shown = False
         self._config = load_config()
         self._queue = load_queue()
         self._build_ui()
         self._restore_config()
+        self._apply_initial_geometry()
         if self.AUTO_SETUP:
             self.after(400, self._maybe_first_run)
         if self.AUTO_UPDATE_CHECK:
@@ -4432,6 +4532,14 @@ class YtDlpGui(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self._on_close)
         # Rend visibles les exceptions silencieuses dans les callbacks tkinter
         self.report_callback_exception = self._on_tk_error
+
+    def _apply_initial_geometry(self):
+        """Taille de départ : celle de la dernière session, sinon 980 x 930, ramenée à l'écran."""
+        m_size = re.fullmatch(r"(\d{3,4})x(\d{3,4})", str(load_config().get("window_size", "")))
+        w, h = (int(m_size[1]), int(m_size[2])) if m_size else (980, 930)
+        w = max(560, min(w, self.winfo_screenwidth() - 40))
+        h = max(420, min(h, self.winfo_screenheight() - 100))
+        self.geometry(f"{w}x{h}")
 
     def _on_tk_error(self, exc, val, tb):
         import traceback
@@ -4593,18 +4701,12 @@ class YtDlpGui(tk.Tk):
                         variable=self.var_embed_thumb).pack(side="left")
         frm_opts.add(g)
 
-        # Cookies (+ avertissement)
-        g = ttk.Frame(frm_opts)
-        ttk.Label(g, text=t("opts.label_cookies")).grid(row=0, column=0, sticky="w", padx=(0, 4))
+        # Cookies : menu + voyant + bouton test (comme dans l'inspecteur)
         self.var_browser = tk.StringVar(value=BROWSER_OFF)
-        _browser_combo(g, self.var_browser).grid(row=0, column=1, sticky="w")
-        self._lbl_cookie_warn_main = tk.Label(
-            g, text=t("opts.cookie_warn"), justify="left", anchor="w",
-            fg="#e74c3c", font=("Segoe UI", 8), wraplength=280)
-        self._lbl_cookie_warn_main.grid(row=0, column=2, sticky="w", padx=(10, 0))
-        self.var_browser.trace_add("write", lambda *_: (
-            self._update_cookie_warn_main(), self._update_cmd()))
-        frm_opts.add(g)
+        self._cookie_frame = CookieFrame(frm_opts, self.var_browser, "opts.label_cookies", "opts.cookie_warn",
+                                         warn_wrap=280)
+        self.var_browser.trace_add("write", lambda *_: self._update_cmd())
+        frm_opts.add(self._cookie_frame)
 
         # Langue principale
         g = ttk.Frame(frm_opts)
@@ -5304,6 +5406,9 @@ class YtDlpGui(tk.Tk):
                 if result.returncode != 0:
                     for line in result.stderr.splitlines():
                         self.after(0, self._log, line)
+                    hint = _cookie_hint(result.stderr, browser)
+                    if hint:
+                        self.after(0, self._log, hint, "info")
                     return
                 try:
                     info = json.loads(result.stdout)
@@ -5419,6 +5524,7 @@ class YtDlpGui(tk.Tk):
         self.btn_pause.configure(state="normal")
         self._paused = False
         self._current_dl_files = []   # fichiers en cours pour nettoyage si skip
+        self._cookie_hint_shown = False
         self.var_progress.set(0)
         self.var_status.set(t("app.status_starting"))
         self._clear_log()
@@ -5452,6 +5558,11 @@ class YtDlpGui(tk.Tk):
 
     def _on_output_line(self, line):
         self._log(line)
+        if not self._cookie_hint_shown:
+            hint = _cookie_hint(line, self.var_browser.get())
+            if hint:
+                self._cookie_hint_shown = True
+                self._log(hint, "info")
         m = self._RE_PROGRESS.search(line)
         if m:
             pct = float(m.group(1))
@@ -5869,10 +5980,7 @@ class YtDlpGui(tk.Tk):
         threading.Thread(target=_do_cleanup, args=(files,), daemon=True).start()
 
     def _update_cookie_warn_main(self):
-        if self.var_browser.get() == BROWSER_OFF:
-            self._lbl_cookie_warn_main.grid()
-        else:
-            self._lbl_cookie_warn_main.grid_remove()
+        self._cookie_frame.refresh()
 
     def _toggle_pause(self):
         if not self._process:
@@ -5959,6 +6067,8 @@ class YtDlpGui(tk.Tk):
             "embed_thumb": self.var_embed_thumb.get(),
             "browser":     self.var_browser.get(),
         })
+        if self.state() not in ("zoomed", "iconic"):
+            cfg["window_size"] = re.split(r"[+-]", self.geometry())[0]
         save_config(cfg)
         self.destroy()
 

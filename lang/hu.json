@@ -468,5 +468,8 @@
   "app_update.notes": "Újdonságok",
   "app_update.banner": "🔔 Új verzió érhető el: {version}",
   "app_update.hint_source": "A forráskódot használja: a legújabb verziót a git pull paranccsal töltheti le.",
-  "toolbar.menu_auto_update_check": "Frissítések keresése indításkor"
+  "toolbar.menu_auto_update_check": "Frissítések keresése indításkor",
+  "cookie.hint_locked": "A(z) {browser} zárolva tartja a sütiadatbázisát, amíg meg van nyitva. Zárja be teljesen (az értesítési területen is), majd próbálja újra. A Firefoxnak nincs ilyen korlátja.",
+  "cookie.hint_decrypt": "A(z) {browser} sütijei nem fejthetők vissza (a Chrome, az Edge és a Brave böngészők új védelme). Próbálja a Firefoxot.",
+  "cookie.hint_notfound": "Nem található {browser}-profil: nyissa meg legalább egyszer, és jelentkezzen be a YouTube-ra, vagy válasszon másik böngészőt."
 }

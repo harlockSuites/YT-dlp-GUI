@@ -35,7 +35,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 ### Cookie của trình duyệt
 
-- Chọn trình duyệt (Chrome, Firefox, Edge, Brave, Opera) mà yt-dlp đọc cookie cục bộ: cần cho các rãnh âm thanh phụ và một số phụ đề.
+- Chọn trình duyệt (Chrome, Firefox, Edge, Brave, Opera) mà yt-dlp đọc cookie cục bộ: cần cho các rãnh âm thanh phụ và một số phụ đề. Với Chrome, Edge hoặc Brave, hãy đóng hoàn toàn trình duyệt trước khi tải: nó khóa cơ sở dữ liệu cookie khi đang mở và yt-dlp sẽ hiện «Could not copy Chrome cookie database». Firefox không có giới hạn này.
 - Một **đèn báo** cho biết trạng thái: đỏ nếu tắt hoặc lỗi, cam nếu chưa kiểm tra hoặc đang chạy, xanh nếu cookie đã được tải. Nút ↻ chạy kiểm tra và chú giải giải thích trạng thái hoặc lỗi.
 
 ### Trình hướng dẫn cài đặt, phụ thuộc và cập nhật yt-dlp

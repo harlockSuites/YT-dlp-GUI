@@ -468,5 +468,8 @@
   "app_update.notes": "Novosti",
   "app_update.banner": "🔔 Dostupna je nova verzija {version}",
   "app_update.hint_source": "Koristite izvorni kôd: najnoviju verziju preuzmite komandom git pull.",
-  "toolbar.menu_auto_update_check": "Proveri ažuriranja pri pokretanju"
+  "toolbar.menu_auto_update_check": "Proveri ažuriranja pri pokretanju",
+  "cookie.hint_locked": "{browser} drži bazu kolačića zaključanom dok je otvoren. Potpuno ga zatvorite (i u oblasti za obaveštenja) pa pokušajte ponovo. Firefox nema to ograničenje.",
+  "cookie.hint_decrypt": "Nije moguće dešifrovati kolačiće pregledača {browser} (nova zaštita u pregledačima Chrome, Edge i Brave). Probajte Firefox.",
+  "cookie.hint_notfound": "Nije pronađen nijedan profil pregledača {browser}: otvorite ga bar jednom i prijavite se na YouTube ili izaberite drugi pregledač."
 }

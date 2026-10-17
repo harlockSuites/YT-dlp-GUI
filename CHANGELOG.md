@@ -8,6 +8,11 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - Installateur : 14 langues au lieu de 10 (ajout du chinois simplifié, du vietnamien, du serbe latin et du hindi). Une page d'accueil indique en filipino que le logiciel est disponible en filipino : Inno Setup n'a aucune traduction pour cette langue.
 - README : une version Linux est annoncée à moyen terme (français et anglais).
 
+### Corrigé
+- Cookies : la fenêtre principale reçoit le même cadre que l'inspecteur (voyant d'état et bouton de test). Quand Chrome, Edge ou Brave verrouille sa base de cookies (« Could not copy Chrome cookie database »), le logiciel explique quoi faire (fermer complètement le navigateur, ou utiliser Firefox) dans le test, l'inspection, les téléchargements et l'analyse de playlist.
+- Outils installés après le lancement du logiciel (Deno, ffmpeg…) : le PATH est relu depuis le registre, donc ils ne sont plus signalés « absents » et sont trouvés par yt-dlp.
+- La fenêtre principale s'ouvre à une taille confortable (980 x 930, adaptée à l'écran) au lieu de la taille minimale, et retient la taille choisie.
+
 ## [0.1.0] — 2026-10-16
 
 ### Ajouté

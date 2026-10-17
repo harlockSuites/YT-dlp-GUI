@@ -35,7 +35,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 
 ### Kolačići pregledača
 
-- Izaberite pregledač (Chrome, Firefox, Edge, Brave, Opera) čije kolačiće yt-dlp čita lokalno: potrebni su za dodatne audio zapise i neke titlove.
+- Izaberite pregledač (Chrome, Firefox, Edge, Brave, Opera) čije kolačiće yt-dlp čita lokalno: potrebni su za dodatne audio zapise i neke titlove. Sa Chrome-om, Edge-om ili Brave-om potpuno zatvorite pregledač pre preuzimanja: dok je otvoren zaključava bazu kolačića, a yt-dlp tada prikazuje „Could not copy Chrome cookie database”. Firefox nema to ograničenje.
 - **Signalna lampica** pokazuje stanje: crvena ako je isključeno ili neuspešno, narandžasta ako nije testirano ili je u toku, zelena ako su kolačići učitani. Dugme ↻ pokreće test, a opis prikazuje stanje ili grešku.
 
 ### Pomoćnik za instalaciju, zavisnosti i ažuriranja yt-dlp-a

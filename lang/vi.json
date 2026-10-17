@@ -468,5 +468,8 @@
   "app_update.notes": "Có gì mới",
   "app_update.banner": "🔔 Có phiên bản mới {version}",
   "app_update.hint_source": "Bạn đang dùng mã nguồn: hãy lấy phiên bản mới nhất bằng git pull.",
-  "toolbar.menu_auto_update_check": "Kiểm tra cập nhật khi khởi động"
+  "toolbar.menu_auto_update_check": "Kiểm tra cập nhật khi khởi động",
+  "cookie.hint_locked": "{browser} khóa cơ sở dữ liệu cookie khi đang mở. Hãy đóng hoàn toàn (kể cả ở khay thông báo) rồi thử lại. Firefox không có giới hạn này.",
+  "cookie.hint_decrypt": "Không thể giải mã cookie của {browser} (cơ chế bảo vệ mới của trình duyệt Chrome, Edge và Brave). Hãy thử Firefox.",
+  "cookie.hint_notfound": "Không tìm thấy hồ sơ {browser}: hãy mở nó ít nhất một lần và đăng nhập YouTube, hoặc chọn trình duyệt khác."
 }

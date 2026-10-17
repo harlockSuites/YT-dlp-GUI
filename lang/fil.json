@@ -468,5 +468,8 @@
   "app_update.notes": "Ano ang bago",
   "app_update.banner": "🔔 May bagong bersyon {version}",
   "app_update.hint_source": "Source code ang ginagamit mo: kunin ang pinakabagong bersyon gamit ang git pull.",
-  "toolbar.menu_auto_update_check": "Suriin ang mga update sa pagsisimula"
+  "toolbar.menu_auto_update_check": "Suriin ang mga update sa pagsisimula",
+  "cookie.hint_locked": "Ni-lock ng {browser} ang cookie database nito habang bukas ito. Isara ito nang buo (pati sa notification area), saka subukan muli. Walang ganitong limitasyon ang Firefox.",
+  "cookie.hint_decrypt": "Hindi ma-decrypt ang mga cookie ng {browser} (bagong proteksyon ng mga browser na Chrome, Edge at Brave). Subukan ang Firefox.",
+  "cookie.hint_notfound": "Walang nakitang profile ng {browser}: buksan ito kahit isang beses at mag-sign in sa YouTube, o pumili ng ibang browser."
 }

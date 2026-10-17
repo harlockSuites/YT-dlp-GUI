@@ -468,5 +468,8 @@
   "app_update.notes": "Nouveautés",
   "app_update.banner": "🔔 Nouvelle version {version} disponible",
   "app_update.hint_source": "Vous utilisez les sources du logiciel : récupérez la dernière version avec git pull.",
-  "toolbar.menu_auto_update_check": "Vérifier les mises à jour au démarrage"
+  "toolbar.menu_auto_update_check": "Vérifier les mises à jour au démarrage",
+  "cookie.hint_locked": "{browser} garde sa base de cookies verrouillée tant qu'il est ouvert. Fermez-le complètement (y compris dans la zone de notification), puis réessayez. Firefox n'a pas cette limite.",
+  "cookie.hint_decrypt": "Impossible de déchiffrer les cookies de {browser} (protection récente des navigateurs Chrome, Edge et Brave). Essayez Firefox.",
+  "cookie.hint_notfound": "Aucun profil de {browser} trouvé : ouvrez-le au moins une fois et connectez-vous à YouTube, ou choisissez un autre navigateur."
 }

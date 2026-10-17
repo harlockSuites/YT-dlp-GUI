@@ -468,5 +468,8 @@
   "app_update.notes": "What's new",
   "app_update.banner": "🔔 New version {version} available",
   "app_update.hint_source": "You are running the source code: get the latest version with git pull.",
-  "toolbar.menu_auto_update_check": "Check for updates at startup"
+  "toolbar.menu_auto_update_check": "Check for updates at startup",
+  "cookie.hint_locked": "{browser} keeps its cookie database locked while it is open. Close it completely (including the notification area), then try again. Firefox does not have this limitation.",
+  "cookie.hint_decrypt": "Unable to decrypt the cookies of {browser} (recent protection in Chrome, Edge and Brave browsers). Try Firefox.",
+  "cookie.hint_notfound": "No {browser} profile found: open it at least once and sign in to YouTube, or choose another browser."
 }

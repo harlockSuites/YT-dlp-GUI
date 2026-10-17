@@ -468,5 +468,8 @@
   "app_update.notes": "Что нового",
   "app_update.banner": "🔔 Доступна новая версия {version}",
   "app_update.hint_source": "Вы используете исходный код: получите последнюю версию командой git pull.",
-  "toolbar.menu_auto_update_check": "Проверять обновления при запуске"
+  "toolbar.menu_auto_update_check": "Проверять обновления при запуске",
+  "cookie.hint_locked": "{browser} блокирует базу cookie, пока открыт. Полностью закройте его (в том числе в области уведомлений) и повторите попытку. У Firefox такого ограничения нет.",
+  "cookie.hint_decrypt": "Не удалось расшифровать cookie браузера {browser} (новая защита в Chrome, Edge и Brave). Попробуйте Firefox.",
+  "cookie.hint_notfound": "Профиль {browser} не найден: откройте браузер хотя бы раз и войдите в YouTube либо выберите другой браузер."
 }

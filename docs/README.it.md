@@ -35,7 +35,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 
 ### Cookie del browser
 
-- Scegli il browser (Chrome, Firefox, Edge, Brave, Opera) di cui yt-dlp legge i cookie in locale: servono per le tracce audio secondarie e alcuni sottotitoli.
+- Scegli il browser (Chrome, Firefox, Edge, Brave, Opera) di cui yt-dlp legge i cookie in locale: servono per le tracce audio secondarie e alcuni sottotitoli. Con Chrome, Edge o Brave, chiudi completamente il browser prima di scaricare: blocca il database dei cookie finché è aperto e yt-dlp mostra allora «Could not copy Chrome cookie database». Firefox non ha questo limite.
 - Una **spia** indica lo stato: rossa se disattivato o in errore, arancione se non testato o in corso, verde se i cookie sono caricati. Il pulsante ↻ avvia un test e il suggerimento spiega lo stato o l'errore.
 
 ### Assistente di installazione, dipendenze e aggiornamenti di yt-dlp

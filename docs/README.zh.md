@@ -35,7 +35,7 @@
 
 ### 浏览器 Cookie
 
-- 选择 yt-dlp 在本地读取其 Cookie 的浏览器（Chrome、Firefox、Edge、Brave、Opera）：次要音轨和部分字幕需要它们。
+- 选择 yt-dlp 在本地读取其 Cookie 的浏览器（Chrome、Firefox、Edge、Brave、Opera）：次要音轨和部分字幕需要它们。使用 Chrome、Edge 或 Brave 时，下载前请完全关闭浏览器：浏览器运行时会锁定其 Cookie 数据库，此时 yt-dlp 会显示“Could not copy Chrome cookie database”。Firefox 没有此限制。
 - **指示灯**显示状态：禁用或失败为红色，未测试或进行中为橙色，Cookie 已加载为绿色。↻ 按钮运行测试，提示文字会说明状态或错误。
 
 ### 安装向导、依赖项与 yt-dlp 更新

@@ -35,7 +35,7 @@
 
 ### ブラウザの Cookie
 
-- yt-dlp がローカルで Cookie を読み取るブラウザ（Chrome、Firefox、Edge、Brave、Opera）を選択します。副音声トラックや一部の字幕に必要です。
+- yt-dlp がローカルで Cookie を読み取るブラウザ（Chrome、Firefox、Edge、Brave、Opera）を選択します。副音声トラックや一部の字幕に必要です。Chrome、Edge、Brave を使う場合は、ダウンロード前にブラウザを完全に終了してください。起動中は Cookie データベースがロックされ、yt-dlp に「Could not copy Chrome cookie database」と表示されます。Firefox にはこの制限はありません。
 - **ランプ**で状態を表示：無効または失敗は赤、未テストまたは実行中はオレンジ、Cookie 読み込み済みは緑。↻ ボタンでテストを実行し、ツールチップが状態やエラーを説明します。
 
 ### セットアップアシスタント、依存関係、yt-dlp の更新
