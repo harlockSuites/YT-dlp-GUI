@@ -165,17 +165,21 @@ class WindowSizeTests(unittest.TestCase):
         try:
             app.update()
             self.assertGreaterEqual(app.winfo_height(), 600, "plus la hauteur minimale de 420 px")
-            app.geometry("1100x700")
+            # taille choisie compatible avec l'écran (celui d'un exécuteur CI est petit)
+            w = min(1100, app.winfo_screenwidth() - 120)
+            h = min(700, app.winfo_screenheight() - 220)
+            size = f"{w}x{h}"
+            app.geometry(size)
             app.update()
             app._on_close()
         except Exception:
             app.destroy()
             raise
-        self.assertEqual(m.load_config()["window_size"], "1100x700")
+        self.assertEqual(m.load_config()["window_size"], size)
         app2 = m.YtDlpGui()
         try:
             app2.update()
-            self.assertEqual((app2.winfo_width(), app2.winfo_height()), (1100, 700))
+            self.assertEqual((app2.winfo_width(), app2.winfo_height()), (w, h))
         finally:
             app2.destroy()
             m.save_config({})
