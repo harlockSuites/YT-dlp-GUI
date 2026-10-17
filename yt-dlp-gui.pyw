@@ -103,6 +103,10 @@ _refresh_process_path()
 
 SUBTITLE_FORMATS = ["vtt", "srt", "ass", "best"]
 
+# Plusieurs pistes audio : fusion en MKV. --embed-metadata fait écrire par yt-dlp la langue de chaque
+# piste (étiquette « language » du flux) ; sans lui, le lecteur n'affiche que « Piste 1 », « Piste 2 »…
+MULTI_AUDIO_ARGS = ["--audio-multistreams", "--embed-metadata", "--merge-output-format", "mkv"]
+
 # Bibliothèque de blocs yt-dlp sélectionnables dans les Règles globales
 # (code, label_affiché, [args yt-dlp correspondants])
 SCRIPT_BLOCKS = [
@@ -126,7 +130,7 @@ SCRIPT_BLOCKS = [
     ("Export",          "no_part",            "Pas de fichiers .part temporaires",["--no-part"]),
     # Audio
     ("Audio",           "audio_quality_0",    "Qualité maximale",                 ["--audio-quality", "0"]),
-    ("Audio",           "audio_multistream",  "Multi-pistes audio (MKV)",         ["--audio-multistreams"]),
+    ("Audio",           "audio_multistream",  "Multi-pistes audio (MKV)",         ["--audio-multistreams", "--embed-metadata"]),
     ("Audio",           "extract_audio_mp3",  "Extraire en MP3",                  ["--extract-audio", "--audio-format", "mp3"]),
     ("Audio",           "extract_audio_m4a",  "Extraire en M4A",                  ["--extract-audio", "--audio-format", "m4a"]),
     ("Audio",           "extract_audio_flac", "Extraire en FLAC",                 ["--extract-audio", "--audio-format", "flac"]),
@@ -736,7 +740,7 @@ class DepsWindow(tk.Toplevel):
 
 # Flags critiques que le GUI utilise — chacun doit être présent dans --help
 _GUI_FLAGS = [
-    "--audio-multistreams", "--embed-thumbnail", "--embed-subs", "--merge-output-format",
+    "--audio-multistreams", "--embed-metadata", "--embed-thumbnail", "--embed-subs", "--merge-output-format",
     "--flat-playlist", "--fragment-retries", "--sleep-interval", "--sub-format",
     "--write-subs", "--no-playlist",
 ]
@@ -3513,7 +3517,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 sec_str = "+".join(f"bestaudio[language^={l}]" for l in secondary_audio)
                 fmt = f"{prim_fmt}+{sec_str}/{prim_fmt}/bestaudio/best"
                 args = [YTDLP, "-f", fmt,
-                        "--audio-multistreams", "--merge-output-format", "mkv"]
+                        *MULTI_AUDIO_ARGS]
             else:
                 # Piste unique → MP3
                 if primary_audio:
@@ -3615,7 +3619,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
             args = [YTDLP, "-f", fmt]
 
             if secondary:
-                args += ["--audio-multistreams", "--merge-output-format", "mkv"]
+                args += MULTI_AUDIO_ARGS
             elif force_mp4:
                 args += ["--merge-output-format", "mp4"]
             elif embed_thumb and primary and not secondary:
@@ -5269,7 +5273,7 @@ class YtDlpGui(tk.Tk):
                 sec_str = "+".join(f"bestaudio[language^={l}]" for l in secondary)
                 fmt = f"{prim_fmt}+{sec_str}/{prim_fmt}/bestaudio/best"
                 args = [YTDLP, "-f", fmt,
-                        "--audio-multistreams", "--merge-output-format", "mkv"]
+                        *MULTI_AUDIO_ARGS]
             else:
                 # Piste unique → MP3
                 if primary_code and primary_code not in ("__video_only__",):
@@ -5344,7 +5348,7 @@ class YtDlpGui(tk.Tk):
 
             args = [YTDLP, "-f", fmt]
             if secondary:
-                args += ["--audio-multistreams", "--merge-output-format", "mkv"]
+                args += MULTI_AUDIO_ARGS
             elif force_mp4:
                 args += ["--merge-output-format", "mp4"]
             elif embed_thumb and primary_code and not secondary:
