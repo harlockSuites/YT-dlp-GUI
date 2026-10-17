@@ -35,7 +35,8 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 
 ### Browser cookies
 
-- Choose the browser (Chrome, Firefox, Edge, Brave, Opera) whose cookies yt-dlp reads locally: they are needed for secondary audio tracks and some subtitles. With Chrome, Edge or Brave, close the browser completely before downloading: it locks its cookie database while open, and yt-dlp then shows "Could not copy Chrome cookie database". Firefox does not have this limitation.
+- Choose the browser (Chrome, Firefox, Edge, Brave, Opera) whose cookies yt-dlp reads locally: they are needed for secondary audio tracks and some subtitles. With Chrome, Edge or Brave, close the browser completely before downloading: it locks its cookie database while open, and yt-dlp then shows "Could not copy Chrome cookie database". **Firefox is recommended**: it does not have this limitation.
+- If your browser is set to **delete cookies when it closes** (or you browse in private mode), no cookie remains on disk to read: yt-dlp cannot recover anything, whether with Chrome, Edge, Brave or Firefox. With Chrome, Edge and Brave this is a trap: the browser must be closed, which then erases the cookies. Turn that option off, or keep the cookies of youtube.com and google.com.
 - A **status light** shows the state: red if disabled or failed, orange if untested or in progress, green if the cookies are loaded. The ↻ button runs a test and the tooltip explains the state or the error.
 
 ### Setup assistant, dependencies and yt-dlp updates

@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "サムネイル",
   "opts.label_cookies": "Cookie：",
   "opts.cookies_disabled": "無効",
-  "opts.cookie_warn": "⚠ YouTubeにログイン済みのブラウザを使用することを強くお勧めします。",
+  "opts.cookie_warn": "⚠ YouTubeにログイン済みのブラウザを使用することを強くお勧めします。Firefox を推奨します。",
   "opts.label_primary_lang": "主要言語：",
   "opts.primary_lang_default": "— デフォルト —",
   "opts.primary_lang_manual": "— 手動で選択 —",
@@ -141,7 +141,7 @@
   "insp.chk_numbering": "連番付き",
   "insp.chk_smart_dir": "スマートディレクトリ",
   "insp.label_cookies": "Cookie：",
-  "insp.cookie_warn": "⚠ YouTubeにログイン済みのブラウザを使用することを強くお勧めします。",
+  "insp.cookie_warn": "⚠ YouTubeにログイン済みのブラウザを使用することを強くお勧めします。Firefox を推奨します。",
   "insp.label_primary_lang": "主要言語：",
   "insp.primary_default": "— デフォルト —",
   "insp.primary_no_audio": "— 音声なし —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 新バージョン {version} が利用可能です",
   "app_update.hint_source": "ソースコードを使用中です：git pull で最新バージョンを取得してください。",
   "toolbar.menu_auto_update_check": "起動時に更新を確認",
-  "cookie.hint_locked": "{browser} は起動中、Cookie データベースをロックします。通知領域も含めて完全に終了してから、もう一度お試しください。Firefox にはこの制限はありません。",
-  "cookie.hint_decrypt": "{browser} の Cookie を復号できません（Chrome、Edge、Brave の新しい保護機能）。Firefox をお試しください。",
+  "cookie.hint_locked": "{browser} は起動中、Cookie データベースをロックします。通知領域も含めて完全に終了してから、もう一度お試しください。推奨する Firefox にはこの制限はありません。",
+  "cookie.hint_decrypt": "{browser} の Cookie を復号できません（Chrome、Edge、Brave の新しい保護機能）。Firefox をお使いください（推奨）。",
   "cookie.hint_notfound": "{browser} のプロファイルが見つかりません：一度起動して YouTube にサインインするか、別のブラウザを選んでください。"
 }

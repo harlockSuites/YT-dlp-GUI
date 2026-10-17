@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Bélyegkép",
   "opts.label_cookies": "Cookies:",
   "opts.cookies_disabled": "Letiltva",
-  "opts.cookie_warn": "⚠ YouTube-fiókba bejelentkezett böngésző ERŐSEN AJÁNLOTT.",
+  "opts.cookie_warn": "⚠ YouTube-fiókba bejelentkezett böngésző ERŐSEN AJÁNLOTT. A Firefox ajánlott.",
   "opts.label_primary_lang": "Elsődleges nyelv:",
   "opts.primary_lang_default": "— Alapértelmezett —",
   "opts.primary_lang_no_audio": "— Nincs hang —",
@@ -140,7 +140,7 @@
   "insp.chk_numbering": "Számozás",
   "insp.chk_smart_dir": "Intelligens könyvtár",
   "insp.label_cookies": "Cookies:",
-  "insp.cookie_warn": "⚠ YouTube-fiókba bejelentkezett böngésző ERŐSEN AJÁNLOTT.",
+  "insp.cookie_warn": "⚠ YouTube-fiókba bejelentkezett böngésző ERŐSEN AJÁNLOTT. A Firefox ajánlott.",
   "insp.label_primary_lang": "Elsődleges nyelv:",
   "insp.primary_default": "— Alapértelmezett —",
   "insp.primary_no_audio": "— Nincs hang —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 Új verzió érhető el: {version}",
   "app_update.hint_source": "A forráskódot használja: a legújabb verziót a git pull paranccsal töltheti le.",
   "toolbar.menu_auto_update_check": "Frissítések keresése indításkor",
-  "cookie.hint_locked": "A(z) {browser} zárolva tartja a sütiadatbázisát, amíg meg van nyitva. Zárja be teljesen (az értesítési területen is), majd próbálja újra. A Firefoxnak nincs ilyen korlátja.",
-  "cookie.hint_decrypt": "A(z) {browser} sütijei nem fejthetők vissza (a Chrome, az Edge és a Brave böngészők új védelme). Próbálja a Firefoxot.",
+  "cookie.hint_locked": "A(z) {browser} zárolva tartja a sütiadatbázisát, amíg meg van nyitva. Zárja be teljesen (az értesítési területen is), majd próbálja újra. A Firefoxnak, amelyet ajánlunk, nincs ilyen korlátja.",
+  "cookie.hint_decrypt": "A(z) {browser} sütijei nem fejthetők vissza (a Chrome, az Edge és a Brave böngészők új védelme). Használja a Firefoxot (ajánlott).",
   "cookie.hint_notfound": "Nem található {browser}-profil: nyissa meg legalább egyszer, és jelentkezzen be a YouTube-ra, vagy válasszon másik böngészőt."
 }

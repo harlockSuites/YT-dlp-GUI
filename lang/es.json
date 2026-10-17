@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Miniatura",
   "opts.label_cookies": "Cookies:",
   "opts.cookies_disabled": "Desactivado",
-  "opts.cookie_warn": "⚠ Se recomienda ENCARECIDAMENTE un navegador con una cuenta de YouTube iniciada.",
+  "opts.cookie_warn": "⚠ Se recomienda ENCARECIDAMENTE un navegador con una cuenta de YouTube iniciada. Se recomienda Firefox.",
   "opts.label_primary_lang": "Idioma principal:",
   "opts.primary_lang_default": "— Por defecto —",
   "opts.primary_lang_manual": "— Elegir manualmente —",
@@ -141,7 +141,7 @@
   "insp.chk_numbering": "Numeración",
   "insp.chk_smart_dir": "Directorio inteligente",
   "insp.label_cookies": "Cookies:",
-  "insp.cookie_warn": "⚠ Se recomienda ENCARECIDAMENTE un navegador con una cuenta de YouTube iniciada.",
+  "insp.cookie_warn": "⚠ Se recomienda ENCARECIDAMENTE un navegador con una cuenta de YouTube iniciada. Se recomienda Firefox.",
   "insp.label_primary_lang": "Idioma principal:",
   "insp.primary_default": "— Por defecto —",
   "insp.primary_no_audio": "— Sin audio —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 Nueva versión {version} disponible",
   "app_update.hint_source": "Está usando el código fuente: obtenga la última versión con git pull.",
   "toolbar.menu_auto_update_check": "Buscar actualizaciones al iniciar",
-  "cookie.hint_locked": "{browser} mantiene bloqueada su base de cookies mientras está abierto. Ciérrelo por completo (incluida el área de notificaciones) y vuelva a intentarlo. Firefox no tiene esta limitación.",
-  "cookie.hint_decrypt": "No se pueden descifrar las cookies de {browser} (protección reciente de los navegadores Chrome, Edge y Brave). Pruebe con Firefox.",
+  "cookie.hint_locked": "{browser} mantiene bloqueada su base de cookies mientras está abierto. Ciérrelo por completo (incluida el área de notificaciones) y vuelva a intentarlo. Firefox, recomendado, no tiene esta limitación.",
+  "cookie.hint_decrypt": "No se pueden descifrar las cookies de {browser} (protección reciente de los navegadores Chrome, Edge y Brave). Use Firefox (recomendado).",
   "cookie.hint_notfound": "No se encontró ningún perfil de {browser}: ábralo al menos una vez e inicie sesión en YouTube, o elija otro navegador."
 }

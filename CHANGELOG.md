@@ -9,7 +9,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - README : une version Linux est annoncée à moyen terme (français et anglais).
 
 ### Corrigé
-- Cookies : la fenêtre principale reçoit le même cadre que l'inspecteur (voyant d'état et bouton de test). Quand Chrome, Edge ou Brave verrouille sa base de cookies (« Could not copy Chrome cookie database »), le logiciel explique quoi faire (fermer complètement le navigateur, ou utiliser Firefox) dans le test, l'inspection, les téléchargements et l'analyse de playlist.
+- Cookies : la fenêtre principale reçoit le même cadre que l'inspecteur (voyant d'état et bouton de test). Quand Chrome, Edge ou Brave verrouille sa base de cookies (« Could not copy Chrome cookie database »), le logiciel explique quoi faire (fermer complètement le navigateur, ou utiliser Firefox) dans le test, l'inspection, les téléchargements et l'analyse de playlist. Firefox est désormais recommandé dans les avertissements, les messages d'aide et les README, qui expliquent aussi qu'aucun navigateur ne peut fournir de cookies s'il est réglé pour les supprimer à la fermeture (piège particulier de Chrome, Edge et Brave, qu'il faut fermer pour lire leurs cookies).
 - Outils installés après le lancement du logiciel (Deno, ffmpeg…) : le PATH est relu depuis le registre, donc ils ne sont plus signalés « absents » et sont trouvés par yt-dlp.
 - La fenêtre principale s'ouvre à une taille confortable (980 x 930, adaptée à l'écran) au lieu de la taille minimale, et retient la taille choisie.
 

@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Sličica",
   "opts.label_cookies": "Kolačići:",
   "opts.cookies_disabled": "Onemogućeno",
-  "opts.cookie_warn": "⚠ Pretraživač prijavljen na YouTube nalog je SNAŽNO PREPORUČEN.",
+  "opts.cookie_warn": "⚠ Pretraživač prijavljen na YouTube nalog je SNAŽNO PREPORUČEN. Preporučuje se Firefox.",
   "opts.label_primary_lang": "Primarni jezik:",
   "opts.primary_lang_default": "— Podrazumevano —",
   "opts.primary_lang_no_audio": "— Bez zvuka —",
@@ -140,7 +140,7 @@
   "insp.chk_numbering": "Numerisanje",
   "insp.chk_smart_dir": "Pametni direktorijum",
   "insp.label_cookies": "Kolačići:",
-  "insp.cookie_warn": "⚠ Pretraživač prijavljen na YouTube nalog je SNAŽNO PREPORUČEN.",
+  "insp.cookie_warn": "⚠ Pretraživač prijavljen na YouTube nalog je SNAŽNO PREPORUČEN. Preporučuje se Firefox.",
   "insp.label_primary_lang": "Primarni jezik:",
   "insp.primary_default": "— Podrazumevano —",
   "insp.primary_no_audio": "— Bez zvuka —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 Dostupna je nova verzija {version}",
   "app_update.hint_source": "Koristite izvorni kôd: najnoviju verziju preuzmite komandom git pull.",
   "toolbar.menu_auto_update_check": "Proveri ažuriranja pri pokretanju",
-  "cookie.hint_locked": "{browser} drži bazu kolačića zaključanom dok je otvoren. Potpuno ga zatvorite (i u oblasti za obaveštenja) pa pokušajte ponovo. Firefox nema to ograničenje.",
-  "cookie.hint_decrypt": "Nije moguće dešifrovati kolačiće pregledača {browser} (nova zaštita u pregledačima Chrome, Edge i Brave). Probajte Firefox.",
+  "cookie.hint_locked": "{browser} drži bazu kolačića zaključanom dok je otvoren. Potpuno ga zatvorite (i u oblasti za obaveštenja) pa pokušajte ponovo. Firefox, koji preporučujemo, nema to ograničenje.",
+  "cookie.hint_decrypt": "Nije moguće dešifrovati kolačiće pregledača {browser} (nova zaštita u pregledačima Chrome, Edge i Brave). Koristite Firefox (preporučuje se).",
   "cookie.hint_notfound": "Nije pronađen nijedan profil pregledača {browser}: otvorite ga bar jednom i prijavite se na YouTube ili izaberite drugi pregledač."
 }

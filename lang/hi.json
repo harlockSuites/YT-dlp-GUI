@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "थंबनेल",
   "opts.label_cookies": "Cookies:",
   "opts.cookies_disabled": "अक्षम",
-  "opts.cookie_warn": "⚠ YouTube खाते से लॉग इन ब्राउज़र का उपयोग करना दृढ़ता से अनुशंसित है।",
+  "opts.cookie_warn": "⚠ YouTube खाते से लॉग इन ब्राउज़र का उपयोग करना दृढ़ता से अनुशंसित है। Firefox की सलाह दी जाती है।",
   "opts.label_primary_lang": "प्राथमिक भाषा:",
   "opts.primary_lang_default": "— डिफ़ॉल्ट —",
   "opts.primary_lang_manual": "— मैन्युअल रूप से चुनें —",
@@ -141,7 +141,7 @@
   "insp.chk_numbering": "क्रमांकन",
   "insp.chk_smart_dir": "स्मार्ट डायरेक्टरी",
   "insp.label_cookies": "Cookies:",
-  "insp.cookie_warn": "⚠ YouTube खाते से लॉग इन ब्राउज़र का उपयोग करना दृढ़ता से अनुशंसित है।",
+  "insp.cookie_warn": "⚠ YouTube खाते से लॉग इन ब्राउज़र का उपयोग करना दृढ़ता से अनुशंसित है। Firefox की सलाह दी जाती है।",
   "insp.label_primary_lang": "प्राथमिक भाषा:",
   "insp.primary_default": "— डिफ़ॉल्ट —",
   "insp.primary_no_audio": "— ऑडियो रहित —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 नया संस्करण {version} उपलब्ध है",
   "app_update.hint_source": "आप स्रोत कोड का उपयोग कर रहे हैं: नवीनतम संस्करण git pull से प्राप्त करें।",
   "toolbar.menu_auto_update_check": "शुरू होने पर अपडेट जाँचें",
-  "cookie.hint_locked": "{browser} खुला होने पर अपना कुकी डेटाबेस लॉक रखता है। उसे पूरी तरह बंद करें (सूचना क्षेत्र में भी), फिर दोबारा प्रयास करें। Firefox में यह सीमा नहीं है।",
-  "cookie.hint_decrypt": "{browser} की कुकी डिक्रिप्ट नहीं हो सकीं (Chrome, Edge और Brave ब्राउज़रों की नई सुरक्षा)। Firefox आज़माएँ।",
+  "cookie.hint_locked": "{browser} खुला होने पर अपना कुकी डेटाबेस लॉक रखता है। उसे पूरी तरह बंद करें (सूचना क्षेत्र में भी), फिर दोबारा प्रयास करें। अनुशंसित Firefox में यह सीमा नहीं है।",
+  "cookie.hint_decrypt": "{browser} की कुकी डिक्रिप्ट नहीं हो सकीं (Chrome, Edge और Brave ब्राउज़रों की नई सुरक्षा)। Firefox का उपयोग करें (अनुशंसित)।",
   "cookie.hint_notfound": "{browser} का कोई प्रोफ़ाइल नहीं मिला: उसे कम से कम एक बार खोलें और YouTube में साइन इन करें, या कोई दूसरा ब्राउज़र चुनें।"
 }

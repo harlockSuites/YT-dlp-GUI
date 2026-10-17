@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Hình thu nhỏ",
   "opts.label_cookies": "Cookies:",
   "opts.cookies_disabled": "Tắt",
-  "opts.cookie_warn": "⚠ Trình duyệt đăng nhập vào tài khoản YouTube ĐƯỢC KHUYẾN NGHỊ MẠNH MẼ.",
+  "opts.cookie_warn": "⚠ Trình duyệt đăng nhập vào tài khoản YouTube ĐƯỢC KHUYẾN NGHỊ MẠNH MẼ. Nên dùng Firefox.",
   "opts.label_primary_lang": "Ngôn ngữ chính:",
   "opts.primary_lang_default": "— Mặc định —",
   "opts.primary_lang_no_audio": "— Không có âm thanh —",
@@ -140,7 +140,7 @@
   "insp.chk_numbering": "Đánh số",
   "insp.chk_smart_dir": "Thư mục thông minh",
   "insp.label_cookies": "Cookies:",
-  "insp.cookie_warn": "⚠ Trình duyệt đăng nhập vào tài khoản YouTube ĐƯỢC KHUYẾN NGHỊ MẠNH MẼ.",
+  "insp.cookie_warn": "⚠ Trình duyệt đăng nhập vào tài khoản YouTube ĐƯỢC KHUYẾN NGHỊ MẠNH MẼ. Nên dùng Firefox.",
   "insp.label_primary_lang": "Ngôn ngữ chính:",
   "insp.primary_default": "— Mặc định —",
   "insp.primary_no_audio": "— Không có âm thanh —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 Có phiên bản mới {version}",
   "app_update.hint_source": "Bạn đang dùng mã nguồn: hãy lấy phiên bản mới nhất bằng git pull.",
   "toolbar.menu_auto_update_check": "Kiểm tra cập nhật khi khởi động",
-  "cookie.hint_locked": "{browser} khóa cơ sở dữ liệu cookie khi đang mở. Hãy đóng hoàn toàn (kể cả ở khay thông báo) rồi thử lại. Firefox không có giới hạn này.",
-  "cookie.hint_decrypt": "Không thể giải mã cookie của {browser} (cơ chế bảo vệ mới của trình duyệt Chrome, Edge và Brave). Hãy thử Firefox.",
+  "cookie.hint_locked": "{browser} khóa cơ sở dữ liệu cookie khi đang mở. Hãy đóng hoàn toàn (kể cả ở khay thông báo) rồi thử lại. Firefox, trình duyệt chúng tôi khuyến nghị, không có giới hạn này.",
+  "cookie.hint_decrypt": "Không thể giải mã cookie của {browser} (cơ chế bảo vệ mới của trình duyệt Chrome, Edge và Brave). Hãy dùng Firefox (khuyến nghị).",
   "cookie.hint_notfound": "Không tìm thấy hồ sơ {browser}: hãy mở nó ít nhất một lần và đăng nhập YouTube, hoặc chọn trình duyệt khác."
 }

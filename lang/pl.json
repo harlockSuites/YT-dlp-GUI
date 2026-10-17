@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Miniatura",
   "opts.label_cookies": "Cookies:",
   "opts.cookies_disabled": "Wyłączone",
-  "opts.cookie_warn": "⚠ Przeglądarka zalogowana na konto YouTube jest GORĄCO ZALECANA.",
+  "opts.cookie_warn": "⚠ Przeglądarka zalogowana na konto YouTube jest GORĄCO ZALECANA. Zalecamy Firefoksa.",
   "opts.label_primary_lang": "Język główny:",
   "opts.primary_lang_default": "— Domyślny —",
   "opts.primary_lang_no_audio": "— Brak audio —",
@@ -140,7 +140,7 @@
   "insp.chk_numbering": "Numerowanie",
   "insp.chk_smart_dir": "Inteligentny katalog",
   "insp.label_cookies": "Cookies:",
-  "insp.cookie_warn": "⚠ Przeglądarka zalogowana na konto YouTube jest GORĄCO ZALECANA.",
+  "insp.cookie_warn": "⚠ Przeglądarka zalogowana na konto YouTube jest GORĄCO ZALECANA. Zalecamy Firefoksa.",
   "insp.label_primary_lang": "Język główny:",
   "insp.primary_default": "— Domyślny —",
   "insp.primary_no_audio": "— Brak audio —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 Dostępna nowa wersja {version}",
   "app_update.hint_source": "Używasz kodu źródłowego: pobierz najnowszą wersję poleceniem git pull.",
   "toolbar.menu_auto_update_check": "Sprawdzaj aktualizacje przy uruchomieniu",
-  "cookie.hint_locked": "{browser} blokuje bazę ciasteczek, dopóki jest otwarty. Zamknij go całkowicie (także w obszarze powiadomień) i spróbuj ponownie. Firefox nie ma tego ograniczenia.",
-  "cookie.hint_decrypt": "Nie można odszyfrować ciasteczek przeglądarki {browser} (nowa ochrona w przeglądarkach Chrome, Edge i Brave). Spróbuj Firefoksa.",
+  "cookie.hint_locked": "{browser} blokuje bazę ciasteczek, dopóki jest otwarty. Zamknij go całkowicie (także w obszarze powiadomień) i spróbuj ponownie. Firefox, który zalecamy, nie ma tego ograniczenia.",
+  "cookie.hint_decrypt": "Nie można odszyfrować ciasteczek przeglądarki {browser} (nowa ochrona w przeglądarkach Chrome, Edge i Brave). Użyj Firefoksa (zalecany).",
   "cookie.hint_notfound": "Nie znaleziono profilu przeglądarki {browser}: otwórz ją co najmniej raz i zaloguj się do YouTube albo wybierz inną przeglądarkę."
 }

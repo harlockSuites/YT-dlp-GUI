@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Miniature",
   "opts.label_cookies": "Cookies :",
   "opts.cookies_disabled": "Désactivé",
-  "opts.cookie_warn": "⚠ Un navigateur avec un compte YouTube connecté est FORTEMENT CONSEILLÉ.",
+  "opts.cookie_warn": "⚠ Un navigateur avec un compte YouTube connecté est FORTEMENT CONSEILLÉ. Firefox est recommandé.",
   "opts.label_primary_lang": "Langue principale :",
   "opts.primary_lang_default": "— Par défaut —",
   "opts.primary_lang_no_audio": "— Sans audio —",
@@ -140,7 +140,7 @@
   "insp.chk_numbering": "Numérotation",
   "insp.chk_smart_dir": "Répertoire intelligent",
   "insp.label_cookies": "Cookies :",
-  "insp.cookie_warn": "⚠ Un navigateur avec un compte YouTube connecté est FORTEMENT CONSEILLÉ.",
+  "insp.cookie_warn": "⚠ Un navigateur avec un compte YouTube connecté est FORTEMENT CONSEILLÉ. Firefox est recommandé.",
   "insp.label_primary_lang": "Langue principale :",
   "insp.primary_default": "— Par défaut —",
   "insp.primary_no_audio": "— Sans audio —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 Nouvelle version {version} disponible",
   "app_update.hint_source": "Vous utilisez les sources du logiciel : récupérez la dernière version avec git pull.",
   "toolbar.menu_auto_update_check": "Vérifier les mises à jour au démarrage",
-  "cookie.hint_locked": "{browser} garde sa base de cookies verrouillée tant qu'il est ouvert. Fermez-le complètement (y compris dans la zone de notification), puis réessayez. Firefox n'a pas cette limite.",
-  "cookie.hint_decrypt": "Impossible de déchiffrer les cookies de {browser} (protection récente des navigateurs Chrome, Edge et Brave). Essayez Firefox.",
+  "cookie.hint_locked": "{browser} garde sa base de cookies verrouillée tant qu'il est ouvert. Fermez-le complètement (y compris dans la zone de notification), puis réessayez. Firefox, recommandé, n'a pas cette limite.",
+  "cookie.hint_decrypt": "Impossible de déchiffrer les cookies de {browser} (protection récente des navigateurs Chrome, Edge et Brave). Utilisez Firefox (recommandé).",
   "cookie.hint_notfound": "Aucun profil de {browser} trouvé : ouvrez-le au moins une fois et connectez-vous à YouTube, ou choisissez un autre navigateur."
 }

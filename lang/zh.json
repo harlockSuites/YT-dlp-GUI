@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "缩略图",
   "opts.label_cookies": "Cookies：",
   "opts.cookies_disabled": "已禁用",
-  "opts.cookie_warn": "⚠ 强烈建议使用已登录 YouTube 账号的浏览器提供 Cookies。",
+  "opts.cookie_warn": "⚠ 强烈建议使用已登录 YouTube 账号的浏览器提供 Cookies。推荐使用 Firefox。",
   "opts.label_primary_lang": "主要语言：",
   "opts.primary_lang_default": "— 默认 —",
   "opts.primary_lang_manual": "— 手动选择 —",
@@ -141,7 +141,7 @@
   "insp.chk_numbering": "编号",
   "insp.chk_smart_dir": "智能目录",
   "insp.label_cookies": "Cookies：",
-  "insp.cookie_warn": "⚠ 强烈建议使用已登录 YouTube 账号的浏览器提供 Cookies。",
+  "insp.cookie_warn": "⚠ 强烈建议使用已登录 YouTube 账号的浏览器提供 Cookies。推荐使用 Firefox。",
   "insp.label_primary_lang": "主要语言：",
   "insp.primary_default": "— 默认 —",
   "insp.primary_no_audio": "— 无音频 —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 有新版本 {version} 可用",
   "app_update.hint_source": "您正在使用源代码：请使用 git pull 获取最新版本。",
   "toolbar.menu_auto_update_check": "启动时检查更新",
-  "cookie.hint_locked": "{browser} 在运行时会锁定其 Cookie 数据库。请将其完全关闭（包括通知区域中的图标）后重试。Firefox 没有此限制。",
-  "cookie.hint_decrypt": "无法解密 {browser} 的 Cookie（Chrome、Edge 和 Brave 浏览器的新保护机制）。请改用 Firefox。",
+  "cookie.hint_locked": "{browser} 在运行时会锁定其 Cookie 数据库。请将其完全关闭（包括通知区域中的图标）后重试。推荐使用的 Firefox 没有此限制。",
+  "cookie.hint_decrypt": "无法解密 {browser} 的 Cookie（Chrome、Edge 和 Brave 浏览器的新保护机制）。请使用 Firefox（推荐）。",
   "cookie.hint_notfound": "未找到 {browser} 的配置文件：请至少打开一次并登录 YouTube，或选择其他浏览器。"
 }

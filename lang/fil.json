@@ -35,7 +35,7 @@
   "opts.chk_embed_thumb": "Thumbnail",
   "opts.label_cookies": "Cookies:",
   "opts.cookies_disabled": "Naka-disable",
-  "opts.cookie_warn": "⚠ Lubos na INIREREKOMENDA ang browser na naka-sign in sa YouTube account.",
+  "opts.cookie_warn": "⚠ Lubos na INIREREKOMENDA ang browser na naka-sign in sa YouTube account. Inirerekomenda ang Firefox.",
   "opts.label_primary_lang": "Pangunahing Wika:",
   "opts.primary_lang_default": "— Default —",
   "opts.primary_lang_no_audio": "— Walang audio —",
@@ -140,7 +140,7 @@
   "insp.chk_numbering": "Pagnunumero",
   "insp.chk_smart_dir": "Matalinong direktoryo",
   "insp.label_cookies": "Cookies:",
-  "insp.cookie_warn": "⚠ Lubos na INIREREKOMENDA ang browser na naka-sign in sa YouTube account.",
+  "insp.cookie_warn": "⚠ Lubos na INIREREKOMENDA ang browser na naka-sign in sa YouTube account. Inirerekomenda ang Firefox.",
   "insp.label_primary_lang": "Pangunahing Wika:",
   "insp.primary_default": "— Default —",
   "insp.primary_no_audio": "— Walang audio —",
@@ -469,7 +469,7 @@
   "app_update.banner": "🔔 May bagong bersyon {version}",
   "app_update.hint_source": "Source code ang ginagamit mo: kunin ang pinakabagong bersyon gamit ang git pull.",
   "toolbar.menu_auto_update_check": "Suriin ang mga update sa pagsisimula",
-  "cookie.hint_locked": "Ni-lock ng {browser} ang cookie database nito habang bukas ito. Isara ito nang buo (pati sa notification area), saka subukan muli. Walang ganitong limitasyon ang Firefox.",
-  "cookie.hint_decrypt": "Hindi ma-decrypt ang mga cookie ng {browser} (bagong proteksyon ng mga browser na Chrome, Edge at Brave). Subukan ang Firefox.",
+  "cookie.hint_locked": "Ni-lock ng {browser} ang cookie database nito habang bukas ito. Isara ito nang buo (pati sa notification area), saka subukan muli. Ang Firefox, na inirerekomenda namin, ay walang ganitong limitasyon.",
+  "cookie.hint_decrypt": "Hindi ma-decrypt ang mga cookie ng {browser} (bagong proteksyon ng mga browser na Chrome, Edge at Brave). Gamitin ang Firefox (inirerekomenda).",
   "cookie.hint_notfound": "Walang nakitang profile ng {browser}: buksan ito kahit isang beses at mag-sign in sa YouTube, o pumili ng ibang browser."
 }

@@ -35,7 +35,8 @@
 
 ### 浏览器 Cookie
 
-- 选择 yt-dlp 在本地读取其 Cookie 的浏览器（Chrome、Firefox、Edge、Brave、Opera）：次要音轨和部分字幕需要它们。使用 Chrome、Edge 或 Brave 时，下载前请完全关闭浏览器：浏览器运行时会锁定其 Cookie 数据库，此时 yt-dlp 会显示“Could not copy Chrome cookie database”。Firefox 没有此限制。
+- 选择 yt-dlp 在本地读取其 Cookie 的浏览器（Chrome、Firefox、Edge、Brave、Opera）：次要音轨和部分字幕需要它们。使用 Chrome、Edge 或 Brave 时，下载前请完全关闭浏览器：浏览器运行时会锁定其 Cookie 数据库，此时 yt-dlp 会显示“Could not copy Chrome cookie database”。**推荐使用 Firefox**：它没有此限制。
+- 如果浏览器设置为**关闭时删除 Cookie**（或使用无痕模式），磁盘上就没有可读取的 Cookie：无论使用 Chrome、Edge、Brave 还是 Firefox，yt-dlp 都无法获取。对于 Chrome、Edge 和 Brave，这是个陷阱：必须先关闭浏览器，而关闭又会清除 Cookie。请关闭该选项，或保留 youtube.com 和 google.com 的 Cookie。
 - **指示灯**显示状态：禁用或失败为红色，未测试或进行中为橙色，Cookie 已加载为绿色。↻ 按钮运行测试，提示文字会说明状态或错误。
 
 ### 安装向导、依赖项与 yt-dlp 更新
