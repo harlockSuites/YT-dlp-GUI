@@ -4,7 +4,7 @@
 
 A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed to make it accessible to everyone while making full use of its capabilities.
 
-> **Work in progress.** Some features may change, be incomplete or contain bugs.
+> **Work in progress.** Some features may change, be incomplete or contain bugs. The software is currently available for Windows; **a Linux version will be released in the medium term.**
 
 ![yt-dlp GUI](img/main.en.png)
 

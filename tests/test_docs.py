@@ -111,6 +111,11 @@ class DocsTests(unittest.TestCase):
                 self.assertIn(lang["toolbar.menu_auto_update_check"], text)
                 self.assertIn(lang["toolbar.menu_check_update"], text)
 
+    def test_french_and_english_announce_the_linux_version(self):
+        docs = _all_docs()
+        self.assertIn("version Linux sera publiée à moyen terme", _read(docs["fr"]))
+        self.assertIn("Linux version will be released in the medium term", _read(docs["en"]))
+
     def test_key_facts_present_in_every_language(self):
         for code, path in _all_docs().items():
             text = _read(path)
