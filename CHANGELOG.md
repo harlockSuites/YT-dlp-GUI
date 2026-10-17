@@ -2,7 +2,7 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.1.3] — 2026-10-17
 
 ### Ajouté
 - Désinstallation : le désinstalleur propose de supprimer aussi les données du logiciel (réglages, file d'attente, yt-dlp et ffmpeg téléchargés, dossier `%LOCALAPPDATA%\yt-dlp-GUI`), « Non » par défaut ; les vidéos téléchargées ne sont jamais supprimées. En mode silencieux, les données sont conservées sauf avec `/DELETEDATA=1`. Message traduit dans les 14 langues de l'installateur.
