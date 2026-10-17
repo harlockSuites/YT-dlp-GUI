@@ -67,6 +67,30 @@ class PathRefreshTests(unittest.TestCase):
             self.assertTrue(m.dep_installed("outil-fictif-zz"), "trouvé grâce au PATH lu dans le registre")
             self.assertIn(d, os.environ["PATH"].split(os.pathsep))
 
+    def test_tool_in_the_chocolatey_package_folder_is_found_without_path(self):
+        """Paquet installé par un autre compte administrateur : son dossier n'est pas dans le PATH
+        de la session courante (cas réel de Deno : lib\\deno\\deno.exe)."""
+        root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, root, ignore_errors=True)
+        pkg = os.path.join(root, "lib", "outil-fictif-choco")
+        os.makedirs(pkg)
+        with open(os.path.join(pkg, "outil-fictif-choco.exe"), "w") as f:
+            f.write("x")
+        dep = {"name": "fictif", "exe": "outil-fictif-choco", "choco": "outil-fictif-choco"}
+        m.DEPS.append(dep)
+        self.addCleanup(m.DEPS.remove, dep)
+        with mock.patch.dict(os.environ, {"ChocolateyInstall": root}), \
+                mock.patch.object(m, "_refresh_process_path"):
+            self.assertFalse(m.dep_installed("outil-absent-zz"))
+            self.assertTrue(m.dep_installed("outil-fictif-choco"))
+            self.assertIn(pkg, os.environ["PATH"].split(os.pathsep), "dossier ajouté pour yt-dlp")
+
+    def test_deno_looks_in_the_usual_places(self):
+        dep = next(d for d in m.DEPS if d["exe"] == "deno")
+        paths = [p.lower() for p in m._known_exe_paths(dep)]
+        self.assertTrue(any(p.endswith(os.path.join("lib", "deno", "deno.exe")) for p in paths))
+        self.assertTrue(any(".deno" in p for p in paths))
+
     def test_registry_reader_is_safe_without_winreg_values(self):
         self.assertIsInstance(m._registry_path_dirs(), list)
 

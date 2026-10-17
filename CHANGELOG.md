@@ -2,6 +2,11 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [0.1.2] — 2026-10-17
+
+### Corrigé
+- Deno installé par Chocolatey depuis un autre compte administrateur (dossier `lib\deno`, absent du PATH de l'utilisateur courant) restait signalé « absent ». Le logiciel cherche désormais aussi dans le dossier du paquet Chocolatey et dans les emplacements usuels (`.deno`, WinGet, Scoop, Program Files), et ajoute le dossier trouvé à son PATH pour que yt-dlp utilise Deno.
+
 ## [0.1.1] — 2026-10-17
 
 ### Ajouté

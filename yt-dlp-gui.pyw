@@ -18,7 +18,7 @@ import getpass
 import webbrowser
 from urllib.parse import quote
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 def _resolve_dirs(frozen, executable, script_dir, meipass, env):
@@ -443,6 +443,13 @@ DEPS = [
         "url": "https://deno.com",
         "desc": "Runtime JS — requis pour voir les pistes audio secondaires (FR, ES…) et certains formats récents",
         "required": False,
+        "known_paths": [
+            r"%USERPROFILE%\.deno\bin\deno.exe",
+            r"%LOCALAPPDATA%\Microsoft\WinGet\Links\deno.exe",
+            r"%USERPROFILE%\scoop\shims\deno.exe",
+            r"%ProgramData%\scoop\shims\deno.exe",
+            r"%ProgramFiles%\deno\deno.exe",
+        ],
     },
 ]
 
@@ -498,13 +505,26 @@ def dep_installed(exe):
     # Fallback : vérifier les chemins connus et injecter dans PATH si trouvé
     dep = next((d for d in DEPS if d["exe"] == exe), None)
     if dep:
-        for path in dep.get("known_paths", []):
+        for path in _known_exe_paths(dep):
             if os.path.isfile(path):
                 folder = os.path.dirname(path)
                 if folder not in os.environ.get("PATH", ""):
                     os.environ["PATH"] = folder + os.pathsep + os.environ.get("PATH", "")
                 return True
     return False
+
+
+def _known_exe_paths(dep):
+    """Emplacements où l'outil peut se trouver sans figurer dans le PATH de cet utilisateur : chemins
+    déclarés, puis dossier du paquet Chocolatey (installé par un autre compte administrateur, dont
+    le PATH utilisateur n'est pas celui de la session courante)."""
+    paths = [os.path.expandvars(p) for p in dep.get("known_paths", [])]
+    pkg = dep.get("choco")
+    if pkg:
+        root = os.environ.get("ChocolateyInstall") or os.path.join(os.environ.get("ProgramData", ""), "chocolatey")
+        base = os.path.join(root, "lib", pkg)
+        paths += [os.path.join(d, dep["exe"] + ".exe") for d in (base, os.path.join(base, "tools"))]
+    return paths
 
 
 def _child_pids(pid):
