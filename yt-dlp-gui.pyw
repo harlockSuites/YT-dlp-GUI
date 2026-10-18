@@ -107,6 +107,12 @@ SUBTITLE_FORMATS = ["vtt", "srt", "ass", "best"]
 # piste (étiquette « language » du flux) ; sans lui, le lecteur n'affiche que « Piste 1 », « Piste 2 »…
 MULTI_AUDIO_ARGS = ["--audio-multistreams", "--embed-metadata", "--merge-output-format", "mkv"]
 
+# Sous-titres intégrés. Avec « --write-auto-subs », yt-dlp n'ajoute plus « --write-subs » de lui-même quand on
+# demande « --embed-subs » : seuls les sous-titres automatiques sont alors cherchés et ceux rédigés par
+# l'auteur sont ignorés (« There are no subtitles for the requested languages »). On demande donc les deux, et
+# « no-keep-subs » supprime les fichiers .srt une fois intégrés, comme avec « --embed-subs » seul.
+EMBED_SUBS_ARGS = ["--write-subs", "--embed-subs", "--compat-options", "no-keep-subs"]
+
 # Bibliothèque de blocs yt-dlp sélectionnables dans les Règles globales
 # (code, label_affiché, [args yt-dlp correspondants])
 SCRIPT_BLOCKS = [
@@ -742,7 +748,7 @@ class DepsWindow(tk.Toplevel):
 _GUI_FLAGS = [
     "--audio-multistreams", "--embed-metadata", "--embed-thumbnail", "--embed-subs", "--merge-output-format",
     "--flat-playlist", "--fragment-retries", "--sleep-interval", "--sub-format",
-    "--write-subs", "--no-playlist",
+    "--write-subs", "--compat-options", "--no-playlist",
 ]
 
 
@@ -3468,7 +3474,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                     "--sub-lang", ",".join(subs),
                     "--sub-format", self.var_g_sub_fmt.get()]
             if self.var_g_embed_subs.get():
-                args += ["--embed-subs"]
+                args += EMBED_SUBS_ARGS
             else:
                 args += ["--write-subs"]
             if has_auto:
@@ -3647,7 +3653,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
             has_auto = any(s in auto_only for s in subs)
             args += ["--sub-lang", ",".join(subs), "--sub-format", self.var_g_sub_fmt.get()]
             if self.var_g_embed_subs.get():
-                args += ["--embed-subs"]
+                args += EMBED_SUBS_ARGS
                 if has_auto:
                     args += ["--write-auto-subs"]
                 if not secondary and not force_mp4 and not (embed_thumb and primary):
@@ -5361,7 +5367,7 @@ class YtDlpGui(tk.Tk):
                      "--sub-format", self.var_sub_fmt.get(),
                      "--write-auto-subs"]
             if self.var_embed_subs.get():
-                args += ["--embed-subs"]
+                args += EMBED_SUBS_ARGS
                 if not secondary and not force_mp4 and not (embed_thumb and primary_code):
                     args += ["--merge-output-format", "mkv"]
             else:

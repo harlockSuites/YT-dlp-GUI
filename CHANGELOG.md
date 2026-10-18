@@ -6,6 +6,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Corrigé
 - Pistes audio multiples (MKV) : yt-dlp reçoit `--embed-metadata`, ce qui étiquette chaque piste avec sa langue (`fra`, `eng`…) au lieu de « Piste 1 », « Piste 2 ». Appliqué à la fenêtre principale, à l'inspecteur de playlist, à la file d'attente et au bloc « Multi-pistes audio (MKV) ».
+- Sous-titres intégrés (« Intégrer ST ») : avec `--write-auto-subs`, yt-dlp n'ajoute plus `--write-subs` de lui-même quand on demande `--embed-subs`. Les sous-titres rédigés par l'auteur étaient donc ignorés (« There are no subtitles for the requested languages ») sur les vidéos qui en ont. Le logiciel demande maintenant les deux types et supprime les fichiers `.srt` après intégration (fenêtre principale et inspecteur de playlist).
 
 ## [0.1.3] — 2026-10-17
 
