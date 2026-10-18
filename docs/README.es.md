@@ -15,7 +15,7 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 ### Descargador individual y cola
 
 - **Opciones**: calidad máxima (hasta 4K), solo audio (MP3), subtítulos (formatos vtt, srt, ass), incrustación de subtítulos y miniatura, idioma de audio principal, pistas de audio secundarias (archivo MKV multipista) y una biblioteca de «bloques de script» (posprocesado, exportación, red, comportamiento) que puede ampliar con sus propios bloques.
-- **Varias pistas de audio**: en el archivo MKV, las pistas de audio no llevan el nombre de su idioma. Su reproductor puede mostrarlas como «Pista 1», «Pista 2»… o sin etiqueta de idioma. Es una limitación conocida.
+- **Varias pistas de audio**: en el archivo MKV, cada pista de audio lleva la etiqueta de su idioma («spa», «eng»…); su reproductor la muestra en el menú de audio.
 - **Comando generado**: el comando de yt-dlp correspondiente a sus elecciones se muestra en directo.
 - **Cola**: añada la URL actual y luego ejecute toda la cola, desde un elemento, un solo vídeo o un intervalo; pausa y reanudación, omitir el elemento en curso, detener con limpieza de los archivos parciales. La cola se conserva entre sesiones.
 

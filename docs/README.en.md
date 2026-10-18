@@ -15,7 +15,7 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 ### Single downloader and queue
 
 - **Options**: maximum quality (up to 4K), audio only (MP3), subtitles (vtt, srt, ass formats), embedding of subtitles and thumbnail, main audio language, secondary audio tracks (multi-track MKV file) and a library of "script blocks" (post-processing, export, network, behavior) that you can extend with your own blocks.
-- **Multiple audio tracks**: in the MKV file, the audio tracks do not carry the name of their language. Your player may show them as "Track 1", "Track 2"… or without a language label. This is a known limitation.
+- **Multiple audio tracks**: in the MKV file, each audio track carries the tag of its language ("fra", "eng"…); your player shows it in its audio menu.
 - **Generated command**: the yt-dlp command matching your choices is displayed live.
 - **Queue**: add the current URL, then run the whole queue, from one item onward, a single video or a range; pause and resume, skip the current item, stop with cleanup of partial files. The queue is kept between sessions.
 

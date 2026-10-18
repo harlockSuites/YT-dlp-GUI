@@ -15,7 +15,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 ### Downloader singolo e coda
 
 - **Opzioni**: qualità massima (fino al 4K), solo audio (MP3), sottotitoli (formati vtt, srt, ass), incorporamento di sottotitoli e miniatura, lingua audio principale, tracce audio secondarie (file MKV multitraccia) e una libreria di «blocchi di script» (post-elaborazione, esportazione, rete, comportamento) che puoi ampliare con blocchi personalizzati.
-- **Più tracce audio**: nel file MKV le tracce audio non riportano il nome della loro lingua. Il lettore può mostrarle come «Traccia 1», «Traccia 2»… o senza indicazione della lingua. È un limite noto.
+- **Più tracce audio**: nel file MKV ogni traccia audio riporta l'etichetta della propria lingua («ita», «eng»…); il lettore la mostra nel menu audio.
 - **Comando generato**: il comando yt-dlp corrispondente alle tue scelte viene mostrato in tempo reale.
 - **Coda**: aggiungi l'URL corrente, poi avvia tutta la coda, da un elemento in poi, un solo video o un intervallo; pausa e ripresa, salto dell'elemento in corso, arresto con pulizia dei file parziali. La coda viene conservata tra una sessione e l'altra.
 

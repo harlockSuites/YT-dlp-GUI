@@ -15,7 +15,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 ### Indibidwal na downloader at pila
 
 - **Mga opsyon**: pinakamataas na kalidad (hanggang 4K), audio lang (MP3), mga subtitle (mga format na vtt, srt, ass), pag-embed ng mga subtitle at thumbnail, pangunahing wika ng audio, mga pangalawang audio track (multi-track na MKV file) at isang aklatan ng mga "script block" (post-processing, export, network, gawi) na maaari mong dagdagan ng sarili mong mga block.
-- **Maraming audio track**: sa MKV file, walang pangalan ng wika ang mga audio track. Maaaring ipakita ng player ang mga ito bilang "Track 1", "Track 2"… o walang label ng wika. Isa itong kilalang limitasyon.
+- **Maraming audio track**: sa MKV file, may tag ng wika ang bawat audio track ("fil", "eng"…); ipinapakita ito ng player sa audio menu.
 - **Nabuong command**: ipinapakita nang live ang yt-dlp command na tugma sa mga pinili mo.
 - **Pila**: idagdag ang kasalukuyang URL, saka patakbuhin ang buong pila, mula sa isang item pasulong, isang video lang o isang saklaw; pause at resume, paglaktaw sa kasalukuyang item, paghinto na may paglilinis ng mga hindi kumpletong file. Napapanatili ang pila sa pagitan ng mga session.
 

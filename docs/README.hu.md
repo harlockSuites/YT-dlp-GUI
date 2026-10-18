@@ -15,7 +15,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 ### Egyedi letöltő és sor
 
 - **Beállítások**: maximális minőség (akár 4K), csak hang (MP3), feliratok (vtt, srt, ass formátum), feliratok és indexkép beágyazása, fő hangnyelv, másodlagos hangsávok (többsávos MKV-fájl) és „szkriptblokkok” könyvtára (utófeldolgozás, exportálás, hálózat, viselkedés), amelyet saját blokkokkal bővíthet.
-- **Több hangsáv**: az MKV-fájlban a hangsávok nem viselik a nyelvük nevét. A lejátszó „1. sáv”, „2. sáv”… néven, vagy nyelvmegjelölés nélkül jelenítheti meg őket. Ez ismert korlátozás.
+- **Több hangsáv**: az MKV-fájlban minden hangsáv viseli a nyelve címkéjét („hun”, „eng”…); a lejátszó megjeleníti az audiomenüben.
 - **Előállított parancs**: a választásainak megfelelő yt-dlp-parancs élőben látható.
 - **Sor**: adja hozzá az aktuális URL-t, majd indítsa el az egész sort, egy elemtől kezdve, egyetlen videót vagy egy tartományt; szüneteltetés és folytatás, az aktuális elem kihagyása, leállítás a részleges fájlok takarításával. A sor munkamenetek között megmarad.
 

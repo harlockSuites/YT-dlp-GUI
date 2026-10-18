@@ -15,7 +15,7 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 ### Pojedyncze pobieranie i kolejka
 
 - **Opcje**: maksymalna jakość (do 4K), tylko dźwięk (MP3), napisy (formaty vtt, srt, ass), osadzanie napisów i miniatury, główny język ścieżki dźwiękowej, dodatkowe ścieżki audio (wielościeżkowy plik MKV) oraz biblioteka „bloków skryptów” (postprodukcja, eksport, sieć, zachowanie), którą można uzupełnić własnymi blokami.
-- **Wiele ścieżek audio**: w pliku MKV ścieżki audio nie mają nazwy swojego języka. Odtwarzacz może pokazywać je jako „Ścieżka 1”, „Ścieżka 2”… lub bez oznaczenia języka. To znane ograniczenie.
+- **Wiele ścieżek audio**: w pliku MKV każda ścieżka audio ma etykietę swojego języka („pol”, „eng”…); odtwarzacz pokazuje ją w menu audio.
 - **Wygenerowane polecenie**: polecenie yt-dlp odpowiadające Twoim wyborom jest wyświetlane na bieżąco.
 - **Kolejka**: dodaj bieżący adres URL, a następnie uruchom całą kolejkę, od wybranej pozycji, pojedynczy film lub zakres; pauza i wznowienie, pominięcie bieżącej pozycji, zatrzymanie z usunięciem plików częściowych. Kolejka jest zachowywana między sesjami.
 

@@ -15,7 +15,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 ### Trình tải đơn lẻ và hàng đợi
 
 - **Tùy chọn**: chất lượng tối đa (đến 4K), chỉ âm thanh (MP3), phụ đề (định dạng vtt, srt, ass), nhúng phụ đề và ảnh thu nhỏ, ngôn ngữ âm thanh chính, các rãnh âm thanh phụ (tệp MKV nhiều rãnh) và thư viện «khối script» (xử lý sau, xuất, mạng, hành vi) mà bạn có thể bổ sung bằng khối của riêng mình.
-- **Nhiều track âm thanh**: trong tệp MKV, các track âm thanh không mang tên ngôn ngữ của chúng. Trình phát có thể hiển thị chúng là «Track 1», «Track 2»… hoặc không có nhãn ngôn ngữ. Đây là một hạn chế đã biết.
+- **Nhiều track âm thanh**: trong tệp MKV, mỗi track âm thanh mang nhãn ngôn ngữ của nó («vie», «eng»…); trình phát hiển thị nhãn này trong menu âm thanh.
 - **Lệnh được tạo**: lệnh yt-dlp tương ứng với lựa chọn của bạn được hiển thị trực tiếp.
 - **Hàng đợi**: thêm URL hiện tại, rồi chạy toàn bộ hàng đợi, từ một mục trở đi, một video hoặc một khoảng; tạm dừng và tiếp tục, bỏ qua mục đang chạy, dừng và dọn các tệp dở dang. Hàng đợi được giữ lại giữa các phiên.
 

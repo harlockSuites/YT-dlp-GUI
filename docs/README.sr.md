@@ -15,7 +15,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 ### Pojedinačno preuzimanje i red čekanja
 
 - **Opcije**: maksimalan kvalitet (do 4K), samo zvuk (MP3), titlovi (formati vtt, srt, ass), ugrađivanje titlova i sličice, glavni jezik zvuka, dodatni audio zapisi (višezapisni MKV fajl) i biblioteka „blokova skripti” (naknadna obrada, izvoz, mreža, ponašanje) koju možete dopuniti sopstvenim blokovima.
-- **Više audio traka**: u MKV datoteci audio trake ne nose naziv svog jezika. Vaš plejer ih može prikazati kao „Traka 1”, „Traka 2”… ili bez oznake jezika. To je poznato ograničenje.
+- **Više audio traka**: u MKV datoteci svaka audio traka nosi oznaku svog jezika („srp”, „eng”…); plejer je prikazuje u meniju za zvuk.
 - **Generisana komanda**: yt-dlp komanda koja odgovara vašim izborima prikazuje se uživo.
 - **Red čekanja**: dodajte trenutni URL, pa pokrenite ceo red, od jedne stavke nadalje, samo jedan video ili opseg; pauza i nastavak, preskakanje trenutne stavke, zaustavljanje sa brisanjem delimičnih fajlova. Red se čuva između sesija.
 

@@ -15,7 +15,7 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 ### Downloader individual e fila
 
 - **Opções**: qualidade máxima (até 4K), somente áudio (MP3), legendas (formatos vtt, srt, ass), incorporação de legendas e miniatura, idioma de áudio principal, faixas de áudio secundárias (arquivo MKV com várias faixas) e uma biblioteca de «blocos de script» (pós-processamento, exportação, rede, comportamento) que você pode ampliar com seus próprios blocos.
-- **Várias faixas de áudio**: no arquivo MKV, as faixas de áudio não levam o nome do seu idioma. Seu player pode exibi-las como «Faixa 1», «Faixa 2»… ou sem indicação de idioma. É uma limitação conhecida.
+- **Várias faixas de áudio**: no arquivo MKV, cada faixa de áudio traz a etiqueta do seu idioma («por», «eng»…); seu player a exibe no menu de áudio.
 - **Comando gerado**: o comando do yt-dlp correspondente às suas escolhas é exibido em tempo real.
 - **Fila**: adicione a URL atual e depois execute toda a fila, a partir de um item, um único vídeo ou um intervalo; pausa e retomada, pular o item atual, parar com limpeza dos arquivos parciais. A fila é mantida entre as sessões.
 

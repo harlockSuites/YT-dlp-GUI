@@ -15,7 +15,7 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 ### Téléchargeur individuel et file d'attente
 
 - **Options** : qualité maximale (jusqu'à la 4K), audio seul (MP3), sous-titres (formats vtt, srt, ass), intégration des sous-titres et de la miniature, langue audio principale, pistes audio secondaires (fichier MKV multi-pistes) et bibliothèque de « blocs de script » (post-traitement, export, réseau, comportement) que vous pouvez compléter avec vos propres blocs.
-- **Pistes audio multiples** : dans le fichier MKV, les pistes audio ne portent pas le nom de leur langue. Votre lecteur peut les afficher comme « Piste 1 », « Piste 2 »… ou sans libellé de langue. C'est une limite connue.
+- **Pistes audio multiples** : dans le fichier MKV, chaque piste audio porte l'étiquette de sa langue (« fra », « eng »…) ; votre lecteur l'affiche dans son menu audio.
 - **Commande générée** : la commande yt-dlp correspondant à vos choix s'affiche en direct.
 - **File d'attente** : ajoutez l'URL courante, puis lancez toute la file, à partir d'un élément, une seule vidéo ou une plage ; pause et reprise, saut de l'élément en cours, arrêt avec nettoyage des fichiers partiels. La file est conservée d'une session à l'autre.
 
