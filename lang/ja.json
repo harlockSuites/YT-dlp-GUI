@@ -473,5 +473,8 @@
   "cookie.hint_decrypt": "{browser} の Cookie を復号できません（Chrome、Edge、Brave の新しい保護機能）。Firefox をお使いください（推奨）。",
   "cookie.hint_notfound": "{browser} のプロファイルが見つかりません：一度起動して YouTube にサインインするか、別のブラウザを選んでください。",
   "cookie.note_blocked": "Chrome、Edge、Brave は Cookie を暗号化するため、ブラウザを閉じていても読み取りに失敗することがよくあります。Firefox を推奨します。",
-  "cookie.note_closed": "検出はブラウザを閉じているときだけ動作します。通知領域も含めて完全に終了してください。"
+  "cookie.note_closed": "検出はブラウザを閉じているときだけ動作します。通知領域も含めて完全に終了してください。",
+  "setup.item_deno": "deno — YouTube に必要な JavaScript エンジン（約 40 MB）",
+  "deps.log_no_choco": "Chocolatey がインストールされていないため、「すべてインストール」は使えません。Deno は「インストール」、他のツールは「公式サイト」のリンクを使ってください。",
+  "deps.log_elevation_cancelled": "昇格が拒否またはキャンセルされました。何もインストールされていません。"
 }

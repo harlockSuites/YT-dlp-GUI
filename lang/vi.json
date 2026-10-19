@@ -473,5 +473,8 @@
   "cookie.hint_decrypt": "Không thể giải mã cookie của {browser} (cơ chế bảo vệ mới của trình duyệt Chrome, Edge và Brave). Hãy dùng Firefox (khuyến nghị).",
   "cookie.hint_notfound": "Không tìm thấy hồ sơ {browser}: hãy mở nó ít nhất một lần và đăng nhập YouTube, hoặc chọn trình duyệt khác.",
   "cookie.note_blocked": "Chrome, Edge và Brave mã hóa cookie: việc đọc thường thất bại, kể cả khi đã đóng trình duyệt. Nên dùng Firefox.",
-  "cookie.note_closed": "Việc phát hiện chỉ hoạt động khi trình duyệt đã đóng: hãy đóng hoàn toàn (kể cả ở khay thông báo)."
+  "cookie.note_closed": "Việc phát hiện chỉ hoạt động khi trình duyệt đã đóng: hãy đóng hoàn toàn (kể cả ở khay thông báo).",
+  "setup.item_deno": "deno — công cụ JavaScript cần cho YouTube (~40 MB)",
+  "deps.log_no_choco": "Chưa cài Chocolatey: «Cài tất cả» không khả dụng. Với Deno, dùng «Cài đặt»; với các công cụ khác, dùng liên kết «Trang chính thức».",
+  "deps.log_elevation_cancelled": "Yêu cầu nâng quyền bị từ chối hoặc hủy: chưa cài gì."
 }

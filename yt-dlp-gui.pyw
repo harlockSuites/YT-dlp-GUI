@@ -453,6 +453,7 @@ DEPS = [
         "url": "https://deno.com",
         "desc": "Runtime JS — requis pour voir les pistes audio secondaires (FR, ES…) et certains formats récents",
         "required": False,
+        "direct": True,   # installable par l'assistant (téléchargement vérifié), sans Chocolatey
         "known_paths": [
             r"%USERPROFILE%\.deno\bin\deno.exe",
             r"%LOCALAPPDATA%\Microsoft\WinGet\Links\deno.exe",
@@ -573,16 +574,17 @@ def _child_pids(pid):
 
 
 def run_elevated(cmd_str):
-    """Lance une commande PowerShell avec élévation UAC (Start-Process -Verb RunAs)."""
-    ps = (
-        f'Start-Process powershell -Verb RunAs '
-        f'-ArgumentList \'-NoProfile -ExecutionPolicy Bypass -Command "{cmd_str}"\''
-    )
-    subprocess.Popen(
-        ["powershell", "-NoProfile", "-WindowStyle", "Hidden",
-         "-ExecutionPolicy", "Bypass", "-Command", ps],
-        creationflags=subprocess.CREATE_NO_WINDOW,
-    )
+    """Lance une commande dans une fenêtre visible avec élévation UAC (ShellExecute « runas »).
+
+    Pas de PowerShell masqué ni de contournement de la politique d'exécution des scripts : ce montage
+    est celui des logiciels malveillants et les antivirus de comportement le bloquent. Renvoie False si Windows n'a pas
+    lancé la commande (élévation refusée ou annulée)."""
+    try:
+        import ctypes
+        result = ctypes.windll.shell32.ShellExecuteW(None, "runas", "cmd.exe", f"/c {cmd_str}", None, 1)
+    except Exception:
+        return False
+    return result > 32
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -646,7 +648,9 @@ class DepsWindow(tk.Toplevel):
             lbl_desc.grid(row=row, column=2, padx=4, pady=2, sticky="w")
 
             url = dep.get("url", "")
-            if has_choco:
+            if dep.get("direct"):
+                btn = ttk.Button(frm_table, text=t("deps.btn_install"), command=self._install_direct)
+            elif has_choco:
                 btn = ttk.Button(frm_table, text=t("deps.btn_install"),
                                  command=lambda d=dep: self._install(d))
             else:
@@ -664,8 +668,8 @@ class DepsWindow(tk.Toplevel):
         frm_btn = ttk.Frame(self)
         frm_btn.pack(fill="x", padx=12, pady=10)
 
-        ttk.Button(frm_btn, text=t("deps.btn_install_all"),
-                   command=self._install_all).pack(side="left", ipadx=6)
+        ttk.Button(frm_btn, text=t("deps.btn_install_all"), command=self._install_all,
+                   state="normal" if choco_available() else "disabled").pack(side="left", ipadx=6)
         ttk.Button(frm_btn, text=t("deps.btn_refresh"),
                    command=self._refresh).pack(side="left", padx=(8, 0), ipadx=6)
         ttk.Button(frm_btn, text=t("deps.btn_close"),
@@ -708,7 +712,7 @@ class DepsWindow(tk.Toplevel):
                 row["btn"].configure(state="disabled")
             else:
                 row["lbl_status"].configure(text=t("deps.status_absent"), foreground="#c0392b")
-                if has_choco:
+                if dep.get("direct") or has_choco:
                     row["btn"].configure(state="normal")
                 else:
                     url = dep.get("url", "")
@@ -721,7 +725,14 @@ class DepsWindow(tk.Toplevel):
             dep = ffmpeg_dep
         self._choco_install([dep["choco"]])
 
+    def _install_direct(self):
+        """Outils que l'assistant sait télécharger lui-même (Deno) : pas de Chocolatey ni d'administrateur."""
+        SetupWizardWindow(self, on_done=self._refresh)
+
     def _install_all(self):
+        if not choco_available():
+            self._log(t("deps.log_no_choco"), "#f5a623")
+            return
         pkgs_seen = set()
         pkgs = []
         for dep in DEPS:
@@ -734,11 +745,16 @@ class DepsWindow(tk.Toplevel):
         self._choco_install(pkgs)
 
     def _choco_install(self, packages):
+        if not choco_available():
+            self._log(t("deps.log_no_choco"), "#f5a623")
+            return
         pkg_str = " ".join(packages)
-        cmd = f"choco install {pkg_str} -y; pause"
+        cmd = f"choco install {pkg_str} -y & pause"
         self._log(t("deps.log_installing", pkgs=pkg_str), "#9cdcfe")
         self._log(t("deps.log_uac_warning"), "#dcdcaa")
-        run_elevated(cmd)
+        if not run_elevated(cmd):
+            self._log(t("deps.log_elevation_cancelled"), "#f5a623")
+            return
 
         # Actualiser après un délai (laisse le temps à l'UAC + choco)
         self.after(3000, self._refresh)
@@ -4096,6 +4112,9 @@ YTDLP_SUMS_URL  = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA
 FFMPEG_ZIP_NAME = "ffmpeg-master-latest-win64-gpl.zip"
 FFMPEG_URL      = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/" + FFMPEG_ZIP_NAME
 FFMPEG_SUMS_URL = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/checksums.sha256"
+DENO_ZIP_NAME   = "deno-x86_64-pc-windows-msvc.zip"
+DENO_URL        = "https://github.com/denoland/deno/releases/latest/download/" + DENO_ZIP_NAME
+DENO_SUMS_URL   = DENO_URL + ".sha256sum"
 
 
 class SetupError(Exception):
@@ -4160,6 +4179,9 @@ def _parse_checksums(text):
         parts = line.strip().split(None, 1)
         if len(parts) == 2 and re.fullmatch(r"[0-9a-fA-F]{64}", parts[0]):
             out[parts[1].lstrip("*").strip()] = parts[0].lower()
+    # Format publié par Deno (Get-FileHash en liste) : « Hash : <sha256> » puis « Path : <chemin> »
+    for m in re.finditer(r"Hash\s*:\s*([0-9A-Fa-f]{64})\s+Path\s*:\s*(\S.*)", text):
+        out[re.split(r"[\\/]", m.group(2).strip())[-1]] = m.group(1).lower()
     return out
 
 
@@ -4219,8 +4241,20 @@ def install_ffmpeg(progress=None, stop=None, log=None):
         shutil.rmtree(work, ignore_errors=True)
 
 
+def install_deno(progress=None, stop=None, log=None):
+    """Deno : moteur JavaScript que yt-dlp utilise pour YouTube, installé dans le dossier de données."""
+    import tempfile
+    work = tempfile.mkdtemp(prefix="ytgui-deno-")
+    try:
+        zip_path = os.path.join(work, DENO_ZIP_NAME)
+        _verified_download(DENO_URL, DENO_SUMS_URL, DENO_ZIP_NAME, zip_path, progress, stop, log)
+        _extract_tools(zip_path, LOCAL_BIN, names=("deno.exe",))
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
 class SetupWizardWindow(tk.Toplevel):
-    """Télécharge et installe yt-dlp et ffmpeg depuis leurs dépôts officiels."""
+    """Télécharge et installe yt-dlp, ffmpeg et Deno depuis leurs dépôts officiels."""
     def __init__(self, parent, on_done=None):
         super().__init__(parent)
         self.title(t("setup.window_title"))
@@ -4239,7 +4273,8 @@ class SetupWizardWindow(tk.Toplevel):
         self._items = {}
         for key, label, installed in (
                 ("ytdlp", t("setup.item_ytdlp"), os.path.isfile(YTDLP)),
-                ("ffmpeg", t("setup.item_ffmpeg"), dep_installed("ffmpeg") and dep_installed("ffprobe"))):
+                ("ffmpeg", t("setup.item_ffmpeg"), dep_installed("ffmpeg") and dep_installed("ffprobe")),
+                ("deno", t("setup.item_deno"), dep_installed("deno"))):
             var = tk.BooleanVar(value=not installed)
             row = ttk.Frame(frm_items)
             row.pack(fill="x", pady=2)
@@ -4298,7 +4333,8 @@ class SetupWizardWindow(tk.Toplevel):
         threading.Thread(target=self._run, args=(todo,), daemon=True).start()
 
     def _run(self, todo):
-        names = {"ytdlp": ("yt-dlp", install_ytdlp), "ffmpeg": ("ffmpeg", install_ffmpeg)}
+        names = {"ytdlp": ("yt-dlp", install_ytdlp), "ffmpeg": ("ffmpeg", install_ffmpeg),
+                 "deno": ("deno", install_deno)}
         ok = True
         for key in todo:
             label, fn = names[key]

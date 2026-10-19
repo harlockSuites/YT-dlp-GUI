@@ -65,6 +65,12 @@ class ChecksumTests(unittest.TestCase):
         out = m._parse_checksums(f"{h1}  yt-dlp.exe\n{h2} *autre.zip\nligne invalide\n{'c' * 10}  court")
         self.assertEqual(out, {"yt-dlp.exe": h1, "autre.zip": h2.lower()})
 
+    def test_parse_checksums_powershell_list_format_published_by_deno(self):
+        h = "A0C3101B4158D1DFB7D6A78A7BF0F3DE80C96BB423C152BEEC8BEB22786F2238"
+        text = ("\nAlgorithm : SHA256\nHash      : " + h +
+                "\nPath      : C:\\a\\deno\\deno\\target\\release\\deno-x86_64-pc-windows-msvc.zip\n\n")
+        self.assertEqual(m._parse_checksums(text), {"deno-x86_64-pc-windows-msvc.zip": h.lower()})
+
     def test_sha256_file(self):
         d = tempfile.mkdtemp()
         try:
@@ -201,12 +207,106 @@ class InstallTests(LocalServerCase):
             m.install_ffmpeg()
         self.assertEqual(sorted(os.listdir(bin_dir)), ["ffmpeg.exe", "ffprobe.exe"])
 
+    def test_install_deno_extracts_to_local_bin_without_chocolatey(self):
+        archive = _zip_bytes({"deno.exe": b"D", "LICENSE.md": b"L"})
+        url = self.serve("/" + m.DENO_ZIP_NAME, archive)
+        h = _sha(archive).upper()
+        sums = self.serve("/" + m.DENO_ZIP_NAME + ".sha256sum",
+                          f"Algorithm : SHA256\nHash      : {h}\nPath      : C:\\build\\{m.DENO_ZIP_NAME}\n".encode())
+        bin_dir = os.path.join(self.d, "bin")
+        with mock.patch.object(m, "LOCAL_BIN", bin_dir), mock.patch.object(m, "DENO_URL", url), \
+                mock.patch.object(m, "DENO_SUMS_URL", sums):
+            m.install_deno()
+        self.assertEqual(os.listdir(bin_dir), ["deno.exe"])
+
+    def test_install_deno_refuses_a_wrong_checksum(self):
+        archive = _zip_bytes({"deno.exe": b"D"})
+        url = self.serve("/" + m.DENO_ZIP_NAME, archive)
+        sums = self.serve("/" + m.DENO_ZIP_NAME + ".sha256sum",
+                          f"Hash : {'1' * 64}\nPath : {m.DENO_ZIP_NAME}\n".encode())
+        bin_dir = os.path.join(self.d, "bin")
+        with mock.patch.object(m, "LOCAL_BIN", bin_dir), mock.patch.object(m, "DENO_URL", url), \
+                mock.patch.object(m, "DENO_SUMS_URL", sums):
+            with self.assertRaises(m.SetupError):
+                m.install_deno()
+        self.assertFalse(os.path.exists(os.path.join(bin_dir, "deno.exe")))
+
+    def test_deno_urls_are_official_github(self):
+        for url in (m.DENO_URL, m.DENO_SUMS_URL):
+            self.assertTrue(url.startswith("https://github.com/denoland/deno/releases/"), url)
+
     def test_official_urls_are_https_github(self):
         for url in (m.YTDLP_URL, m.YTDLP_SUMS_URL, m.FFMPEG_URL, m.FFMPEG_SUMS_URL):
             self.assertTrue(url.startswith("https://github.com/yt-dlp/"), url)
 
     def test_local_bin_is_on_path(self):
         self.assertIn(m.LOCAL_BIN, os.environ["PATH"].split(os.pathsep))
+
+
+class ElevationTests(unittest.TestCase):
+    def _fake_windll(self, result):
+        fake = mock.Mock()
+        fake.shell32.ShellExecuteW.return_value = result
+        return fake
+
+    def test_uses_shell_execute_runas_without_hidden_powershell(self):
+        import ctypes
+        fake = self._fake_windll(42)
+        with mock.patch.object(ctypes, "windll", fake, create=True):
+            self.assertTrue(m.run_elevated("choco install deno -y & pause"))
+        args = fake.shell32.ShellExecuteW.call_args[0]
+        self.assertEqual(args[1:4], ("runas", "cmd.exe", "/c choco install deno -y & pause"))
+        self.assertEqual(args[5], 1, "fenêtre visible")
+
+    def test_returns_false_when_elevation_is_refused(self):
+        import ctypes
+        with mock.patch.object(ctypes, "windll", self._fake_windll(5), create=True):
+            self.assertFalse(m.run_elevated("choco install deno -y"))
+
+    def test_no_hidden_window_and_no_policy_bypass_anywhere(self):
+        with open(m.__file__, encoding="utf-8") as f:
+            source = f.read()
+        for suspicious in ("-ExecutionPolicy", "-WindowStyle", "Start-Process powershell"):
+            self.assertNotIn(suspicious, source, "montage que les antivirus de comportement bloquent")
+
+
+@unittest.skipUnless(tk_available(), "pas d'affichage Tk disponible")
+class DepsWindowWithoutChocolateyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        m.load_lang("fr")
+        cls.app = m.YtDlpGui()
+        cls.app.withdraw()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.app.destroy()
+
+    def _window(self):
+        with mock.patch.object(m, "choco_available", return_value=False),                 mock.patch.object(m, "dep_installed", return_value=False),                 mock.patch.object(m.tk.Toplevel, "grab_set", lambda self: None):
+            win = m.DepsWindow(self.app)
+        win.withdraw()
+        self.addCleanup(lambda: win.winfo_exists() and win.destroy())
+        return win
+
+    def test_install_all_does_nothing_and_explains(self):
+        win = self._window()
+        with mock.patch.object(m, "choco_available", return_value=False),                 mock.patch.object(m, "run_elevated") as elevated:
+            win._install_all()
+        elevated.assert_not_called()
+        self.assertIn("Chocolatey", win.log.get("1.0", "end"))
+
+    def test_deno_can_still_be_installed_by_the_assistant(self):
+        win = self._window()
+        row = next(r for r in win._rows if r["dep"]["name"] == "deno")
+        self.assertEqual(str(row["btn"].cget("state")), "normal")
+        self.assertEqual(row["btn"].cget("text"), m.t("deps.btn_install"))
+
+    def test_cancelled_elevation_is_reported(self):
+        win = self._window()
+        with mock.patch.object(m, "choco_available", return_value=True),                 mock.patch.object(m, "run_elevated", return_value=False):
+            win._choco_install(["aria2"])
+        self.assertIn(m.t("deps.log_elevation_cancelled"), win.log.get("1.0", "end"))
 
 
 @unittest.skipUnless(tk_available(), "pas d'affichage Tk disponible")
@@ -259,11 +359,20 @@ class WizardTests(unittest.TestCase):
         with mock.patch.object(m.os.path, "isfile", return_value=False), \
                 mock.patch.object(m, "dep_installed", return_value=False):
             win = self._wizard(on_done=lambda: done.append(True))
-        with mock.patch.object(m, "install_ytdlp") as y, mock.patch.object(m, "install_ffmpeg") as f:
+        with mock.patch.object(m, "install_ytdlp") as y, mock.patch.object(m, "install_ffmpeg") as f, \
+                mock.patch.object(m, "install_deno") as d:
             self._run_in_mainloop(win._install, lambda: bool(done))
         y.assert_called_once()
         f.assert_called_once()
+        d.assert_called_once()
         self.assertEqual(done, [True])
+
+    def test_deno_is_offered_by_the_assistant_and_preselected_when_missing(self):
+        with mock.patch.object(m.os.path, "isfile", return_value=True), \
+                mock.patch.object(m, "dep_installed", side_effect=lambda exe: exe != "deno"):
+            win = self._wizard()
+        self.assertTrue(win._items["deno"].get())
+        self.assertFalse(win._items["ytdlp"].get())
 
     def test_failure_is_logged_and_stops(self):
         with mock.patch.object(m.os.path, "isfile", return_value=False), \

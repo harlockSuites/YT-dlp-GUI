@@ -2,6 +2,14 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- Deno est installable par l'assistant d'installation (téléchargement depuis les versions officielles, somme SHA-256 vérifiée, dossier de données du logiciel), sans Chocolatey ni droits administrateur.
+
+### Corrigé
+- « Tout installer (admin) » n'utilise plus un PowerShell masqué avec contournement de la politique d'exécution, montage que des antivirus de comportement bloquaient : l'élévation passe par ShellExecute (« runas ») et une fenêtre visible. Le bouton est désactivé, avec une explication, quand Chocolatey est absent ; un refus de l'élévation est signalé.
+
 ## [0.1.4] — 2026-10-18
 
 ### Corrigé

@@ -473,5 +473,8 @@
   "cookie.hint_decrypt": "A(z) {browser} sütijei nem fejthetők vissza (a Chrome, az Edge és a Brave böngészők új védelme). Használja a Firefoxot (ajánlott).",
   "cookie.hint_notfound": "Nem található {browser}-profil: nyissa meg legalább egyszer, és jelentkezzen be a YouTube-ra, vagy válasszon másik böngészőt.",
   "cookie.note_blocked": "A Chrome, az Edge és a Brave titkosítja a sütiket: az olvasás gyakran akkor is sikertelen, ha a böngésző zárva van. A Firefox ajánlott.",
-  "cookie.note_closed": "Az észlelés csak zárt böngészővel működik: zárja be teljesen (az értesítési területen is)."
+  "cookie.note_closed": "Az észlelés csak zárt böngészővel működik: zárja be teljesen (az értesítési területen is).",
+  "setup.item_deno": "deno — a YouTube-hoz szükséges JavaScript-motor (~40 MB)",
+  "deps.log_no_choco": "A Chocolatey nincs telepítve: a „Mindent telepít” nem érhető el. A Denóhoz használja a „Telepítés” gombot; a többi eszközhöz a „Hivatalos oldal” hivatkozást.",
+  "deps.log_elevation_cancelled": "A jogosultság-emelést elutasították vagy megszakították: semmi sem települt."
 }

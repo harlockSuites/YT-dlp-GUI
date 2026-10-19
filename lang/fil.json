@@ -473,5 +473,8 @@
   "cookie.hint_decrypt": "Hindi ma-decrypt ang mga cookie ng {browser} (bagong proteksyon ng mga browser na Chrome, Edge at Brave). Gamitin ang Firefox (inirerekomenda).",
   "cookie.hint_notfound": "Walang nakitang profile ng {browser}: buksan ito kahit isang beses at mag-sign in sa YouTube, o pumili ng ibang browser.",
   "cookie.note_blocked": "Ine-encrypt ng Chrome, Edge at Brave ang kanilang mga cookie: madalas pumalya ang pagbasa, kahit sarado ang browser. Inirerekomenda ang Firefox.",
-  "cookie.note_closed": "Gumagana lang ang detection kapag sarado ang browser: isara ito nang buo (pati sa notification area)."
+  "cookie.note_closed": "Gumagana lang ang detection kapag sarado ang browser: isara ito nang buo (pati sa notification area).",
+  "setup.item_deno": "deno — JavaScript engine na kailangan para sa YouTube (~40 MB)",
+  "deps.log_no_choco": "Hindi naka-install ang Chocolatey: hindi available ang \"I-install lahat\". Para sa Deno, gamitin ang \"I-install\"; para sa ibang tool, ang link na \"Opisyal na site\".",
+  "deps.log_elevation_cancelled": "Tinanggihan o kinansela ang elevation: walang na-install."
 }

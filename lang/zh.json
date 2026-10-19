@@ -473,5 +473,8 @@
   "cookie.hint_decrypt": "无法解密 {browser} 的 Cookie（Chrome、Edge 和 Brave 浏览器的新保护机制）。请使用 Firefox（推荐）。",
   "cookie.hint_notfound": "未找到 {browser} 的配置文件：请至少打开一次并登录 YouTube，或选择其他浏览器。",
   "cookie.note_blocked": "Chrome、Edge 和 Brave 会加密其 Cookie：即使浏览器已关闭，读取也常常失败。推荐使用 Firefox。",
-  "cookie.note_closed": "仅在浏览器关闭时才能检测：请将其完全关闭（包括通知区域中的图标）。"
+  "cookie.note_closed": "仅在浏览器关闭时才能检测：请将其完全关闭（包括通知区域中的图标）。",
+  "setup.item_deno": "deno — YouTube 所需的 JavaScript 引擎（约 40 MB）",
+  "deps.log_no_choco": "未安装 Chocolatey：“全部安装”不可用。Deno 请使用“安装”；其他工具请使用“官方网站”链接。",
+  "deps.log_elevation_cancelled": "提升权限被拒绝或已取消：未安装任何内容。"
 }

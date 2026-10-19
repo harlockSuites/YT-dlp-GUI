@@ -473,5 +473,8 @@
   "cookie.hint_decrypt": "No se pueden descifrar las cookies de {browser} (protección reciente de los navegadores Chrome, Edge y Brave). Use Firefox (recomendado).",
   "cookie.hint_notfound": "No se encontró ningún perfil de {browser}: ábralo al menos una vez e inicie sesión en YouTube, o elija otro navegador.",
   "cookie.note_blocked": "Chrome, Edge y Brave cifran sus cookies: la lectura suele fallar, incluso con el navegador cerrado. Se recomienda Firefox.",
-  "cookie.note_closed": "La detección solo funciona con el navegador cerrado: ciérrelo por completo (incluida el área de notificaciones)."
+  "cookie.note_closed": "La detección solo funciona con el navegador cerrado: ciérrelo por completo (incluida el área de notificaciones).",
+  "setup.item_deno": "deno — motor de JavaScript necesario para YouTube (~40 MB)",
+  "deps.log_no_choco": "Chocolatey no está instalado: «Instalar todo» no está disponible. Para Deno use «Instalar»; para las demás herramientas, el enlace «Sitio oficial».",
+  "deps.log_elevation_cancelled": "Elevación rechazada o cancelada: no se instaló nada."
 }
