@@ -618,8 +618,8 @@ def _known_exe_paths(dep):
     return paths
 
 
-def _child_pids(pid):
-    """PID des processus enfants directs (Toolhelp32 ; wmic a disparu des Windows récents)."""
+def _iter_processes():
+    """(pid, pid_parent, nom_exe_en_minuscules) de tous les processus (Toolhelp32 ; wmic a disparu des Windows récents)."""
     import ctypes
     from ctypes import wintypes
 
@@ -638,19 +638,38 @@ def _child_pids(pid):
     k32.CloseHandle.argtypes = [wintypes.HANDLE]
     snap = k32.CreateToolhelp32Snapshot(0x2, 0)   # TH32CS_SNAPPROCESS
     if not snap or snap == ctypes.c_void_p(-1).value:
-        return []
-    kids = []
+        return
     try:
         entry = PROCESSENTRY32W()
         entry.dwSize = ctypes.sizeof(entry)
         ok = k32.Process32FirstW(snap, ctypes.byref(entry))
         while ok:
-            if entry.th32ParentProcessID == pid:
-                kids.append(entry.th32ProcessID)
+            yield entry.th32ProcessID, entry.th32ParentProcessID, entry.szExeFile.lower()
             ok = k32.Process32NextW(snap, ctypes.byref(entry))
     finally:
         k32.CloseHandle(snap)
-    return kids
+
+
+def _child_pids(pid):
+    """PID des processus enfants directs."""
+    return [p for p, parent, _name in _iter_processes() if parent == pid]
+
+
+# Programmes de chaque navigateur (noms de menu de cookies de yt-dlp)
+_BROWSER_EXES = {"chrome": ("chrome.exe",), "edge": ("msedge.exe",), "brave": ("brave.exe",),
+                 "opera": ("opera.exe",), "firefox": ("firefox.exe",)}
+
+
+def browser_process_count(browser):
+    """Nombre de processus du navigateur encore en cours d'exécution, y compris en arrière-plan
+    (Edge et Chrome restent actifs après la fermeture de leur fenêtre) ; 0 si inconnu."""
+    names = _BROWSER_EXES.get((browser or "").lower())
+    if not names:
+        return 0
+    try:
+        return sum(1 for _pid, _parent, exe in _iter_processes() if exe in names)
+    except Exception:
+        return 0
 
 
 def run_elevated(cmd_str):
@@ -2404,6 +2423,9 @@ def _cookie_hint(text, browser=""):
     low = (text or "").lower()
     name = (browser or "").capitalize()
     if "database is locked" in low or ("could not copy" in low and "cookie" in low):
+        running = browser_process_count(browser)
+        if running:
+            return t("cookie.hint_locked_running", browser=name, n=running)
         return t("cookie.hint_locked", browser=name)
     if "failed to decrypt" in low or "dpapi" in low:
         return t("cookie.hint_decrypt", browser=name)

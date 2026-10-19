@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "Nincs hibás elem a sorban.",
   "inspect.box_running": "Elemzés folyamatban…",
   "inspect.box_failed": "Az elemzés sikertelen (lásd a naplót).",
-  "inspect.box_langs": "Hang: {audio} · Feliratok: {subs}"
+  "inspect.box_langs": "Hang: {audio} · Feliratok: {subs}",
+  "cookie.hint_locked_running": "A(z) {browser} még fut ({n} folyamat), talán a háttérben is, ha az ablaka be van zárva: ő zárolja a sütiadatbázisát. Fejezze be a Feladatkezelőben (jobb gomb › Feladat befejezése), vagy kapcsolja ki a beállításaiban az „Alkalmazások háttérben futtatásának folytatását”, majd próbálja újra. A Firefoxnak, amelyet ajánlunk, nincs ilyen korlátja."
 }

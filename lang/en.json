@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "No failed item in the queue.",
   "inspect.box_running": "Inspection in progress…",
   "inspect.box_failed": "Inspection failed (see the log).",
-  "inspect.box_langs": "Audio: {audio} · Subtitles: {subs}"
+  "inspect.box_langs": "Audio: {audio} · Subtitles: {subs}",
+  "cookie.hint_locked_running": "{browser} is still running ({n} processes), possibly in the background even if its window is closed: it is what locks its cookie database. End it in Task Manager (right-click › End task), or turn off \"Continue running background apps\" in its settings, then try again. Firefox, which we recommend, does not have this limitation."
 }

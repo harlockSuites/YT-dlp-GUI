@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "Nema stavki sa greškom u redu.",
   "inspect.box_running": "Analiza u toku…",
   "inspect.box_failed": "Analiza nije uspela (pogledajte dnevnik).",
-  "inspect.box_langs": "Zvuk: {audio} · Titlovi: {subs}"
+  "inspect.box_langs": "Zvuk: {audio} · Titlovi: {subs}",
+  "cookie.hint_locked_running": "{browser} je i dalje pokrenut ({n} procesa), možda u pozadini iako je prozor zatvoren: on zaključava bazu kolačića. Zatvorite ga u Upravljaču zadataka (desni klik › Završi zadatak) ili isključite „Nastavi da pokrećeš aplikacije u pozadini” u njegovim podešavanjima, pa pokušajte ponovo. Firefox, koji preporučujemo, nema to ograničenje."
 }

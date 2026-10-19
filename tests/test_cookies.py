@@ -9,6 +9,7 @@ from unittest import mock
 from tests._loader import load_gui, tk_available
 
 m = load_gui()
+REAL_PROCESS_COUNT = m.browser_process_count   # les tests de conseils le remplacent par un faux
 
 CHROME_LOCKED = ("ERROR: Could not copy Chrome cookie database. "
                  "See https://github.com/yt-dlp/yt-dlp/issues/7271  for more info")
@@ -17,12 +18,40 @@ CHROME_LOCKED = ("ERROR: Could not copy Chrome cookie database. "
 class CookieHintTests(unittest.TestCase):
     def setUp(self):
         m.load_lang("fr")
+        patcher = mock.patch.object(m, "browser_process_count", return_value=0)   # indépendant des navigateurs ouverts
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def test_locked_database_gets_a_clear_localized_hint(self):
         hint = m._cookie_hint(CHROME_LOCKED, "brave")
         self.assertIn("Brave", hint)
         self.assertIn("Fermez-le complètement", hint)
         self.assertIn("Firefox", hint)
+
+    def test_locked_database_with_the_browser_still_running_says_so(self):
+        with mock.patch.object(m, "browser_process_count", return_value=7):
+            hint = m._cookie_hint(CHROME_LOCKED, "edge")
+        self.assertIn("Edge", hint)
+        self.assertIn("7 processus", hint)
+        self.assertIn("Gestionnaire des tâches", hint)
+        self.assertIn("arrière-plan", hint)
+
+    def test_process_count_matches_the_browser_programs(self):
+        procs = [(1, 0, "msedge.exe"), (2, 1, "msedge.exe"), (3, 0, "firefox.exe"), (4, 0, "notepad.exe")]
+        with mock.patch.object(m, "_iter_processes", return_value=iter(procs)):
+            self.assertEqual(REAL_PROCESS_COUNT("edge"), 2)
+        with mock.patch.object(m, "_iter_processes", return_value=iter(procs)):
+            self.assertEqual(REAL_PROCESS_COUNT("firefox"), 1)
+        self.assertEqual(REAL_PROCESS_COUNT("inconnu"), 0)
+        self.assertEqual(REAL_PROCESS_COUNT(""), 0)
+
+    def test_process_count_never_raises(self):
+        with mock.patch.object(m, "_iter_processes", side_effect=OSError("accès refusé")):
+            self.assertEqual(REAL_PROCESS_COUNT("chrome"), 0)
+
+    def test_real_process_listing_finds_this_python(self):
+        names = {name for _pid, _parent, name in m._iter_processes()}
+        self.assertTrue(any(n.startswith("python") for n in names), sorted(names)[:10])
 
     def test_other_cookie_errors(self):
         self.assertIn("Edge", m._cookie_hint("Failed to decrypt with DPAPI", "edge"))
@@ -120,12 +149,15 @@ class CookieFrameTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         m.load_lang("fr")
+        cls._no_browser = mock.patch.object(m, "browser_process_count", return_value=0)
+        cls._no_browser.start()
         cls.app = m.YtDlpGui()
         cls.app.withdraw()
 
     @classmethod
     def tearDownClass(cls):
         cls.app.destroy()
+        cls._no_browser.stop()
 
     def _pump(self, until, timeout=5):
         deadline = time.time() + timeout

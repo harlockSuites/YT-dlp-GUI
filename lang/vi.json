@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "Không có mục lỗi nào trong hàng đợi.",
   "inspect.box_running": "Đang phân tích…",
   "inspect.box_failed": "Phân tích thất bại (xem nhật ký).",
-  "inspect.box_langs": "Âm thanh: {audio} · Phụ đề: {subs}"
+  "inspect.box_langs": "Âm thanh: {audio} · Phụ đề: {subs}",
+  "cookie.hint_locked_running": "{browser} vẫn đang chạy ({n} tiến trình), có thể ở chế độ nền dù cửa sổ đã đóng: chính nó khóa cơ sở dữ liệu cookie. Hãy kết thúc nó trong Trình quản lý tác vụ (nhấp chuột phải › Kết thúc tác vụ) hoặc tắt «Tiếp tục chạy ứng dụng ở chế độ nền» trong cài đặt của nó, rồi thử lại. Firefox, trình duyệt chúng tôi khuyến nghị, không có giới hạn này."
 }

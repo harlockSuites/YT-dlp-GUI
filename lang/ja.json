@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "キューにエラーの項目はありません。",
   "inspect.box_running": "解析中…",
   "inspect.box_failed": "解析に失敗しました（ログを参照）。",
-  "inspect.box_langs": "音声：{audio} · 字幕：{subs}"
+  "inspect.box_langs": "音声：{audio} · 字幕：{subs}",
+  "cookie.hint_locked_running": "{browser} はまだ実行中です（{n} プロセス）。ウィンドウを閉じていてもバックグラウンドで動作している可能性があり、これが Cookie データベースをロックしています。タスク マネージャーで終了するか（右クリック › タスクの終了）、ブラウザーの設定で「バックグラウンド アプリの実行を続ける」をオフにしてから、もう一度お試しください。推奨の Firefox にはこの制限はありません。"
 }

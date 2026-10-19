@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "Nenhum item com erro na fila.",
   "inspect.box_running": "Análise em andamento…",
   "inspect.box_failed": "Falha na análise (veja o registro).",
-  "inspect.box_langs": "Áudio: {audio} · Legendas: {subs}"
+  "inspect.box_langs": "Áudio: {audio} · Legendas: {subs}",
+  "cookie.hint_locked_running": "O {browser} ainda está em execução ({n} processos), talvez em segundo plano mesmo com a janela fechada: é ele que bloqueia o banco de cookies. Encerre-o no Gerenciador de Tarefas (clique direito › Finalizar tarefa) ou desative «Continuar executando aplicativos em segundo plano» nas configurações dele, e tente novamente. O Firefox, recomendado, não tem essa limitação."
 }

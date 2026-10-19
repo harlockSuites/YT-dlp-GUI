@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "Walang item na may error sa pila.",
   "inspect.box_running": "Isinasagawa ang pagsusuri…",
   "inspect.box_failed": "Nabigo ang pagsusuri (tingnan ang log).",
-  "inspect.box_langs": "Audio: {audio} · Mga subtitle: {subs}"
+  "inspect.box_langs": "Audio: {audio} · Mga subtitle: {subs}",
+  "cookie.hint_locked_running": "Tumatakbo pa ang {browser} ({n} process), posibleng sa background kahit sarado ang window: ito ang nagla-lock ng cookie database. Tapusin ito sa Task Manager (right-click › End task) o i-off ang \"Continue running background apps\" sa settings nito, saka subukan muli. Ang Firefox, na inirerekomenda namin, ay walang ganitong limitasyon."
 }

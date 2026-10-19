@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "Nessun elemento in errore nella coda.",
   "inspect.box_running": "Analisi in corso…",
   "inspect.box_failed": "Analisi non riuscita (vedi il registro).",
-  "inspect.box_langs": "Audio: {audio} · Sottotitoli: {subs}"
+  "inspect.box_langs": "Audio: {audio} · Sottotitoli: {subs}",
+  "cookie.hint_locked_running": "{browser} è ancora in esecuzione ({n} processi), forse in background anche con la finestra chiusa: è lui a bloccare il database dei cookie. Termina il processo in Gestione attività (clic destro › Termina attività) oppure disattiva «Continua a eseguire app in background» nelle sue impostazioni, poi riprova. Firefox, consigliato, non ha questo limite."
 }

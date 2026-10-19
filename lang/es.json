@@ -487,5 +487,6 @@
   "queue.msg_no_errors": "No hay elementos con error en la cola.",
   "inspect.box_running": "Análisis en curso…",
   "inspect.box_failed": "Falló el análisis (vea el registro).",
-  "inspect.box_langs": "Audio: {audio} · Subtítulos: {subs}"
+  "inspect.box_langs": "Audio: {audio} · Subtítulos: {subs}",
+  "cookie.hint_locked_running": "{browser} sigue en ejecución ({n} procesos), quizá en segundo plano aunque su ventana esté cerrada: es él quien bloquea su base de cookies. Finalícelo en el Administrador de tareas (clic derecho › Finalizar tarea) o desactive «Seguir ejecutando aplicaciones en segundo plano» en sus ajustes, y vuelva a intentarlo. Firefox, recomendado, no tiene esta limitación."
 }
