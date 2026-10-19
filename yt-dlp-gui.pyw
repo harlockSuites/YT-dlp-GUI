@@ -1343,12 +1343,11 @@ class DownloadQueueWindow(tk.Toplevel):
                          "#dcdcaa" if line.startswith(("[ffmpeg]", "[Merger]")) else None)
                 self.after(0, lambda l=line, c=color: self._log(l, c))
             self._process.wait()
-            if self._process.returncode != 0:
-                src = self._inspector
-                browser = src.var_g_browser.get() if src is not None and hasattr(src, "var_g_browser") else ""
-                hint = _cookie_hint("\n".join(lines), browser)
-                if hint:
-                    self.after(0, lambda h=hint: self._log(h, "#f5a623"))
+            src = self._inspector
+            browser = src.var_g_browser.get() if src is not None and hasattr(src, "var_g_browser") else ""
+            hint = _cookie_hint("\n".join(lines), browser)
+            if hint:
+                self.after(0, lambda h=hint: self._log(h, "#f5a623"))
             return self._process.returncode, lines
         except Exception as e:
             self.after(0, lambda e=e: self._log(t("common.log_error", error=e), "#f66"))
@@ -2362,6 +2361,13 @@ def _cookie_hint(text, browser=""):
         return t("cookie.hint_decrypt", browser=name)
     if "could not find" in low and "cookies database" in low:
         return t("cookie.hint_notfound", browser=name)
+    cookies_on = bool(browser) and browser != BROWSER_OFF
+    if "cookies are no longer valid" in low:
+        return t("cookie.hint_rotated", browser=name or "")
+    if "confirm your age" in low or "age-restricted" in low:
+        return t("cookie.hint_age", browser=name) if cookies_on else t("cookie.hint_age_off")
+    if "not a bot" in low:
+        return t("cookie.hint_bot")
     return ""
 
 

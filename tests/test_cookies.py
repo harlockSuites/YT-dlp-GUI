@@ -29,6 +29,26 @@ class CookieHintTests(unittest.TestCase):
         self.assertIn("Chrome", m._cookie_hint("ERROR: could not find chrome cookies database in ...", "chrome"))
         self.assertTrue(m._cookie_hint("sqlite3.OperationalError: database is locked", "chrome"))
 
+    def test_rotated_session_asks_to_sign_in_again(self):
+        text = "WARNING: [youtube] The provided YouTube account cookies are no longer valid. They have likely been rotated"
+        hint = m._cookie_hint(text, "firefox")
+        self.assertIn("Firefox", hint)
+        self.assertIn("connecté", hint)
+
+    def test_age_restriction_hint_depends_on_the_cookie_choice(self):
+        text = "ERROR: [youtube] abc: Sign in to confirm your age. This video may be inappropriate for some users."
+        on = m._cookie_hint(text, "firefox")
+        off = m._cookie_hint(text, m.BROWSER_OFF)
+        self.assertIn("Firefox", on)
+        self.assertIn("voyant", on)
+        self.assertIn("Cookies", off)
+        self.assertNotEqual(on, off)
+        self.assertEqual(m._cookie_hint(text, ""), off)
+
+    def test_bot_check_hint(self):
+        text = "ERROR: [youtube] abc: Sign in to confirm you’re not a bot. Use --cookies-from-browser"
+        self.assertIn("robot", m._cookie_hint(text, "firefox"))
+
     def test_unrelated_errors_give_no_hint(self):
         for text in ("", None, "ERROR: Video unavailable", "HTTP Error 429: Too Many Requests"):
             self.assertEqual(m._cookie_hint(text, "firefox"), "")

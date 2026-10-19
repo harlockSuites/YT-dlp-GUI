@@ -478,5 +478,9 @@
   "deps.log_no_choco": "未安装 Chocolatey：“全部安装”不可用。Deno 请使用“安装”；其他工具请使用“官方网站”链接。",
   "deps.log_elevation_cancelled": "提升权限被拒绝或已取消：未安装任何内容。",
   "av.title": "文件被杀毒软件拦截",
-  "av.hint": "您的杀毒软件拦截了本软件的一个文件（“文件包含病毒或可能不需要的软件”）。这通常是误报：yt-dlp 和 ffmpeg 经常被误判。如果您信任这些文件（从其官方仓库下载），请将文件夹 {folder} 加入杀毒软件的排除列表，或从隔离区还原该文件，然后重试。"
+  "av.hint": "您的杀毒软件拦截了本软件的一个文件（“文件包含病毒或可能不需要的软件”）。这通常是误报：yt-dlp 和 ffmpeg 经常被误判。如果您信任这些文件（从其官方仓库下载），请将文件夹 {folder} 加入杀毒软件的排除列表，或从隔离区还原该文件，然后重试。",
+  "cookie.hint_rotated": "YouTube 拒绝了 {browser} 的 Cookie（会话已刷新或过期）。请在该浏览器中打开 youtube.com，确认已登录（必要时重新登录），然后重试。",
+  "cookie.hint_age": "此视频需要确认年龄。使用 {browser} 的 Cookie 时，请确认已登录有权观看的 YouTube 账号（必要时重新登录），且 Cookie 指示灯为绿色，然后重试。",
+  "cookie.hint_age_off": "此视频仅限已登录用户观看（年龄限制）。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox），然后重试。",
+  "cookie.hint_bot": "YouTube 要求确认您不是机器人。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox）；如果已经这样做，请重新登录或稍后再试。"
 }

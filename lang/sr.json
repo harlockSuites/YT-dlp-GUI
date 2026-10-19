@@ -478,5 +478,9 @@
   "deps.log_no_choco": "Chocolatey nije instaliran: „Instaliraj sve” nije dostupno. Za Deno koristite „Instaliraj”; za ostale alate vezu „Zvanični sajt”.",
   "deps.log_elevation_cancelled": "Podizanje privilegija je odbijeno ili otkazano: ništa nije instalirano.",
   "av.title": "Antivirus je blokirao datoteku",
-  "av.hint": "Vaš antivirus je blokirao datoteku programa („datoteka sadrži virus ili potencijalno neželjeni softver”). Obično je to lažna uzbuna: yt-dlp i ffmpeg se često pogrešno označavaju. Ako verujete ovim datotekama (preuzetim iz zvaničnih repozitorijuma), dodajte folder {folder} u izuzetke antivirusa ili vratite datoteku iz karantina, pa pokušajte ponovo."
+  "av.hint": "Vaš antivirus je blokirao datoteku programa („datoteka sadrži virus ili potencijalno neželjeni softver”). Obično je to lažna uzbuna: yt-dlp i ffmpeg se često pogrešno označavaju. Ako verujete ovim datotekama (preuzetim iz zvaničnih repozitorijuma), dodajte folder {folder} u izuzetke antivirusa ili vratite datoteku iz karantina, pa pokušajte ponovo.",
+  "cookie.hint_rotated": "YouTube je odbio kolačiće pregledača {browser} (sesija je obnovljena ili istekla). Otvorite youtube.com u tom pregledaču, proverite da li ste prijavljeni (po potrebi se ponovo prijavite) pa pokušajte ponovo.",
+  "cookie.hint_age": "Ovaj video traži potvrdu uzrasta. Sa kolačićima pregledača {browser} proverite da li ste prijavljeni na YouTube nalog kojem je dozvoljen pregled (po potrebi se ponovo prijavite) i da li je pokazatelj kolačića zelen, pa pokušajte ponovo.",
+  "cookie.hint_age_off": "Ovaj video je dostupan samo prijavljenim korisnicima (uzrasno ograničenje). U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox), pa pokušajte ponovo.",
+  "cookie.hint_bot": "YouTube traži da potvrdite da niste robot. U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox); ako ste to već uradili, ponovo se prijavite ili pokušajte kasnije."
 }

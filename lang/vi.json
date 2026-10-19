@@ -478,5 +478,9 @@
   "deps.log_no_choco": "Chưa cài Chocolatey: «Cài tất cả» không khả dụng. Với Deno, dùng «Cài đặt»; với các công cụ khác, dùng liên kết «Trang chính thức».",
   "deps.log_elevation_cancelled": "Yêu cầu nâng quyền bị từ chối hoặc hủy: chưa cài gì.",
   "av.title": "Tệp bị phần mềm diệt virus chặn",
-  "av.hint": "Phần mềm diệt virus đã chặn một tệp của chương trình (“tệp chứa virus hoặc phần mềm có thể không mong muốn”). Thường đây là báo động giả: yt-dlp và ffmpeg hay bị gắn cờ nhầm. Nếu bạn tin các tệp này (tải từ kho chính thức), hãy thêm thư mục {folder} vào danh sách loại trừ của phần mềm diệt virus hoặc khôi phục tệp từ khu cách ly, rồi thử lại."
+  "av.hint": "Phần mềm diệt virus đã chặn một tệp của chương trình (“tệp chứa virus hoặc phần mềm có thể không mong muốn”). Thường đây là báo động giả: yt-dlp và ffmpeg hay bị gắn cờ nhầm. Nếu bạn tin các tệp này (tải từ kho chính thức), hãy thêm thư mục {folder} vào danh sách loại trừ của phần mềm diệt virus hoặc khôi phục tệp từ khu cách ly, rồi thử lại.",
+  "cookie.hint_rotated": "YouTube đã từ chối cookie của {browser} (phiên được làm mới hoặc hết hạn). Hãy mở youtube.com trong trình duyệt đó, kiểm tra bạn đã đăng nhập (đăng nhập lại nếu cần), rồi thử lại.",
+  "cookie.hint_age": "Video này yêu cầu xác nhận độ tuổi. Với cookie của {browser}, hãy kiểm tra bạn đã đăng nhập tài khoản YouTube được phép xem (đăng nhập lại nếu cần) và đèn báo cookie màu xanh, rồi thử lại.",
+  "cookie.hint_age_off": "Video này chỉ dành cho người dùng đã đăng nhập (giới hạn độ tuổi). Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox), rồi thử lại.",
+  "cookie.hint_bot": "YouTube yêu cầu xác nhận bạn không phải robot. Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox); nếu đã làm vậy, hãy đăng nhập lại hoặc thử lại sau."
 }

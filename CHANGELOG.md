@@ -12,6 +12,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - Antivirus : quand Windows refuse d'ouvrir un fichier bloqué (« le fichier contient un virus ou un logiciel potentiellement indésirable », WinError 225), le logiciel explique la marche à suivre (exclure le dossier de données, restaurer depuis la quarantaine) au lieu d'afficher une « Erreur interne ». Le remplacement de `yt-dlp.exe`, de ffmpeg et de Deno réessaie plusieurs fois quand l'antivirus analyse encore le fichier (WinError 32).
 - Fenêtre principale : le journal ne recouvre plus les boutons de la file d'attente, y compris au démarrage. Quand la fenêtre est basse, la page s'allonge et se parcourt avec la barre de défilement ; seuls les tableaux (file, journal) se réduisent, à la souris, et jamais jusqu'à cacher les boutons.
 - Fenêtres de choix des pistes audio secondaires et des sous-titres : elles s'ouvrent toujours près de la case cliquée mais sont décalées pour tenir entièrement dans l'écran ; sur un petit écran leur hauteur est limitée, la liste défile et les boutons de validation restent visibles.
+- Cookies : conseils explicites dans le journal (et l'infobulle du voyant) quand YouTube refuse les cookies (« cookies no longer valid » : session renouvelée, se reconnecter dans le navigateur), pour une vidéo à restriction d'âge (selon que les cookies sont activés ou non) et quand YouTube demande de confirmer que l'on n'est pas un robot. La file d'attente affiche aussi le conseil quand la vidéo a été téléchargée en mode dégradé.
 
 ## [0.1.4] — 2026-10-18
 
