@@ -299,6 +299,16 @@ def _tblkcat(fr_cat: str) -> str:
     return t(key) if key else fr_cat
 
 
+def extract_url(text):
+    """Adresse à utiliser quand le champ URL contient du texte collé autour (« Inspection : https://… » suivi
+    d'un journal, par exemple) : la première adresse http(s) du texte ; sinon le texte nettoyé."""
+    text = (text or "").strip()
+    if not text or not re.search(r"\s", text):
+        return text
+    found = re.search(r"https?://[^\s\"'<>]+", text)
+    return found.group(0).rstrip(".,;:!?)]}»") if found else text
+
+
 def _screen_fit_geometry(screen_w, screen_h, w, h, x, y, margin=10, bottom=60):
     """Taille et position (w, h, x, y) d'une fenêtre ouverte près d'un contrôle, ramenées dans l'écran.
 
@@ -3175,7 +3185,9 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
     # ── Analyse ────────────────────────────────────────────────────
     def _analyze(self):
-        url = self.var_url.get().strip()
+        url = extract_url(self.var_url.get())
+        if url != self.var_url.get().strip():
+            self.var_url.set(url)
         if not url:
             messagebox.showwarning(t("insp.warn_url_missing_title"), t("insp.warn_url_missing_msg"), parent=self)
             return
@@ -5354,7 +5366,7 @@ class YtDlpGui(tk.Tk):
         SetupWizardWindow(self, on_done=self._check_deps_quick)
 
     def _open_playlist_inspector(self):
-        url = self.var_url.get().strip()
+        url = self._url(fix=True)
         outdir = self.var_outdir.get().strip()
         PlaylistInspectorWindow(self, url=url, outdir=outdir)
 
@@ -5477,7 +5489,7 @@ class YtDlpGui(tk.Tk):
             n += 1
 
     def _build_args(self):
-        url = self.var_url.get().strip()
+        url = self._url()
         secondary = []
         force_mp4 = False
         embed_thumb = self.var_embed_thumb.get()
@@ -5609,7 +5621,7 @@ class YtDlpGui(tk.Tk):
 
         out = self.var_outdir.get().strip()
         if out:
-            cur_url = self.var_url.get().strip()
+            cur_url = self._url()
             insp_url = getattr(self, "_inspected_url", "")
             known_title = getattr(self, "_inspected_title", "") if cur_url == insp_url else ""
             unique = self._unique_output_path(out, known_title) if known_title else None
@@ -5652,6 +5664,14 @@ class YtDlpGui(tk.Tk):
     # ──────────────────────────────────────────────
     #  Inspection
     # ──────────────────────────────────────────────
+    def _url(self, fix=False):
+        """URL du champ, débarrassée du texte collé autour ; avec fix=True le champ est corrigé à l'écran."""
+        raw = self.var_url.get().strip()
+        url = extract_url(raw)
+        if fix and url != raw:
+            self.var_url.set(url)
+        return url
+
     def _show_inspect_box(self, text, color, url):
         """Affiche (ou met à jour) l'encadré de résultat sous le champ URL."""
         self._inspect_box_url = url
@@ -5660,12 +5680,12 @@ class YtDlpGui(tk.Tk):
             self._lbl_inspect.pack(fill="x", padx=12, pady=(0, 2), after=self._frm_url)
 
     def _on_url_changed_for_box(self):
-        if self._inspect_box_url is not None and self.var_url.get().strip() != self._inspect_box_url:
+        if self._inspect_box_url is not None and self._url() != self._inspect_box_url:
             self._inspect_box_url = None
             self._lbl_inspect.pack_forget()
 
     def _inspect(self):
-        url = self.var_url.get().strip()
+        url = self._url(fix=True)
         if not url:
             messagebox.showwarning(t("url.warn_missing_title"), t("url.warn_missing_msg"))
             return
@@ -5805,7 +5825,7 @@ class YtDlpGui(tk.Tk):
     #  Téléchargement
     # ──────────────────────────────────────────────
     def _download(self):
-        url = self.var_url.get().strip()
+        url = self._url(fix=True)
         if not url:
             messagebox.showwarning(t("url.warn_missing_title"), t("url.warn_missing_msg"))
             return
@@ -6036,7 +6056,7 @@ class YtDlpGui(tk.Tk):
             self.after(0, self._refresh_queue_tv)
 
     def _queue_add(self):
-        url = self.var_url.get().strip()
+        url = self._url(fix=True)
         if not url:
             messagebox.showwarning(t("queue.warn_url_missing_title"), t("queue.warn_url_missing_msg"), parent=self)
             return
