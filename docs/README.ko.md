@@ -63,6 +63,7 @@
 - **소스에서 실행**: 아래의 '요구 사항'과 '빠른 시작'을 참고하세요.
 - **제거**: Windows 설정 › 앱 › 설치된 앱 › yt-dlp GUI, 또는 시작 메뉴의 '제거' 바로 가기. 소프트웨어가 자체 데이터(설정, 대기열, 내려받은 yt-dlp와 ffmpeg)도 삭제할지 묻습니다. 동영상은 절대 삭제되지 않습니다. 설치는 Windows 계정별로 이루어지므로, 소프트웨어는 설치한 계정의 목록에만 나타납니다. 포터블 버전은 폴더만 삭제하면 됩니다. Chocolatey로 따로 설치한 도구(ffmpeg, Deno 등)는 제거되지 않습니다.
 - **백신 분석(VirusTotal)**: 0.1.4 버전은 2026년 10월 18일에 분석되었습니다. [포터블 버전](https://www.virustotal.com/gui/file/976d53e5bc8588a0f754497875d36b474aabf275ff9f88942f99f9e08f05ca18)은 66개 엔진 중 어디에서도 탐지되지 않았고(0/66), [설치 프로그램](https://www.virustotal.com/gui/file/b4d111d8b41516424ba451f26e71e58950a16d2f168e8ce8b0ab71ee21cd64ee)은 71개 중 4개(Arctic Wolf, DeepInstinct, SecureAge, Skyhigh)에서 일반적인 휴리스틱 탐지('obfuscatedpoly')로 표시되었습니다. 압축되고 서명되지 않은 설치 프로그램 때문에 생긴 오탐일 가능성이 높습니다. 이 결과는 이 버전에만 해당합니다. 걱정되면 포터블 버전을 사용하거나 SHA-256 합계를 확인하세요.
+- **Code signing policy**: 앞으로의 버전에 대한 디지털 서명을 준비 중입니다(SignPath Foundation 신청). [코드 서명 정책](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)에 절차가 설명되어 있습니다. 0.1.4까지의 버전은 서명되지 않았습니다.
 - **Windows SmartScreen 경고**: 설치 프로그램에는 디지털 서명이 없어 Windows에 'Windows의 PC 보호' 화면이 나타날 수 있습니다. '추가 정보'를 누른 다음 '실행'을 선택하세요. 파일의 진위를 확인하려면 각 릴리스와 함께 게시되는 `SHA256SUMS.txt`의 SHA-256 값과 비교하세요:
 
 ```powershell
