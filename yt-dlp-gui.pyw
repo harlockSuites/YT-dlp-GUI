@@ -298,6 +298,19 @@ def _tblkcat(fr_cat: str) -> str:
     return t(key) if key else fr_cat
 
 
+def _screen_fit_geometry(screen_w, screen_h, w, h, x, y, margin=10, bottom=60):
+    """Taille et position (w, h, x, y) d'une fenêtre ouverte près d'un contrôle, ramenées dans l'écran.
+
+    La position demandée est gardée tant que la fenêtre tient ; sinon elle est décalée vers le haut
+    ou la gauche. Si elle est plus grande que l'écran, sa hauteur est limitée (la liste défile et les
+    boutons restent visibles). `bottom` réserve la place de la barre des tâches."""
+    w = max(1, min(w, screen_w - 2 * margin))
+    h = max(1, min(h, screen_h - bottom - margin))
+    x = max(margin, min(x, screen_w - w - margin))
+    y = max(margin, min(y, screen_h - bottom - h))
+    return w, h, x, y
+
+
 def _tblklbl(code: str, fr_label: str) -> str:
     """Translate a builtin block label; for alang_* entries uses sub.* keys."""
     val = _STRINGS.get(f"blk.{code}") or _STRINGS_EN.get(f"blk.{code}")
@@ -1747,8 +1760,9 @@ class MultiCheckSelect(ttk.Frame):
         else:
             n = len(self._choices)
             h = max(220, min(560, 100 + n * 28))
-            pop.geometry(f"460x{h}+{x}+{y}")
-            pop.minsize(280, 160)
+            w, h, x, y = _screen_fit_geometry(pop.winfo_screenwidth(), pop.winfo_screenheight(), 460, h, x, y)
+            pop.geometry(f"{w}x{h}+{x}+{y}")
+            pop.minsize(min(280, w), min(160, h))
             self._open_popup_flat(pop, check_vars, self._choices)
 
         pop.wait_window()
@@ -1820,8 +1834,9 @@ class MultiCheckSelect(ttk.Frame):
 
     # ── Popup avec onglets (Bibliothèque de blocs) ─────────────────
     def _open_popup_tabs(self, pop, check_vars, x, y):
-        pop.geometry(f"520x480+{x}+{y}")
-        pop.minsize(400, 300)
+        w, h, x, y = _screen_fit_geometry(pop.winfo_screenwidth(), pop.winfo_screenheight(), 520, 480, x, y)
+        pop.geometry(f"{w}x{h}+{x}+{y}")
+        pop.minsize(min(400, w), min(300, h))
 
         # Barre de recherche globale (filtre tous les onglets)
         frm_search = ttk.Frame(pop)
@@ -4711,6 +4726,7 @@ class YtDlpGui(tk.Tk):
                     self._page_vsb.pack_forget()
                     self._page_cv.yview_moveto(0)
 
+        self._fit_page = _fit_page
         self._page_cv.bind("<Configure>", _fit_page)
         page.bind("<Configure>", _fit_page)
         for w in (self._page_cv, page):
@@ -4925,11 +4941,21 @@ class YtDlpGui(tk.Tk):
                    command=self._clear_log).pack(side="right")
 
         # ── File d'attente ─────────────────────────
-        paned = ttk.PanedWindow(page, orient="vertical")
+        # tk.PanedWindow (et non ttk) : sa hauteur demandée est la somme de celle de ses volets et chaque
+        # volet a une hauteur minimale (« minsize »). Quand la fenêtre est basse, c'est la page qui
+        # s'allonge et se parcourt avec la barre de défilement : seuls les tableaux peuvent être réduits
+        # à la souris, jamais les boutons.
+        paned = tk.PanedWindow(page, orient="vertical", sashwidth=6, sashrelief="flat", bd=0,
+                               bg=ttk.Style().lookup("TFrame", "background") or "#f0f0f0")
         paned.pack(fill="both", expand=True, padx=10, pady=(0, 4))
+        self._paned = paned
+        # la hauteur demandée par la page change sans que sa taille change (premier affichage, contenu
+        # des volets) : on recalcule la page et sa barre de défilement à chaque changement du conteneur
+        paned.bind("<Configure>", lambda _e: self.after_idle(self._fit_page))
 
         frm_queue = ttk.LabelFrame(paned, text=t("queue.frame_label"), padding=6)
-        paned.add(frm_queue, weight=1)
+        paned.add(frm_queue, stretch="always")
+        self._frm_queue = frm_queue
 
         frm_qhead = ttk.Frame(frm_queue)
         frm_qhead.pack(fill="x", pady=(0, 4))
@@ -4999,6 +5025,14 @@ class YtDlpGui(tk.Tk):
         ttk.Button(frm_ql2, text=t("queue.btn_clear_errors"),
                    command=self._queue_clear_errors).pack(side="right")
 
+        # Les rangées de boutons sont placées en bas du volet AVANT le tableau : quand le volet est réduit,
+        # c'est le tableau qui rétrécit, jamais les boutons.
+        for f in (frm_qtv, frm_ql1, frm_ql2):
+            f.pack_forget()
+        frm_ql2.pack(side="bottom", fill="x", pady=(2, 0))
+        frm_ql1.pack(side="bottom", fill="x", pady=(6, 2))
+        frm_qtv.pack(side="top", fill="both", expand=True)
+
         # ── Progression ────────────────────────────
         self.var_progress = tk.DoubleVar(value=0)
         self.var_status = tk.StringVar(value=t("app.status_ready"))
@@ -5011,7 +5045,8 @@ class YtDlpGui(tk.Tk):
 
         # ── Journal ────────────────────────────────
         frm_log = ttk.LabelFrame(paned, text=" Journal ", padding=6)
-        paned.add(frm_log, weight=2)
+        paned.add(frm_log, stretch="always")
+        self._frm_log = frm_log
 
         self.log_text = tk.Text(frm_log, wrap="word", height=10,
                                 font=("Consolas", 9), state="disabled",
@@ -5023,6 +5058,20 @@ class YtDlpGui(tk.Tk):
         self.log_text.pack(fill="both", expand=True)
 
         self._update_cmd()
+        self.after(50, self._set_pane_minsizes)
+
+    def _set_pane_minsizes(self):
+        """Hauteur minimale des volets : tout ce qui n'est pas un tableau (titres, boutons) doit rester visible."""
+        try:
+            self.update_idletasks()
+            rows = 3
+            row_h = 20
+            table_extra = max(0, self._tv_queue.winfo_reqheight() - rows * row_h)
+            self._paned.paneconfigure(self._frm_queue, minsize=max(120, self._frm_queue.winfo_reqheight() - table_extra))
+            self._paned.paneconfigure(self._frm_log, minsize=90)
+            self._fit_page()
+        except tk.TclError:
+            pass
 
     # ──────────────────────────────────────────────
     #  Vérification rapide des dépendances
