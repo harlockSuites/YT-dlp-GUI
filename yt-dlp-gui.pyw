@@ -51,6 +51,7 @@ CONFIG_FILE        = os.path.join(DATA_DIR, "gui-config.json")
 QUEUE_FILE         = os.path.join(DATA_DIR, "download-queue.json")
 CUSTOM_BLOCKS_FILE = os.path.join(DATA_DIR, "custom-blocks.json")
 LOCAL_BIN          = os.path.join(DATA_DIR, "bin")   # ffmpeg/ffprobe installés par l'assistant
+COMMAND_DIR        = os.path.join(DATA_DIR, "cmd")   # fichiers de configuration éphémères de yt-dlp
 ICON_FILE          = os.path.join(RESOURCE_DIR, "yt-dlp-gui.ico")
 ASSETS_DIR         = os.path.join(RESOURCE_DIR, "assets")
 DONATE_URL         = "https://ko-fi.com/harlocksuites"
@@ -513,6 +514,50 @@ def save_queue(queue):
     try:
         _write_json_atomic(QUEUE_FILE, queue)
     except Exception:
+        pass
+
+
+def command_file_args(args):
+    """Ligne de commande courte pour yt-dlp : (args_à_lancer, fichier_temporaire ou None).
+
+    Les options sont écrites dans un fichier de configuration (--config-locations) ; seule la fin de la
+    commande (« -- URL ») reste sur la ligne de commande. Un antivirus de comportement peut bloquer un
+    processus à cause de ses *arguments* (RAV : « Suspicious.Argument ») quand le sélecteur de format est
+    long, avec plusieurs pistes audio ; une ligne courte et stable lui laisse moins de prise."""
+    if len(args) < 4 or "--" not in args:
+        return args, None
+    import shlex
+    import tempfile
+    cut = len(args) - 1 - args[::-1].index("--")          # dernier « -- » : début de la zone des URL
+    options, tail = args[1:cut], args[cut:]
+    try:
+        os.makedirs(COMMAND_DIR, exist_ok=True)
+        fd, path = tempfile.mkstemp(prefix="cmd-", suffix=".conf", dir=COMMAND_DIR)
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write("# coding: utf-8\n")
+            for a in options:
+                f.write(shlex.quote(a) + "\n")            # guillemets simples : les « \ » de Windows restent tels quels
+    except OSError:
+        return args, None                                     # repli : ligne de commande complète
+    return [args[0], "--config-locations", path] + tail, path
+
+
+def remove_command_file(path):
+    if path:
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+
+
+def cleanup_command_files(max_age=24 * 3600):
+    """Supprime les fichiers laissés par un arrêt brutal."""
+    try:
+        for name in os.listdir(COMMAND_DIR):
+            full = os.path.join(COMMAND_DIR, name)
+            if name.endswith(".conf") and time.time() - os.path.getmtime(full) > max_age:
+                remove_command_file(full)
+    except OSError:
         pass
 
 
@@ -1302,9 +1347,10 @@ class DownloadQueueWindow(tk.Toplevel):
     def _run_one(self, args):
         """Lance yt-dlp pour une commande, retourne (returncode, output_lines)."""
         lines = []
+        run_args, conf_file = command_file_args(args)
         try:
             self._process = subprocess.Popen(
-                args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                run_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 text=True, encoding="utf-8", errors="replace",
                 creationflags=subprocess.CREATE_NO_WINDOW,
             )
@@ -1355,6 +1401,8 @@ class DownloadQueueWindow(tk.Toplevel):
             if advice:
                 self.after(0, lambda a=advice: self._log(a, "#f5a623"))
             return -1, lines
+        finally:
+            remove_command_file(conf_file)
 
     @staticmethod
     def _format_not_available(lines):
@@ -3547,7 +3595,9 @@ class PlaylistInspectorWindow(tk.Toplevel):
             if browser != BROWSER_OFF:
                 args += ["--cookies-from-browser", browser]
             out = self.var_g_outdir.get().strip()
-            if out:
+            if row.get("_out_template"):
+                args += ["-o", row["_out_template"]]
+            elif out:
                 args += ["-o", os.path.join(_tmpl_esc(out), "%(title)s.%(ext)s")]
             args += ["--no-playlist", "--", vid_url]
             return args
@@ -3753,11 +3803,18 @@ class PlaylistInspectorWindow(tk.Toplevel):
         unique_path = YtDlpGui._unique_output_path(outdir, base_title) if outdir and base_title else None
 
         if unique_path:
-            args += ["-o", unique_path]
+            out_template = unique_path
         elif outdir:
-            args += ["-o", os.path.join(_tmpl_esc(outdir), f"{prefix}%(title)s.%(ext)s")]
+            out_template = os.path.join(_tmpl_esc(outdir), f"{prefix}%(title)s.%(ext)s")
         elif prefix:
-            args += ["-o", f"{prefix}%(title)s.%(ext)s"]
+            out_template = f"{prefix}%(title)s.%(ext)s"
+        else:
+            out_template = None
+        if out_template:
+            args += ["-o", out_template]
+        # Mémorisé pour la passe « sous-titres seuls » : les .srt doivent porter exactement le nom de la
+        # vidéo (préfixe de numérotation, suffixe _2, _3…), qui n'est plus calculable une fois la vidéo écrite.
+        row["_out_template"] = out_template
 
         if self.var_g_smart_dir.get() and outdir:
             args += ["--download-archive", os.path.join(outdir, ARCHIVE_NAME),
@@ -4657,6 +4714,7 @@ class YtDlpGui(tk.Tk):
         self._build_ui()
         self._restore_config()
         self._apply_initial_geometry()
+        cleanup_command_files()
         if self.AUTO_SETUP:
             self.after(400, self._maybe_first_run)
         if self.AUTO_UPDATE_CHECK:
@@ -5708,9 +5766,10 @@ class YtDlpGui(tk.Tk):
         self._log("$ " + " ".join(f'"{a}"' if " " in a else a for a in args), "cmd")
 
         def run():
+            run_args, conf_file = command_file_args(args)
             try:
                 self._process = subprocess.Popen(
-                    args,
+                    run_args,
                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                     text=True, encoding="utf-8", errors="replace",
                     creationflags=subprocess.CREATE_NO_WINDOW,
@@ -5728,6 +5787,7 @@ class YtDlpGui(tk.Tk):
                 self.after(0, self._on_done, False)
             finally:
                 self._process = None
+                remove_command_file(conf_file)
 
         threading.Thread(target=run, daemon=True).start()
 

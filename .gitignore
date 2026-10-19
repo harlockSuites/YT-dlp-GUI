@@ -25,3 +25,6 @@ yt-dlp.exe.new
 build/
 dist/
 *.spec
+
+# Fichiers de configuration éphémères de yt-dlp
+cmd/
