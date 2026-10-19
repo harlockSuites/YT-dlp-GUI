@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube a refusé les cookies de {browser} (session renouvelée ou expirée). Ouvrez youtube.com dans ce navigateur, vérifiez que vous êtes bien connecté (reconnectez-vous si besoin), puis réessayez.",
   "cookie.hint_age": "Cette vidéo demande de confirmer l'âge. Avec les cookies de {browser}, vérifiez que vous êtes connecté à un compte YouTube autorisé à la voir (reconnectez-vous si besoin) et que le voyant des cookies est vert, puis réessayez.",
   "cookie.hint_age_off": "Cette vidéo est réservée aux utilisateurs connectés (restriction d'âge). Choisissez dans le cadre Cookies un navigateur avec un compte YouTube connecté (Firefox est recommandé), puis réessayez.",
-  "cookie.hint_bot": "YouTube demande de confirmer que vous n'êtes pas un robot. Choisissez dans le cadre Cookies un navigateur connecté à YouTube (Firefox est recommandé) ; si c'est déjà le cas, reconnectez-vous ou réessayez un peu plus tard."
+  "cookie.hint_bot": "YouTube demande de confirmer que vous n'êtes pas un robot. Choisissez dans le cadre Cookies un navigateur connecté à YouTube (Firefox est recommandé) ; si c'est déjà le cas, reconnectez-vous ou réessayez un peu plus tard.",
+  "queue.btn_retry_errors": "Relancer les erreurs",
+  "queue.msg_no_errors": "Aucun élément en erreur dans la file.",
+  "inspect.box_running": "Analyse en cours…",
+  "inspect.box_failed": "Échec de l'analyse (voir le journal).",
+  "inspect.box_langs": "Audio : {audio} · Sous-titres : {subs}"
 }

@@ -5,6 +5,8 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 ## [Non publié]
 
 ### Ajouté
+- File d'attente : bouton « Relancer les erreurs » (remet en attente tous les éléments en erreur et relance la file).
+- Fenêtre principale : encadré sous le champ URL qui affiche, une fois l'analyse terminée, le titre, la durée, la chaîne et les langues audio et de sous-titres détectées (ou l'échec de l'analyse) ; il disparaît quand l'URL change.
 - Deno est installable par l'assistant d'installation (téléchargement depuis les versions officielles, somme SHA-256 vérifiée, dossier de données du logiciel), sans Chocolatey ni droits administrateur.
 
 ### Corrigé

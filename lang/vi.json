@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube đã từ chối cookie của {browser} (phiên được làm mới hoặc hết hạn). Hãy mở youtube.com trong trình duyệt đó, kiểm tra bạn đã đăng nhập (đăng nhập lại nếu cần), rồi thử lại.",
   "cookie.hint_age": "Video này yêu cầu xác nhận độ tuổi. Với cookie của {browser}, hãy kiểm tra bạn đã đăng nhập tài khoản YouTube được phép xem (đăng nhập lại nếu cần) và đèn báo cookie màu xanh, rồi thử lại.",
   "cookie.hint_age_off": "Video này chỉ dành cho người dùng đã đăng nhập (giới hạn độ tuổi). Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox), rồi thử lại.",
-  "cookie.hint_bot": "YouTube yêu cầu xác nhận bạn không phải robot. Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox); nếu đã làm vậy, hãy đăng nhập lại hoặc thử lại sau."
+  "cookie.hint_bot": "YouTube yêu cầu xác nhận bạn không phải robot. Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox); nếu đã làm vậy, hãy đăng nhập lại hoặc thử lại sau.",
+  "queue.btn_retry_errors": "Thử lại các mục lỗi",
+  "queue.msg_no_errors": "Không có mục lỗi nào trong hàng đợi.",
+  "inspect.box_running": "Đang phân tích…",
+  "inspect.box_failed": "Phân tích thất bại (xem nhật ký).",
+  "inspect.box_langs": "Âm thanh: {audio} · Phụ đề: {subs}"
 }

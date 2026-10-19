@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "Tinanggihan ng YouTube ang mga cookie ng {browser} (na-renew o nag-expire ang session). Buksan ang youtube.com sa browser na iyon, tiyaking naka-sign in ka (mag-sign in muli kung kailangan), saka subukan muli.",
   "cookie.hint_age": "Humihingi ang video na ito ng kumpirmasyon ng edad. Gamit ang mga cookie ng {browser}, tiyaking naka-sign in ka sa YouTube account na pinapayagang manood nito (mag-sign in muli kung kailangan) at berde ang indicator ng cookie, saka subukan muli.",
   "cookie.hint_age_off": "Para lang sa mga naka-sign in ang video na ito (restriksyon sa edad). Sa Cookies frame, pumili ng browser na naka-sign in sa YouTube (inirerekomenda ang Firefox), saka subukan muli.",
-  "cookie.hint_bot": "Hinihiling ng YouTube na kumpirmahin mong hindi ka robot. Sa Cookies frame, pumili ng browser na naka-sign in sa YouTube (inirerekomenda ang Firefox); kung nagawa mo na, mag-sign in muli o subukan mamaya."
+  "cookie.hint_bot": "Hinihiling ng YouTube na kumpirmahin mong hindi ka robot. Sa Cookies frame, pumili ng browser na naka-sign in sa YouTube (inirerekomenda ang Firefox); kung nagawa mo na, mag-sign in muli o subukan mamaya.",
+  "queue.btn_retry_errors": "Subukan muli ang mga error",
+  "queue.msg_no_errors": "Walang item na may error sa pila.",
+  "inspect.box_running": "Isinasagawa ang pagsusuri…",
+  "inspect.box_failed": "Nabigo ang pagsusuri (tingnan ang log).",
+  "inspect.box_langs": "Audio: {audio} · Mga subtitle: {subs}"
 }

@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube が {browser} の Cookie を拒否しました（セッションが更新または期限切れ）。そのブラウザーで youtube.com を開き、ログインしていることを確認（必要なら再ログイン）してから、もう一度お試しください。",
   "cookie.hint_age": "この動画は年齢確認を求めています。{browser} の Cookie を使う場合、視聴が許可された YouTube アカウントにログインしていること（必要なら再ログイン）と、Cookie の表示が緑であることを確認して、もう一度お試しください。",
   "cookie.hint_age_off": "この動画はログイン済みのユーザーのみ視聴できます（年齢制限）。Cookie の枠で YouTube にログイン済みのブラウザーを選び（Firefox を推奨）、もう一度お試しください。",
-  "cookie.hint_bot": "YouTube がロボットでないことの確認を求めています。Cookie の枠で YouTube にログイン済みのブラウザーを選んでください（Firefox を推奨）。すでに選んでいる場合は、再ログインするか、しばらくしてからお試しください。"
+  "cookie.hint_bot": "YouTube がロボットでないことの確認を求めています。Cookie の枠で YouTube にログイン済みのブラウザーを選んでください（Firefox を推奨）。すでに選んでいる場合は、再ログインするか、しばらくしてからお試しください。",
+  "queue.btn_retry_errors": "エラーを再試行",
+  "queue.msg_no_errors": "キューにエラーの項目はありません。",
+  "inspect.box_running": "解析中…",
+  "inspect.box_failed": "解析に失敗しました（ログを参照）。",
+  "inspect.box_langs": "音声：{audio} · 字幕：{subs}"
 }

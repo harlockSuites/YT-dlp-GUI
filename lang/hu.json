@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "A YouTube elutasította a(z) {browser} sütijeit (a munkamenet megújult vagy lejárt). Nyissa meg a youtube.com oldalt ebben a böngészőben, ellenőrizze, hogy be van-e jelentkezve (szükség esetén jelentkezzen be újra), majd próbálja újra.",
   "cookie.hint_age": "Ez a videó korhatár-megerősítést kér. A(z) {browser} sütijeivel ellenőrizze, hogy be van-e jelentkezve egy megtekintésre jogosult YouTube-fiókba (szükség esetén jelentkezzen be újra), és hogy a sütijelző zöld, majd próbálja újra.",
   "cookie.hint_age_off": "Ez a videó csak bejelentkezett felhasználóknak érhető el (korhatár). A Sütik keretben válasszon egy YouTube-ba bejelentkezett böngészőt (a Firefox ajánlott), majd próbálja újra.",
-  "cookie.hint_bot": "A YouTube azt kéri, erősítse meg, hogy nem robot. A Sütik keretben válasszon egy YouTube-ba bejelentkezett böngészőt (a Firefox ajánlott); ha ez már megtörtént, jelentkezzen be újra, vagy próbálja később."
+  "cookie.hint_bot": "A YouTube azt kéri, erősítse meg, hogy nem robot. A Sütik keretben válasszon egy YouTube-ba bejelentkezett böngészőt (a Firefox ajánlott); ha ez már megtörtént, jelentkezzen be újra, vagy próbálja később.",
+  "queue.btn_retry_errors": "Hibák újrapróbálása",
+  "queue.msg_no_errors": "Nincs hibás elem a sorban.",
+  "inspect.box_running": "Elemzés folyamatban…",
+  "inspect.box_failed": "Az elemzés sikertelen (lásd a naplót).",
+  "inspect.box_langs": "Hang: {audio} · Feliratok: {subs}"
 }

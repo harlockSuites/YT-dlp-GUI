@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube rechazó las cookies de {browser} (sesión renovada o caducada). Abra youtube.com en ese navegador, compruebe que ha iniciado sesión (vuelva a iniciarla si hace falta) y vuelva a intentarlo.",
   "cookie.hint_age": "Este vídeo pide confirmar la edad. Con las cookies de {browser}, compruebe que ha iniciado sesión en una cuenta de YouTube autorizada a verlo (vuelva a iniciarla si hace falta) y que el indicador de cookies está en verde; después vuelva a intentarlo.",
   "cookie.hint_age_off": "Este vídeo solo está disponible para usuarios con sesión iniciada (restricción de edad). En el cuadro Cookies elija un navegador con sesión de YouTube iniciada (se recomienda Firefox) y vuelva a intentarlo.",
-  "cookie.hint_bot": "YouTube pide confirmar que no es un robot. En el cuadro Cookies elija un navegador con sesión de YouTube iniciada (se recomienda Firefox); si ya lo hizo, vuelva a iniciar sesión o inténtelo más tarde."
+  "cookie.hint_bot": "YouTube pide confirmar que no es un robot. En el cuadro Cookies elija un navegador con sesión de YouTube iniciada (se recomienda Firefox); si ya lo hizo, vuelva a iniciar sesión o inténtelo más tarde.",
+  "queue.btn_retry_errors": "Reintentar los errores",
+  "queue.msg_no_errors": "No hay elementos con error en la cola.",
+  "inspect.box_running": "Análisis en curso…",
+  "inspect.box_failed": "Falló el análisis (vea el registro).",
+  "inspect.box_langs": "Audio: {audio} · Subtítulos: {subs}"
 }

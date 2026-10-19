@@ -4834,6 +4834,7 @@ class YtDlpGui(tk.Tk):
         # ── URL ────────────────────────────────────
         frm_url = ttk.LabelFrame(page, text=t("url.frame_label"), padding=8)
         frm_url.pack(fill="x", **pad)
+        self._frm_url = frm_url
 
         self.var_url = tk.StringVar()
         ent_url = ttk.Entry(frm_url, textvariable=self.var_url, font=("Segoe UI", 10))
@@ -4842,6 +4843,12 @@ class YtDlpGui(tk.Tk):
         ttk.Button(frm_url, text=t("url.btn_inspect"), command=self._inspect).pack(side="left", padx=(4, 0))
         ttk.Button(frm_url, text=t("url.btn_playlist_advanced"),
                    command=self._open_playlist_inspector).pack(side="left", padx=(4, 0))
+
+        # Résultat de l'analyse (titre, durée, chaîne, langues), sous le champ URL ; masqué si l'URL change
+        self._inspect_box_url = None
+        self._lbl_inspect = tk.Label(page, text="", justify="left", anchor="w", wraplength=760,
+                                     font=("Segoe UI", 9))
+        self.var_url.trace_add("write", lambda *_: self._on_url_changed_for_box())
 
         # ── Dossier de destination ──────────────────
         frm_out = ttk.LabelFrame(page, text=t("opts.outdir_frame_label"), padding=8)
@@ -5088,6 +5095,8 @@ class YtDlpGui(tk.Tk):
                    command=self._queue_remove_selected).pack(side="left", padx=(0, 4))
         ttk.Button(frm_ql2, text=t("queue.btn_clear_errors"),
                    command=self._queue_clear_errors).pack(side="right")
+        ttk.Button(frm_ql2, text=t("queue.btn_retry_errors"),
+                   command=self._queue_retry_errors).pack(side="right", padx=(0, 6))
 
         # Les rangées de boutons sont placées en bas du volet AVANT le tableau : quand le volet est réduit,
         # c'est le tableau qui rétrécit, jamais les boutons.
@@ -5615,6 +5624,18 @@ class YtDlpGui(tk.Tk):
     # ──────────────────────────────────────────────
     #  Inspection
     # ──────────────────────────────────────────────
+    def _show_inspect_box(self, text, color, url):
+        """Affiche (ou met à jour) l'encadré de résultat sous le champ URL."""
+        self._inspect_box_url = url
+        self._lbl_inspect.configure(text=text, fg=color)
+        if not self._lbl_inspect.winfo_ismapped():
+            self._lbl_inspect.pack(fill="x", padx=12, pady=(0, 2), after=self._frm_url)
+
+    def _on_url_changed_for_box(self):
+        if self._inspect_box_url is not None and self.var_url.get().strip() != self._inspect_box_url:
+            self._inspect_box_url = None
+            self._lbl_inspect.pack_forget()
+
     def _inspect(self):
         url = self.var_url.get().strip()
         if not url:
@@ -5622,6 +5643,7 @@ class YtDlpGui(tk.Tk):
             return
         self._clear_log()
         self._log(t("inspect.log_start", url=url), "info")
+        self._show_inspect_box(t("inspect.box_running"), "gray", url)
 
         browser = self.var_browser.get()
         cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
@@ -5641,11 +5663,13 @@ class YtDlpGui(tk.Tk):
                     hint = _cookie_hint(result.stderr, browser)
                     if hint:
                         self.after(0, self._log, hint, "info")
+                    self.after(0, self._show_inspect_box, t("inspect.box_failed"), "#c0392b", url)
                     return
                 try:
                     info = json.loads(result.stdout)
                 except Exception:
                     self.after(0, self._log, t("inspect.log_bad_json"), "error")
+                    self.after(0, self._show_inspect_box, t("inspect.box_failed"), "#c0392b", url)
                     return
 
                 title = info.get("title", "?")
@@ -5719,6 +5743,11 @@ class YtDlpGui(tk.Tk):
                     auto_info = (t("inspect.auto_part", langs=', '.join(sorted(auto_only)))
                                  if auto_only else "")
                     self._log(t("inspect.log_subs", langs=sub_info, auto=auto_info), "info")
+                    head = title + (f" ({duration})" if duration else "") + (f" — {uploader}" if uploader else "")
+                    self._show_inspect_box(
+                        head + "\n" + t("inspect.box_langs", audio=', '.join(a.upper() for a in audio_langs) or none,
+                                        subs=', '.join(a.upper() for a in all_sub_langs) or none),
+                        "#27ae60", url)
 
                 self.after(0, _populate)
 
@@ -5737,6 +5766,7 @@ class YtDlpGui(tk.Tk):
 
             except Exception as e:
                 self.after(0, self._log, t("common.log_error", error=e), "error")
+                self.after(0, self._show_inspect_box, t("inspect.box_failed"), "#c0392b", url)
                 advice = av_advice(e)
                 if advice:
                     self.after(0, self._log, advice, "info")
@@ -6012,6 +6042,20 @@ class YtDlpGui(tk.Tk):
         if self._queue_running and idx == self._queue_index:
             return  # ne pas supprimer l'entrée en cours de téléchargement
         self._queue_remove(idx)
+
+    def _queue_retry_errors(self):
+        """Remet en attente tous les éléments en erreur puis relance la file (les autres sont ignorés)."""
+        if self._queue_running:
+            return
+        failed = [e for e in self._queue if e.get("status") == "error"]
+        if not failed:
+            messagebox.showinfo(t("queue.warn_empty_title"), t("queue.msg_no_errors"), parent=self)
+            return
+        for e in failed:
+            e["status"] = "pending"
+        save_queue(self._queue)
+        self._refresh_queue_tv()
+        self._queue_run(0)
 
     def _queue_clear_errors(self):
         self._queue = [e for e in self._queue if e.get("status") != "error"]

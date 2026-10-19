@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube 拒绝了 {browser} 的 Cookie（会话已刷新或过期）。请在该浏览器中打开 youtube.com，确认已登录（必要时重新登录），然后重试。",
   "cookie.hint_age": "此视频需要确认年龄。使用 {browser} 的 Cookie 时，请确认已登录有权观看的 YouTube 账号（必要时重新登录），且 Cookie 指示灯为绿色，然后重试。",
   "cookie.hint_age_off": "此视频仅限已登录用户观看（年龄限制）。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox），然后重试。",
-  "cookie.hint_bot": "YouTube 要求确认您不是机器人。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox）；如果已经这样做，请重新登录或稍后再试。"
+  "cookie.hint_bot": "YouTube 要求确认您不是机器人。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox）；如果已经这样做，请重新登录或稍后再试。",
+  "queue.btn_retry_errors": "重试出错项",
+  "queue.msg_no_errors": "队列中没有出错的项目。",
+  "inspect.box_running": "正在分析…",
+  "inspect.box_failed": "分析失败（见日志）。",
+  "inspect.box_langs": "音频：{audio} · 字幕：{subs}"
 }

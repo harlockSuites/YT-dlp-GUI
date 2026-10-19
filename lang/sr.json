@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube je odbio kolačiće pregledača {browser} (sesija je obnovljena ili istekla). Otvorite youtube.com u tom pregledaču, proverite da li ste prijavljeni (po potrebi se ponovo prijavite) pa pokušajte ponovo.",
   "cookie.hint_age": "Ovaj video traži potvrdu uzrasta. Sa kolačićima pregledača {browser} proverite da li ste prijavljeni na YouTube nalog kojem je dozvoljen pregled (po potrebi se ponovo prijavite) i da li je pokazatelj kolačića zelen, pa pokušajte ponovo.",
   "cookie.hint_age_off": "Ovaj video je dostupan samo prijavljenim korisnicima (uzrasno ograničenje). U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox), pa pokušajte ponovo.",
-  "cookie.hint_bot": "YouTube traži da potvrdite da niste robot. U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox); ako ste to već uradili, ponovo se prijavite ili pokušajte kasnije."
+  "cookie.hint_bot": "YouTube traži da potvrdite da niste robot. U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox); ako ste to već uradili, ponovo se prijavite ili pokušajte kasnije.",
+  "queue.btn_retry_errors": "Ponovi greške",
+  "queue.msg_no_errors": "Nema stavki sa greškom u redu.",
+  "inspect.box_running": "Analiza u toku…",
+  "inspect.box_failed": "Analiza nije uspela (pogledajte dnevnik).",
+  "inspect.box_langs": "Zvuk: {audio} · Titlovi: {subs}"
 }

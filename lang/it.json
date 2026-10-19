@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "YouTube ha rifiutato i cookie di {browser} (sessione rinnovata o scaduta). Apri youtube.com in quel browser, verifica di aver effettuato l'accesso (riaccedi se necessario) e riprova.",
   "cookie.hint_age": "Questo video richiede la conferma dell'età. Con i cookie di {browser}, verifica di aver effettuato l'accesso a un account YouTube autorizzato a vederlo (riaccedi se necessario) e che l'indicatore dei cookie sia verde, poi riprova.",
   "cookie.hint_age_off": "Questo video è disponibile solo per gli utenti connessi (limite di età). Nel riquadro Cookie scegli un browser con accesso a YouTube (si consiglia Firefox), poi riprova.",
-  "cookie.hint_bot": "YouTube chiede di confermare che non sei un robot. Nel riquadro Cookie scegli un browser con accesso a YouTube (si consiglia Firefox); se l'hai già fatto, riaccedi o riprova più tardi."
+  "cookie.hint_bot": "YouTube chiede di confermare che non sei un robot. Nel riquadro Cookie scegli un browser con accesso a YouTube (si consiglia Firefox); se l'hai già fatto, riaccedi o riprova più tardi.",
+  "queue.btn_retry_errors": "Riprova gli errori",
+  "queue.msg_no_errors": "Nessun elemento in errore nella coda.",
+  "inspect.box_running": "Analisi in corso…",
+  "inspect.box_failed": "Analisi non riuscita (vedi il registro).",
+  "inspect.box_langs": "Audio: {audio} · Sottotitoli: {subs}"
 }

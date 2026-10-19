@@ -482,5 +482,10 @@
   "cookie.hint_rotated": "O YouTube recusou os cookies do {browser} (sessão renovada ou expirada). Abra youtube.com nesse navegador, confirme que você está conectado (conecte-se novamente se preciso) e tente de novo.",
   "cookie.hint_age": "Este vídeo pede a confirmação da idade. Com os cookies do {browser}, confirme que você está conectado a uma conta do YouTube autorizada a vê-lo (conecte-se novamente se preciso) e que o indicador de cookies está verde; depois tente de novo.",
   "cookie.hint_age_off": "Este vídeo só está disponível para usuários conectados (restrição de idade). No quadro Cookies, escolha um navegador conectado ao YouTube (recomendamos o Firefox) e tente de novo.",
-  "cookie.hint_bot": "O YouTube pede para confirmar que você não é um robô. No quadro Cookies, escolha um navegador conectado ao YouTube (recomendamos o Firefox); se já fez isso, conecte-se novamente ou tente mais tarde."
+  "cookie.hint_bot": "O YouTube pede para confirmar que você não é um robô. No quadro Cookies, escolha um navegador conectado ao YouTube (recomendamos o Firefox); se já fez isso, conecte-se novamente ou tente mais tarde.",
+  "queue.btn_retry_errors": "Tentar os erros novamente",
+  "queue.msg_no_errors": "Nenhum item com erro na fila.",
+  "inspect.box_running": "Análise em andamento…",
+  "inspect.box_failed": "Falha na análise (veja o registro).",
+  "inspect.box_langs": "Áudio: {audio} · Legendas: {subs}"
 }
