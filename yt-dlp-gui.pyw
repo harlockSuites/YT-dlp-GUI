@@ -1150,7 +1150,11 @@ class DownloadQueueWindow(tk.Toplevel):
             pass
 
     def _kill_and_cleanup(self):
-        """Tue le processus yt-dlp en cours et supprime les fichiers partiels."""
+        """Tue le processus yt-dlp en cours et supprime les fichiers partiels.
+
+        Les fichiers de la liste ne sont supprimés que si yt-dlp tournait encore : fermer la fenêtre après
+        un téléchargement terminé ne doit jamais effacer ce qui vient d'être téléchargé."""
+        was_running = self._process is not None and self._process.poll() is None
         if self._paused and self._process:
             self._resume_process(self._process.pid)
             self._paused = False
@@ -1164,12 +1168,12 @@ class DownloadQueueWindow(tk.Toplevel):
                     self._process.terminate()
                 except Exception:
                     pass
-        files = list(self._current_dl_files)
+        files = list(self._current_dl_files) if was_running else []
         self._current_dl_files = []
 
         # Répertoire de sortie connu via l'inspecteur (filet de sécurité si files est vide)
         insp_outdir = ""
-        if self._inspector is not None:
+        if was_running and self._inspector is not None:
             try:
                 insp_outdir = self._inspector.var_g_outdir.get().strip()
             except Exception:
@@ -1614,6 +1618,8 @@ class DownloadQueueWindow(tk.Toplevel):
                 "dropped": list(dropped),
                 "rc": rc,
             })
+            if status != "erreur" and not self._skip_flag.is_set() and not self._stop_flag.is_set():
+                self._current_dl_files = []   # fichiers définitifs : plus rien à nettoyer
 
             # Attendre la fin du nettoyage avant de lancer la vidéo suivante
             if self._skip_flag.is_set():
@@ -5891,6 +5897,7 @@ class YtDlpGui(tk.Tk):
         self.btn_pause.configure(state="disabled", text=t("dl.btn_pause"))
         self._paused = False
         if success:
+            self._current_dl_files = []   # téléchargement terminé : ses fichiers sont définitifs
             self.var_progress.set(100)
             self.var_status.set(t("app.status_done_ok"))
             self._log(t("app.log_done"), "ok")
@@ -5949,8 +5956,8 @@ class YtDlpGui(tk.Tk):
             self._queue_running = False
             self._queue_skip = False
             self._queue_set_running_ui(False)
-        self._kill_current_process()
-        self._cleanup_partial_files()
+        if self._kill_current_process():      # rien à nettoyer si aucun téléchargement n'était en cours
+            self._cleanup_partial_files()
 
     # ──────────────────────────────────────────────
     #  File d'attente
@@ -6159,8 +6166,8 @@ class YtDlpGui(tk.Tk):
             self._queue_skip = False
             self._queue_index += 1
             self._queue_run_next()
-
-        self._cleanup_partial_files()
+        else:
+            self._cleanup_partial_files()
 
     def _queue_stop(self):
         if not self._queue_running:
@@ -6168,8 +6175,8 @@ class YtDlpGui(tk.Tk):
         self._queue_running = False
         self._queue_skip = False
         self._queue_set_running_ui(False)
-        self._kill_current_process()
-        self._cleanup_partial_files()
+        if self._kill_current_process():
+            self._cleanup_partial_files()
         self.var_status.set(t("app.status_queue_stopped"))
         self._refresh_queue_tv()
 
