@@ -476,5 +476,7 @@
   "cookie.note_closed": "Az észlelés csak zárt böngészővel működik: zárja be teljesen (az értesítési területen is).",
   "setup.item_deno": "deno — a YouTube-hoz szükséges JavaScript-motor (~40 MB)",
   "deps.log_no_choco": "A Chocolatey nincs telepítve: a „Mindent telepít” nem érhető el. A Denóhoz használja a „Telepítés” gombot; a többi eszközhöz a „Hivatalos oldal” hivatkozást.",
-  "deps.log_elevation_cancelled": "A jogosultság-emelést elutasították vagy megszakították: semmi sem települt."
+  "deps.log_elevation_cancelled": "A jogosultság-emelést elutasították vagy megszakították: semmi sem települt.",
+  "av.title": "A víruskereső blokkolt egy fájlt",
+  "av.hint": "A víruskeresője blokkolt egy fájlt a programból („a fájl vírust vagy potenciálisan nemkívánatos szoftvert tartalmaz”). Ez általában téves riasztás: a yt-dlp és az ffmpeg gyakran kerül tévesen megjelölésre. Ha megbízik ezekben a fájlokban (hivatalos tárolóikból töltődtek le), vegye fel a(z) {folder} mappát a víruskereső kivételei közé, vagy állítsa vissza a fájlt a karanténból, majd próbálja újra."
 }

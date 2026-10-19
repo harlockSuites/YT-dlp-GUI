@@ -476,5 +476,7 @@
   "cookie.note_closed": "Il rilevamento funziona solo a browser chiuso: chiudilo completamente (anche nell'area di notifica).",
   "setup.item_deno": "deno — motore JavaScript necessario per YouTube (~40 MB)",
   "deps.log_no_choco": "Chocolatey non è installato: «Installa tutto» non è disponibile. Per Deno usa «Installa»; per gli altri strumenti, il link «Sito ufficiale».",
-  "deps.log_elevation_cancelled": "Elevazione rifiutata o annullata: non è stato installato nulla."
+  "deps.log_elevation_cancelled": "Elevazione rifiutata o annullata: non è stato installato nulla.",
+  "av.title": "File bloccato dall'antivirus",
+  "av.hint": "Il tuo antivirus ha bloccato un file del programma («il file contiene un virus o software potenzialmente indesiderato»). Di solito è un falso allarme: yt-dlp e ffmpeg vengono spesso segnalati per errore. Se ti fidi di questi file (scaricati dai loro repository ufficiali), aggiungi la cartella {folder} alle esclusioni dell'antivirus o ripristina il file dalla quarantena, poi riprova."
 }

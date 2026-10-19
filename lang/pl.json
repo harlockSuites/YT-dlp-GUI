@@ -476,5 +476,7 @@
   "cookie.note_closed": "Wykrywanie działa tylko przy zamkniętej przeglądarce: zamknij ją całkowicie (także w obszarze powiadomień).",
   "setup.item_deno": "deno — silnik JavaScript wymagany przez YouTube (~40 MB)",
   "deps.log_no_choco": "Chocolatey nie jest zainstalowany: „Zainstaluj wszystko” jest niedostępne. Dla Deno użyj „Zainstaluj”; dla pozostałych narzędzi — linku „Strona oficjalna”.",
-  "deps.log_elevation_cancelled": "Podniesienie uprawnień odrzucone lub anulowane: nic nie zainstalowano."
+  "deps.log_elevation_cancelled": "Podniesienie uprawnień odrzucone lub anulowane: nic nie zainstalowano.",
+  "av.title": "Plik zablokowany przez antywirus",
+  "av.hint": "Twój antywirus zablokował plik programu („plik zawiera wirusa lub potencjalnie niechciane oprogramowanie”). Zwykle jest to fałszywy alarm: yt-dlp i ffmpeg są często oznaczane omyłkowo. Jeśli ufasz tym plikom (pobranym z oficjalnych repozytoriów), dodaj folder {folder} do wyjątków antywirusa lub przywróć plik z kwarantanny, a następnie spróbuj ponownie."
 }

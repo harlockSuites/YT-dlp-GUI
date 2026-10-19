@@ -476,5 +476,7 @@
   "cookie.note_closed": "仅在浏览器关闭时才能检测：请将其完全关闭（包括通知区域中的图标）。",
   "setup.item_deno": "deno — YouTube 所需的 JavaScript 引擎（约 40 MB）",
   "deps.log_no_choco": "未安装 Chocolatey：“全部安装”不可用。Deno 请使用“安装”；其他工具请使用“官方网站”链接。",
-  "deps.log_elevation_cancelled": "提升权限被拒绝或已取消：未安装任何内容。"
+  "deps.log_elevation_cancelled": "提升权限被拒绝或已取消：未安装任何内容。",
+  "av.title": "文件被杀毒软件拦截",
+  "av.hint": "您的杀毒软件拦截了本软件的一个文件（“文件包含病毒或可能不需要的软件”）。这通常是误报：yt-dlp 和 ffmpeg 经常被误判。如果您信任这些文件（从其官方仓库下载），请将文件夹 {folder} 加入杀毒软件的排除列表，或从隔离区还原该文件，然后重试。"
 }

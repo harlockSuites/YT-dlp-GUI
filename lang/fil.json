@@ -476,5 +476,7 @@
   "cookie.note_closed": "Gumagana lang ang detection kapag sarado ang browser: isara ito nang buo (pati sa notification area).",
   "setup.item_deno": "deno — JavaScript engine na kailangan para sa YouTube (~40 MB)",
   "deps.log_no_choco": "Hindi naka-install ang Chocolatey: hindi available ang \"I-install lahat\". Para sa Deno, gamitin ang \"I-install\"; para sa ibang tool, ang link na \"Opisyal na site\".",
-  "deps.log_elevation_cancelled": "Tinanggihan o kinansela ang elevation: walang na-install."
+  "deps.log_elevation_cancelled": "Tinanggihan o kinansela ang elevation: walang na-install.",
+  "av.title": "Na-block ng antivirus ang file",
+  "av.hint": "Na-block ng iyong antivirus ang isang file ng software (\"may virus o potensyal na hindi gustong software ang file\"). Karaniwan itong maling alarma: madalas na maling namarkahan ang yt-dlp at ffmpeg. Kung pinagkakatiwalaan mo ang mga file na ito (na-download mula sa kanilang opisyal na repository), idagdag ang folder na {folder} sa mga exclusion ng antivirus o i-restore ang file mula sa quarantine, saka subukan muli."
 }

@@ -503,6 +503,28 @@ def save_queue(queue):
         pass
 
 
+def is_antivirus_block(exc):
+    """Windows refuse d'ouvrir un fichier que l'antivirus a bloqué (WinError 225 ou 226)."""
+    return isinstance(exc, OSError) and getattr(exc, "winerror", None) in (225, 226)
+
+
+def av_advice(exc):
+    """Explication à afficher quand `exc` vient d'un blocage par l'antivirus (sinon chaîne vide)."""
+    return t("av.hint", folder=DATA_DIR) if is_antivirus_block(exc) else ""
+
+
+def _replace_with_retry(src, dst, attempts=8, delay=0.5):
+    """os.replace qui réessaie quand un antivirus analyse encore le fichier (WinError 32 ou 5)."""
+    for i in range(attempts):
+        try:
+            os.replace(src, dst)
+            return
+        except OSError as exc:
+            if getattr(exc, "winerror", None) not in (5, 32) or i == attempts - 1:
+                raise
+            time.sleep(delay * (i + 1))
+
+
 def choco_available():
     return shutil.which("choco") is not None
 
@@ -1317,6 +1339,9 @@ class DownloadQueueWindow(tk.Toplevel):
             return self._process.returncode, lines
         except Exception as e:
             self.after(0, lambda e=e: self._log(t("common.log_error", error=e), "#f66"))
+            advice = av_advice(e)
+            if advice:
+                self.after(0, lambda a=advice: self._log(a, "#f5a623"))
             return -1, lines
 
     @staticmethod
@@ -2419,7 +2444,7 @@ class CookieFrame(ttk.LabelFrame):
                     lines = text.splitlines()
                     detail = _cookie_hint(text, browser) or (lines[-1][:160] if lines else "")
             except Exception as exc:
-                ok, detail = False, str(exc)[:160]
+                ok, detail = False, av_advice(exc) or str(exc)[:160]
 
             def _done():
                 if self._var.get() != browser:   # le choix a changé pendant le test
@@ -4150,7 +4175,7 @@ def _download_file(url, dest, progress=None, stop=None, timeout=30, opener=_open
                 done += len(chunk)
                 if progress:
                     progress(done, total)
-        os.replace(tmp, dest)
+        _replace_with_retry(tmp, dest)
     except BaseException as exc:
         close = getattr(exc, "close", None)   # HTTPError garde un fichier ouvert
         if close:
@@ -4215,7 +4240,7 @@ def _extract_tools(zip_path, dest_dir, names=("ffmpeg.exe", "ffprobe.exe")):
             target = os.path.join(dest_dir, base)
             with zf.open(info) as src, open(target + ".new", "wb") as dst:
                 shutil.copyfileobj(src, dst)
-            os.replace(target + ".new", target)
+            _replace_with_retry(target + ".new", target)
             done.append(base)
     if not done:
         raise SetupError(t("setup.err_no_tools"))
@@ -4227,7 +4252,7 @@ def install_ytdlp(progress=None, stop=None, log=None):
     _verified_download(YTDLP_URL, YTDLP_SUMS_URL, "yt-dlp.exe", tmp, progress, stop, log)
     if os.path.exists(YTDLP):
         shutil.copy2(YTDLP, YTDLP + ".bak")
-    os.replace(tmp, YTDLP)
+    _replace_with_retry(tmp, YTDLP)
 
 
 def install_ffmpeg(progress=None, stop=None, log=None):
@@ -4345,6 +4370,9 @@ class SetupWizardWindow(tk.Toplevel):
             except Exception as exc:
                 ok = False
                 self._ui(lambda e=exc: self._log(t("setup.log_error", error=e)))
+                advice = av_advice(exc)
+                if advice:
+                    self._ui(lambda a=advice: self._log(a))
                 break
         self._ui(lambda: self._finished(ok))
 
@@ -4634,6 +4662,9 @@ class YtDlpGui(tk.Tk):
         msg = "".join(traceback.format_exception(exc, val, tb))
         print(msg)  # console si lancé en python (pas pythonw)
         self._last_error = msg
+        if is_antivirus_block(val):
+            messagebox.showwarning(t("av.title"), av_advice(val), parent=self)
+            return
         if messagebox.askyesno(
                 t("app.error_internal_title"),
                 t("app.error_internal_msg", exc_name=exc.__name__, val=val)
@@ -5593,6 +5624,9 @@ class YtDlpGui(tk.Tk):
 
             except Exception as e:
                 self.after(0, self._log, t("common.log_error", error=e), "error")
+                advice = av_advice(e)
+                if advice:
+                    self.after(0, self._log, advice, "info")
 
         threading.Thread(target=run, daemon=True).start()
 
@@ -5633,6 +5667,9 @@ class YtDlpGui(tk.Tk):
                 self.after(0, self._on_done, self._process.returncode == 0)
             except Exception as e:
                 self.after(0, self._log, t("common.log_error", error=e))
+                advice = av_advice(e)
+                if advice:
+                    self.after(0, self._log, advice, "info")
                 self.after(0, self._on_done, False)
             finally:
                 self._process = None

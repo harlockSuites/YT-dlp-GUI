@@ -476,5 +476,7 @@
   "cookie.note_closed": "Detection only works with the browser closed: close it completely (including the notification area).",
   "setup.item_deno": "deno — JavaScript engine required for YouTube (~40 MB)",
   "deps.log_no_choco": "Chocolatey is not installed: \"Install all\" is unavailable. For Deno, use \"Install\"; for the other tools, use the \"Official site\" link.",
-  "deps.log_elevation_cancelled": "Elevation refused or cancelled: nothing was installed."
+  "deps.log_elevation_cancelled": "Elevation refused or cancelled: nothing was installed.",
+  "av.title": "File blocked by the antivirus",
+  "av.hint": "Your antivirus blocked one of the software's files (\"the file contains a virus or potentially unwanted software\"). This is usually a false alarm: yt-dlp and ffmpeg are often flagged by mistake. If you trust these files (downloaded from their official repositories), add the folder {folder} to your antivirus exclusions or restore the file from quarantine, then try again."
 }

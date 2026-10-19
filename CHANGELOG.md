@@ -9,6 +9,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Corrigé
 - « Tout installer (admin) » n'utilise plus un PowerShell masqué avec contournement de la politique d'exécution, montage que des antivirus de comportement bloquaient : l'élévation passe par ShellExecute (« runas ») et une fenêtre visible. Le bouton est désactivé, avec une explication, quand Chocolatey est absent ; un refus de l'élévation est signalé.
+- Antivirus : quand Windows refuse d'ouvrir un fichier bloqué (« le fichier contient un virus ou un logiciel potentiellement indésirable », WinError 225), le logiciel explique la marche à suivre (exclure le dossier de données, restaurer depuis la quarantaine) au lieu d'afficher une « Erreur interne ». Le remplacement de `yt-dlp.exe`, de ffmpeg et de Deno réessaie plusieurs fois quand l'antivirus analyse encore le fichier (WinError 32).
 
 ## [0.1.4] — 2026-10-18
 

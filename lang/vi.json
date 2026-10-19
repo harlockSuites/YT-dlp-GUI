@@ -476,5 +476,7 @@
   "cookie.note_closed": "Việc phát hiện chỉ hoạt động khi trình duyệt đã đóng: hãy đóng hoàn toàn (kể cả ở khay thông báo).",
   "setup.item_deno": "deno — công cụ JavaScript cần cho YouTube (~40 MB)",
   "deps.log_no_choco": "Chưa cài Chocolatey: «Cài tất cả» không khả dụng. Với Deno, dùng «Cài đặt»; với các công cụ khác, dùng liên kết «Trang chính thức».",
-  "deps.log_elevation_cancelled": "Yêu cầu nâng quyền bị từ chối hoặc hủy: chưa cài gì."
+  "deps.log_elevation_cancelled": "Yêu cầu nâng quyền bị từ chối hoặc hủy: chưa cài gì.",
+  "av.title": "Tệp bị phần mềm diệt virus chặn",
+  "av.hint": "Phần mềm diệt virus đã chặn một tệp của chương trình (“tệp chứa virus hoặc phần mềm có thể không mong muốn”). Thường đây là báo động giả: yt-dlp và ffmpeg hay bị gắn cờ nhầm. Nếu bạn tin các tệp này (tải từ kho chính thức), hãy thêm thư mục {folder} vào danh sách loại trừ của phần mềm diệt virus hoặc khôi phục tệp từ khu cách ly, rồi thử lại."
 }

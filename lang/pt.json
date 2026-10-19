@@ -476,5 +476,7 @@
   "cookie.note_closed": "A detecção só funciona com o navegador fechado: feche-o completamente (inclusive na área de notificação).",
   "setup.item_deno": "deno — mecanismo JavaScript necessário para o YouTube (~40 MB)",
   "deps.log_no_choco": "O Chocolatey não está instalado: «Instalar tudo» está indisponível. Para o Deno, use «Instalar»; para as outras ferramentas, o link «Site oficial».",
-  "deps.log_elevation_cancelled": "Elevação recusada ou cancelada: nada foi instalado."
+  "deps.log_elevation_cancelled": "Elevação recusada ou cancelada: nada foi instalado.",
+  "av.title": "Arquivo bloqueado pelo antivírus",
+  "av.hint": "O seu antivírus bloqueou um arquivo do programa («o arquivo contém um vírus ou software potencialmente indesejado»). Em geral é um falso alarme: o yt-dlp e o ffmpeg costumam ser sinalizados por engano. Se você confia nesses arquivos (baixados de seus repositórios oficiais), adicione a pasta {folder} às exclusões do antivírus ou restaure o arquivo da quarentena e tente novamente."
 }

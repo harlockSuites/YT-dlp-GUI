@@ -476,5 +476,7 @@
   "cookie.note_closed": "Otkrivanje radi samo sa zatvorenim pregledačem: potpuno ga zatvorite (i u oblasti za obaveštenja).",
   "setup.item_deno": "deno — JavaScript mehanizam potreban za YouTube (~40 MB)",
   "deps.log_no_choco": "Chocolatey nije instaliran: „Instaliraj sve” nije dostupno. Za Deno koristite „Instaliraj”; za ostale alate vezu „Zvanični sajt”.",
-  "deps.log_elevation_cancelled": "Podizanje privilegija je odbijeno ili otkazano: ništa nije instalirano."
+  "deps.log_elevation_cancelled": "Podizanje privilegija je odbijeno ili otkazano: ništa nije instalirano.",
+  "av.title": "Antivirus je blokirao datoteku",
+  "av.hint": "Vaš antivirus je blokirao datoteku programa („datoteka sadrži virus ili potencijalno neželjeni softver”). Obično je to lažna uzbuna: yt-dlp i ffmpeg se često pogrešno označavaju. Ako verujete ovim datotekama (preuzetim iz zvaničnih repozitorijuma), dodajte folder {folder} u izuzetke antivirusa ili vratite datoteku iz karantina, pa pokušajte ponovo."
 }
