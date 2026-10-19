@@ -2,7 +2,7 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.1.5] — 2026-10-19
 
 ### Ajouté
 - Champ URL : quand du texte a été collé autour de l'adresse (par exemple « Inspection : https://… » suivi d'un journal), le logiciel prend la première adresse `http(s)` du texte, corrige le champ à l'écran et l'utilise pour l'analyse, le téléchargement, la file d'attente et la playlist avancée.
