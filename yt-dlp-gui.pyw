@@ -5366,12 +5366,14 @@ class YtDlpGui(tk.Tk):
                                 if d["required"] and not dep_installed(d["exe"])]
             if required_missing:
                 self.var_dep_warn.set(
-                    t("app.dep_warn_required", liste=', '.join(missing))
+                    t("app.dep_warn_required", liste=', '.join(required_missing))
                 )
+                self._lbl_dep_warn.configure(foreground="#e67e22")
             else:
                 self.var_dep_warn.set(
                     t("app.dep_warn_optional", liste=', '.join(missing))
                 )
+                self._lbl_dep_warn.configure(foreground="#7f8c8d")      # simple information, pas une alerte
         else:
             self.var_dep_warn.set(t("app.dep_ok"))
             self._lbl_dep_warn.configure(foreground="#27ae60")
@@ -6178,16 +6180,29 @@ class YtDlpGui(tk.Tk):
 
         Renvoie False si l'utilisateur annule (le téléchargement continue). « Oui » ajoute les vidéos déjà
         terminées aux fichiers à supprimer ; « Non » ne supprime que la vidéo en cours."""
-        finished = list(getattr(self, "_finished_items_files", []))
         proc = self._process
-        if not finished or proc is None or proc.poll() is not None:
+        if not getattr(self, "_finished_items_files", []) or proc is None or proc.poll() is not None:
             return True
-        answer = messagebox.askyesnocancel(t("dl.stop_playlist_title"),
-                                           t("dl.stop_playlist_msg", n=len(finished)), parent=self)
+        # Le téléchargement est mis en pause pendant la question : rien ne doit être téléchargé de plus, ni
+        # échapper à la suppression globale ; il reprend seulement si l'utilisateur annule.
+        suspended = not self._paused
+        if suspended:
+            self._suspend_process(proc.pid)
+        try:
+            answer = messagebox.askyesnocancel(
+                t("dl.stop_playlist_title"),
+                t("dl.stop_playlist_msg", n=len(self._finished_items_files)), parent=self)
+        except BaseException:
+            if suspended:
+                self._resume_process(proc.pid)
+            raise
         if answer is None:
+            if suspended:
+                self._resume_process(proc.pid)
             return False
         if answer:
-            self._current_dl_files = finished + list(self._current_dl_files)
+            # la liste est relue après la réponse : elle contient tout ce qui existe à cet instant
+            self._current_dl_files = list(self._finished_items_files) + list(self._current_dl_files)
         self._finished_items_files = []
         return True
 

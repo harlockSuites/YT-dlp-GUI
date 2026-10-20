@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Dependências ausentes: {liste}  →  clique em Dependências…",
-  "app.dep_warn_optional": "ℹ Opcionais ausentes: {liste}",
+  "app.dep_warn_optional": "ℹ Opcionais não instaladas: {liste} (o programa funciona sem elas)",
   "app.dep_ok": "✔ Todas as dependências estão instaladas.",
   "app.status_ready": "Pronto.",
   "app.status_starting": "Iniciando…",

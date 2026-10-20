@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Hiányzó függőségek: {liste}  →  kattintson a Függőségek… gombra",
-  "app.dep_warn_optional": "ℹ Hiányzó opcionális csomagok: {liste}",
+  "app.dep_warn_optional": "ℹ Nem telepített választható eszközök: {liste} (a program nélkülük is működik)",
   "app.dep_ok": "✔ Minden függőség telepítve van.",
   "app.status_ready": "Kész.",
   "app.status_starting": "Indítás…",

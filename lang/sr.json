@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Nedostaju zavisnosti: {liste}  →  kliknite Zavisnosti…",
-  "app.dep_warn_optional": "ℹ Nedostaju opcioni paketi: {liste}",
+  "app.dep_warn_optional": "ℹ Opcioni, nisu instalirani: {liste} (program radi i bez njih)",
   "app.dep_ok": "✔ Sve zavisnosti su instalirane.",
   "app.status_ready": "Spreman.",
   "app.status_starting": "Pokretanje…",

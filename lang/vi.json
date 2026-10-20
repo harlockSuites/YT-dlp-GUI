@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Thiếu các phụ thuộc: {liste}  →  nhấp Phụ thuộc…",
-  "app.dep_warn_optional": "ℹ Thiếu các gói tùy chọn: {liste}",
+  "app.dep_warn_optional": "ℹ Tùy chọn chưa cài: {liste} (phần mềm vẫn chạy khi thiếu)",
   "app.dep_ok": "✔ Tất cả phụ thuộc đã được cài đặt.",
   "app.status_ready": "Sẵn sàng.",
   "app.status_starting": "Đang khởi động…",

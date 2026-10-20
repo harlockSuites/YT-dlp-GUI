@@ -29,6 +29,11 @@ class StopScopeTests(unittest.TestCase):
         self.app._current_dl_files = []
         self.app._finished_items_files = []
         self.addCleanup(setattr, self.app, "_process", None)
+        self.app._paused = False
+        for name in ("_suspend_process", "_resume_process"):       # jamais de vrai processus : PID fictif
+            patcher = mock.patch.object(self.app, name)
+            patcher.start()
+            self.addCleanup(patcher.stop)
 
     def _feed(self, *lines):
         for line in lines:

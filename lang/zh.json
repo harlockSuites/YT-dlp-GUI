@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ 缺少依赖项：{liste}  →  请点击「依赖项…」",
-  "app.dep_warn_optional": "ℹ 缺少可选项：{liste}",
+  "app.dep_warn_optional": "ℹ 可选工具未安装：{liste}（没有也能正常运行）",
   "app.dep_ok": "✔ 所有依赖项均已安装。",
   "app.status_ready": "就绪。",
   "app.status_starting": "正在启动…",

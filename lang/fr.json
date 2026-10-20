@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Dépendances manquantes : {liste}  →  cliquez sur Dépendances…",
-  "app.dep_warn_optional": "ℹ Optionnels manquants : {liste}",
+  "app.dep_warn_optional": "ℹ Facultatifs non installés : {liste} (le logiciel fonctionne sans)",
   "app.dep_ok": "✔ Toutes les dépendances sont installées.",
   "app.status_ready": "Prêt.",
   "app.status_starting": "Démarrage…",

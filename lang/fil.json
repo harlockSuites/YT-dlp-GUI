@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Nawawalang mga dependency: {liste}  →  i-click ang Dependencies…",
-  "app.dep_warn_optional": "ℹ Nawawalang mga opsyonal na pakete: {liste}",
+  "app.dep_warn_optional": "ℹ Opsyonal, hindi naka-install: {liste} (gumagana ang software kahit wala)",
   "app.dep_ok": "✔ Lahat ng dependency ay naka-install na.",
   "app.status_ready": "Handa.",
   "app.status_starting": "Nagsisimula…",

@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ Отсутствующие зависимости: {liste}  →  нажмите «Зависимости…»",
-  "app.dep_warn_optional": "ℹ Отсутствующие дополнительные компоненты: {liste}",
+  "app.dep_warn_optional": "ℹ Необязательные, не установлены: {liste} (программа работает и без них)",
   "app.dep_ok": "✔ Все зависимости установлены.",
   "app.status_ready": "Готово.",
   "app.status_starting": "Запуск…",

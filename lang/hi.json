@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ अनुपलब्ध निर्भरताएं: {liste}  →  'निर्भरताएं…' पर क्लिक करें",
-  "app.dep_warn_optional": "ℹ अनुपलब्ध वैकल्पिक: {liste}",
+  "app.dep_warn_optional": "ℹ वैकल्पिक, इंस्टॉल नहीं: {liste} (सॉफ़्टवेयर इनके बिना भी चलता है)",
   "app.dep_ok": "✔ सभी निर्भरताएं स्थापित हैं।",
   "app.status_ready": "तैयार।",
   "app.status_starting": "शुरू हो रहा है…",

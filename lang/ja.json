@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ 必須の依存関係が見つかりません：{liste}  →  「依存関係…」をクリックしてください。",
-  "app.dep_warn_optional": "ℹ オプションのパッケージが見つかりません：{liste}",
+  "app.dep_warn_optional": "ℹ 任意（未インストール）：{liste}（なくても動作します）",
   "app.dep_ok": "✔ すべての依存関係がインストールされています。",
   "app.status_ready": "準備完了。",
   "app.status_starting": "起動中…",

@@ -1,7 +1,7 @@
 {
   "app.window_title": "yt-dlp GUI",
   "app.dep_warn_required": "⚠ 필수 의존성이 없습니다: {liste}  →  「의존성…」을 클릭하세요.",
-  "app.dep_warn_optional": "ℹ 선택적 패키지가 없습니다: {liste}",
+  "app.dep_warn_optional": "ℹ 선택 사항(미설치): {liste} (없어도 동작합니다)",
   "app.dep_ok": "✔ 모든 의존성이 설치되어 있습니다.",
   "app.status_ready": "준비 완료.",
   "app.status_starting": "시작 중…",
