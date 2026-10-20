@@ -2,7 +2,7 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.1.6] — 2026-10-20
 
 ### Ajouté
 - Fenêtre Dépendances : une note explique que seuls ffmpeg et ffprobe sont indispensables, que Deno est recommandé (pistes audio secondaires) et qu'AtomicParsley, MKVToolNix et aria2 sont facultatifs. Ces trois outils absents s'affichent « – Facultatif » en gris au lieu de « ✘ Absent » en rouge, Deno « ○ Recommandé », et l'absence de Chocolatey est présentée comme une information et non plus comme un avertissement rouge. Colonnes « Statut » et « Rôle » élargies (textes coupés). README (15 langues) : même précision dans la puce « Dépendances ».
