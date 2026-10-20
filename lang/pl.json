@@ -480,7 +480,7 @@
   "av.title": "Plik zablokowany przez antywirus",
   "av.hint": "Twój antywirus zablokował plik programu („plik zawiera wirusa lub potencjalnie niechciane oprogramowanie”). Zwykle jest to fałszywy alarm: yt-dlp i ffmpeg są często oznaczane omyłkowo. Jeśli ufasz tym plikom (pobranym z oficjalnych repozytoriów), dodaj folder {folder} do wyjątków antywirusa lub przywróć plik z kwarantanny, a następnie spróbuj ponownie.",
   "cookie.hint_rotated": "YouTube zgłasza, że sesja przeglądarki {browser} została odnowiona lub wygasła. Pobieranie trwa dalej, ale jeśli ostrzeżenie się powtarza, dodatkowe ścieżki audio i napisy mogą być automatycznie pomijane. Otwórz youtube.com w tej przeglądarce, sprawdź, czy jesteś zalogowany (w razie potrzeby zaloguj się ponownie lub uruchom przeglądarkę ponownie) i spróbuj ponownie.",
-  "cookie.hint_age": "Ten film wymaga potwierdzenia wieku. Przy ciasteczkach przeglądarki {browser} sprawdź, czy jesteś zalogowany na konto YouTube uprawnione do jego obejrzenia (w razie potrzeby zaloguj się ponownie) i czy wskaźnik ciasteczek jest zielony, a następnie spróbuj ponownie.",
+  "cookie.hint_age": "Ten film ma ograniczenie wiekowe. Jeśli pobieranie się powiedzie, jakość może być obniżona (YouTube ogranicza formaty, dopóki konto zalogowane w przeglądarce {browser} nie ma zweryfikowanego wieku); jeśli się nie powiedzie, sprawdź, czy jesteś zalogowany na konto YouTube uprawnione do jego obejrzenia (w razie potrzeby zaloguj się ponownie) i czy wskaźnik cookies jest zielony, a następnie spróbuj ponownie.",
   "cookie.hint_age_off": "Ten film jest dostępny tylko dla zalogowanych użytkowników (ograniczenie wiekowe). W ramce Ciasteczka wybierz przeglądarkę zalogowaną w YouTube (zalecany Firefox) i spróbuj ponownie.",
   "cookie.hint_bot": "YouTube prosi o potwierdzenie, że nie jesteś robotem. W ramce Ciasteczka wybierz przeglądarkę zalogowaną w YouTube (zalecany Firefox); jeśli już to zrobiono, zaloguj się ponownie lub spróbuj później.",
   "queue.btn_retry_errors": "Ponów błędy",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} nadal działa ({n} procesów), być może w tle mimo zamkniętego okna: to on blokuje bazę ciasteczek. Zakończ go w Menedżerze zadań (prawy przycisk › Zakończ zadanie) lub wyłącz w jego ustawieniach „Kontynuuj uruchamianie aplikacji w tle”, a następnie spróbuj ponownie. Firefox, zalecany, nie ma tego ograniczenia.",
   "report.status_skipped": "⏭  Pominięto",
   "report.summary_skipped": "   {n} pominięto",
-  "deps.install_all_disabled": "„Zainstaluj wszystko” jest wyłączone: wymaga Chocolatey, którego nie zainstalowano. Użyj „Oficjalna strona” dla każdego narzędzia; dla Deno „Zainstaluj” działa bez Chocolatey."
+  "deps.install_all_disabled": "„Zainstaluj wszystko” jest wyłączone: wymaga Chocolatey, którego nie zainstalowano. Użyj „Oficjalna strona” dla każdego narzędzia; dla Deno „Zainstaluj” działa bez Chocolatey.",
+  "app.status_done_partial": "✔ Playlista zakończona: pobrano {ok}, niedostępne lub z błędem: {failed}."
 }

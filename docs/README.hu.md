@@ -18,6 +18,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 - **Több hangsáv**: az MKV-fájlban minden hangsáv viseli a nyelve címkéjét („hun”, „eng”…); a lejátszó megjeleníti az audiomenüben.
 - **Előállított parancs**: a választásainak megfelelő yt-dlp-parancs élőben látható.
 - **Sor**: adja hozzá az aktuális URL-t, majd indítsa el az egész sort, egy elemtől kezdve, egyetlen videót vagy egy tartományt; szüneteltetés és folytatás, az aktuális elem kihagyása, leállítás a részleges fájlok takarításával. A sor munkamenetek között megmarad.
+- **Már létező fájlnevek**: az a különálló videó, amelynek a neve már létezik a célmappában, utótagot kap (`_2`, `_3`…), hogy semmi se íródjon felül. Az ezzel a letöltővel letöltött lejátszási listát nem számozza újra: a mappában már meglévő videókat kihagyja („has already been downloaded”).
 
 ### Lejátszási lista vizsgáló
 

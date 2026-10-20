@@ -480,7 +480,7 @@
   "av.title": "A víruskereső blokkolt egy fájlt",
   "av.hint": "A víruskeresője blokkolt egy fájlt a programból („a fájl vírust vagy potenciálisan nemkívánatos szoftvert tartalmaz”). Ez általában téves riasztás: a yt-dlp és az ffmpeg gyakran kerül tévesen megjelölésre. Ha megbízik ezekben a fájlokban (hivatalos tárolóikból töltődtek le), vegye fel a(z) {folder} mappát a víruskereső kivételei közé, vagy állítsa vissza a fájlt a karanténból, majd próbálja újra.",
   "cookie.hint_rotated": "A YouTube jelzi, hogy a(z) {browser} munkamenete megújult vagy lejárt. A letöltés folytatódik, de ha a figyelmeztetés ismétlődik, a másodlagos hangsávok és a feliratok automatikusan kimaradhatnak. Nyissa meg a youtube.com oldalt ebben a böngészőben, ellenőrizze, hogy be van-e jelentkezve (szükség esetén jelentkezzen be újra, vagy indítsa újra a böngészőt), majd próbálja újra.",
-  "cookie.hint_age": "Ez a videó korhatár-megerősítést kér. A(z) {browser} sütijeivel ellenőrizze, hogy be van-e jelentkezve egy megtekintésre jogosult YouTube-fiókba (szükség esetén jelentkezzen be újra), és hogy a sütijelző zöld, majd próbálja újra.",
+  "cookie.hint_age": "Ez a videó korhatáros. Ha a letöltés sikerül, csökkentett minőségű lehet (a YouTube korlátozza a formátumokat, amíg a(z) {browser} böngészőben bejelentkezett fiók életkora nincs ellenőrizve); ha nem sikerül, ellenőrizze, hogy olyan YouTube-fiókba van bejelentkezve, amely megnézheti (szükség esetén jelentkezzen be újra), és hogy a cookie-jelző zöld, majd próbálja újra.",
   "cookie.hint_age_off": "Ez a videó csak bejelentkezett felhasználóknak érhető el (korhatár). A Sütik keretben válasszon egy YouTube-ba bejelentkezett böngészőt (a Firefox ajánlott), majd próbálja újra.",
   "cookie.hint_bot": "A YouTube azt kéri, erősítse meg, hogy nem robot. A Sütik keretben válasszon egy YouTube-ba bejelentkezett böngészőt (a Firefox ajánlott); ha ez már megtörtént, jelentkezzen be újra, vagy próbálja később.",
   "queue.btn_retry_errors": "Hibák újrapróbálása",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "A(z) {browser} még fut ({n} folyamat), talán a háttérben is, ha az ablaka be van zárva: ő zárolja a sütiadatbázisát. Fejezze be a Feladatkezelőben (jobb gomb › Feladat befejezése), vagy kapcsolja ki a beállításaiban az „Alkalmazások háttérben futtatásának folytatását”, majd próbálja újra. A Firefoxnak, amelyet ajánlunk, nincs ilyen korlátja.",
   "report.status_skipped": "⏭  Kihagyva",
   "report.summary_skipped": "   {n} kihagyva",
-  "deps.install_all_disabled": "A(z) „Összes telepítése” le van tiltva: a Chocolatey szükséges hozzá, de az nincs telepítve. Használja a(z) „Hivatalos oldal” gombot az egyes eszközöknél; a Denónál a(z) „Telepítés” Chocolatey nélkül is működik."
+  "deps.install_all_disabled": "A(z) „Összes telepítése” le van tiltva: a Chocolatey szükséges hozzá, de az nincs telepítve. Használja a(z) „Hivatalos oldal” gombot az egyes eszközöknél; a Denónál a(z) „Telepítés” Chocolatey nélkül is működik.",
+  "app.status_done_partial": "✔ A lejátszási lista kész: {ok} videó letöltve, {failed} nem érhető el vagy hibás."
 }

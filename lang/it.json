@@ -480,7 +480,7 @@
   "av.title": "File bloccato dall'antivirus",
   "av.hint": "Il tuo antivirus ha bloccato un file del programma («il file contiene un virus o software potenzialmente indesiderato»). Di solito è un falso allarme: yt-dlp e ffmpeg vengono spesso segnalati per errore. Se ti fidi di questi file (scaricati dai loro repository ufficiali), aggiungi la cartella {folder} alle esclusioni dell'antivirus o ripristina il file dalla quarantena, poi riprova.",
   "cookie.hint_rotated": "YouTube segnala che la sessione di {browser} è stata rinnovata o è scaduta. Il download continua, ma se l'avviso si ripete, le tracce audio secondarie e i sottotitoli possono essere ignorati automaticamente. Apri youtube.com in quel browser, verifica di aver effettuato l'accesso (riaccedi se necessario; riavvia il browser se serve) e riprova.",
-  "cookie.hint_age": "Questo video richiede la conferma dell'età. Con i cookie di {browser}, verifica di aver effettuato l'accesso a un account YouTube autorizzato a vederlo (riaccedi se necessario) e che l'indicatore dei cookie sia verde, poi riprova.",
+  "cookie.hint_age": "Questo video ha una restrizione di età. Se il download riesce, può essere a qualità ridotta (YouTube limita i formati finché l'account connesso in {browser} non ha l'età verificata); se fallisce, verifica di aver effettuato l'accesso a un account YouTube autorizzato a vederlo (riaccedi se necessario) e che l'indicatore dei cookie sia verde, poi riprova.",
   "cookie.hint_age_off": "Questo video è disponibile solo per gli utenti connessi (limite di età). Nel riquadro Cookie scegli un browser con accesso a YouTube (si consiglia Firefox), poi riprova.",
   "cookie.hint_bot": "YouTube chiede di confermare che non sei un robot. Nel riquadro Cookie scegli un browser con accesso a YouTube (si consiglia Firefox); se l'hai già fatto, riaccedi o riprova più tardi.",
   "queue.btn_retry_errors": "Riprova gli errori",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} è ancora in esecuzione ({n} processi), forse in background anche con la finestra chiusa: è lui a bloccare il database dei cookie. Termina il processo in Gestione attività (clic destro › Termina attività) oppure disattiva «Continua a eseguire app in background» nelle sue impostazioni, poi riprova. Firefox, consigliato, non ha questo limite.",
   "report.status_skipped": "⏭  Saltato",
   "report.summary_skipped": "   {n} saltati",
-  "deps.install_all_disabled": "«Installa tutto» è disattivato: richiede Chocolatey, che non è installato. Usa «Sito ufficiale» per ogni strumento; per Deno, «Installa» funziona senza Chocolatey."
+  "deps.install_all_disabled": "«Installa tutto» è disattivato: richiede Chocolatey, che non è installato. Usa «Sito ufficiale» per ogni strumento; per Deno, «Installa» funziona senza Chocolatey.",
+  "app.status_done_partial": "✔ Playlist terminata: {ok} video scaricati, {failed} non disponibili o in errore."
 }

@@ -4,10 +4,15 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ## [Non publié]
 
+### Ajouté
+- README (15 langues) : note sur les noms de fichiers existants du téléchargeur individuel (suffixe `_2`, `_3`… pour une vidéo seule ; une playlist n'est pas renumérotée et ignore les vidéos déjà présentes).
+
 ### Corrigé
 - Bilan de fin de file de téléchargement : il plantait (« KeyError: 'sauté' ») dès qu'une vidéo avait été sautée, et la fenêtre ne s'affichait pas. Le statut « sauté » est maintenant affiché, avec son nombre dans le résumé (15 langues). Le défaut existait depuis la première version.
 - Fenêtre de téléchargement : sauter une vidéo pendant une pause relançait bien la suivante, mais le bouton restait sur « Reprendre » ; il est remis sur « Pause ».
 - Fenêtre Dépendances sans Chocolatey : une phrase explique pourquoi « Tout installer » est grisé et quoi faire (bouton « Site officiel » de chaque outil ; Deno s'installe sans Chocolatey).
+- Téléchargeur individuel : une playlist terminée avec quelques vidéos indisponibles (supprimées, privées…) n'affiche plus « ✘ Échec ou annulé » alors que les autres sont téléchargées ; le message indique « Playlist terminée : N vidéo(s) téléchargée(s), M indisponible(s) ou en erreur » (15 langues). Un arrêt demandé en cours de route reste un échec, et un élément de la file d'attente dans ce cas reste en erreur pour que l'utilisateur décide de le relancer.
+- Conseil pour les vidéos à restriction d'âge reformulé : il ne dit plus seulement « réessayez » alors que le téléchargement réussit ; il précise que la qualité peut être réduite tant que le compte n'est pas vérifié pour l'âge (15 langues).
 - Les fichiers de commande temporaires laissés par un arrêt brutal sont supprimés au démarrage au bout de 10 minutes (24 heures auparavant).
 
 ## [0.1.5] — 2026-10-19

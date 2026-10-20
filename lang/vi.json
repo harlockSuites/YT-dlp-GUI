@@ -480,7 +480,7 @@
   "av.title": "Tệp bị phần mềm diệt virus chặn",
   "av.hint": "Phần mềm diệt virus đã chặn một tệp của chương trình (“tệp chứa virus hoặc phần mềm có thể không mong muốn”). Thường đây là báo động giả: yt-dlp và ffmpeg hay bị gắn cờ nhầm. Nếu bạn tin các tệp này (tải từ kho chính thức), hãy thêm thư mục {folder} vào danh sách loại trừ của phần mềm diệt virus hoặc khôi phục tệp từ khu cách ly, rồi thử lại.",
   "cookie.hint_rotated": "YouTube báo rằng phiên của {browser} đã được làm mới hoặc hết hạn. Quá trình tải vẫn tiếp tục, nhưng nếu cảnh báo lặp lại, các track âm thanh phụ và phụ đề có thể bị bỏ qua tự động. Hãy mở youtube.com trong trình duyệt đó, kiểm tra bạn đã đăng nhập (đăng nhập lại hoặc khởi động lại trình duyệt nếu cần), rồi thử lại.",
-  "cookie.hint_age": "Video này yêu cầu xác nhận độ tuổi. Với cookie của {browser}, hãy kiểm tra bạn đã đăng nhập tài khoản YouTube được phép xem (đăng nhập lại nếu cần) và đèn báo cookie màu xanh, rồi thử lại.",
+  "cookie.hint_age": "Video này bị giới hạn độ tuổi. Nếu tải thành công, chất lượng có thể bị giảm (YouTube giới hạn các định dạng cho đến khi tài khoản đăng nhập trong {browser} được xác minh tuổi); nếu thất bại, hãy kiểm tra bạn đã đăng nhập tài khoản YouTube được phép xem (đăng nhập lại nếu cần) và đèn cookie đang xanh, rồi thử lại.",
   "cookie.hint_age_off": "Video này chỉ dành cho người dùng đã đăng nhập (giới hạn độ tuổi). Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox), rồi thử lại.",
   "cookie.hint_bot": "YouTube yêu cầu xác nhận bạn không phải robot. Trong khung Cookie, hãy chọn trình duyệt đã đăng nhập YouTube (nên dùng Firefox); nếu đã làm vậy, hãy đăng nhập lại hoặc thử lại sau.",
   "queue.btn_retry_errors": "Thử lại các mục lỗi",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} vẫn đang chạy ({n} tiến trình), có thể ở chế độ nền dù cửa sổ đã đóng: chính nó khóa cơ sở dữ liệu cookie. Hãy kết thúc nó trong Trình quản lý tác vụ (nhấp chuột phải › Kết thúc tác vụ) hoặc tắt «Tiếp tục chạy ứng dụng ở chế độ nền» trong cài đặt của nó, rồi thử lại. Firefox, trình duyệt chúng tôi khuyến nghị, không có giới hạn này.",
   "report.status_skipped": "⏭  Đã bỏ qua",
   "report.summary_skipped": "   {n} đã bỏ qua",
-  "deps.install_all_disabled": "“Cài đặt tất cả” bị tắt: cần Chocolatey nhưng máy chưa cài. Hãy dùng “Trang chính thức” cho từng công cụ; với Deno, “Cài đặt” hoạt động không cần Chocolatey."
+  "deps.install_all_disabled": "“Cài đặt tất cả” bị tắt: cần Chocolatey nhưng máy chưa cài. Hãy dùng “Trang chính thức” cho từng công cụ; với Deno, “Cài đặt” hoạt động không cần Chocolatey.",
+  "app.status_done_partial": "✔ Danh sách phát hoàn tất: đã tải {ok} video, {failed} video không khả dụng hoặc lỗi."
 }

@@ -18,6 +18,7 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 - **Várias faixas de áudio**: no arquivo MKV, cada faixa de áudio traz a etiqueta do seu idioma («por», «eng»…); seu player a exibe no menu de áudio.
 - **Comando gerado**: o comando do yt-dlp correspondente às suas escolhas é exibido em tempo real.
 - **Fila**: adicione a URL atual e depois execute toda a fila, a partir de um item, um único vídeo ou um intervalo; pausa e retomada, pular o item atual, parar com limpeza dos arquivos parciais. A fila é mantida entre as sessões.
+- **Nomes de arquivo existentes**: um vídeo avulso cujo nome já existe na pasta de destino recebe um sufixo (`_2`, `_3`…) para não sobrescrever nada. Uma playlist baixada por este downloader não é renumerada: os vídeos já presentes na pasta são ignorados («has already been downloaded»).
 
 ### Inspetor de playlists
 

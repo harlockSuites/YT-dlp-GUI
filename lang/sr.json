@@ -480,7 +480,7 @@
   "av.title": "Antivirus je blokirao datoteku",
   "av.hint": "Vaš antivirus je blokirao datoteku programa („datoteka sadrži virus ili potencijalno neželjeni softver”). Obično je to lažna uzbuna: yt-dlp i ffmpeg se često pogrešno označavaju. Ako verujete ovim datotekama (preuzetim iz zvaničnih repozitorijuma), dodajte folder {folder} u izuzetke antivirusa ili vratite datoteku iz karantina, pa pokušajte ponovo.",
   "cookie.hint_rotated": "YouTube javlja da je sesija pregledača {browser} obnovljena ili istekla. Preuzimanje se nastavlja, ali ako se upozorenje ponavlja, dodatne audio trake i titlovi mogu biti automatski preskočeni. Otvorite youtube.com u tom pregledaču, proverite da li ste prijavljeni (po potrebi se ponovo prijavite ili ponovo pokrenite pregledač) pa pokušajte ponovo.",
-  "cookie.hint_age": "Ovaj video traži potvrdu uzrasta. Sa kolačićima pregledača {browser} proverite da li ste prijavljeni na YouTube nalog kojem je dozvoljen pregled (po potrebi se ponovo prijavite) i da li je pokazatelj kolačića zelen, pa pokušajte ponovo.",
+  "cookie.hint_age": "Ovaj video ima starosno ograničenje. Ako preuzimanje uspe, kvalitet može biti smanjen (YouTube ograničava formate dok nalog prijavljen u pregledaču {browser} nema potvrđen uzrast); ako ne uspe, proverite da li ste prijavljeni na YouTube nalog koji sme da ga gleda (po potrebi se ponovo prijavite) i da je indikator kolačića zelen, pa pokušajte ponovo.",
   "cookie.hint_age_off": "Ovaj video je dostupan samo prijavljenim korisnicima (uzrasno ograničenje). U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox), pa pokušajte ponovo.",
   "cookie.hint_bot": "YouTube traži da potvrdite da niste robot. U okviru Kolačići izaberite pregledač prijavljen na YouTube (preporučuje se Firefox); ako ste to već uradili, ponovo se prijavite ili pokušajte kasnije.",
   "queue.btn_retry_errors": "Ponovi greške",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} je i dalje pokrenut ({n} procesa), možda u pozadini iako je prozor zatvoren: on zaključava bazu kolačića. Zatvorite ga u Upravljaču zadataka (desni klik › Završi zadatak) ili isključite „Nastavi da pokrećeš aplikacije u pozadini” u njegovim podešavanjima, pa pokušajte ponovo. Firefox, koji preporučujemo, nema to ograničenje.",
   "report.status_skipped": "⏭  Preskočeno",
   "report.summary_skipped": "   {n} preskočeno",
-  "deps.install_all_disabled": "„Instaliraj sve” je isključeno: zahteva Chocolatey, koji nije instaliran. Koristite „Zvanična stranica” za svaki alat; za Deno, „Instaliraj” radi bez Chocolatey."
+  "deps.install_all_disabled": "„Instaliraj sve” je isključeno: zahteva Chocolatey, koji nije instaliran. Koristite „Zvanična stranica” za svaki alat; za Deno, „Instaliraj” radi bez Chocolatey.",
+  "app.status_done_partial": "✔ Plejlista završena: preuzeto {ok}, nedostupno ili sa greškom: {failed}."
 }

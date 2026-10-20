@@ -480,7 +480,7 @@
   "av.title": "文件被杀毒软件拦截",
   "av.hint": "您的杀毒软件拦截了本软件的一个文件（“文件包含病毒或可能不需要的软件”）。这通常是误报：yt-dlp 和 ffmpeg 经常被误判。如果您信任这些文件（从其官方仓库下载），请将文件夹 {folder} 加入杀毒软件的排除列表，或从隔离区还原该文件，然后重试。",
   "cookie.hint_rotated": "YouTube 提示 {browser} 的会话已刷新或已过期。下载仍在继续，但如果该提示反复出现，辅助音轨和字幕可能被自动跳过。请在该浏览器中打开 youtube.com，确认已登录（必要时重新登录或重启浏览器），然后重试。",
-  "cookie.hint_age": "此视频需要确认年龄。使用 {browser} 的 Cookie 时，请确认已登录有权观看的 YouTube 账号（必要时重新登录），且 Cookie 指示灯为绿色，然后重试。",
+  "cookie.hint_age": "此视频有年龄限制。若下载成功，画质可能会降低（在 {browser} 中登录的账号未通过年龄验证时，YouTube 会限制可用格式）；若下载失败，请确认已登录有权观看的 YouTube 账号（必要时重新登录），且 Cookie 指示灯为绿色，然后重试。",
   "cookie.hint_age_off": "此视频仅限已登录用户观看（年龄限制）。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox），然后重试。",
   "cookie.hint_bot": "YouTube 要求确认您不是机器人。请在 Cookie 框中选择已登录 YouTube 的浏览器（推荐 Firefox）；如果已经这样做，请重新登录或稍后再试。",
   "queue.btn_retry_errors": "重试出错项",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} 仍在运行（{n} 个进程），即使窗口已关闭也可能在后台运行：正是它锁定了 Cookie 数据库。请在任务管理器中结束它（右键 › 结束任务），或在其设置中关闭“在后台继续运行应用”，然后重试。推荐使用的 Firefox 没有此限制。",
   "report.status_skipped": "⏭  已跳过",
   "report.summary_skipped": "   已跳过 {n} 个",
-  "deps.install_all_disabled": "“全部安装”已禁用：它需要 Chocolatey，但系统中未安装。请对每个工具使用“官方网站”；Deno 无需 Chocolatey，可直接使用“安装”。"
+  "deps.install_all_disabled": "“全部安装”已禁用：它需要 Chocolatey，但系统中未安装。请对每个工具使用“官方网站”；Deno 无需 Chocolatey，可直接使用“安装”。",
+  "app.status_done_partial": "✔ 播放列表已完成：已下载 {ok} 个，{failed} 个不可用或出错。"
 }

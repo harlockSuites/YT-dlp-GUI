@@ -362,6 +362,30 @@ def install_wheel_scrolling(root):
     root.bind_class("TCombobox", "<MouseWheel>", lambda e: scroll(e, e.delta) or "break")
 
 
+_RE_PLAYLIST_ITEM = re.compile(r"\[download\] Downloading item \d+ of (\d+)")
+
+
+def playlist_outcome(lines):
+    """(téléchargées, en erreur) quand une playlist est allée au bout avec quelques échecs, sinon None.
+
+    yt-dlp renvoie un code d'erreur dès qu'une vidéo de la playlist est indisponible (supprimée, privée…)
+    alors que les autres sont téléchargées. Sans la ligne finale « Finished downloading playlist », rien
+    n'est conclu : un arrêt demandé en cours de route ne doit pas passer pour un succès partiel."""
+    total, errors, finished = 0, set(), False
+    for line in lines:
+        item = _RE_PLAYLIST_ITEM.search(line)
+        if item:
+            total = int(item.group(1))
+        elif line.startswith("ERROR:"):
+            errors.add(line)
+        elif line.startswith("[download] Finished downloading playlist"):
+            finished = True
+    if not finished or total < 2 or not errors:
+        return None
+    failed = min(len(errors), total)
+    return (total - failed, failed) if total - failed > 0 else None
+
+
 def extract_url(text):
     """Adresse à utiliser quand le champ URL contient du texte collé autour (« Inspection : https://… » suivi
     d'un journal, par exemple) : la première adresse http(s) du texte ; sinon le texte nettoyé."""
@@ -5959,6 +5983,7 @@ class YtDlpGui(tk.Tk):
 
         def run():
             run_args, conf_file = command_file_args(args)
+            output = []
             try:
                 self._process = subprocess.Popen(
                     run_args,
@@ -5968,9 +5993,11 @@ class YtDlpGui(tk.Tk):
                     cwd=os.path.dirname(YTDLP),
                 )
                 for line in self._process.stdout:
+                    output.append(line.rstrip())
                     self.after(0, self._on_output_line, line.rstrip())
                 self._process.wait()
-                self.after(0, self._on_done, self._process.returncode == 0)
+                ok = self._process.returncode == 0
+                self.after(0, self._on_done, ok, None if ok else playlist_outcome(output))
             except Exception as e:
                 self.after(0, self._log, t("common.log_error", error=e))
                 advice = av_advice(e)
@@ -6038,7 +6065,7 @@ class YtDlpGui(tk.Tk):
                 if hasattr(self, "_current_dl_files") and p not in self._current_dl_files:
                     self._current_dl_files.append(p)
 
-    def _on_done(self, success):
+    def _on_done(self, success, partial=None):
         self.btn_dl.configure(state="normal")
         self.btn_stop.configure(state="disabled")
         self.btn_pause.configure(state="disabled", text=t("dl.btn_pause"))
@@ -6048,6 +6075,14 @@ class YtDlpGui(tk.Tk):
             self.var_progress.set(100)
             self.var_status.set(t("app.status_done_ok"))
             self._log(t("app.log_done"), "ok")
+        elif partial:
+            # playlist allée au bout : les vidéos téléchargées sont définitives ; une entrée de la file reste
+            # en erreur (branche ci-dessous), pour que l'utilisateur décide de la relancer
+            ok, failed = partial
+            self._current_dl_files = []
+            self.var_progress.set(100)
+            self.var_status.set(t("app.status_done_partial", ok=ok, failed=failed))
+            self._log(t("app.status_done_partial", ok=ok, failed=failed), "info")
         else:
             self.var_status.set(t("app.status_done_fail"))
             self._log(t("app.status_done_fail"), "err")

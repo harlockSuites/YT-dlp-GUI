@@ -18,6 +18,7 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 - **Wiele ścieżek audio**: w pliku MKV każda ścieżka audio ma etykietę swojego języka („pol”, „eng”…); odtwarzacz pokazuje ją w menu audio.
 - **Wygenerowane polecenie**: polecenie yt-dlp odpowiadające Twoim wyborom jest wyświetlane na bieżąco.
 - **Kolejka**: dodaj bieżący adres URL, a następnie uruchom całą kolejkę, od wybranej pozycji, pojedynczy film lub zakres; pauza i wznowienie, pominięcie bieżącej pozycji, zatrzymanie z usunięciem plików częściowych. Kolejka jest zachowywana między sesjami.
+- **Istniejące nazwy plików**: pojedynczy film, którego nazwa już istnieje w folderze docelowym, otrzymuje przyrostek (`_2`, `_3`…), aby niczego nie nadpisać. Playlista pobierana tym narzędziem nie jest renumerowana: filmy już obecne w folderze są pomijane („has already been downloaded”).
 
 ### Inspektor playlist
 

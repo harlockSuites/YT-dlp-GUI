@@ -18,6 +18,7 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 - **Pistes audio multiples** : dans le fichier MKV, chaque piste audio porte l'étiquette de sa langue (« fra », « eng »…) ; votre lecteur l'affiche dans son menu audio.
 - **Commande générée** : la commande yt-dlp correspondant à vos choix s'affiche en direct.
 - **File d'attente** : ajoutez l'URL courante, puis lancez toute la file, à partir d'un élément, une seule vidéo ou une plage ; pause et reprise, saut de l'élément en cours, arrêt avec nettoyage des fichiers partiels. La file est conservée d'une session à l'autre.
+- **Noms de fichiers existants** : une vidéo seule dont le nom existe déjà dans le dossier de destination reçoit un suffixe (`_2`, `_3`…) pour ne rien écraser. Une playlist téléchargée depuis ce téléchargeur n'est pas renumérotée : les vidéos déjà présentes dans le dossier sont ignorées (« has already been downloaded »).
 
 ### Inspecteur de playlist
 

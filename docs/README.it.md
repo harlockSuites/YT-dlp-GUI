@@ -18,6 +18,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 - **Più tracce audio**: nel file MKV ogni traccia audio riporta l'etichetta della propria lingua («ita», «eng»…); il lettore la mostra nel menu audio.
 - **Comando generato**: il comando yt-dlp corrispondente alle tue scelte viene mostrato in tempo reale.
 - **Coda**: aggiungi l'URL corrente, poi avvia tutta la coda, da un elemento in poi, un solo video o un intervallo; pausa e ripresa, salto dell'elemento in corso, arresto con pulizia dei file parziali. La coda viene conservata tra una sessione e l'altra.
+- **Nomi di file già esistenti**: un video singolo il cui nome esiste già nella cartella di destinazione riceve un suffisso (`_2`, `_3`…) per non sovrascrivere nulla. Una playlist scaricata da questo downloader non viene rinumerata: i video già presenti nella cartella vengono saltati («has already been downloaded»).
 
 ### Ispettore di playlist
 

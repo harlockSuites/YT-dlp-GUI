@@ -18,6 +18,7 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 - **Multiple audio tracks**: in the MKV file, each audio track carries the tag of its language ("fra", "eng"…); your player shows it in its audio menu.
 - **Generated command**: the yt-dlp command matching your choices is displayed live.
 - **Queue**: add the current URL, then run the whole queue, from one item onward, a single video or a range; pause and resume, skip the current item, stop with cleanup of partial files. The queue is kept between sessions.
+- **Existing file names**: a single video whose name already exists in the destination folder gets a suffix (`_2`, `_3`…) so nothing is overwritten. A playlist downloaded from this downloader is not renumbered: videos already present in the folder are skipped ("has already been downloaded").
 
 ### Playlist inspector
 

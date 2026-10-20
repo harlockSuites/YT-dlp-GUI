@@ -480,7 +480,7 @@
   "av.title": "Fichier bloqué par l'antivirus",
   "av.hint": "Votre antivirus a bloqué un fichier du logiciel (« le fichier contient un virus ou un logiciel potentiellement indésirable »). Il s'agit généralement d'une fausse alerte : yt-dlp et ffmpeg sont souvent signalés à tort. Si vous faites confiance à ces fichiers (téléchargés depuis leurs dépôts officiels), ajoutez le dossier {folder} aux exclusions de votre antivirus ou restaurez le fichier depuis sa quarantaine, puis réessayez.",
   "cookie.hint_rotated": "YouTube signale que la session de {browser} a été renouvelée ou a expiré. Le téléchargement continue, mais si l'avertissement se répète, les pistes audio secondaires et les sous-titres peuvent être ignorés automatiquement. Ouvrez youtube.com dans ce navigateur, vérifiez que vous êtes connecté (reconnectez-vous si besoin ; au besoin redémarrez le navigateur), puis réessayez.",
-  "cookie.hint_age": "Cette vidéo demande de confirmer l'âge. Avec les cookies de {browser}, vérifiez que vous êtes connecté à un compte YouTube autorisé à la voir (reconnectez-vous si besoin) et que le voyant des cookies est vert, puis réessayez.",
+  "cookie.hint_age": "Cette vidéo est soumise à une restriction d'âge. Si le téléchargement réussit, il peut être en qualité réduite (YouTube limite les formats tant que le compte connecté dans {browser} n'est pas vérifié pour l'âge) ; s'il échoue, vérifiez que vous êtes connecté à un compte YouTube autorisé à la voir (reconnectez-vous si besoin) et que le voyant des cookies est vert, puis réessayez.",
   "cookie.hint_age_off": "Cette vidéo est réservée aux utilisateurs connectés (restriction d'âge). Choisissez dans le cadre Cookies un navigateur avec un compte YouTube connecté (Firefox est recommandé), puis réessayez.",
   "cookie.hint_bot": "YouTube demande de confirmer que vous n'êtes pas un robot. Choisissez dans le cadre Cookies un navigateur connecté à YouTube (Firefox est recommandé) ; si c'est déjà le cas, reconnectez-vous ou réessayez un peu plus tard.",
   "queue.btn_retry_errors": "Relancer les erreurs",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} est encore en cours d'exécution ({n} processus), peut-être en arrière-plan même si sa fenêtre est fermée : c'est lui qui verrouille sa base de cookies. Terminez-le dans le Gestionnaire des tâches (clic droit › Fin de tâche), ou désactivez « Continuer à exécuter des applications en arrière-plan » dans ses paramètres, puis réessayez. Firefox, recommandé, n'a pas cette limite.",
   "report.status_skipped": "⏭  Sauté",
   "report.summary_skipped": "   {n} sautée(s)",
-  "deps.install_all_disabled": "« Tout installer » est désactivé : il demande Chocolatey, absent de ce système. Utilisez « Site officiel » pour chaque outil ; pour Deno, « Installer » fonctionne sans Chocolatey."
+  "deps.install_all_disabled": "« Tout installer » est désactivé : il demande Chocolatey, absent de ce système. Utilisez « Site officiel » pour chaque outil ; pour Deno, « Installer » fonctionne sans Chocolatey.",
+  "app.status_done_partial": "✔ Playlist terminée : {ok} vidéo(s) téléchargée(s), {failed} indisponible(s) ou en erreur."
 }

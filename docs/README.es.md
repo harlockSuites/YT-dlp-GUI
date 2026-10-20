@@ -18,6 +18,7 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 - **Varias pistas de audio**: en el archivo MKV, cada pista de audio lleva la etiqueta de su idioma («spa», «eng»…); su reproductor la muestra en el menú de audio.
 - **Comando generado**: el comando de yt-dlp correspondiente a sus elecciones se muestra en directo.
 - **Cola**: añada la URL actual y luego ejecute toda la cola, desde un elemento, un solo vídeo o un intervalo; pausa y reanudación, omitir el elemento en curso, detener con limpieza de los archivos parciales. La cola se conserva entre sesiones.
+- **Nombres de archivo existentes**: un vídeo individual cuyo nombre ya existe en la carpeta de destino recibe un sufijo (`_2`, `_3`…) para no sobrescribir nada. Una lista de reproducción descargada desde este descargador no se renumera: los vídeos que ya están en la carpeta se omiten («has already been downloaded»).
 
 ### Inspector de listas de reproducción
 

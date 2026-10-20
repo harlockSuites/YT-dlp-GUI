@@ -18,6 +18,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Više audio traka**: u MKV datoteci svaka audio traka nosi oznaku svog jezika („srp”, „eng”…); plejer je prikazuje u meniju za zvuk.
 - **Generisana komanda**: yt-dlp komanda koja odgovara vašim izborima prikazuje se uživo.
 - **Red čekanja**: dodajte trenutni URL, pa pokrenite ceo red, od jedne stavke nadalje, samo jedan video ili opseg; pauza i nastavak, preskakanje trenutne stavke, zaustavljanje sa brisanjem delimičnih fajlova. Red se čuva između sesija.
+- **Postojeća imena fajlova**: pojedinačni video čije ime već postoji u odredišnom folderu dobija sufiks (`_2`, `_3`…) da se ništa ne prepiše. Plejlista preuzeta ovim preuzimačem ne dobija novu numeraciju: video-zapisi koji su već u folderu se preskaču („has already been downloaded”).
 
 ### Inspektor plejlisti
 

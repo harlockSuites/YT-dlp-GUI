@@ -480,7 +480,7 @@
   "av.title": "File blocked by the antivirus",
   "av.hint": "Your antivirus blocked one of the software's files (\"the file contains a virus or potentially unwanted software\"). This is usually a false alarm: yt-dlp and ffmpeg are often flagged by mistake. If you trust these files (downloaded from their official repositories), add the folder {folder} to your antivirus exclusions or restore the file from quarantine, then try again.",
   "cookie.hint_rotated": "YouTube reports that the {browser} session was renewed or has expired. The download goes on, but if the warning repeats, secondary audio tracks and subtitles may be skipped automatically. Open youtube.com in that browser, check that you are signed in (sign in again if needed; restart the browser if necessary), then try again.",
-  "cookie.hint_age": "This video asks to confirm your age. With the cookies of {browser}, check that you are signed in to a YouTube account allowed to watch it (sign in again if needed) and that the cookie indicator is green, then try again.",
+  "cookie.hint_age": "This video is age-restricted. If the download succeeds, it may be in reduced quality (YouTube limits the formats until the account signed in to {browser} is age-verified); if it fails, check that you are signed in to a YouTube account allowed to watch it (sign in again if needed) and that the cookie indicator is green, then try again.",
   "cookie.hint_age_off": "This video is only available to signed-in users (age restriction). In the Cookies frame, choose a browser signed in to YouTube (Firefox is recommended), then try again.",
   "cookie.hint_bot": "YouTube asks you to confirm that you are not a robot. In the Cookies frame, choose a browser signed in to YouTube (Firefox is recommended); if you already did, sign in again or try later.",
   "queue.btn_retry_errors": "Retry errors",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "{browser} is still running ({n} processes), possibly in the background even if its window is closed: it is what locks its cookie database. End it in Task Manager (right-click › End task), or turn off \"Continue running background apps\" in its settings, then try again. Firefox, which we recommend, does not have this limitation.",
   "report.status_skipped": "⏭  Skipped",
   "report.summary_skipped": "   {n} skipped",
-  "deps.install_all_disabled": "“Install all” is disabled: it needs Chocolatey, which is not installed. Use “Official site” for each tool; for Deno, “Install” works without Chocolatey."
+  "deps.install_all_disabled": "“Install all” is disabled: it needs Chocolatey, which is not installed. Use “Official site” for each tool; for Deno, “Install” works without Chocolatey.",
+  "app.status_done_partial": "✔ Playlist finished: {ok} video(s) downloaded, {failed} unavailable or failed."
 }

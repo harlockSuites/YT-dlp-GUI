@@ -18,6 +18,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Nhiều track âm thanh**: trong tệp MKV, mỗi track âm thanh mang nhãn ngôn ngữ của nó («vie», «eng»…); trình phát hiển thị nhãn này trong menu âm thanh.
 - **Lệnh được tạo**: lệnh yt-dlp tương ứng với lựa chọn của bạn được hiển thị trực tiếp.
 - **Hàng đợi**: thêm URL hiện tại, rồi chạy toàn bộ hàng đợi, từ một mục trở đi, một video hoặc một khoảng; tạm dừng và tiếp tục, bỏ qua mục đang chạy, dừng và dọn các tệp dở dang. Hàng đợi được giữ lại giữa các phiên.
+- **Tên tệp đã tồn tại**: một video đơn lẻ có tên đã có trong thư mục đích sẽ được thêm hậu tố (`_2`, `_3`…) để không ghi đè gì cả. Danh sách phát tải từ trình tải này không được đánh số lại: các video đã có trong thư mục sẽ bị bỏ qua («has already been downloaded»).
 
 ### Trình kiểm tra danh sách phát
 

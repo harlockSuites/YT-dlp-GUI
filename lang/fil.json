@@ -480,7 +480,7 @@
   "av.title": "Na-block ng antivirus ang file",
   "av.hint": "Na-block ng iyong antivirus ang isang file ng software (\"may virus o potensyal na hindi gustong software ang file\"). Karaniwan itong maling alarma: madalas na maling namarkahan ang yt-dlp at ffmpeg. Kung pinagkakatiwalaan mo ang mga file na ito (na-download mula sa kanilang opisyal na repository), idagdag ang folder na {folder} sa mga exclusion ng antivirus o i-restore ang file mula sa quarantine, saka subukan muli.",
   "cookie.hint_rotated": "Iniulat ng YouTube na na-renew o nag-expire ang session ng {browser}. Nagpapatuloy ang download, ngunit kung inuulit ang babala, maaaring awtomatikong laktawan ang mga pangalawang audio track at subtitle. Buksan ang youtube.com sa browser na iyon, tiyaking naka-sign in ka (mag-sign in muli o i-restart ang browser kung kailangan), saka subukan muli.",
-  "cookie.hint_age": "Humihingi ang video na ito ng kumpirmasyon ng edad. Gamit ang mga cookie ng {browser}, tiyaking naka-sign in ka sa YouTube account na pinapayagang manood nito (mag-sign in muli kung kailangan) at berde ang indicator ng cookie, saka subukan muli.",
+  "cookie.hint_age": "May age restriction ang video na ito. Kung magtagumpay ang download, maaaring mababa ang kalidad (nililimitahan ng YouTube ang mga format hanggang hindi pa napapatunayan ang edad ng account na naka-sign in sa {browser}); kung pumalya, tiyaking naka-sign in ka sa YouTube account na pinapayagang manood nito (mag-sign in muli kung kailangan) at berde ang indicator ng cookies, saka subukan muli.",
   "cookie.hint_age_off": "Para lang sa mga naka-sign in ang video na ito (restriksyon sa edad). Sa Cookies frame, pumili ng browser na naka-sign in sa YouTube (inirerekomenda ang Firefox), saka subukan muli.",
   "cookie.hint_bot": "Hinihiling ng YouTube na kumpirmahin mong hindi ka robot. Sa Cookies frame, pumili ng browser na naka-sign in sa YouTube (inirerekomenda ang Firefox); kung nagawa mo na, mag-sign in muli o subukan mamaya.",
   "queue.btn_retry_errors": "Subukan muli ang mga error",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "Tumatakbo pa ang {browser} ({n} process), posibleng sa background kahit sarado ang window: ito ang nagla-lock ng cookie database. Tapusin ito sa Task Manager (right-click › End task) o i-off ang \"Continue running background apps\" sa settings nito, saka subukan muli. Ang Firefox, na inirerekomenda namin, ay walang ganitong limitasyon.",
   "report.status_skipped": "⏭  Nilaktawan",
   "report.summary_skipped": "   {n} nilaktawan",
-  "deps.install_all_disabled": "Naka-disable ang “I-install lahat”: nangangailangan ito ng Chocolatey na hindi naka-install. Gamitin ang “Opisyal na site” para sa bawat tool; para sa Deno, gumagana ang “I-install” kahit walang Chocolatey."
+  "deps.install_all_disabled": "Naka-disable ang “I-install lahat”: nangangailangan ito ng Chocolatey na hindi naka-install. Gamitin ang “Opisyal na site” para sa bawat tool; para sa Deno, gumagana ang “I-install” kahit walang Chocolatey.",
+  "app.status_done_partial": "✔ Tapos na ang playlist: {ok} video ang na-download, {failed} ang hindi available o nagka-error."
 }

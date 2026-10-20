@@ -18,6 +18,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 - **Maraming audio track**: sa MKV file, may tag ng wika ang bawat audio track ("fil", "eng"…); ipinapakita ito ng player sa audio menu.
 - **Nabuong command**: ipinapakita nang live ang yt-dlp command na tugma sa mga pinili mo.
 - **Pila**: idagdag ang kasalukuyang URL, saka patakbuhin ang buong pila, mula sa isang item pasulong, isang video lang o isang saklaw; pause at resume, paglaktaw sa kasalukuyang item, paghinto na may paglilinis ng mga hindi kumpletong file. Napapanatili ang pila sa pagitan ng mga session.
+- **Mga umiiral nang pangalan ng file**: ang isang video na ang pangalan ay nasa destination folder na ay nagkakaroon ng suffix (`_2`, `_3`…) para walang mapatungan. Ang playlist na dina-download sa downloader na ito ay hindi binabago ang numero: nilalaktawan ang mga video na nasa folder na ("has already been downloaded").
 
 ### Inspector ng playlist
 

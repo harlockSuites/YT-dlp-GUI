@@ -480,7 +480,7 @@
   "av.title": "Arquivo bloqueado pelo antivírus",
   "av.hint": "O seu antivírus bloqueou um arquivo do programa («o arquivo contém um vírus ou software potencialmente indesejado»). Em geral é um falso alarme: o yt-dlp e o ffmpeg costumam ser sinalizados por engano. Se você confia nesses arquivos (baixados de seus repositórios oficiais), adicione a pasta {folder} às exclusões do antivírus ou restaure o arquivo da quarentena e tente novamente.",
   "cookie.hint_rotated": "O YouTube informa que a sessão do {browser} foi renovada ou expirou. O download continua, mas se o aviso se repetir, as faixas de áudio secundárias e as legendas podem ser ignoradas automaticamente. Abra youtube.com nesse navegador, confirme que você está conectado (conecte-se novamente se preciso; reinicie o navegador se necessário) e tente de novo.",
-  "cookie.hint_age": "Este vídeo pede a confirmação da idade. Com os cookies do {browser}, confirme que você está conectado a uma conta do YouTube autorizada a vê-lo (conecte-se novamente se preciso) e que o indicador de cookies está verde; depois tente de novo.",
+  "cookie.hint_age": "Este vídeo tem restrição de idade. Se o download for concluído, pode ter qualidade reduzida (o YouTube limita os formatos enquanto a conta conectada no {browser} não tiver a idade verificada); se falhar, confirme que você está conectado a uma conta do YouTube autorizada a vê-lo (conecte-se novamente se preciso) e que o indicador de cookies está verde; depois tente de novo.",
   "cookie.hint_age_off": "Este vídeo só está disponível para usuários conectados (restrição de idade). No quadro Cookies, escolha um navegador conectado ao YouTube (recomendamos o Firefox) e tente de novo.",
   "cookie.hint_bot": "O YouTube pede para confirmar que você não é um robô. No quadro Cookies, escolha um navegador conectado ao YouTube (recomendamos o Firefox); se já fez isso, conecte-se novamente ou tente mais tarde.",
   "queue.btn_retry_errors": "Tentar os erros novamente",
@@ -491,5 +491,6 @@
   "cookie.hint_locked_running": "O {browser} ainda está em execução ({n} processos), talvez em segundo plano mesmo com a janela fechada: é ele que bloqueia o banco de cookies. Encerre-o no Gerenciador de Tarefas (clique direito › Finalizar tarefa) ou desative «Continuar executando aplicativos em segundo plano» nas configurações dele, e tente novamente. O Firefox, recomendado, não tem essa limitação.",
   "report.status_skipped": "⏭  Ignorado",
   "report.summary_skipped": "   {n} ignorada(s)",
-  "deps.install_all_disabled": "«Instalar tudo» está desativado: exige o Chocolatey, que não está instalado. Use «Site oficial» em cada ferramenta; para o Deno, «Instalar» funciona sem o Chocolatey."
+  "deps.install_all_disabled": "«Instalar tudo» está desativado: exige o Chocolatey, que não está instalado. Use «Site oficial» em cada ferramenta; para o Deno, «Instalar» funciona sem o Chocolatey.",
+  "app.status_done_partial": "✔ Playlist concluída: {ok} vídeo(s) baixado(s), {failed} indisponível(is) ou com erro."
 }
