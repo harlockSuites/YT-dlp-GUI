@@ -479,7 +479,7 @@
   "deps.log_elevation_cancelled": "Elevation refused or cancelled: nothing was installed.",
   "av.title": "File blocked by the antivirus",
   "av.hint": "Your antivirus blocked one of the software's files (\"the file contains a virus or potentially unwanted software\"). This is usually a false alarm: yt-dlp and ffmpeg are often flagged by mistake. If you trust these files (downloaded from their official repositories), add the folder {folder} to your antivirus exclusions or restore the file from quarantine, then try again.",
-  "cookie.hint_rotated": "YouTube refused the cookies of {browser} (session renewed or expired). Open youtube.com in that browser, check that you are signed in (sign in again if needed), then try again.",
+  "cookie.hint_rotated": "YouTube reports that the {browser} session was renewed or has expired. The download goes on, but if the warning repeats, secondary audio tracks and subtitles may be skipped automatically. Open youtube.com in that browser, check that you are signed in (sign in again if needed; restart the browser if necessary), then try again.",
   "cookie.hint_age": "This video asks to confirm your age. With the cookies of {browser}, check that you are signed in to a YouTube account allowed to watch it (sign in again if needed) and that the cookie indicator is green, then try again.",
   "cookie.hint_age_off": "This video is only available to signed-in users (age restriction). In the Cookies frame, choose a browser signed in to YouTube (Firefox is recommended), then try again.",
   "cookie.hint_bot": "YouTube asks you to confirm that you are not a robot. In the Cookies frame, choose a browser signed in to YouTube (Firefox is recommended); if you already did, sign in again or try later.",

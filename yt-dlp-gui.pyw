@@ -299,6 +299,55 @@ def _tblkcat(fr_cat: str) -> str:
     return t(key) if key else fr_cat
 
 
+def _can_scroll_y(canvas, delta):
+    """Le canevas peut-il défiler dans le sens de la molette (delta > 0 : vers le haut) ?"""
+    try:
+        lo, hi = canvas.yview()
+    except tk.TclError:
+        return False
+    return lo > 0.0 if delta > 0 else hi < 1.0
+
+
+def wheel_target(widget, delta):
+    """Zone défilante à faire bouger pour une molette tournée au-dessus de `widget`, ou None.
+
+    On remonte les parents : un tableau, une zone de texte ou une liste défilent déjà seuls (liaison de
+    classe de Tk, on ne s'en mêle pas) ; sinon le premier canevas à barre de défilement qui peut encore
+    bouger dans ce sens est retenu, y compris quand le pointeur est sur une étiquette, un cadre ou un bouton."""
+    w = widget
+    while w is not None:
+        if isinstance(w, (tk.Text, tk.Listbox, ttk.Treeview)):
+            return None
+        if isinstance(w, tk.Canvas):
+            scrollable = bool(str(w.cget("yscrollcommand"))) or bool(str(w.cget("scrollregion")).strip())
+            if scrollable and _can_scroll_y(w, delta):
+                return w
+        w = getattr(w, "master", None)
+    return None
+
+
+def install_wheel_scrolling(root):
+    """Molette de la souris : fait défiler la zone défilante sous le pointeur, où qu'il soit dans la fenêtre
+    (étiquettes, cadres, boutons…), au lieu de ne fonctionner que sur quelques contrôles. Une liste déroulante
+    survolée fait défiler la page au lieu de changer sa valeur."""
+    def scroll(event, delta):
+        try:
+            pointer = root.winfo_containing(event.x_root, event.y_root)
+        except (KeyError, tk.TclError):
+            return None
+        canvas = wheel_target(pointer, delta)
+        if canvas is None:
+            return None
+        step = max(1, abs(delta) // 120)
+        canvas.yview_scroll(-step if delta > 0 else step, "units")
+        return "break"
+
+    root.bind_all("<MouseWheel>", lambda e: scroll(e, e.delta), add="+")
+    root.bind_all("<Button-4>", lambda e: scroll(e, 120), add="+")      # X11 (version Linux à venir)
+    root.bind_all("<Button-5>", lambda e: scroll(e, -120), add="+")
+    root.bind_class("TCombobox", "<MouseWheel>", lambda e: scroll(e, e.delta) or "break")
+
+
 def extract_url(text):
     """Adresse à utiliser quand le champ URL contient du texte collé autour (« Inspection : https://… » suivi
     d'un journal, par exemple) : la première adresse http(s) du texte ; sinon le texte nettoyé."""
@@ -1374,6 +1423,9 @@ class DownloadQueueWindow(tk.Toplevel):
                 pass
 
     _RE_DEST   = re.compile(r"\[download\] Destination:\s+(.+)")
+    _RE_SUBS   = re.compile(r"\[info\] Writing video (?:subtitles|automatic captions) to:\s+(.+)")
+    _RE_FINAL  = re.compile(r'\[Merger\] Merging formats into "(.+)"|\[ExtractAudio\] Destination:\s+(.+)'
+                            r'|\[Video(?:Remuxer|Convertor)\].*?Destination:\s+"?(.+?)"?\s*$')
     _RE_THUMB  = re.compile(r"\[info\] (?:Writing|Downloading) video thumbnail \S+ to:\s+(.+)")
     _RE_THUMB2 = re.compile(r'\[ThumbnailsConvertor\] Converting thumbnail "(.+?)" to ')
 
@@ -1407,6 +1459,17 @@ class DownloadQueueWindow(tk.Toplevel):
                         p = base + ext
                         if p not in self._current_dl_files:
                             self._current_dl_files.append(p)
+                msub = self._RE_SUBS.search(line)
+                if msub:
+                    sub_path = msub.group(1).strip()
+                    if sub_path not in self._current_dl_files:
+                        self._current_dl_files.append(sub_path)
+                mfin = self._RE_FINAL.search(line)
+                if mfin:
+                    # fichier final : sauter ou arrêter la vidéo en cours le supprime aussi (« tout supprimer »)
+                    final = next(g for g in mfin.groups() if g).strip()
+                    if final not in self._current_dl_files:
+                        self._current_dl_files.append(final)
                 mt2 = self._RE_THUMB2.search(line)
                 if mt2:
                     thumb2 = mt2.group(1).strip()
@@ -1711,8 +1774,6 @@ class DownloadReportWindow(tk.Toplevel):
         cwin = canvas.create_window((0, 0), window=inner, anchor="nw")
         inner.bind("<Configure>", lambda _: canvas.configure(scrollregion=canvas.bbox("all")))
         canvas.bind("<Configure>", lambda e: canvas.itemconfig(cwin, width=e.width))
-        canvas.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1*(e.delta//120), "units"))
-
         inner.columnconfigure(1, weight=1)
 
         for idx, r in enumerate(report):
@@ -1878,8 +1939,6 @@ class MultiCheckSelect(ttk.Frame):
         cwin = canvas.create_window((0, 0), window=inner, anchor="nw")
         inner.bind("<Configure>", lambda _: canvas.configure(scrollregion=canvas.bbox("all")))
         canvas.bind("<Configure>", lambda e: canvas.itemconfig(cwin, width=e.width))
-        canvas.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1*(e.delta//120), "units"))
-
         if not choices:
             ttk.Label(inner, text=t("mcs.no_option")).pack(padx=12, pady=8)
         else:
@@ -1949,8 +2008,6 @@ class MultiCheckSelect(ttk.Frame):
             cwin = canvas.create_window((0, 0), window=inner, anchor="nw")
             inner.bind("<Configure>", lambda _, cv=canvas: cv.configure(scrollregion=cv.bbox("all")))
             canvas.bind("<Configure>", lambda e, cv=canvas, cw=cwin: cv.itemconfig(cw, width=e.width))
-            canvas.bind("<MouseWheel>", lambda e, cv=canvas: cv.yview_scroll(-1*(e.delta//120), "units"))
-
             rows = []
             for code, lbl in choices:
                 var = tk.BooleanVar(value=code in self._selected)
@@ -2672,8 +2729,14 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self.protocol("WM_DELETE_WINDOW", self._on_inspector_close)
         if url:
             self.var_url.set(url)
-        if outdir:
+        # dossier : celui que l'inspecteur utilisait la dernière fois, sinon celui de la fenêtre principale
+        last = cfg.get("insp_outdir", "")
+        if last and os.path.isdir(last):
+            self.var_g_outdir.set(last)
+        elif outdir:
             self.var_g_outdir.set(outdir)
+        self.var_g_outdir.trace_add("write", lambda *_: YtDlpGui.remember("insp_outdir", self.var_g_outdir.get()))
+        self.var_g_browser.trace_add("write", lambda *_: YtDlpGui.remember("browser", self.var_g_browser.get()))
 
     def _on_inspector_close(self):
         self._stop_flag.set()
@@ -2799,9 +2862,6 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
         self._page_cv.bind("<Configure>", _fit_page)
         page.bind("<Configure>", _fit_page)
-        for w in (self._page_cv, page):
-            w.bind("<MouseWheel>",
-                   lambda e: self._page_cv.yview_scroll(-1 * (e.delta // 120), "units"))
 
         # ── Règles globales (reflux automatique selon la largeur) ──
         frm_g_outer = ttk.LabelFrame(page, text=t("insp.rules_frame_label"), padding=8)
@@ -2993,8 +3053,6 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._inner.bind("<Configure>", _fit_table)
         frm_head.bind("<Configure>", _fit_table)
         self._canvas.bind("<Configure>", _fit_table)
-        self._canvas.bind("<MouseWheel>",
-                          lambda e: self._canvas.yview_scroll(-1 * (e.delta // 120), "units"))
         self._canvas.bind("<Shift-MouseWheel>",
                           lambda e: self._canvas.xview_scroll(-1 * (e.delta // 120), "units"))
 
@@ -3895,7 +3953,6 @@ class PlaylistInspectorWindow(tk.Toplevel):
         canvas.configure(yscrollcommand=sb.set)
         canvas.pack(side="left", fill="both", expand=True)
         sb.pack(side="right", fill="y")
-        dlg.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 if e.delta > 0 else 1, "units"))
 
         btn_search = ttk.Button(btns, text=t("insp.registry_btn_search"))
         btn_apply = ttk.Button(btns, text=t("insp.registry_btn_apply"), state="disabled")
@@ -4055,7 +4112,6 @@ class PlaylistInspectorWindow(tk.Toplevel):
         canvas.configure(yscrollcommand=sb.set)
         canvas.pack(side="left", fill="both", expand=True)
         sb.pack(side="right", fill="y")
-        dlg.bind("<MouseWheel>", lambda e: canvas.yview_scroll(-1 if e.delta > 0 else 1, "units"))
 
         src_title = t("insp.reconcile_src_title")
         vars_ = []
@@ -4754,6 +4810,7 @@ class YtDlpGui(tk.Tk):
         self._build_ui()
         self._restore_config()
         self._apply_initial_geometry()
+        install_wheel_scrolling(self)
         cleanup_command_files()
         if self.AUTO_SETUP:
             self.after(400, self._maybe_first_run)
@@ -4833,9 +4890,6 @@ class YtDlpGui(tk.Tk):
         self._fit_page = _fit_page
         self._page_cv.bind("<Configure>", _fit_page)
         page.bind("<Configure>", _fit_page)
-        for w in (self._page_cv, page):
-            w.bind("<MouseWheel>",
-                   lambda e: self._page_cv.yview_scroll(-1 * (e.delta // 120), "units"))
 
         # ── Barre d'outils (haut) ──────────────────
         frm_toolbar = ttk.Frame(page)
@@ -5871,6 +5925,9 @@ class YtDlpGui(tk.Tk):
 
     _RE_PROGRESS = re.compile(r"\[download\]\s+([\d.]+)%")
     _RE_DEST     = re.compile(r"\[download\] Destination:\s+(.+)")
+    _RE_SUBS     = re.compile(r"\[info\] Writing video (?:subtitles|automatic captions) to:\s+(.+)")
+    _RE_FINAL    = re.compile(r'\[Merger\] Merging formats into "(.+)"|\[ExtractAudio\] Destination:\s+(.+)'
+                              r'|\[Video(?:Remuxer|Convertor)\].*?Destination:\s+"?(.+?)"?\s*$')
     _RE_THUMB    = re.compile(r"\[info\] (?:Writing|Downloading) video thumbnail \S+ to:\s+(.+)")
     _RE_THUMB2   = re.compile(r'\[ThumbnailsConvertor\] Converting thumbnail "(.+?)" to ')
 
@@ -5892,6 +5949,16 @@ class YtDlpGui(tk.Tk):
             self.var_status.set(f"↓ {os.path.basename(path)}")
             if hasattr(self, "_current_dl_files") and path not in self._current_dl_files:
                 self._current_dl_files.append(path)
+        msub = self._RE_SUBS.search(line)
+        if msub and hasattr(self, "_current_dl_files"):
+            sub_path = msub.group(1).strip()
+            if sub_path not in self._current_dl_files:
+                self._current_dl_files.append(sub_path)
+        mfin = self._RE_FINAL.search(line)
+        if mfin and hasattr(self, "_current_dl_files"):
+            final = next(g for g in mfin.groups() if g).strip()
+            if final not in self._current_dl_files:
+                self._current_dl_files.append(final)
         m3 = self._RE_THUMB.search(line)
         if m3:
             thumb = m3.group(1).strip()
@@ -6370,6 +6437,15 @@ class YtDlpGui(tk.Tk):
     # ──────────────────────────────────────────────
     #  Persistance
     # ──────────────────────────────────────────────
+    @staticmethod
+    def remember(key, value):
+        """Écrit un réglage dans la configuration tout de suite : un arrêt brutal ou un redémarrage de
+        l'ordinateur ne fait plus perdre le dernier dossier ni le dernier navigateur choisis."""
+        cfg = load_config()
+        if cfg.get(key) != value:
+            cfg[key] = value
+            save_config(cfg)
+
     def _restore_config(self):
         c = self._config
         if "outdir" in c:
@@ -6388,6 +6464,8 @@ class YtDlpGui(tk.Tk):
             self.var_browser.set(c["browser"])
         self._update_cookie_warn_main()
         self._update_cmd()
+        self.var_outdir.trace_add("write", lambda *_: self.remember("outdir", self.var_outdir.get()))
+        self.var_browser.trace_add("write", lambda *_: self.remember("browser", self.var_browser.get()))
 
     def _on_close(self):
         cfg = load_config()

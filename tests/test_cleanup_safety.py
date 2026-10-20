@@ -59,6 +59,28 @@ class QueueWindowCleanupTests(unittest.TestCase):
         self._run_cleanup(win)
         self.assertTrue(os.path.exists(self.video))
 
+    def test_skipping_after_the_merge_deletes_the_merged_video_too(self):
+        merged = os.path.join(self.d, "Ma vidéo.mkv")
+        with open(merged, "w") as f:
+            f.write("x")
+        win = self._window(running=True, files=[merged, self.video])      # fichier final + sous-titre déjà écrit
+        self._run_cleanup(win)
+        self.assertFalse(os.path.exists(merged), "règle « tout supprimer » : le MKV fusionné aussi")
+        self.assertFalse(os.path.exists(self.video))
+
+    def test_final_file_announcements_are_recognised(self):
+        cases = {
+            r'[Merger] Merging formats into "C:\Dl\Ep 2.mkv"': r"C:\Dl\Ep 2.mkv",
+            r"[ExtractAudio] Destination: C:\Dl\chanson.mp3": r"C:\Dl\chanson.mp3",
+            r'[VideoRemuxer] Remuxing video from webm to mp4; Destination: "C:\Dl\v.mp4"': r"C:\Dl\v.mp4",
+        }
+        for cls in (m.DownloadQueueWindow, m.YtDlpGui):
+            for line, expected in cases.items():
+                found = cls._RE_FINAL.search(line)
+                self.assertIsNotNone(found, (cls.__name__, line))
+                self.assertEqual(next(g for g in found.groups() if g).strip(), expected)
+            self.assertIsNone(cls._RE_FINAL.search(r'[Metadata] Adding metadata to "C:\Dl\x.mkv"'))
+
     def test_source_clears_the_list_when_a_video_succeeds(self):
         with open(m.__file__, encoding="utf-8") as f:
             source = f.read()
