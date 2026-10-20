@@ -488,5 +488,8 @@
   "inspect.box_running": "Analisi in corso…",
   "inspect.box_failed": "Analisi non riuscita (vedi il registro).",
   "inspect.box_langs": "Audio: {audio} · Sottotitoli: {subs}",
-  "cookie.hint_locked_running": "{browser} è ancora in esecuzione ({n} processi), forse in background anche con la finestra chiusa: è lui a bloccare il database dei cookie. Termina il processo in Gestione attività (clic destro › Termina attività) oppure disattiva «Continua a eseguire app in background» nelle sue impostazioni, poi riprova. Firefox, consigliato, non ha questo limite."
+  "cookie.hint_locked_running": "{browser} è ancora in esecuzione ({n} processi), forse in background anche con la finestra chiusa: è lui a bloccare il database dei cookie. Termina il processo in Gestione attività (clic destro › Termina attività) oppure disattiva «Continua a eseguire app in background» nelle sue impostazioni, poi riprova. Firefox, consigliato, non ha questo limite.",
+  "report.status_skipped": "⏭  Saltato",
+  "report.summary_skipped": "   {n} saltati",
+  "deps.install_all_disabled": "«Installa tutto» è disattivato: richiede Chocolatey, che non è installato. Usa «Sito ufficiale» per ogni strumento; per Deno, «Installa» funziona senza Chocolatey."
 }

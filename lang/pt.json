@@ -488,5 +488,8 @@
   "inspect.box_running": "Análise em andamento…",
   "inspect.box_failed": "Falha na análise (veja o registro).",
   "inspect.box_langs": "Áudio: {audio} · Legendas: {subs}",
-  "cookie.hint_locked_running": "O {browser} ainda está em execução ({n} processos), talvez em segundo plano mesmo com a janela fechada: é ele que bloqueia o banco de cookies. Encerre-o no Gerenciador de Tarefas (clique direito › Finalizar tarefa) ou desative «Continuar executando aplicativos em segundo plano» nas configurações dele, e tente novamente. O Firefox, recomendado, não tem essa limitação."
+  "cookie.hint_locked_running": "O {browser} ainda está em execução ({n} processos), talvez em segundo plano mesmo com a janela fechada: é ele que bloqueia o banco de cookies. Encerre-o no Gerenciador de Tarefas (clique direito › Finalizar tarefa) ou desative «Continuar executando aplicativos em segundo plano» nas configurações dele, e tente novamente. O Firefox, recomendado, não tem essa limitação.",
+  "report.status_skipped": "⏭  Ignorado",
+  "report.summary_skipped": "   {n} ignorada(s)",
+  "deps.install_all_disabled": "«Instalar tudo» está desativado: exige o Chocolatey, que não está instalado. Use «Site oficial» em cada ferramenta; para o Deno, «Instalar» funciona sem o Chocolatey."
 }

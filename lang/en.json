@@ -488,5 +488,8 @@
   "inspect.box_running": "Inspection in progress…",
   "inspect.box_failed": "Inspection failed (see the log).",
   "inspect.box_langs": "Audio: {audio} · Subtitles: {subs}",
-  "cookie.hint_locked_running": "{browser} is still running ({n} processes), possibly in the background even if its window is closed: it is what locks its cookie database. End it in Task Manager (right-click › End task), or turn off \"Continue running background apps\" in its settings, then try again. Firefox, which we recommend, does not have this limitation."
+  "cookie.hint_locked_running": "{browser} is still running ({n} processes), possibly in the background even if its window is closed: it is what locks its cookie database. End it in Task Manager (right-click › End task), or turn off \"Continue running background apps\" in its settings, then try again. Firefox, which we recommend, does not have this limitation.",
+  "report.status_skipped": "⏭  Skipped",
+  "report.summary_skipped": "   {n} skipped",
+  "deps.install_all_disabled": "“Install all” is disabled: it needs Chocolatey, which is not installed. Use “Official site” for each tool; for Deno, “Install” works without Chocolatey."
 }

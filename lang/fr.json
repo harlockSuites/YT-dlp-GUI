@@ -488,5 +488,8 @@
   "inspect.box_running": "Analyse en cours…",
   "inspect.box_failed": "Échec de l'analyse (voir le journal).",
   "inspect.box_langs": "Audio : {audio} · Sous-titres : {subs}",
-  "cookie.hint_locked_running": "{browser} est encore en cours d'exécution ({n} processus), peut-être en arrière-plan même si sa fenêtre est fermée : c'est lui qui verrouille sa base de cookies. Terminez-le dans le Gestionnaire des tâches (clic droit › Fin de tâche), ou désactivez « Continuer à exécuter des applications en arrière-plan » dans ses paramètres, puis réessayez. Firefox, recommandé, n'a pas cette limite."
+  "cookie.hint_locked_running": "{browser} est encore en cours d'exécution ({n} processus), peut-être en arrière-plan même si sa fenêtre est fermée : c'est lui qui verrouille sa base de cookies. Terminez-le dans le Gestionnaire des tâches (clic droit › Fin de tâche), ou désactivez « Continuer à exécuter des applications en arrière-plan » dans ses paramètres, puis réessayez. Firefox, recommandé, n'a pas cette limite.",
+  "report.status_skipped": "⏭  Sauté",
+  "report.summary_skipped": "   {n} sautée(s)",
+  "deps.install_all_disabled": "« Tout installer » est désactivé : il demande Chocolatey, absent de ce système. Utilisez « Site officiel » pour chaque outil ; pour Deno, « Installer » fonctionne sans Chocolatey."
 }

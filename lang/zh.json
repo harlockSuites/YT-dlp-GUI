@@ -488,5 +488,8 @@
   "inspect.box_running": "正在分析…",
   "inspect.box_failed": "分析失败（见日志）。",
   "inspect.box_langs": "音频：{audio} · 字幕：{subs}",
-  "cookie.hint_locked_running": "{browser} 仍在运行（{n} 个进程），即使窗口已关闭也可能在后台运行：正是它锁定了 Cookie 数据库。请在任务管理器中结束它（右键 › 结束任务），或在其设置中关闭“在后台继续运行应用”，然后重试。推荐使用的 Firefox 没有此限制。"
+  "cookie.hint_locked_running": "{browser} 仍在运行（{n} 个进程），即使窗口已关闭也可能在后台运行：正是它锁定了 Cookie 数据库。请在任务管理器中结束它（右键 › 结束任务），或在其设置中关闭“在后台继续运行应用”，然后重试。推荐使用的 Firefox 没有此限制。",
+  "report.status_skipped": "⏭  已跳过",
+  "report.summary_skipped": "   已跳过 {n} 个",
+  "deps.install_all_disabled": "“全部安装”已禁用：它需要 Chocolatey，但系统中未安装。请对每个工具使用“官方网站”；Deno 无需 Chocolatey，可直接使用“安装”。"
 }

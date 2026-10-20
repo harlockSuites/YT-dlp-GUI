@@ -488,5 +488,8 @@
   "inspect.box_running": "Analiza w toku…",
   "inspect.box_failed": "Analiza nie powiodła się (zobacz dziennik).",
   "inspect.box_langs": "Audio: {audio} · Napisy: {subs}",
-  "cookie.hint_locked_running": "{browser} nadal działa ({n} procesów), być może w tle mimo zamkniętego okna: to on blokuje bazę ciasteczek. Zakończ go w Menedżerze zadań (prawy przycisk › Zakończ zadanie) lub wyłącz w jego ustawieniach „Kontynuuj uruchamianie aplikacji w tle”, a następnie spróbuj ponownie. Firefox, zalecany, nie ma tego ograniczenia."
+  "cookie.hint_locked_running": "{browser} nadal działa ({n} procesów), być może w tle mimo zamkniętego okna: to on blokuje bazę ciasteczek. Zakończ go w Menedżerze zadań (prawy przycisk › Zakończ zadanie) lub wyłącz w jego ustawieniach „Kontynuuj uruchamianie aplikacji w tle”, a następnie spróbuj ponownie. Firefox, zalecany, nie ma tego ograniczenia.",
+  "report.status_skipped": "⏭  Pominięto",
+  "report.summary_skipped": "   {n} pominięto",
+  "deps.install_all_disabled": "„Zainstaluj wszystko” jest wyłączone: wymaga Chocolatey, którego nie zainstalowano. Użyj „Oficjalna strona” dla każdego narzędzia; dla Deno „Zainstaluj” działa bez Chocolatey."
 }

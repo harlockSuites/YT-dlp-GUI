@@ -488,5 +488,8 @@
   "inspect.box_running": "Isinasagawa ang pagsusuri…",
   "inspect.box_failed": "Nabigo ang pagsusuri (tingnan ang log).",
   "inspect.box_langs": "Audio: {audio} · Mga subtitle: {subs}",
-  "cookie.hint_locked_running": "Tumatakbo pa ang {browser} ({n} process), posibleng sa background kahit sarado ang window: ito ang nagla-lock ng cookie database. Tapusin ito sa Task Manager (right-click › End task) o i-off ang \"Continue running background apps\" sa settings nito, saka subukan muli. Ang Firefox, na inirerekomenda namin, ay walang ganitong limitasyon."
+  "cookie.hint_locked_running": "Tumatakbo pa ang {browser} ({n} process), posibleng sa background kahit sarado ang window: ito ang nagla-lock ng cookie database. Tapusin ito sa Task Manager (right-click › End task) o i-off ang \"Continue running background apps\" sa settings nito, saka subukan muli. Ang Firefox, na inirerekomenda namin, ay walang ganitong limitasyon.",
+  "report.status_skipped": "⏭  Nilaktawan",
+  "report.summary_skipped": "   {n} nilaktawan",
+  "deps.install_all_disabled": "Naka-disable ang “I-install lahat”: nangangailangan ito ng Chocolatey na hindi naka-install. Gamitin ang “Opisyal na site” para sa bawat tool; para sa Deno, gumagana ang “I-install” kahit walang Chocolatey."
 }

@@ -650,8 +650,8 @@ def remove_command_file(path):
             pass
 
 
-def cleanup_command_files(max_age=24 * 3600):
-    """Supprime les fichiers laissés par un arrêt brutal."""
+def cleanup_command_files(max_age=600):
+    """Supprime les fichiers laissés par un arrêt brutal (yt-dlp lit le sien au lancement, quelques secondes)."""
     try:
         for name in os.listdir(COMMAND_DIR):
             full = os.path.join(COMMAND_DIR, name)
@@ -818,6 +818,13 @@ class DepsWindow(tk.Toplevel):
                 foreground="#c0392b",
                 justify="left",
                 padding=8,
+            ).pack(anchor="w")
+            ttk.Label(
+                frm_warn,
+                text=t("deps.install_all_disabled"),
+                wraplength=560,
+                justify="left",
+                padding=(8, 0, 8, 8),
             ).pack(anchor="w")
 
         # Tableau des dépendances
@@ -1613,9 +1620,9 @@ class DownloadQueueWindow(tk.Toplevel):
             self._skip_flag.clear()
             self._current_dl_files = []
             self._dl_started = time.time()
-            if self._paused:
-                self._paused = False
-                self.after(0, lambda: self.btn_pause.configure(text=t("dlq.btn_pause")))
+            # toujours remettre le bouton : _kill_and_cleanup a déjà repris le processus en pause et baissé _paused
+            self._paused = False
+            self.after(0, lambda: self.btn_pause.configure(text=t("dlq.btn_pause")))
             title = row["vid"]["title"]
             vid_url = f"https://www.youtube.com/watch?v={row['vid']['id']}"
             self.after(0, lambda t=title, ix=i, tot=total:
@@ -1779,6 +1786,7 @@ class DownloadReportWindow(tk.Toplevel):
         "ok":     "#6ec26e",
         "ajusté": "#f5a623",
         "erreur": "#f66666",
+        "sauté":  "#9cdcfe",
     }
     @property
     def _STATUS_LABEL(self):
@@ -1786,6 +1794,7 @@ class DownloadReportWindow(tk.Toplevel):
             "ok":     t("report.status_ok"),
             "ajusté": t("report.status_adjusted"),
             "erreur": t("report.status_error"),
+            "sauté":  t("report.status_skipped"),
         }
 
     def __init__(self, parent, report):
@@ -1797,6 +1806,7 @@ class DownloadReportWindow(tk.Toplevel):
         n_ok  = sum(1 for r in report if r["status"] == "ok")
         n_adj = sum(1 for r in report if r["status"] == "ajusté")
         n_err = sum(1 for r in report if r["status"] == "erreur")
+        n_skip = sum(1 for r in report if r["status"] == "sauté")
         total = len(report)
 
         h = max(280, min(700, 100 + total * 36))
@@ -1806,7 +1816,8 @@ class DownloadReportWindow(tk.Toplevel):
         frm_sum = ttk.Frame(self, padding=(12, 10, 12, 6))
         frm_sum.pack(fill="x")
         ttk.Label(frm_sum,
-                  text=t("report.summary", total=total, n_ok=n_ok, n_adj=n_adj, n_err=n_err),
+                  text=t("report.summary", total=total, n_ok=n_ok, n_adj=n_adj, n_err=n_err)
+                       + (t("report.summary_skipped", n=n_skip) if n_skip else ""),
                   font=("Segoe UI", 10, "bold")).pack(side="left")
 
         # ── Liste scrollable ────────────────────────────────────────
