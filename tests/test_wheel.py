@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 
 from tests._loader import load_gui, tk_available
 
@@ -25,9 +26,11 @@ class WheelTests(unittest.TestCase):
             self.app.update()
 
     def _wheel(self, widget, delta):
-        x, y = widget.winfo_rootx() + 5, widget.winfo_rooty() + 5
-        widget.event_generate("<MouseWheel>", delta=delta, rootx=x, rooty=y, x=5, y=5)
-        self._settle(5)
+        # le contrôle « sous le pointeur » est imposé : sur un serveur d'intégration sans écran réel (ou à
+        # l'écran plus petit que la fenêtre), la position du pointeur ne désigne pas forcément ce contrôle
+        with mock.patch.object(self.app, "winfo_containing", return_value=widget):
+            widget.event_generate("<MouseWheel>", delta=delta)
+            self._settle(5)
 
     def test_wheel_scrolls_the_page_over_labels_frames_and_buttons(self):
         for name in ("_lbl_dep_warn", "_frm_url", "btn_dl", "_cookie_frame"):
@@ -50,10 +53,7 @@ class WheelTests(unittest.TestCase):
         self.cv.yview_moveto(0.1)
         self._settle(3)
         before = self.cv.yview()[0]
-        # pointeur au milieu de la zone visible, quel que soit le contrôle qui s'y trouve
-        x, y = self.cv.winfo_rootx() + 150, self.cv.winfo_rooty() + 60
-        self.cv.event_generate("<MouseWheel>", delta=120, rootx=x, rooty=y, x=150, y=60)
-        self._settle(5)
+        self._wheel(self.app._frm_url, 120)
         self.assertLess(self.cv.yview()[0], before)
 
     def test_combobox_scrolls_the_page_without_changing_its_value(self):
@@ -74,9 +74,16 @@ class WheelTests(unittest.TestCase):
         self.assertEqual(self.cv.yview()[0], before)
 
     def test_nothing_to_scroll_when_the_page_fits(self):
-        self.app.geometry("1000x1400+0+0")
+        import tkinter as tk
+        top = tk.Toplevel(self.app)            # fenêtre à part : tout le contenu y tient, rien à défiler
+        self.addCleanup(top.destroy)
+        cv = tk.Canvas(top, height=40, width=40, scrollregion=(0, 0, 40, 40))
+        cv.configure(yscrollcommand=lambda *a: None)
+        cv.pack()
         self._settle()
-        self.assertIsNone(m.wheel_target(self.app._frm_url, -120))
+        self.assertEqual(cv.yview(), (0.0, 1.0))
+        self.assertIsNone(m.wheel_target(cv, -120))
+        self.assertIsNone(m.wheel_target(cv, 120))
 
     def test_nested_scroll_areas_fall_back_to_the_outer_one(self):
         import tkinter as tk
