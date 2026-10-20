@@ -308,6 +308,20 @@ def _can_scroll_y(canvas, delta):
     return lo > 0.0 if delta > 0 else hi < 1.0
 
 
+def modified_since(path, since):
+    """Le fichier a-t-il été écrit depuis `since` (horloge time.time(), 2 s de tolérance) ?
+
+    Garde-fou du nettoyage : les recherches « par suffixe » ou par motif (*.part, .fr.srt…) ne touchent que les
+    fichiers que le téléchargement interrompu vient de produire, jamais ceux des autres vidéos du dossier.
+    Sans heure de départ connue, rien n'est considéré comme récent."""
+    if since is None:
+        return False
+    try:
+        return os.path.getmtime(path) >= since - 2
+    except OSError:
+        return False
+
+
 def wheel_target(widget, delta):
     """Zone défilante à faire bouger pour une molette tournée au-dessus de `widget`, ou None.
 
@@ -553,6 +567,33 @@ def save_config(data):
         _write_json_atomic(CONFIG_FILE, data)
     except Exception:
         pass
+
+
+def update_config(key, value, attempts=3, delay=0.2):
+    """Modifie un seul réglage sans jamais écraser les autres : si le fichier existe mais reste illisible
+    (verrouillé un instant par un antivirus, par exemple), rien n'est écrit. Renvoie True si le réglage est
+    enregistré (ou l'était déjà)."""
+    for i in range(attempts):
+        if not os.path.exists(CONFIG_FILE):
+            cfg = {}
+            break
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+            if isinstance(cfg, dict):
+                break
+        except Exception:
+            pass
+        cfg = None
+        if i < attempts - 1:
+            time.sleep(delay)
+    if cfg is None:
+        return False
+    if cfg.get(key) == value:
+        return True
+    cfg[key] = value
+    save_config(cfg)
+    return True
 
 
 def load_queue():
@@ -1229,6 +1270,7 @@ class DownloadQueueWindow(tk.Toplevel):
                     pass
         files = list(self._current_dl_files) if was_running else []
         self._current_dl_files = []
+        since = getattr(self, "_dl_started", None)
 
         # Répertoire de sortie connu via l'inspecteur (filet de sécurité si files est vide)
         insp_outdir = ""
@@ -1258,6 +1300,11 @@ class DownloadQueueWindow(tk.Toplevel):
                     time.sleep(1.5)
             return False
 
+        def _try_remove_recent(path):
+            """Repli : ne supprime que ce que la vidéo interrompue vient d'écrire (voir modified_since)."""
+            if modified_since(path, since):
+                _try_remove(path)
+
         def _remove_by_suffix(path, d):
             """Fallback : si le chemin exact n'existe pas, cherche par suffixe ou tige normalisée."""
             import re as _re
@@ -1278,7 +1325,7 @@ class DownloadQueueWindow(tk.Toplevel):
                     for fname in os.listdir(d):
                         if (fname.endswith(suffix) or fname.endswith(suffix + ".part")
                                 or fname.endswith(suffix + ".ytdl")):
-                            _try_remove(os.path.join(d, fname))
+                            _try_remove_recent(os.path.join(d, fname))
                 except OSError:
                     pass
                 return
@@ -1294,9 +1341,9 @@ class DownloadQueueWindow(tk.Toplevel):
                 for fname in os.listdir(d):
                     fstem, fext = os.path.splitext(fname)
                     if fext.lower() == ext_lower and _norm(fstem) == stem_norm:
-                        _try_remove(os.path.join(d, fname))
+                        _try_remove_recent(os.path.join(d, fname))
                     elif fext.lower() == ext_lower + ".part" and _norm(fstem) == stem_norm:
-                        _try_remove(os.path.join(d, fname))
+                        _try_remove_recent(os.path.join(d, fname))
             except OSError:
                 pass
 
@@ -1319,7 +1366,7 @@ class DownloadQueueWindow(tk.Toplevel):
             for d in dirs:
                 for pat in ("*.part", "*.ytdl"):
                     for f in _gl.glob(os.path.join(d, pat)):
-                        _try_remove(f)
+                        _try_remove_recent(f)
 
         _thread = threading.Thread(target=_cleanup, args=(files, insp_outdir), daemon=True)
         self._cleanup_thread = _thread
@@ -1565,6 +1612,7 @@ class DownloadQueueWindow(tk.Toplevel):
                 break
             self._skip_flag.clear()
             self._current_dl_files = []
+            self._dl_started = time.time()
             if self._paused:
                 self._paused = False
                 self.after(0, lambda: self.btn_pause.configure(text=t("dlq.btn_pause")))
@@ -5891,6 +5939,7 @@ class YtDlpGui(tk.Tk):
         self.btn_pause.configure(state="normal")
         self._paused = False
         self._current_dl_files = []   # fichiers en cours pour nettoyage si skip
+        self._dl_started = time.time()
         self._cookie_hint_shown = False
         self.var_progress.set(0)
         self.var_status.set(t("app.status_starting"))
@@ -6301,6 +6350,7 @@ class YtDlpGui(tk.Tk):
         """Supprime les fichiers partiels du téléchargement interrompu."""
         files = list(getattr(self, "_current_dl_files", []))
         self._current_dl_files = []
+        since = getattr(self, "_dl_started", None)
         def _try_remove(path):
             """Tente de supprimer un fichier avec réessais."""
             import time
@@ -6317,6 +6367,11 @@ class YtDlpGui(tk.Tk):
                                    f"[cleanup] ✗ {os.path.basename(path)} : {e}", "err")
                     time.sleep(1.5)
             return False
+
+        def _try_remove_recent(path):
+            """Repli : ne supprime que ce que la vidéo interrompue vient d'écrire (voir modified_since)."""
+            if modified_since(path, since):
+                _try_remove(path)
 
         def _remove_by_suffix(path, d):
             import re as _re
@@ -6336,7 +6391,7 @@ class YtDlpGui(tk.Tk):
                     for fname in os.listdir(d):
                         if (fname.endswith(suffix) or fname.endswith(suffix + ".part")
                                 or fname.endswith(suffix + ".ytdl")):
-                            _try_remove(os.path.join(d, fname))
+                            _try_remove_recent(os.path.join(d, fname))
                 except OSError:
                     pass
                 return
@@ -6351,9 +6406,9 @@ class YtDlpGui(tk.Tk):
                 for fname in os.listdir(d):
                     fstem, fext = os.path.splitext(fname)
                     if fext.lower() == ext_lower and _norm(fstem) == stem_norm:
-                        _try_remove(os.path.join(d, fname))
+                        _try_remove_recent(os.path.join(d, fname))
                     elif fext.lower() == ext_lower + ".part" and _norm(fstem) == stem_norm:
-                        _try_remove(os.path.join(d, fname))
+                        _try_remove_recent(os.path.join(d, fname))
             except OSError:
                 pass
 
@@ -6375,7 +6430,7 @@ class YtDlpGui(tk.Tk):
                     continue
                 for pat in ("*.part", "*.ytdl"):
                     for f in _gl.glob(os.path.join(d, pat)):
-                        _try_remove(f)
+                        _try_remove_recent(f)
 
         threading.Thread(target=_do_cleanup, args=(files,), daemon=True).start()
 
@@ -6441,10 +6496,7 @@ class YtDlpGui(tk.Tk):
     def remember(key, value):
         """Écrit un réglage dans la configuration tout de suite : un arrêt brutal ou un redémarrage de
         l'ordinateur ne fait plus perdre le dernier dossier ni le dernier navigateur choisis."""
-        cfg = load_config()
-        if cfg.get(key) != value:
-            cfg[key] = value
-            save_config(cfg)
+        update_config(key, value)
 
     def _restore_config(self):
         c = self._config

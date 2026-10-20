@@ -2,6 +2,7 @@ import os
 import shutil
 import tempfile
 import unittest
+from unittest import mock
 
 from tests._loader import load_gui, tk_available
 
@@ -100,6 +101,47 @@ class PreferencesTests(unittest.TestCase):
         insp.withdraw()
         self.addCleanup(insp.destroy)
         self.assertEqual(insp.var_g_outdir.get(), self.d1)
+
+
+class UpdateConfigTests(unittest.TestCase):
+    """Un réglage mémorisé ne doit jamais effacer les autres, même si le fichier est momentanément illisible."""
+
+    def setUp(self):
+        m.save_config({"lang": "fr", "quality": "720p"})
+        self.addCleanup(m.save_config, {})
+
+    def test_other_settings_are_kept(self):
+        self.assertTrue(m.update_config("outdir", "D:/Videos"))
+        self.assertEqual(m.load_config(), {"lang": "fr", "quality": "720p", "outdir": "D:/Videos"})
+
+    def test_an_unreadable_file_is_never_overwritten(self):
+        real_open = open
+        def locked(path, *a, **k):
+            if str(path) == m.CONFIG_FILE and "w" not in (a[0] if a else k.get("mode", "r")):
+                raise PermissionError(32, "utilisé par un autre processus")
+            return real_open(path, *a, **k)
+        with mock.patch("builtins.open", locked), mock.patch("time.sleep"):
+            self.assertFalse(m.update_config("outdir", "D:/Videos"))
+        self.assertEqual(m.load_config(), {"lang": "fr", "quality": "720p"})
+
+    def test_a_brief_lock_is_retried(self):
+        real_open = open
+        calls = {"n": 0}
+        def flaky(path, *a, **k):
+            if str(path) == m.CONFIG_FILE and "w" not in (a[0] if a else k.get("mode", "r")):
+                calls["n"] += 1
+                if calls["n"] == 1:
+                    raise PermissionError(32, "utilisé par un autre processus")
+            return real_open(path, *a, **k)
+        with mock.patch("builtins.open", flaky), mock.patch("time.sleep"):
+            self.assertTrue(m.update_config("outdir", "D:/Videos"))
+        self.assertEqual(m.load_config()["outdir"], "D:/Videos")
+        self.assertEqual(m.load_config()["lang"], "fr")
+
+    def test_missing_file_is_created(self):
+        os.remove(m.CONFIG_FILE)
+        self.assertTrue(m.update_config("browser", "firefox"))
+        self.assertEqual(m.load_config(), {"browser": "firefox"})
 
 
 if __name__ == "__main__":
