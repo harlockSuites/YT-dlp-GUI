@@ -214,8 +214,8 @@
   "upd.log_diag_verdict_ok": "✔ 兼容性正常 — GUI 可正常运行。",
   "upd.log_diag_verdict_warn": "⚠ 检测到兼容性问题（请查看上方 ✘ 标记）。",
   "deps.window_title": "yt-dlp 依赖项",
-  "deps.header": "yt-dlp 所需的扩展与工具",
-  "deps.choco_warn": "⚠  未检测到 Chocolatey。\n安装按钮将不可用。",
+  "deps.header": "yt-dlp 使用的扩展和工具",
+  "deps.choco_warn": "ℹ  未安装 Chocolatey，这不是问题。\n它只用于自动安装；需要时请使用“官方网站”。",
   "deps.col_tool": "工具",
   "deps.col_status": "状态",
   "deps.col_role": "用途",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  已跳过",
   "report.summary_skipped": "   已跳过 {n} 个",
   "deps.install_all_disabled": "“全部安装”已禁用：它需要 Chocolatey，但系统中未安装。请对每个工具使用“官方网站”；Deno 无需 Chocolatey，可直接使用“安装”。",
-  "app.status_done_partial": "✔ 播放列表已完成：已下载 {ok} 个，{failed} 个不可用或出错。"
+  "app.status_done_partial": "✔ 播放列表已完成：已下载 {ok} 个，{failed} 个不可用或出错。",
+  "dl.stop_playlist_title": "停止播放列表",
+  "dl.stop_playlist_msg": "目标文件夹中有 {n} 个已完成视频的文件。\n\n是：全部删除，包括已下载的视频。\n否：只删除正在下载的视频（已完成的视频保留）。\n取消：继续下载。",
+  "deps.optional_note": "只有 ffmpeg 和 ffprobe（*）是必需的，用于合并视频与音频以及嵌入字幕。若要查看辅助音轨，建议安装 Deno。AtomicParsley、MKVToolNix 和 aria2 是可选的：没有它们软件也能正常运行，可以忽略这些行。",
+  "deps.status_optional": "– 可选",
+  "deps.status_recommended": "○ 推荐"
 }

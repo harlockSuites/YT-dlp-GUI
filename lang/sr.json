@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ Kompatibilnost U REDU — GUI može da radi normalno.",
   "upd.log_diag_verdict_warn": "⚠ Otkrivene nekompatibilnosti (pogledajte ✘ gore).",
   "deps.window_title": "yt-dlp zavisnosti",
-  "deps.header": "Ekstenzije i alati potrebni za yt-dlp",
-  "deps.choco_warn": "⚠  Chocolatey nije otkriven na ovom sistemu.\nDugmad za instalaciju neće biti dostupna.",
+  "deps.header": "Dodaci i alati koje koristi yt-dlp",
+  "deps.choco_warn": "ℹ  Chocolatey nije instaliran: to nije problem.\nSluži samo za automatske instalacije; po potrebi koristite „Zvanična stranica”.",
   "deps.col_tool": "Alat",
   "deps.col_status": "Status",
   "deps.col_role": "Uloga",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Preskočeno",
   "report.summary_skipped": "   {n} preskočeno",
   "deps.install_all_disabled": "„Instaliraj sve” je isključeno: zahteva Chocolatey, koji nije instaliran. Koristite „Zvanična stranica” za svaki alat; za Deno, „Instaliraj” radi bez Chocolatey.",
-  "app.status_done_partial": "✔ Plejlista završena: preuzeto {ok}, nedostupno ili sa greškom: {failed}."
+  "app.status_done_partial": "✔ Plejlista završena: preuzeto {ok}, nedostupno ili sa greškom: {failed}.",
+  "dl.stop_playlist_title": "Zaustavi plejlistu",
+  "dl.stop_playlist_msg": "U odredišnom folderu nalazi se {n} fajl(ova) već završenih video-zapisa.\n\nDa: obriši sve, uključujući već preuzete video-zapise.\nNe: obriši samo video koji se trenutno preuzima (završeni ostaju).\nOtkaži: nastavi preuzimanje.",
+  "deps.optional_note": "Samo su ffmpeg i ffprobe (*) neophodni, za spajanje videa i zvuka i ugrađivanje titlova. Deno se preporučuje za dodatne audio trake. AtomicParsley, MKVToolNix i aria2 su opcioni: program odlično radi i bez njih, ove redove možete zanemariti.",
+  "deps.status_optional": "– Opciono",
+  "deps.status_recommended": "○ Preporučeno"
 }

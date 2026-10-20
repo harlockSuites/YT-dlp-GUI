@@ -45,7 +45,7 @@
 ### 安装向导、依赖项与 yt-dlp 更新
 
 - **安装向导**：首次启动时，建议从官方 GitHub 仓库下载 yt-dlp 和 ffmpeg。会校验 SHA-256 校验和，且无需管理员权限。
-- **依赖项**：专用窗口检查 ffmpeg、ffprobe、AtomicParsley、MKVToolNix、aria2 和 deno，并可通过 Chocolatey 安装它们。
+- **依赖项**：专用窗口检查 ffmpeg、ffprobe、AtomicParsley、MKVToolNix、aria2 和 deno，并可通过 Chocolatey 安装它们。只有 ffmpeg 和 ffprobe 是必需的；deno 建议安装（辅助音轨）；AtomicParsley、MKVToolNix 和 aria2 是可选的：没有它们软件也能运行。
 - **更新与诊断**：更新 yt-dlp（`yt-dlp -U`）或替换其可执行文件，显示版本并检查界面所使用的选项。
 - **软件更新**：每天检查一次（可关闭），以不显眼的横幅提示新版本；专用窗口会显示更新内容，并打开与您的安装方式（安装程序或便携版）对应的下载。不会自动安装任何内容。选项菜单中的开关（“启动时检查更新”）可开启或关闭自动检查，“检查软件更新…”则可随时手动检查。
 

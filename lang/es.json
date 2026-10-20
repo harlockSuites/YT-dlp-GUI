@@ -214,8 +214,8 @@
   "upd.log_diag_verdict_ok": "✔ Compatibilidad OK — el GUI puede funcionar con normalidad.",
   "upd.log_diag_verdict_warn": "⚠ Se han detectado incompatibilidades (consulte los ✘ anteriores).",
   "deps.window_title": "Dependencias de yt-dlp",
-  "deps.header": "Extensiones y herramientas requeridas por yt-dlp",
-  "deps.choco_warn": "⚠  Chocolatey no está detectado en este sistema.\nLos botones de instalación no estarán disponibles.",
+  "deps.header": "Extensiones y herramientas que usa yt-dlp",
+  "deps.choco_warn": "ℹ  Chocolatey no está instalado: no es un problema.\nSolo sirve para las instalaciones automáticas; si lo necesita, use «Sitio oficial».",
   "deps.col_tool": "Herramienta",
   "deps.col_status": "Estado",
   "deps.col_role": "Función",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Omitido",
   "report.summary_skipped": "   {n} omitida(s)",
   "deps.install_all_disabled": "«Instalar todo» está desactivado: necesita Chocolatey, que no está instalado. Use «Sitio oficial» en cada herramienta; para Deno, «Instalar» funciona sin Chocolatey.",
-  "app.status_done_partial": "✔ Lista terminada: {ok} vídeo(s) descargado(s), {failed} no disponible(s) o con error."
+  "app.status_done_partial": "✔ Lista terminada: {ok} vídeo(s) descargado(s), {failed} no disponible(s) o con error.",
+  "dl.stop_playlist_title": "Detener la lista de reproducción",
+  "dl.stop_playlist_msg": "{n} archivo(s) de vídeos ya terminados están en la carpeta de destino.\n\nSí: eliminar todo, incluidos los vídeos ya descargados.\nNo: eliminar solo el vídeo en curso (los vídeos terminados se conservan).\nCancelar: seguir descargando.",
+  "deps.optional_note": "Solo ffmpeg y ffprobe (*) son imprescindibles, para unir vídeo y audio e incrustar subtítulos. Deno se recomienda para ver las pistas de audio secundarias. AtomicParsley, MKVToolNix y aria2 son opcionales: el programa funciona perfectamente sin ellos, puede ignorar esas líneas.",
+  "deps.status_optional": "– Opcional",
+  "deps.status_recommended": "○ Recomendado"
 }

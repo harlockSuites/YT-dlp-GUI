@@ -45,7 +45,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 ### Telepítő varázsló, függőségek és a yt-dlp frissítései
 
 - **Telepítő varázsló**: az első indításkor felajánlja a yt-dlp és az ffmpeg letöltését a hivatalos GitHub-tárolókból. Az SHA-256 ellenőrzőösszeg ellenőrzésre kerül, és nincs szükség rendszergazdai jogosultságra.
-- **Függőségek**: a külön ablak ellenőrzi az ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 és deno meglétét, és Chocolatey segítségével telepítheti őket.
+- **Függőségek**: a külön ablak ellenőrzi az ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 és deno meglétét, és Chocolatey segítségével telepítheti őket. Csak az ffmpeg és az ffprobe nélkülözhetetlen; a deno ajánlott (másodlagos hangsávok); az AtomicParsley, az MKVToolNix és az aria2 választható: a program nélkülük is működik.
 - **Frissítés és diagnosztika**: frissíti a yt-dlp-t (`yt-dlp -U`) vagy lecseréli a futtatható fájlját, megmutatja a verzióját, és ellenőrzi a felület által használt kapcsolókat.
 - **Programfrissítés**: a naponta végzett (kikapcsolható) ellenőrzés egy diszkrét sávval jelzi az új verziót; a külön ablak megmutatja az újdonságokat, és megnyitja a telepítésének megfelelő letöltést (telepítő vagy hordozható változat). Semmi nem települ automatikusan. A beállítások menü kapcsolója („Frissítések keresése indításkor”) be- vagy kikapcsolja az automatikus ellenőrzést, a „Programfrissítés keresése…” pedig kérésre lefuttatja.
 

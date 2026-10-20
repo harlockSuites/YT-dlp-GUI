@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ Tương thích OK — GUI có thể chạy bình thường.",
   "upd.log_diag_verdict_warn": "⚠ Phát hiện sự không tương thích (xem ✘ ở trên).",
   "deps.window_title": "Phụ thuộc yt-dlp",
-  "deps.header": "Các tiện ích mở rộng và công cụ cần thiết cho yt-dlp",
-  "deps.choco_warn": "⚠  Không phát hiện thấy Chocolatey trên hệ thống này.\nCác nút cài đặt sẽ không khả dụng.",
+  "deps.header": "Tiện ích và công cụ yt-dlp sử dụng",
+  "deps.choco_warn": "ℹ  Chocolatey chưa được cài: đó không phải vấn đề.\nNó chỉ dùng cho việc cài đặt tự động; khi cần, hãy dùng “Trang chính thức”.",
   "deps.col_tool": "Công cụ",
   "deps.col_status": "Trạng thái",
   "deps.col_role": "Vai trò",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Đã bỏ qua",
   "report.summary_skipped": "   {n} đã bỏ qua",
   "deps.install_all_disabled": "“Cài đặt tất cả” bị tắt: cần Chocolatey nhưng máy chưa cài. Hãy dùng “Trang chính thức” cho từng công cụ; với Deno, “Cài đặt” hoạt động không cần Chocolatey.",
-  "app.status_done_partial": "✔ Danh sách phát hoàn tất: đã tải {ok} video, {failed} video không khả dụng hoặc lỗi."
+  "app.status_done_partial": "✔ Danh sách phát hoàn tất: đã tải {ok} video, {failed} video không khả dụng hoặc lỗi.",
+  "dl.stop_playlist_title": "Dừng danh sách phát",
+  "dl.stop_playlist_msg": "Có {n} tệp của các video đã hoàn tất trong thư mục đích.\n\nCó: xóa tất cả, kể cả các video đã tải xong.\nKhông: chỉ xóa video đang tải (các video đã hoàn tất được giữ lại).\nHủy: tiếp tục tải.",
+  "deps.optional_note": "Chỉ ffmpeg và ffprobe (*) là bắt buộc, để ghép video với âm thanh và nhúng phụ đề. Deno được khuyến nghị để xem các track âm thanh phụ. AtomicParsley, MKVToolNix và aria2 là tùy chọn: phần mềm vẫn chạy tốt khi thiếu chúng, bạn có thể bỏ qua các dòng này.",
+  "deps.status_optional": "– Tùy chọn",
+  "deps.status_recommended": "○ Khuyến nghị"
 }

@@ -45,7 +45,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 ### Katulong sa pag-install, mga dependency at mga update ng yt-dlp
 
 - **Katulong sa pag-install**: sa unang pagbukas, iminumungkahi nitong i-download ang yt-dlp at ffmpeg mula sa kanilang opisyal na GitHub repository. Bine-verify ang SHA-256 checksum at hindi kailangan ng administrator rights.
-- **Mga dependency**: sinusuri ng nakalaang window ang ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 at deno, at maaari silang i-install gamit ang Chocolatey.
+- **Mga dependency**: sinusuri ng nakalaang window ang ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 at deno, at maaari silang i-install gamit ang Chocolatey. Ang ffmpeg at ffprobe lamang ang kailangang-kailangan; inirerekomenda ang deno (mga pangalawang audio track); opsyonal ang AtomicParsley, MKVToolNix at aria2: gumagana ang software kahit wala ang mga ito.
 - **Update at diagnostic**: ina-update ang yt-dlp (`yt-dlp -U`) o pinapalitan ang executable nito, ipinapakita ang bersyon at sinusuri ang mga opsyong ginagamit ng interface.
 - **Update ng software**: ang araw-araw na pagsusuri (maaaring i-off) ay nagsasaad ng bagong bersyon gamit ang isang banayad na banner; ipinapakita ng nakalaang window ang mga bago at binubuksan ang download na tugma sa iyong pag-install (installer o portable na bersyon). Walang awtomatikong ini-install. Ino-on o ino-off ng switch sa menu ng mga opsyon ("Suriin ang mga update sa pagsisimula") ang awtomatikong pagsusuri, at pinapatakbo ito kapag hiniling ng "Maghanap ng update ng software…".
 

@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ OK ang compatibility — maaaring gumana nang normal ang GUI.",
   "upd.log_diag_verdict_warn": "⚠ Nakitaan ng mga hindi tugma (tingnan ang ✘ sa itaas).",
   "deps.window_title": "Mga Dependency ng yt-dlp",
-  "deps.header": "Mga extension at tool na kailangan ng yt-dlp",
-  "deps.choco_warn": "⚠  Hindi natukoy ang Chocolatey sa sistemang ito.\nHindi available ang mga button na I-install.",
+  "deps.header": "Mga extension at tool na ginagamit ng yt-dlp",
+  "deps.choco_warn": "ℹ  Hindi naka-install ang Chocolatey: hindi iyon problema.\nPara lang ito sa mga awtomatikong pag-install; kung kailangan, gamitin ang “Opisyal na site”.",
   "deps.col_tool": "Tool",
   "deps.col_status": "Katayuan",
   "deps.col_role": "Papel",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Nilaktawan",
   "report.summary_skipped": "   {n} nilaktawan",
   "deps.install_all_disabled": "Naka-disable ang “I-install lahat”: nangangailangan ito ng Chocolatey na hindi naka-install. Gamitin ang “Opisyal na site” para sa bawat tool; para sa Deno, gumagana ang “I-install” kahit walang Chocolatey.",
-  "app.status_done_partial": "✔ Tapos na ang playlist: {ok} video ang na-download, {failed} ang hindi available o nagka-error."
+  "app.status_done_partial": "✔ Tapos na ang playlist: {ok} video ang na-download, {failed} ang hindi available o nagka-error.",
+  "dl.stop_playlist_title": "Ihinto ang playlist",
+  "dl.stop_playlist_msg": "May {n} file ng mga video na tapos na sa destination folder.\n\nOo: burahin lahat, kasama ang mga video na na-download na.\nHindi: burahin lang ang video na kasalukuyang dina-download (mananatili ang mga tapos na).\nKansela: ipagpatuloy ang pag-download.",
+  "deps.optional_note": "Ang ffmpeg at ffprobe (*) lamang ang kailangang-kailangan, para pagsamahin ang video at audio at i-embed ang mga subtitle. Inirerekomenda ang Deno para makita ang mga pangalawang audio track. Opsyonal ang AtomicParsley, MKVToolNix at aria2: gumagana nang maayos ang software kahit wala ang mga ito, maaari mong balewalain ang mga linyang ito.",
+  "deps.status_optional": "– Opsyonal",
+  "deps.status_recommended": "○ Inirerekomenda"
 }

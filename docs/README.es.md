@@ -45,7 +45,7 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 ### Asistente de instalación, dependencias y actualizaciones de yt-dlp
 
 - **Asistente de instalación**: en el primer inicio propone descargar yt-dlp y ffmpeg desde sus repositorios oficiales de GitHub. Se verifica la suma SHA-256 y no se necesitan permisos de administrador.
-- **Dependencias**: la ventana dedicada comprueba ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 y deno, y puede instalarlos con Chocolatey.
+- **Dependencias**: la ventana dedicada comprueba ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 y deno, y puede instalarlos con Chocolatey. Solo ffmpeg y ffprobe son imprescindibles; deno se recomienda (pistas de audio secundarias); AtomicParsley, MKVToolNix y aria2 son opcionales: el programa funciona sin ellos.
 - **Actualización y diagnóstico**: actualiza yt-dlp (`yt-dlp -U`) o sustituye su ejecutable, muestra su versión y comprueba las opciones que usa la interfaz.
 - **Actualización del programa**: una comprobación diaria (desactivable) avisa de una nueva versión con un banner discreto; la ventana dedicada muestra las novedades y abre la descarga que corresponde a su instalación (instalador o versión portable). No se instala nada automáticamente. Un interruptor del menú de opciones («Buscar actualizaciones al iniciar») activa o desactiva la comprobación automática, y «Buscar una actualización del programa…» la ejecuta a petición.
 

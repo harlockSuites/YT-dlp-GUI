@@ -214,8 +214,8 @@
   "upd.log_diag_verdict_ok": "✔ 互換性OK — GUIは正常に動作します。",
   "upd.log_diag_verdict_warn": "⚠ 非互換性が検出されました（上記の ✘ をご確認ください）。",
   "deps.window_title": "yt-dlp 依存関係",
-  "deps.header": "yt-dlp が必要とする拡張機能とツール",
-  "deps.choco_warn": "⚠  このシステムでは Chocolatey が検出されませんでした。\nインストールボタンは利用できません。",
+  "deps.header": "yt-dlp が使う拡張機能とツール",
+  "deps.choco_warn": "ℹ  Chocolatey がインストールされていませんが、問題ありません。\n自動インストールにのみ使われます。必要なときは「公式サイト」を使ってください。",
   "deps.col_tool": "ツール",
   "deps.col_status": "ステータス",
   "deps.col_role": "役割",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  スキップ",
   "report.summary_skipped": "   {n} 件スキップ",
   "deps.install_all_disabled": "「すべてインストール」は無効です。Chocolatey が必要ですが、インストールされていません。各ツールには「公式サイト」を使ってください。Deno は Chocolatey なしでも「インストール」で入れられます。",
-  "app.status_done_partial": "✔ プレイリスト完了：{ok} 件をダウンロード、{failed} 件は利用不可またはエラー。"
+  "app.status_done_partial": "✔ プレイリスト完了：{ok} 件をダウンロード、{failed} 件は利用不可またはエラー。",
+  "dl.stop_playlist_title": "プレイリストを停止",
+  "dl.stop_playlist_msg": "保存先フォルダに、完了済みの動画のファイルが {n} 個あります。\n\nはい：ダウンロード済みの動画も含め、すべて削除します。\nいいえ：進行中の動画だけを削除します（完了済みの動画は残ります）。\nキャンセル：ダウンロードを続けます。",
+  "deps.optional_note": "必須なのは ffmpeg と ffprobe（*）だけで、映像と音声の結合や字幕の埋め込みに使います。Deno は副音声トラックを表示するために推奨されます。AtomicParsley、MKVToolNix、aria2 は任意です。これらがなくてもソフトは問題なく動作するので、この行は無視してかまいません。",
+  "deps.status_optional": "– 任意",
+  "deps.status_recommended": "○ 推奨"
 }

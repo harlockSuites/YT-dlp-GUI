@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ Kompatibilitás OK — a GUI normálisan működhet.",
   "upd.log_diag_verdict_warn": "⚠ Inkompatibilitások észlelve (lásd ✘ fent).",
   "deps.window_title": "yt-dlp függőségek",
-  "deps.header": "A yt-dlp által igényelt bővítmények és eszközök",
-  "deps.choco_warn": "⚠  A Chocolatey nem észlelhető ezen a rendszeren.\nA telepítési gombok nem lesznek elérhetők.",
+  "deps.header": "A yt-dlp által használt bővítmények és eszközök",
+  "deps.choco_warn": "ℹ  A Chocolatey nincs telepítve: ez nem probléma.\nCsak az automatikus telepítésekhez kell; szükség esetén használja a(z) „Hivatalos oldal” gombot.",
   "deps.col_tool": "Eszköz",
   "deps.col_status": "Állapot",
   "deps.col_role": "Szerepkör",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Kihagyva",
   "report.summary_skipped": "   {n} kihagyva",
   "deps.install_all_disabled": "A(z) „Összes telepítése” le van tiltva: a Chocolatey szükséges hozzá, de az nincs telepítve. Használja a(z) „Hivatalos oldal” gombot az egyes eszközöknél; a Denónál a(z) „Telepítés” Chocolatey nélkül is működik.",
-  "app.status_done_partial": "✔ A lejátszási lista kész: {ok} videó letöltve, {failed} nem érhető el vagy hibás."
+  "app.status_done_partial": "✔ A lejátszási lista kész: {ok} videó letöltve, {failed} nem érhető el vagy hibás.",
+  "dl.stop_playlist_title": "Lejátszási lista leállítása",
+  "dl.stop_playlist_msg": "A célmappában {n} fájl található már befejezett videókból.\n\nIgen: mindent töröl, a már letöltött videókat is.\nNem: csak a folyamatban lévő videót törli (a befejezettek megmaradnak).\nMégse: a letöltés folytatódik.",
+  "deps.optional_note": "Csak az ffmpeg és az ffprobe (*) nélkülözhetetlen, a videó és a hang egyesítéséhez és a feliratok beágyazásához. A Deno a másodlagos hangsávok megjelenítéséhez ajánlott. Az AtomicParsley, az MKVToolNix és az aria2 választható: a program nélkülük is jól működik, nyugodtan figyelmen kívül hagyhatja ezeket a sorokat.",
+  "deps.status_optional": "– Választható",
+  "deps.status_recommended": "○ Ajánlott"
 }

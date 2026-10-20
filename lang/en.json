@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ Compatibility OK — the GUI can run normally.",
   "upd.log_diag_verdict_warn": "⚠ Incompatibilities detected (see ✘ above).",
   "deps.window_title": "yt-dlp Dependencies",
-  "deps.header": "Extensions and tools required by yt-dlp",
-  "deps.choco_warn": "⚠  Chocolatey is not detected on this system.\nInstall buttons will not be available.",
+  "deps.header": "Add-ons and tools used by yt-dlp",
+  "deps.choco_warn": "ℹ  Chocolatey is not installed: that is not a problem.\nIt is only used for automatic installs; if needed, use “Official site”.",
   "deps.col_tool": "Tool",
   "deps.col_status": "Status",
   "deps.col_role": "Role",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Skipped",
   "report.summary_skipped": "   {n} skipped",
   "deps.install_all_disabled": "“Install all” is disabled: it needs Chocolatey, which is not installed. Use “Official site” for each tool; for Deno, “Install” works without Chocolatey.",
-  "app.status_done_partial": "✔ Playlist finished: {ok} video(s) downloaded, {failed} unavailable or failed."
+  "app.status_done_partial": "✔ Playlist finished: {ok} video(s) downloaded, {failed} unavailable or failed.",
+  "dl.stop_playlist_title": "Stop the playlist",
+  "dl.stop_playlist_msg": "{n} file(s) of already finished videos are in the destination folder.\n\nYes: delete everything, including the videos already downloaded.\nNo: delete only the video in progress (finished videos are kept).\nCancel: keep downloading.",
+  "deps.optional_note": "Only ffmpeg and ffprobe (*) are essential, to merge video and audio and embed subtitles. Deno is recommended to see secondary audio tracks. AtomicParsley, MKVToolNix and aria2 are optional: the software works fine without them, you can ignore these lines.",
+  "deps.status_optional": "– Optional",
+  "deps.status_recommended": "○ Recommended"
 }

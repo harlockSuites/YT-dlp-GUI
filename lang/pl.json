@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ Zgodność OK — GUI może działać normalnie.",
   "upd.log_diag_verdict_warn": "⚠ Wykryto niezgodności (patrz ✘ powyżej).",
   "deps.window_title": "Zależności yt-dlp",
-  "deps.header": "Rozszerzenia i narzędzia wymagane przez yt-dlp",
-  "deps.choco_warn": "⚠  Chocolatey nie zostało wykryte w tym systemie.\nPrzyciski instalacji nie będą dostępne.",
+  "deps.header": "Rozszerzenia i narzędzia używane przez yt-dlp",
+  "deps.choco_warn": "ℹ  Chocolatey nie jest zainstalowany: to nie problem.\nSłuży tylko do automatycznych instalacji; w razie potrzeby użyj „Oficjalna strona”.",
   "deps.col_tool": "Narzędzie",
   "deps.col_status": "Status",
   "deps.col_role": "Rola",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Pominięto",
   "report.summary_skipped": "   {n} pominięto",
   "deps.install_all_disabled": "„Zainstaluj wszystko” jest wyłączone: wymaga Chocolatey, którego nie zainstalowano. Użyj „Oficjalna strona” dla każdego narzędzia; dla Deno „Zainstaluj” działa bez Chocolatey.",
-  "app.status_done_partial": "✔ Playlista zakończona: pobrano {ok}, niedostępne lub z błędem: {failed}."
+  "app.status_done_partial": "✔ Playlista zakończona: pobrano {ok}, niedostępne lub z błędem: {failed}.",
+  "dl.stop_playlist_title": "Zatrzymaj playlistę",
+  "dl.stop_playlist_msg": "W folderze docelowym znajduje się {n} plik(ów) już ukończonych filmów.\n\nTak: usuń wszystko, także już pobrane filmy.\nNie: usuń tylko film w trakcie pobierania (ukończone filmy zostają).\nAnuluj: kontynuuj pobieranie.",
+  "deps.optional_note": "Niezbędne są tylko ffmpeg i ffprobe (*), do łączenia obrazu i dźwięku oraz osadzania napisów. Deno jest zalecany do wyświetlania dodatkowych ścieżek audio. AtomicParsley, MKVToolNix i aria2 są opcjonalne: program działa bez nich bez problemu, możesz zignorować te wiersze.",
+  "deps.status_optional": "– Opcjonalne",
+  "deps.status_recommended": "○ Zalecane"
 }

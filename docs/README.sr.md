@@ -45,7 +45,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 ### Pomoćnik za instalaciju, zavisnosti i ažuriranja yt-dlp-a
 
 - **Pomoćnik za instalaciju**: pri prvom pokretanju predlaže preuzimanje yt-dlp-a i ffmpeg-a iz njihovih zvaničnih GitHub repozitorijuma. SHA-256 kontrolna suma se proverava i nisu potrebna administratorska prava.
-- **Zavisnosti**: poseban prozor proverava ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno i može da ih instalira preko Chocolatey-ja.
+- **Zavisnosti**: poseban prozor proverava ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno i može da ih instalira preko Chocolatey-ja. Samo su ffmpeg i ffprobe neophodni; deno se preporučuje (dodatne audio trake); AtomicParsley, MKVToolNix i aria2 su opcioni: program radi i bez njih.
 - **Ažuriranje i dijagnostika**: ažurira yt-dlp (`yt-dlp -U`) ili menja njegov izvršni fajl, prikazuje verziju i proverava opcije koje interfejs koristi.
 - **Ažuriranje programa**: dnevna provera (može se isključiti) diskretnom trakom javlja da postoji nova verzija; poseban prozor prikazuje novosti i otvara preuzimanje koje odgovara vašoj instalaciji (instalater ili prenosiva verzija). Ništa se ne instalira automatski. Prekidač u meniju opcija („Proveri ažuriranja pri pokretanju”) uključuje ili isključuje automatsku proveru, a „Potraži ažuriranje programa…” je pokreće na zahtev.
 

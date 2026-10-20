@@ -214,8 +214,8 @@
   "upd.log_diag_verdict_ok": "✔ Compatibilidade OK — o GUI pode funcionar normalmente.",
   "upd.log_diag_verdict_warn": "⚠ Incompatibilidades detectadas (veja os ✘ acima).",
   "deps.window_title": "Dependências do yt-dlp",
-  "deps.header": "Extensões e ferramentas requeridas pelo yt-dlp",
-  "deps.choco_warn": "⚠  Chocolatey não foi detectado neste sistema.\nOs botões de instalação não estarão disponíveis.",
+  "deps.header": "Extensões e ferramentas usadas pelo yt-dlp",
+  "deps.choco_warn": "ℹ  O Chocolatey não está instalado: isso não é um problema.\nEle serve apenas para as instalações automáticas; se precisar, use «Site oficial».",
   "deps.col_tool": "Ferramenta",
   "deps.col_status": "Status",
   "deps.col_role": "Função",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Ignorado",
   "report.summary_skipped": "   {n} ignorada(s)",
   "deps.install_all_disabled": "«Instalar tudo» está desativado: exige o Chocolatey, que não está instalado. Use «Site oficial» em cada ferramenta; para o Deno, «Instalar» funciona sem o Chocolatey.",
-  "app.status_done_partial": "✔ Playlist concluída: {ok} vídeo(s) baixado(s), {failed} indisponível(is) ou com erro."
+  "app.status_done_partial": "✔ Playlist concluída: {ok} vídeo(s) baixado(s), {failed} indisponível(is) ou com erro.",
+  "dl.stop_playlist_title": "Parar a playlist",
+  "dl.stop_playlist_msg": "{n} arquivo(s) de vídeos já concluídos estão na pasta de destino.\n\nSim: apagar tudo, inclusive os vídeos já baixados.\nNão: apagar apenas o vídeo em andamento (os vídeos concluídos são mantidos).\nCancelar: continuar o download.",
+  "deps.optional_note": "Apenas o ffmpeg e o ffprobe (*) são indispensáveis, para juntar vídeo e áudio e incorporar legendas. O Deno é recomendado para ver as faixas de áudio secundárias. AtomicParsley, MKVToolNix e aria2 são opcionais: o programa funciona muito bem sem eles, você pode ignorar essas linhas.",
+  "deps.status_optional": "– Opcional",
+  "deps.status_recommended": "○ Recomendado"
 }

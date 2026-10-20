@@ -45,7 +45,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 ### Trình hướng dẫn cài đặt, phụ thuộc và cập nhật yt-dlp
 
 - **Trình hướng dẫn cài đặt**: ở lần chạy đầu tiên, nó đề nghị tải yt-dlp và ffmpeg từ kho GitHub chính thức. Tổng kiểm SHA-256 được xác minh và không cần quyền quản trị.
-- **Phụ thuộc**: cửa sổ riêng kiểm tra ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 và deno, và có thể cài chúng bằng Chocolatey.
+- **Phụ thuộc**: cửa sổ riêng kiểm tra ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 và deno, và có thể cài chúng bằng Chocolatey. Chỉ ffmpeg và ffprobe là bắt buộc; deno được khuyến nghị (track âm thanh phụ); AtomicParsley, MKVToolNix và aria2 là tùy chọn: phần mềm vẫn chạy khi thiếu chúng.
 - **Cập nhật và chẩn đoán**: cập nhật yt-dlp (`yt-dlp -U`) hoặc thay tệp thực thi của nó, hiển thị phiên bản và kiểm tra các tùy chọn mà giao diện sử dụng.
 - **Cập nhật phần mềm**: kiểm tra hằng ngày (có thể tắt) báo có phiên bản mới bằng một dải thông báo kín đáo; cửa sổ riêng cho biết có gì mới và mở bản tải phù hợp với cách bạn cài đặt (trình cài đặt hoặc bản di động). Không có gì được cài tự động. Một công tắc trong menu tùy chọn («Kiểm tra cập nhật khi khởi động») bật hoặc tắt việc kiểm tra tự động, còn «Kiểm tra bản cập nhật phần mềm…» chạy kiểm tra theo yêu cầu.
 

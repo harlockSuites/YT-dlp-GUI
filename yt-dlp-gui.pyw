@@ -564,6 +564,7 @@ DEPS = [
         "url": "https://deno.com",
         "desc": "Runtime JS — requis pour voir les pistes audio secondaires (FR, ES…) et certains formats récents",
         "required": False,
+        "level": "recommended",
         "direct": True,   # installable par l'assistant (téléchargement vérifié), sans Chocolatey
         "known_paths": [
             r"%USERPROFILE%\.deno\bin\deno.exe",
@@ -656,7 +657,7 @@ def command_file_args(args):
     options, tail = args[1:cut], args[cut:]
     try:
         os.makedirs(COMMAND_DIR, exist_ok=True)
-        fd, path = tempfile.mkstemp(prefix="cmd-", suffix=".conf", dir=COMMAND_DIR)
+        fd, path = tempfile.mkstemp(prefix=f"cmd-{os.getpid()}-", suffix=".conf", dir=COMMAND_DIR)
         with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
             f.write("# coding: utf-8\n")
             for a in options:
@@ -674,15 +675,41 @@ def remove_command_file(path):
             pass
 
 
-def cleanup_command_files(max_age=600):
-    """Supprime les fichiers laissés par un arrêt brutal (yt-dlp lit le sien au lancement, quelques secondes)."""
+def command_file_owner(name):
+    """PID du logiciel qui a créé le fichier de commande (« cmd-1234-xxxx.conf »), None pour l'ancien format."""
+    found = re.match(r"cmd-(\d+)-", name)
+    return int(found.group(1)) if found else None
+
+
+def cleanup_command_files(max_age=24 * 3600, grace=60):
+    """Supprime les fichiers de commande orphelins, sans toucher à ceux d'une autre fenêtre du logiciel.
+
+    Un fichier appartient à un processus (PID dans son nom) : s'il ne tourne plus, le fichier est orphelin et
+    part tout de suite, même tout frais (arrêt brutal puis relancement immédiat). Sans PID connu, ou si la
+    liste des processus est illisible, on se rabat sur l'âge (`grace` secondes ; `max_age` dans tous les cas)."""
     try:
-        for name in os.listdir(COMMAND_DIR):
-            full = os.path.join(COMMAND_DIR, name)
-            if name.endswith(".conf") and time.time() - os.path.getmtime(full) > max_age:
-                remove_command_file(full)
+        alive = {pid for pid, _parent, _name in _iter_processes()}
+    except Exception:
+        alive = None
+    try:
+        names = os.listdir(COMMAND_DIR)
     except OSError:
-        pass
+        return
+    for name in names:
+        full = os.path.join(COMMAND_DIR, name)
+        if not name.endswith(".conf"):
+            continue
+        try:
+            age = time.time() - os.path.getmtime(full)
+        except OSError:
+            continue
+        owner = command_file_owner(name)
+        if owner is not None and alive:
+            orphan = owner not in alive
+        else:
+            orphan = age > grace
+        if orphan or age > max_age:
+            remove_command_file(full)
 
 
 def is_antivirus_block(exc):
@@ -831,15 +858,17 @@ class DepsWindow(tk.Toplevel):
             text=t("deps.header"),
             font=("Segoe UI", 10, "bold"),
         ).pack(anchor="w", **pad)
+        ttk.Label(self, text=t("deps.optional_note"), wraplength=560, justify="left",
+                  foreground="#2e7d32").pack(anchor="w", padx=12, pady=(0, 6))
 
-        # Avertissement si Chocolatey absent
+        # Information si Chocolatey est absent (facultatif : il ne sert qu'aux installations automatiques)
         if not choco_available():
             frm_warn = ttk.Frame(self, relief="solid", borderwidth=1)
             frm_warn.pack(fill="x", padx=12, pady=(0, 6))
             ttk.Label(
                 frm_warn,
                 text=t("deps.choco_warn"),
-                foreground="#c0392b",
+                foreground="#555555",
                 justify="left",
                 padding=8,
             ).pack(anchor="w")
@@ -857,7 +886,7 @@ class DepsWindow(tk.Toplevel):
 
         has_choco = choco_available()
         headers = [t("deps.col_tool"), t("deps.col_status"), t("deps.col_role"), t("deps.col_action")]
-        widths   = [14,       8,        46,      14]
+        widths   = [14,       16,       54,      14]
         for col, (h, w) in enumerate(zip(headers, widths)):
             ttk.Label(frm_table, text=h, font=("Segoe UI", 9, "bold"),
                       width=w, anchor="w").grid(row=0, column=col, padx=4, pady=(0, 4))
@@ -870,11 +899,11 @@ class DepsWindow(tk.Toplevel):
                                  font=("Consolas", 9), width=14, anchor="w")
             lbl_name.grid(row=row, column=0, padx=4, pady=2, sticky="w")
 
-            lbl_status = ttk.Label(frm_table, text="…", width=8, anchor="w")
+            lbl_status = ttk.Label(frm_table, text="…", width=16, anchor="w")
             lbl_status.grid(row=row, column=1, padx=4, pady=2, sticky="w")
 
-            lbl_desc = ttk.Label(frm_table, text=dep["desc"], width=46,
-                                 anchor="w", wraplength=340, justify="left")
+            lbl_desc = ttk.Label(frm_table, text=dep["desc"], width=54,
+                                 anchor="w", wraplength=320, justify="left")
             lbl_desc.grid(row=row, column=2, padx=4, pady=2, sticky="w")
 
             url = dep.get("url", "")
@@ -941,7 +970,11 @@ class DepsWindow(tk.Toplevel):
                 row["lbl_status"].configure(text=t("deps.status_ok"), foreground="#27ae60")
                 row["btn"].configure(state="disabled")
             else:
-                row["lbl_status"].configure(text=t("deps.status_absent"), foreground="#c0392b")
+                level = "required" if dep["required"] else dep.get("level", "optional")
+                text, color = {"required": ("deps.status_absent", "#c0392b"),
+                               "recommended": ("deps.status_recommended", "#b9770e"),
+                               "optional": ("deps.status_optional", "#7f8c8d")}[level]
+                row["lbl_status"].configure(text=t(text), foreground=color)
                 if dep.get("direct") or has_choco:
                     row["btn"].configure(state="normal")
                 else:
@@ -5974,6 +6007,7 @@ class YtDlpGui(tk.Tk):
         self.btn_pause.configure(state="normal")
         self._paused = False
         self._current_dl_files = []   # fichiers en cours pour nettoyage si skip
+        self._finished_items_files = []   # éléments déjà terminés d'une playlist
         self._dl_started = time.time()
         self._cookie_hint_shown = False
         self.var_progress.set(0)
@@ -6020,6 +6054,11 @@ class YtDlpGui(tk.Tk):
 
     def _on_output_line(self, line):
         self._log(line)
+        if _RE_PLAYLIST_ITEM.search(line):
+            # nouvel élément de playlist : les fichiers de l'élément précédent sont terminés
+            self._finished_items_files = list(getattr(self, "_finished_items_files", [])) \
+                + list(getattr(self, "_current_dl_files", []))
+            self._current_dl_files = []
         if not self._cookie_hint_shown:
             hint = _cookie_hint(line, self.var_browser.get())
             if hint:
@@ -6066,6 +6105,7 @@ class YtDlpGui(tk.Tk):
                     self._current_dl_files.append(p)
 
     def _on_done(self, success, partial=None):
+        self._finished_items_files = []
         self.btn_dl.configure(state="normal")
         self.btn_stop.configure(state="disabled")
         self.btn_pause.configure(state="disabled", text=t("dl.btn_pause"))
@@ -6133,7 +6173,27 @@ class YtDlpGui(tk.Tk):
                 pass
         return True
 
+    def _confirm_stop_scope(self):
+        """Avant d'arrêter une playlist déjà en partie téléchargée : que faut-il supprimer ?
+
+        Renvoie False si l'utilisateur annule (le téléchargement continue). « Oui » ajoute les vidéos déjà
+        terminées aux fichiers à supprimer ; « Non » ne supprime que la vidéo en cours."""
+        finished = list(getattr(self, "_finished_items_files", []))
+        proc = self._process
+        if not finished or proc is None or proc.poll() is not None:
+            return True
+        answer = messagebox.askyesnocancel(t("dl.stop_playlist_title"),
+                                           t("dl.stop_playlist_msg", n=len(finished)), parent=self)
+        if answer is None:
+            return False
+        if answer:
+            self._current_dl_files = finished + list(self._current_dl_files)
+        self._finished_items_files = []
+        return True
+
     def _stop(self):
+        if not self._confirm_stop_scope():
+            return
         if self._queue_running:
             self._queue_running = False
             self._queue_skip = False
@@ -6341,6 +6401,8 @@ class YtDlpGui(tk.Tk):
     def _queue_skip_current(self):
         if not self._queue_running:
             return
+        if not self._confirm_stop_scope():
+            return
         self._queue_skip = True
 
         if not self._kill_current_process():
@@ -6353,6 +6415,8 @@ class YtDlpGui(tk.Tk):
 
     def _queue_stop(self):
         if not self._queue_running:
+            return
+        if not self._confirm_stop_scope():
             return
         self._queue_running = False
         self._queue_skip = False

@@ -213,8 +213,8 @@
   "upd.log_diag_verdict_ok": "✔ Compatibilité OK — le GUI peut fonctionner normalement.",
   "upd.log_diag_verdict_warn": "⚠ Des incompatibilités ont été détectées (voir ✘ ci-dessus).",
   "deps.window_title": "Dépendances yt-dlp",
-  "deps.header": "Extensions et outils requis par yt-dlp",
-  "deps.choco_warn": "⚠  Chocolatey n'est pas détecté sur ce système.\nLes boutons d'installation ne seront pas disponibles.",
+  "deps.header": "Extensions et outils utilisés par yt-dlp",
+  "deps.choco_warn": "ℹ  Chocolatey n'est pas installé : ce n'est pas un problème.\nIl sert seulement aux installations automatiques ; au besoin, utilisez « Site officiel ».",
   "deps.col_tool": "Outil",
   "deps.col_status": "Statut",
   "deps.col_role": "Rôle",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  Sauté",
   "report.summary_skipped": "   {n} sautée(s)",
   "deps.install_all_disabled": "« Tout installer » est désactivé : il demande Chocolatey, absent de ce système. Utilisez « Site officiel » pour chaque outil ; pour Deno, « Installer » fonctionne sans Chocolatey.",
-  "app.status_done_partial": "✔ Playlist terminée : {ok} vidéo(s) téléchargée(s), {failed} indisponible(s) ou en erreur."
+  "app.status_done_partial": "✔ Playlist terminée : {ok} vidéo(s) téléchargée(s), {failed} indisponible(s) ou en erreur.",
+  "dl.stop_playlist_title": "Arrêter la playlist",
+  "dl.stop_playlist_msg": "{n} fichier(s) de vidéos déjà terminées se trouvent dans le dossier de destination.\n\nOui : tout supprimer, y compris les vidéos déjà téléchargées.\nNon : supprimer seulement la vidéo en cours (les vidéos terminées sont conservées).\nAnnuler : poursuivre le téléchargement.",
+  "deps.optional_note": "Seuls ffmpeg et ffprobe (*) sont indispensables, pour fusionner la vidéo et l'audio et intégrer les sous-titres. Deno est recommandé pour voir les pistes audio secondaires. AtomicParsley, MKVToolNix et aria2 sont facultatifs : le logiciel fonctionne très bien sans eux, vous pouvez ignorer ces lignes.",
+  "deps.status_optional": "– Facultatif",
+  "deps.status_recommended": "○ Recommandé"
 }

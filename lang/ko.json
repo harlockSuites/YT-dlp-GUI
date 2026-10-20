@@ -214,8 +214,8 @@
   "upd.log_diag_verdict_ok": "✔ 호환성 OK — GUI가 정상적으로 작동합니다.",
   "upd.log_diag_verdict_warn": "⚠ 비호환성이 감지되었습니다 (위의 ✘ 확인).",
   "deps.window_title": "yt-dlp 의존성",
-  "deps.header": "yt-dlp에 필요한 확장 프로그램 및 도구",
-  "deps.choco_warn": "⚠  이 시스템에서 Chocolatey가 감지되지 않았습니다.\n설치 버튼을 사용할 수 없습니다.",
+  "deps.header": "yt-dlp가 사용하는 확장 기능과 도구",
+  "deps.choco_warn": "ℹ  Chocolatey가 설치되어 있지 않지만 문제없습니다.\n자동 설치에만 사용됩니다. 필요하면 '공식 사이트'를 이용하세요.",
   "deps.col_tool": "도구",
   "deps.col_status": "상태",
   "deps.col_role": "역할",
@@ -492,5 +492,10 @@
   "report.status_skipped": "⏭  건너뜀",
   "report.summary_skipped": "   {n}개 건너뜀",
   "deps.install_all_disabled": "'모두 설치'은(는) 비활성화되어 있습니다. Chocolatey가 필요한데 설치되어 있지 않습니다. 각 도구는 '공식 사이트'를 사용하세요. Deno는 Chocolatey 없이도 '설치'로 설치할 수 있습니다.",
-  "app.status_done_partial": "✔ 재생목록 완료: {ok}개 다운로드, {failed}개는 사용할 수 없거나 오류."
+  "app.status_done_partial": "✔ 재생목록 완료: {ok}개 다운로드, {failed}개는 사용할 수 없거나 오류.",
+  "dl.stop_playlist_title": "재생목록 중지",
+  "dl.stop_playlist_msg": "저장 폴더에 이미 완료된 동영상 파일이 {n}개 있습니다.\n\n예: 이미 받은 동영상을 포함해 모두 삭제합니다.\n아니요: 진행 중인 동영상만 삭제합니다(완료된 동영상은 유지).\n취소: 다운로드를 계속합니다.",
+  "deps.optional_note": "ffmpeg와 ffprobe(*)만 필수이며, 영상과 오디오를 합치고 자막을 삽입하는 데 쓰입니다. Deno는 보조 오디오 트랙을 보려면 권장됩니다. AtomicParsley, MKVToolNix, aria2는 선택 사항입니다. 없어도 소프트웨어는 잘 동작하므로 이 줄들은 무시해도 됩니다.",
+  "deps.status_optional": "– 선택",
+  "deps.status_recommended": "○ 권장"
 }

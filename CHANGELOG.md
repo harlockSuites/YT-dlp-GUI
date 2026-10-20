@@ -5,6 +5,8 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 ## [Non publié]
 
 ### Ajouté
+- Fenêtre Dépendances : une note explique que seuls ffmpeg et ffprobe sont indispensables, que Deno est recommandé (pistes audio secondaires) et qu'AtomicParsley, MKVToolNix et aria2 sont facultatifs. Ces trois outils absents s'affichent « – Facultatif » en gris au lieu de « ✘ Absent » en rouge, Deno « ○ Recommandé », et l'absence de Chocolatey est présentée comme une information et non plus comme un avertissement rouge. Colonnes « Statut » et « Rôle » élargies (textes coupés). README (15 langues) : même précision dans la puce « Dépendances ».
+- Arrêter (ou sauter) une playlist déjà en partie téléchargée ouvre une question : « Oui » supprime tout, y compris les vidéos déjà terminées ; « Non » supprime seulement la vidéo en cours et conserve les autres ; « Annuler » poursuit le téléchargement (téléchargeur individuel et file d'attente, 15 langues). Auparavant, un arrêt supprimait aussi les vidéos terminées de la playlist.
 - README (15 langues) : note sur les noms de fichiers existants du téléchargeur individuel (suffixe `_2`, `_3`… pour une vidéo seule ; une playlist n'est pas renumérotée et ignore les vidéos déjà présentes).
 
 ### Corrigé
@@ -13,7 +15,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - Fenêtre Dépendances sans Chocolatey : une phrase explique pourquoi « Tout installer » est grisé et quoi faire (bouton « Site officiel » de chaque outil ; Deno s'installe sans Chocolatey).
 - Téléchargeur individuel : une playlist terminée avec quelques vidéos indisponibles (supprimées, privées…) n'affiche plus « ✘ Échec ou annulé » alors que les autres sont téléchargées ; le message indique « Playlist terminée : N vidéo(s) téléchargée(s), M indisponible(s) ou en erreur » (15 langues). Un arrêt demandé en cours de route reste un échec, et un élément de la file d'attente dans ce cas reste en erreur pour que l'utilisateur décide de le relancer.
 - Conseil pour les vidéos à restriction d'âge reformulé : il ne dit plus seulement « réessayez » alors que le téléchargement réussit ; il précise que la qualité peut être réduite tant que le compte n'est pas vérifié pour l'âge (15 langues).
-- Les fichiers de commande temporaires laissés par un arrêt brutal sont supprimés au démarrage au bout de 10 minutes (24 heures auparavant).
+- Les fichiers de commande temporaires laissés par un arrêt brutal (Gestionnaire des tâches) sont supprimés à chaque démarrage : leur nom porte maintenant le numéro du processus qui les a créés, et un fichier dont le processus ne tourne plus est supprimé tout de suite, sans toucher à ceux d'une autre fenêtre du logiciel. Les anciens fichiers, sans numéro, partent après une minute.
 
 ## [0.1.5] — 2026-10-19
 
