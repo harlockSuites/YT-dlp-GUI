@@ -2,7 +2,7 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.1.7] — 2026-10-21
 
 ### Ajouté
 - Installateur et désinstalleur : quand yt-dlp GUI est encore ouvert, une fenêtre propose « Forcer la fermeture » (fermeture normale d'abord, puis forcée au bout de 5 secondes, téléchargements en cours interrompus), « J'ai fermé le logiciel » (revérifie) ou « Annuler ». Auparavant, il fallait fermer le logiciel soi-même. En mode silencieux, rien n'est demandé : le logiciel n'est fermé qu'avec `/FORCECLOSE=1`, sinon l'installation ou la désinstallation s'arrête. Textes dans les 14 langues de l'installateur.

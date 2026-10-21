@@ -18,7 +18,7 @@ import getpass
 import webbrowser
 from urllib.parse import quote
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 def _resolve_dirs(frozen, executable, script_dir, meipass, env):
