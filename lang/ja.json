@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "保存先フォルダに、完了済みの動画のファイルが {n} 個あります。\n\nはい：ダウンロード済みの動画も含め、すべて削除します。\nいいえ：進行中の動画だけを削除します（完了済みの動画は残ります）。\nキャンセル：ダウンロードを続けます。",
   "deps.optional_note": "必須なのは ffmpeg と ffprobe（*）だけで、映像と音声の結合や字幕の埋め込みに使います。Deno は副音声トラックを表示するために推奨されます。AtomicParsley、MKVToolNix、aria2 は任意です。これらがなくてもソフトは問題なく動作するので、この行は無視してかまいません。",
   "deps.status_optional": "– 任意",
-  "deps.status_recommended": "○ 推奨"
+  "deps.status_recommended": "○ 推奨",
+  "inspect.playlist": "プレイリスト「{title}」：{count} 本の動画。",
+  "inspect.playlist_bad": "プレイリスト「{title}」：{count} 本の動画（うち {bad} 本は利用不可：非公開、削除済み、または非表示。ダウンロードできません）。"
 }

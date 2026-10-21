@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "Có {n} tệp của các video đã hoàn tất trong thư mục đích.\n\nCó: xóa tất cả, kể cả các video đã tải xong.\nKhông: chỉ xóa video đang tải (các video đã hoàn tất được giữ lại).\nHủy: tiếp tục tải.",
   "deps.optional_note": "Chỉ ffmpeg và ffprobe (*) là bắt buộc, để ghép video với âm thanh và nhúng phụ đề. Deno được khuyến nghị để xem các track âm thanh phụ. AtomicParsley, MKVToolNix và aria2 là tùy chọn: phần mềm vẫn chạy tốt khi thiếu chúng, bạn có thể bỏ qua các dòng này.",
   "deps.status_optional": "– Tùy chọn",
-  "deps.status_recommended": "○ Khuyến nghị"
+  "deps.status_recommended": "○ Khuyến nghị",
+  "inspect.playlist": "Danh sách phát “{title}”: {count} video.",
+  "inspect.playlist_bad": "Danh sách phát “{title}”: {count} video, trong đó {bad} video không khả dụng (riêng tư, đã xóa hoặc bị ẩn): không thể tải."
 }

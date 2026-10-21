@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "{n} arquivo(s) de vídeos já concluídos estão na pasta de destino.\n\nSim: apagar tudo, inclusive os vídeos já baixados.\nNão: apagar apenas o vídeo em andamento (os vídeos concluídos são mantidos).\nCancelar: continuar o download.",
   "deps.optional_note": "Apenas o ffmpeg e o ffprobe (*) são indispensáveis, para juntar vídeo e áudio e incorporar legendas. O Deno é recomendado para ver as faixas de áudio secundárias. AtomicParsley, MKVToolNix e aria2 são opcionais: o programa funciona muito bem sem eles, você pode ignorar essas linhas.",
   "deps.status_optional": "– Opcional",
-  "deps.status_recommended": "○ Recomendado"
+  "deps.status_recommended": "○ Recomendado",
+  "inspect.playlist": "Playlist «{title}»: {count} vídeo(s).",
+  "inspect.playlist_bad": "Playlist «{title}»: {count} vídeo(s), {bad} indisponível(is) (privados, excluídos ou ocultos): não poderão ser baixados."
 }

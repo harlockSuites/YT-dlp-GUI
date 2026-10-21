@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "W folderze docelowym znajduje się {n} plik(ów) już ukończonych filmów.\n\nTak: usuń wszystko, także już pobrane filmy.\nNie: usuń tylko film w trakcie pobierania (ukończone filmy zostają).\nAnuluj: kontynuuj pobieranie.",
   "deps.optional_note": "Niezbędne są tylko ffmpeg i ffprobe (*), do łączenia obrazu i dźwięku oraz osadzania napisów. Deno jest zalecany do wyświetlania dodatkowych ścieżek audio. AtomicParsley, MKVToolNix i aria2 są opcjonalne: program działa bez nich bez problemu, możesz zignorować te wiersze.",
   "deps.status_optional": "– Opcjonalne",
-  "deps.status_recommended": "○ Zalecane"
+  "deps.status_recommended": "○ Zalecane",
+  "inspect.playlist": "Playlista „{title}”: {count} film(ów).",
+  "inspect.playlist_bad": "Playlista „{title}”: {count} film(ów), w tym {bad} niedostępnych (prywatnych, usuniętych lub ukrytych): nie da się ich pobrać."
 }

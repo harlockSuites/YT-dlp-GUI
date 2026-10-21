@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "{n} fichier(s) de vidéos déjà terminées se trouvent dans le dossier de destination.\n\nOui : tout supprimer, y compris les vidéos déjà téléchargées.\nNon : supprimer seulement la vidéo en cours (les vidéos terminées sont conservées).\nAnnuler : poursuivre le téléchargement.",
   "deps.optional_note": "Seuls ffmpeg et ffprobe (*) sont indispensables, pour fusionner la vidéo et l'audio et intégrer les sous-titres. Deno est recommandé pour voir les pistes audio secondaires. AtomicParsley, MKVToolNix et aria2 sont facultatifs : le logiciel fonctionne très bien sans eux, vous pouvez ignorer ces lignes.",
   "deps.status_optional": "– Facultatif",
-  "deps.status_recommended": "○ Recommandé"
+  "deps.status_recommended": "○ Recommandé",
+  "inspect.playlist": "Playlist « {title} » : {count} vidéo(s).",
+  "inspect.playlist_bad": "Playlist « {title} » : {count} vidéo(s), dont {bad} indisponible(s) (privée(s), supprimée(s) ou masquée(s)) : elles ne pourront pas être téléchargées."
 }

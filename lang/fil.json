@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "May {n} file ng mga video na tapos na sa destination folder.\n\nOo: burahin lahat, kasama ang mga video na na-download na.\nHindi: burahin lang ang video na kasalukuyang dina-download (mananatili ang mga tapos na).\nKansela: ipagpatuloy ang pag-download.",
   "deps.optional_note": "Ang ffmpeg at ffprobe (*) lamang ang kailangang-kailangan, para pagsamahin ang video at audio at i-embed ang mga subtitle. Inirerekomenda ang Deno para makita ang mga pangalawang audio track. Opsyonal ang AtomicParsley, MKVToolNix at aria2: gumagana nang maayos ang software kahit wala ang mga ito, maaari mong balewalain ang mga linyang ito.",
   "deps.status_optional": "– Opsyonal",
-  "deps.status_recommended": "○ Inirerekomenda"
+  "deps.status_recommended": "○ Inirerekomenda",
+  "inspect.playlist": "Playlist na “{title}”: {count} video.",
+  "inspect.playlist_bad": "Playlist na “{title}”: {count} video, {bad} dito ang hindi available (pribado, na-delete o nakatago): hindi ma-download."
 }

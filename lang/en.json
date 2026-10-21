@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "{n} file(s) of already finished videos are in the destination folder.\n\nYes: delete everything, including the videos already downloaded.\nNo: delete only the video in progress (finished videos are kept).\nCancel: keep downloading.",
   "deps.optional_note": "Only ffmpeg and ffprobe (*) are essential, to merge video and audio and embed subtitles. Deno is recommended to see secondary audio tracks. AtomicParsley, MKVToolNix and aria2 are optional: the software works fine without them, you can ignore these lines.",
   "deps.status_optional": "– Optional",
-  "deps.status_recommended": "○ Recommended"
+  "deps.status_recommended": "○ Recommended",
+  "inspect.playlist": "Playlist “{title}”: {count} video(s).",
+  "inspect.playlist_bad": "Playlist “{title}”: {count} video(s), {bad} of them unavailable (private, deleted or hidden): they cannot be downloaded."
 }

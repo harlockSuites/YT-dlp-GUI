@@ -362,6 +362,31 @@ def install_wheel_scrolling(root):
     root.bind_class("TCombobox", "<MouseWheel>", lambda e: scroll(e, e.delta) or "break")
 
 
+_UNAVAILABLE_TITLES = ("[Private video]", "[Deleted video]")
+
+
+def is_playlist_url(url):
+    """Adresse de playlist seule (« …/playlist?list=… »), pas une vidéo qui appartient à une playlist (« watch?v=…&list=… »)."""
+    from urllib.parse import urlparse, parse_qs
+    try:
+        query = parse_qs(urlparse(url).query)
+    except ValueError:
+        return False
+    return "list" in query and "v" not in query
+
+
+def playlist_summary(info):
+    """{titre, nombre de vidéos, nombre d'indisponibles} d'après `yt-dlp -J --flat-playlist`, ou None.
+
+    Les vidéos privées, supprimées ou masquées reviennent sans titre (ou « [Private video] »)."""
+    if not isinstance(info, dict) or not isinstance(info.get("entries"), list):
+        return None
+    entries = [e for e in info["entries"] if isinstance(e, dict)]
+    bad = sum(1 for e in entries if not e.get("title") or e.get("title") in _UNAVAILABLE_TITLES)
+    count = len(entries) or int(info.get("playlist_count") or 0)
+    return {"title": info.get("title") or "?", "count": count, "bad": bad}
+
+
 _RE_PLAYLIST_ITEM = re.compile(r"\[download\] Downloading item \d+ of (\d+)")
 
 
@@ -2824,8 +2849,25 @@ class PlaylistInspectorWindow(tk.Toplevel):
     _BG_WARN     = "#3a3010"   # langue secondaire/ST manquante
     _BG_ERROR    = "#4a1c1c"   # langue principale manquante
 
+    _closed = False
+
+    def after(self, ms, func=None, *args):
+        """Comme Toplevel.after, mais une action planifiée par le thread d'analyse est ignorée si la fenêtre a été
+        fermée entre-temps (elle ouvrait sinon une « Erreur interne » par action restante)."""
+        if func is None:
+            return super().after(ms)
+
+        def guarded(*a):
+            if not self._closed:
+                return func(*a)
+        try:
+            return super().after(ms, guarded, *args)
+        except (tk.TclError, RuntimeError):      # fenêtre déjà détruite
+            return None
+
     def __init__(self, parent, url="", outdir=""):
         super().__init__(parent)
+        self.bind("<Destroy>", lambda e: setattr(self, "_closed", True) if e.widget is self else None)
         self.title(t("insp.window_title"))
         self.geometry("1180x720")
         self.minsize(560, 420)
@@ -5851,6 +5893,35 @@ class YtDlpGui(tk.Tk):
         if not self._lbl_inspect.winfo_ismapped():
             self._lbl_inspect.pack(fill="x", padx=12, pady=(0, 2), after=self._frm_url)
 
+    def _inspect_playlist(self, url, cookie_args, browser):
+        """Résumé d'une adresse de playlist (thread d'analyse) : titre, nombre de vidéos, vidéos indisponibles."""
+        result = subprocess.run(
+            [YTDLP, "-J", "--flat-playlist", "--no-warnings"] + cookie_args + ["--", url],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            text=True, encoding="utf-8", errors="replace",
+            creationflags=subprocess.CREATE_NO_WINDOW, cwd=os.path.dirname(YTDLP))
+        summary = None
+        if result.returncode == 0:
+            try:
+                summary = playlist_summary(json.loads(result.stdout))
+            except ValueError:
+                summary = None
+        if summary is None:
+            for line in result.stderr.splitlines():
+                self.after(0, self._log, line)
+            hint = _cookie_hint(result.stderr, browser)
+            if hint:
+                self.after(0, self._log, hint, "info")
+            if result.returncode == 0:
+                self.after(0, self._log, t("inspect.log_bad_json"), "error")
+            self.after(0, self._show_inspect_box, t("inspect.box_failed"), "#c0392b", url)
+            return
+        key = "inspect.playlist_bad" if summary["bad"] else "inspect.playlist"
+        text = t(key, **summary)
+        self._inspected_title, self._inspected_url = summary["title"], url
+        self.after(0, self._log, text, "info")
+        self.after(0, self._show_inspect_box, text, "#f5a623" if summary["bad"] else "#27ae60", url)
+
     def _on_url_changed_for_box(self):
         if self._inspect_box_url is not None and self._url() != self._inspect_box_url:
             self._inspect_box_url = None
@@ -5870,6 +5941,9 @@ class YtDlpGui(tk.Tk):
 
         def run():
             try:
+                if is_playlist_url(url):
+                    self._inspect_playlist(url, cookie_args, browser)
+                    return
                 result = subprocess.run(
                     [YTDLP, "-j", "--no-playlist"] + cookie_args + ["--", url],
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE,

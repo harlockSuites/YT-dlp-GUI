@@ -2,6 +2,14 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- Téléchargeur individuel : « Inspecter » sur une adresse de playlist affiche maintenant le titre de la playlist, le nombre de vidéos et celles qui sont indisponibles (privées, supprimées ou masquées, donc impossibles à télécharger), au lieu de « Erreur : réponse JSON invalide » (une seule requête rapide, `--flat-playlist`, 15 langues). Le téléchargement de la playlist n'est pas modifié.
+
+### Corrigé
+- Inspecteur de playlist : fermer la fenêtre pendant une analyse ouvrait trois boîtes « Erreur interne » (une par action de fin d'analyse planifiée après la fermeture). Ces actions sont maintenant ignorées quand la fenêtre n'existe plus.
+
 ## [0.1.6] — 2026-10-20
 
 ### Ajouté

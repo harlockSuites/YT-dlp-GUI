@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "U odredišnom folderu nalazi se {n} fajl(ova) već završenih video-zapisa.\n\nDa: obriši sve, uključujući već preuzete video-zapise.\nNe: obriši samo video koji se trenutno preuzima (završeni ostaju).\nOtkaži: nastavi preuzimanje.",
   "deps.optional_note": "Samo su ffmpeg i ffprobe (*) neophodni, za spajanje videa i zvuka i ugrađivanje titlova. Deno se preporučuje za dodatne audio trake. AtomicParsley, MKVToolNix i aria2 su opcioni: program odlično radi i bez njih, ove redove možete zanemariti.",
   "deps.status_optional": "– Opciono",
-  "deps.status_recommended": "○ Preporučeno"
+  "deps.status_recommended": "○ Preporučeno",
+  "inspect.playlist": "Plejlista „{title}”: {count} video-zapisa.",
+  "inspect.playlist_bad": "Plejlista „{title}”: {count} video-zapisa, od toga {bad} nedostupnih (privatnih, obrisanih ili skrivenih): ne mogu se preuzeti."
 }

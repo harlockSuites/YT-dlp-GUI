@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "{n} archivo(s) de vídeos ya terminados están en la carpeta de destino.\n\nSí: eliminar todo, incluidos los vídeos ya descargados.\nNo: eliminar solo el vídeo en curso (los vídeos terminados se conservan).\nCancelar: seguir descargando.",
   "deps.optional_note": "Solo ffmpeg y ffprobe (*) son imprescindibles, para unir vídeo y audio e incrustar subtítulos. Deno se recomienda para ver las pistas de audio secundarias. AtomicParsley, MKVToolNix y aria2 son opcionales: el programa funciona perfectamente sin ellos, puede ignorar esas líneas.",
   "deps.status_optional": "– Opcional",
-  "deps.status_recommended": "○ Recomendado"
+  "deps.status_recommended": "○ Recomendado",
+  "inspect.playlist": "Lista «{title}»: {count} vídeo(s).",
+  "inspect.playlist_bad": "Lista «{title}»: {count} vídeo(s), {bad} no disponible(s) (privados, eliminados u ocultos): no se podrán descargar."
 }

@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "저장 폴더에 이미 완료된 동영상 파일이 {n}개 있습니다.\n\n예: 이미 받은 동영상을 포함해 모두 삭제합니다.\n아니요: 진행 중인 동영상만 삭제합니다(완료된 동영상은 유지).\n취소: 다운로드를 계속합니다.",
   "deps.optional_note": "ffmpeg와 ffprobe(*)만 필수이며, 영상과 오디오를 합치고 자막을 삽입하는 데 쓰입니다. Deno는 보조 오디오 트랙을 보려면 권장됩니다. AtomicParsley, MKVToolNix, aria2는 선택 사항입니다. 없어도 소프트웨어는 잘 동작하므로 이 줄들은 무시해도 됩니다.",
   "deps.status_optional": "– 선택",
-  "deps.status_recommended": "○ 권장"
+  "deps.status_recommended": "○ 권장",
+  "inspect.playlist": "재생목록 '{title}': 동영상 {count}개.",
+  "inspect.playlist_bad": "재생목록 '{title}': 동영상 {count}개, 그중 {bad}개는 사용할 수 없음(비공개, 삭제 또는 숨김): 다운로드할 수 없습니다."
 }

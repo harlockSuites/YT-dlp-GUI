@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "A célmappában {n} fájl található már befejezett videókból.\n\nIgen: mindent töröl, a már letöltött videókat is.\nNem: csak a folyamatban lévő videót törli (a befejezettek megmaradnak).\nMégse: a letöltés folytatódik.",
   "deps.optional_note": "Csak az ffmpeg és az ffprobe (*) nélkülözhetetlen, a videó és a hang egyesítéséhez és a feliratok beágyazásához. A Deno a másodlagos hangsávok megjelenítéséhez ajánlott. Az AtomicParsley, az MKVToolNix és az aria2 választható: a program nélkülük is jól működik, nyugodtan figyelmen kívül hagyhatja ezeket a sorokat.",
   "deps.status_optional": "– Választható",
-  "deps.status_recommended": "○ Ajánlott"
+  "deps.status_recommended": "○ Ajánlott",
+  "inspect.playlist": "Lejátszási lista „{title}”: {count} videó.",
+  "inspect.playlist_bad": "Lejátszási lista „{title}”: {count} videó, ebből {bad} nem érhető el (privát, törölt vagy rejtett): ezeket nem lehet letölteni."
 }

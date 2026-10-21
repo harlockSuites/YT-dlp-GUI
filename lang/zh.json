@@ -497,5 +497,7 @@
   "dl.stop_playlist_msg": "目标文件夹中有 {n} 个已完成视频的文件。\n\n是：全部删除，包括已下载的视频。\n否：只删除正在下载的视频（已完成的视频保留）。\n取消：继续下载。",
   "deps.optional_note": "只有 ffmpeg 和 ffprobe（*）是必需的，用于合并视频与音频以及嵌入字幕。若要查看辅助音轨，建议安装 Deno。AtomicParsley、MKVToolNix 和 aria2 是可选的：没有它们软件也能正常运行，可以忽略这些行。",
   "deps.status_optional": "– 可选",
-  "deps.status_recommended": "○ 推荐"
+  "deps.status_recommended": "○ 推荐",
+  "inspect.playlist": "播放列表“{title}”：{count} 个视频。",
+  "inspect.playlist_bad": "播放列表“{title}”：{count} 个视频，其中 {bad} 个不可用（私享、已删除或已隐藏）：无法下载。"
 }
