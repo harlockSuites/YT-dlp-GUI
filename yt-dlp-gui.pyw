@@ -3521,10 +3521,13 @@ class PlaylistInspectorWindow(tk.Toplevel):
             self.after(0, lambda: self.btn_stop_an.configure(state="disabled"))
 
     def _run_analyze_impl(self, url):
-        # Étape 1 : liste plate
+        # Étape 1 : liste plate. Les cookies du navigateur choisi servent dès cette étape : sans eux, une vidéo privée
+        # qui appartient au compte connecté n'a pas de titre et serait ignorée comme « masquée ».
+        browser = self.var_g_browser.get()
+        list_cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
         try:
             result = subprocess.run(
-                [YTDLP, "--flat-playlist", "-j", "--no-warnings", "--", url],
+                [YTDLP, "--flat-playlist", "-j", "--no-warnings"] + list_cookie_args + ["--", url],
                 capture_output=True, text=True, encoding="utf-8", errors="replace",
                 creationflags=subprocess.CREATE_NO_WINDOW,
                 timeout=120,
@@ -3558,6 +3561,12 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 f"  [liste] {s} élément(s) masqué(s)/privé(s)/supprimé(s) ignoré(s)"))
 
         if not videos:
+            if result.returncode != 0:                        # raison de l'échec (cookies verrouillés, vidéo indisponible…)
+                for line in result.stderr.splitlines():
+                    self.after(0, lambda l=line: self._log(f"  [liste] {l}"))
+                hint = _cookie_hint(result.stderr, browser)
+                if hint:
+                    self.after(0, lambda h=hint: self._log(h))
             self.after(0, lambda: self.var_status.set(t("insp.status_no_videos")))
             self.after(0, lambda: self.btn_analyze.configure(state="normal"))
             return
@@ -4931,6 +4940,7 @@ class AppUpdateWindow(tk.Toplevel):
         self.lbl_status.pack(anchor="w", pady=(6, 4))
         self.lbl_hint = ttk.Label(frm, text="", foreground="gray", wraplength=520, justify="left")
         self.lbl_hint.pack(anchor="w")
+        frm.bind("<Configure>", self._wrap_messages)
 
         frm_notes = ttk.LabelFrame(frm, text=t("app_update.notes"), padding=6)
         frm_notes.pack(fill="both", expand=True, pady=(8, 6))
@@ -4961,6 +4971,12 @@ class AppUpdateWindow(tk.Toplevel):
             self._show(info, None)
         else:
             threading.Thread(target=self._work, daemon=True).start()
+
+    def _wrap_messages(self, event):
+        """Les messages d'état (une erreur réseau est longue) passent à la ligne au lieu de déborder."""
+        width = max(200, event.width - 30)
+        self.lbl_status.configure(wraplength=width, justify="left")
+        self.lbl_hint.configure(wraplength=width)
 
     def _work(self):
         try:
@@ -5408,9 +5424,9 @@ class YtDlpGui(tk.Tk):
         self._tv_queue.column("url",     width=200, minwidth=80)
         self._tv_queue.column("title",   width=220, minwidth=80)
         self._tv_queue.column("summary", width=180, minwidth=80)
-        self._tv_queue.tag_configure("pending", foreground="#d4d4d4")
-        self._tv_queue.tag_configure("running", foreground="#3498db")
-        self._tv_queue.tag_configure("error",   foreground="#e74c3c")
+        self._tv_queue.tag_configure("pending", foreground="#222222")
+        self._tv_queue.tag_configure("running", foreground="#1a5fa0")
+        self._tv_queue.tag_configure("error",   foreground="#c0392b")
         self._tv_queue.bind("<Delete>", lambda e: self._queue_remove_selected())
 
         sb_q = ttk.Scrollbar(frm_qtv, command=self._tv_queue.yview)
