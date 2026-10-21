@@ -499,5 +499,10 @@
   "deps.status_optional": "– Tùy chọn",
   "deps.status_recommended": "○ Khuyến nghị",
   "inspect.playlist": "Danh sách phát “{title}”: {count} video.",
-  "inspect.playlist_bad": "Danh sách phát “{title}”: {count} video, trong đó {bad} video không khả dụng (riêng tư, đã xóa hoặc bị ẩn): không thể tải."
+  "inspect.playlist_bad": "Danh sách phát “{title}”: {count} video, trong đó {bad} video không khả dụng (riêng tư, đã xóa hoặc bị ẩn): không thể tải.",
+  "toolbar.menu_browsers": "🍪  Trình duyệt cho cookie…",
+  "browsers.title": "Trình duyệt cho cookie",
+  "browsers.chk": "Hiện thêm Edge, Chrome và Brave trong danh sách trình duyệt",
+  "browsers.explain": "Trên Windows, Edge, Chrome và Brave mã hóa cookie theo cách yt-dlp không đọc được, kể cả khi đã đóng trình duyệt: qua thử nghiệm của chúng tôi chúng không hoạt động, nên mặc định được ẩn để danh sách gọn hơn. Firefox được khuyến nghị (hoạt động cả khi mở lẫn đóng) và Opera hoạt động khi đã đóng trình duyệt. Chọn ô này để hiện lại, ví dụ sau khi yt-dlp cập nhật khắc phục điều này, hoặc trên hệ điều hành khác.",
+  "browsers.close": "Đóng"
 }

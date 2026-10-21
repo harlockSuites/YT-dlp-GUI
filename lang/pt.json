@@ -499,5 +499,10 @@
   "deps.status_optional": "– Opcional",
   "deps.status_recommended": "○ Recomendado",
   "inspect.playlist": "Playlist «{title}»: {count} vídeo(s).",
-  "inspect.playlist_bad": "Playlist «{title}»: {count} vídeo(s), {bad} indisponível(is) (privados, excluídos ou ocultos): não poderão ser baixados."
+  "inspect.playlist_bad": "Playlist «{title}»: {count} vídeo(s), {bad} indisponível(is) (privados, excluídos ou ocultos): não poderão ser baixados.",
+  "toolbar.menu_browsers": "🍪  Navegadores para cookies…",
+  "browsers.title": "Navegadores para cookies",
+  "browsers.chk": "Mostrar também Edge, Chrome e Brave nas listas de navegadores",
+  "browsers.explain": "No Windows, Edge, Chrome e Brave criptografam os cookies de uma forma que o yt-dlp não consegue ler, mesmo com o navegador fechado: nos nossos testes eles não funcionam, por isso ficam ocultos por padrão para não poluir as listas. O Firefox é recomendado (funciona aberto ou fechado) e o Opera funciona com o navegador fechado. Marque esta caixa para exibi-los novamente, por exemplo após uma atualização do yt-dlp que corrija isso, ou em outro sistema.",
+  "browsers.close": "Fechar"
 }

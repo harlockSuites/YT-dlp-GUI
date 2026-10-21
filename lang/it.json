@@ -499,5 +499,10 @@
   "deps.status_optional": "– Facoltativo",
   "deps.status_recommended": "○ Consigliato",
   "inspect.playlist": "Playlist «{title}»: {count} video.",
-  "inspect.playlist_bad": "Playlist «{title}»: {count} video, di cui {bad} non disponibili (privati, eliminati o nascosti): non potranno essere scaricati."
+  "inspect.playlist_bad": "Playlist «{title}»: {count} video, di cui {bad} non disponibili (privati, eliminati o nascosti): non potranno essere scaricati.",
+  "toolbar.menu_browsers": "🍪  Browser per i cookie…",
+  "browsers.title": "Browser per i cookie",
+  "browsers.chk": "Mostra anche Edge, Chrome e Brave negli elenchi dei browser",
+  "browsers.explain": "In Windows, Edge, Chrome e Brave cifrano i cookie in un modo che yt-dlp non riesce a leggere, anche con il browser chiuso: nei nostri test non funzionano, quindi sono nascosti per impostazione predefinita per non ingombrare gli elenchi. Si consiglia Firefox (funziona aperto o chiuso) e Opera funziona con il browser chiuso. Seleziona questa casella per mostrarli di nuovo, ad esempio dopo un aggiornamento di yt-dlp che risolva il problema, o su un altro sistema.",
+  "browsers.close": "Chiudi"
 }

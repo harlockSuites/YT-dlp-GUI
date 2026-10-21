@@ -499,5 +499,10 @@
   "deps.status_optional": "– Opciono",
   "deps.status_recommended": "○ Preporučeno",
   "inspect.playlist": "Plejlista „{title}”: {count} video-zapisa.",
-  "inspect.playlist_bad": "Plejlista „{title}”: {count} video-zapisa, od toga {bad} nedostupnih (privatnih, obrisanih ili skrivenih): ne mogu se preuzeti."
+  "inspect.playlist_bad": "Plejlista „{title}”: {count} video-zapisa, od toga {bad} nedostupnih (privatnih, obrisanih ili skrivenih): ne mogu se preuzeti.",
+  "toolbar.menu_browsers": "🍪  Pregledači za kolačiće…",
+  "browsers.title": "Pregledači za kolačiće",
+  "browsers.chk": "Prikaži i Edge, Chrome i Brave na listama pregledača",
+  "browsers.explain": "U Windowsu Edge, Chrome i Brave šifruju kolačiće na način koji yt-dlp ne može da pročita, čak ni kada je pregledač zatvoren: u našim testovima ne rade, pa su podrazumevano skriveni da ne zatrpavaju liste. Preporučuje se Firefox (radi otvoren i zatvoren), a Opera radi kada je pregledač zatvoren. Označite ovo polje da ih ponovo prikažete, na primer posle ažuriranja yt-dlp koje to ispravlja, ili na drugom sistemu.",
+  "browsers.close": "Zatvori"
 }

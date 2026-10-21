@@ -499,5 +499,10 @@
   "deps.status_optional": "– Opsyonal",
   "deps.status_recommended": "○ Inirerekomenda",
   "inspect.playlist": "Playlist na “{title}”: {count} video.",
-  "inspect.playlist_bad": "Playlist na “{title}”: {count} video, {bad} dito ang hindi available (pribado, na-delete o nakatago): hindi ma-download."
+  "inspect.playlist_bad": "Playlist na “{title}”: {count} video, {bad} dito ang hindi available (pribado, na-delete o nakatago): hindi ma-download.",
+  "toolbar.menu_browsers": "🍪  Mga browser para sa cookies…",
+  "browsers.title": "Mga browser para sa cookies",
+  "browsers.chk": "Ipakita rin ang Edge, Chrome at Brave sa mga listahan ng browser",
+  "browsers.explain": "Sa Windows, ine-encrypt ng Edge, Chrome at Brave ang kanilang cookies sa paraang hindi mabasa ng yt-dlp, kahit nakasara ang browser: sa aming mga pagsubok ay hindi sila gumagana, kaya nakatago sila bilang default para hindi magulo ang mga listahan. Inirerekomenda ang Firefox (gumagana nang bukas o sarado) at gumagana ang Opera kapag nakasara ang browser. Lagyan ng tsek ang kahong ito para ipakita muli ang mga ito, halimbawa pagkatapos ng update ng yt-dlp na aayos nito, o sa ibang system.",
+  "browsers.close": "Isara"
 }

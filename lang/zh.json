@@ -499,5 +499,10 @@
   "deps.status_optional": "– 可选",
   "deps.status_recommended": "○ 推荐",
   "inspect.playlist": "播放列表“{title}”：{count} 个视频。",
-  "inspect.playlist_bad": "播放列表“{title}”：{count} 个视频，其中 {bad} 个不可用（私享、已删除或已隐藏）：无法下载。"
+  "inspect.playlist_bad": "播放列表“{title}”：{count} 个视频，其中 {bad} 个不可用（私享、已删除或已隐藏）：无法下载。",
+  "toolbar.menu_browsers": "🍪  Cookie 浏览器…",
+  "browsers.title": "用于 Cookie 的浏览器",
+  "browsers.chk": "在浏览器列表中同时显示 Edge、Chrome 和 Brave",
+  "browsers.explain": "在 Windows 上，Edge、Chrome 和 Brave 对 Cookie 的加密方式 yt-dlp 无法读取，即使浏览器已关闭：在我们的测试中它们无法使用，因此默认隐藏，以免列表杂乱。推荐使用 Firefox（打开或关闭均可），Opera 在浏览器关闭时可用。若要重新显示，请勾选此框，例如在 yt-dlp 更新修复此问题后，或在其他系统上。",
+  "browsers.close": "关闭"
 }

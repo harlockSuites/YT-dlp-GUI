@@ -499,5 +499,10 @@
   "deps.status_optional": "– 任意",
   "deps.status_recommended": "○ 推奨",
   "inspect.playlist": "プレイリスト「{title}」：{count} 本の動画。",
-  "inspect.playlist_bad": "プレイリスト「{title}」：{count} 本の動画（うち {bad} 本は利用不可：非公開、削除済み、または非表示。ダウンロードできません）。"
+  "inspect.playlist_bad": "プレイリスト「{title}」：{count} 本の動画（うち {bad} 本は利用不可：非公開、削除済み、または非表示。ダウンロードできません）。",
+  "toolbar.menu_browsers": "🍪  Cookie 用ブラウザー…",
+  "browsers.title": "Cookie 用ブラウザー",
+  "browsers.chk": "ブラウザーの一覧に Edge、Chrome、Brave も表示する",
+  "browsers.explain": "Windows では、Edge、Chrome、Brave は Cookie を yt-dlp が読み取れない方式で暗号化しており、ブラウザーを閉じていても使えません。テストでは動作しなかったため、一覧が煩雑にならないよう既定では非表示にしています。Firefox を推奨します（開いていても閉じていても動作）。Opera はブラウザーを閉じていれば動作します。再び表示するには、このチェックボックスをオンにしてください（yt-dlp の更新でこの問題が解消された場合や、別の OS で使う場合など）。",
+  "browsers.close": "閉じる"
 }

@@ -499,5 +499,10 @@
   "deps.status_optional": "– Választható",
   "deps.status_recommended": "○ Ajánlott",
   "inspect.playlist": "Lejátszási lista „{title}”: {count} videó.",
-  "inspect.playlist_bad": "Lejátszási lista „{title}”: {count} videó, ebből {bad} nem érhető el (privát, törölt vagy rejtett): ezeket nem lehet letölteni."
+  "inspect.playlist_bad": "Lejátszási lista „{title}”: {count} videó, ebből {bad} nem érhető el (privát, törölt vagy rejtett): ezeket nem lehet letölteni.",
+  "toolbar.menu_browsers": "🍪  Böngészők a cookie-khoz…",
+  "browsers.title": "Böngészők a cookie-khoz",
+  "browsers.chk": "Az Edge, a Chrome és a Brave megjelenítése a böngészőlistákban is",
+  "browsers.explain": "Windowson az Edge, a Chrome és a Brave úgy titkosítja a cookie-kat, hogy a yt-dlp nem tudja elolvasni őket, még bezárt böngészővel sem: a tesztjeink szerint nem működnek, ezért alapértelmezés szerint rejtettek, hogy ne zsúfolják a listákat. A Firefox ajánlott (nyitva és zárva is működik), az Opera pedig bezárt böngészővel működik. Jelölje be ezt a négyzetet, ha újra látni szeretné őket, például egy ezt javító yt-dlp-frissítés után vagy másik rendszeren.",
+  "browsers.close": "Bezárás"
 }

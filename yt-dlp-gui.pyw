@@ -1949,6 +1949,27 @@ class DownloadReportWindow(tk.Toplevel):
 # ══════════════════════════════════════════════════════════════════
 #  Widget multi-sélection avec popup modale
 # ══════════════════════════════════════════════════════════════════
+class BrowserOptionsWindow(tk.Toplevel):
+    """Option : afficher ou masquer Edge, Chrome et Brave dans les listes de navigateurs (cookies)."""
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title(t("browsers.title"))
+        self.resizable(False, False)
+        self.transient(parent)
+        frm = ttk.Frame(self, padding=14)
+        frm.pack(fill="both", expand=True)
+        self.var = tk.BooleanVar(value=show_blocked_browsers())
+        ttk.Checkbutton(frm, text=t("browsers.chk"), variable=self.var, command=self._toggle).pack(anchor="w")
+        ttk.Label(frm, text=t("browsers.explain"), wraplength=460, justify="left",
+                  foreground="#555555").pack(anchor="w", pady=(10, 12))
+        ttk.Button(frm, text=t("browsers.close"), command=self.destroy).pack(anchor="e", ipadx=8)
+
+    def _toggle(self):
+        update_config("show_blocked_browsers", bool(self.var.get()))
+        refresh_browser_combos()
+
+
 class MultiCheckSelect(ttk.Frame):
     """Bouton qui ouvre une popup modale avec cases à cocher (multi-sélection)."""
 
@@ -2611,6 +2632,38 @@ class _Tip:
 BROWSER_OFF = "Désactivé"   # valeur interne (config) : l'affichage est traduit par _browser_combo
 
 
+def show_blocked_browsers():
+    """Edge, Chrome et Brave figurent-ils dans les listes de navigateurs ? Sous Windows ils chiffrent leurs
+    cookies d'une façon que yt-dlp ne lit pas : masqués par défaut ; visibles par défaut ailleurs."""
+    cfg = load_config()
+    if "show_blocked_browsers" in cfg:
+        return bool(cfg["show_blocked_browsers"])
+    return sys.platform != "win32"
+
+
+def visible_browsers(show_blocked, current=""):
+    """Navigateurs proposés dans les listes. Le navigateur déjà choisi reste toujours dans la liste, pour qu'un
+    réglage existant ne disparaisse pas sans que l'utilisateur l'ait changé."""
+    return ["firefox", "opera"] + [b for b in _COOKIE_ENCRYPTED_BROWSERS if show_blocked or b == current]
+
+
+_BROWSER_COMBOS = []      # (combobox, fonction de mise à jour de ses valeurs)
+
+
+def refresh_browser_combos():
+    """Remet à jour toutes les listes de navigateurs ouvertes (après un changement de l'option)."""
+    for entry in list(_BROWSER_COMBOS):
+        cb, refresh = entry
+        try:
+            alive = cb.winfo_exists()
+        except tk.TclError:
+            alive = False
+        if alive:
+            refresh()
+        else:
+            _BROWSER_COMBOS.remove(entry)
+
+
 def _browser_combo(parent, var):
     """Combobox des navigateurs : `var` garde la valeur interne (BROWSER_OFF ou nom du
     navigateur) tandis que l'affichage de « désactivé » est traduit."""
@@ -2624,11 +2677,21 @@ def _browser_combo(parent, var):
         v = disp.get()
         var.set(BROWSER_OFF if v == off_lbl else v)
 
-    cb = ttk.Combobox(parent, textvariable=disp, state="readonly", width=12,
-                      values=[off_lbl, "chrome", "firefox", "edge", "brave", "opera"])
+    def values():
+        return [off_lbl] + visible_browsers(show_blocked_browsers(), var.get())
+
+    cb = ttk.Combobox(parent, textvariable=disp, state="readonly", width=12, values=values())
+
+    def refresh(*_):
+        try:
+            cb.configure(values=values())
+        except tk.TclError:
+            pass
+
     cb.bind("<<ComboboxSelected>>", to_var)
-    var.trace_add("write", to_disp)
+    var.trace_add("write", lambda *_: (to_disp(), refresh()))
     to_disp()
+    _BROWSER_COMBOS.append((cb, refresh))
     return cb
 
 
@@ -5429,6 +5492,7 @@ class YtDlpGui(tk.Tk):
                              command=self._toggle_auto_update)
         menu.add_command(label=t("toolbar.menu_deps"),   command=self._open_deps)
         menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
+        menu.add_command(label=t("toolbar.menu_browsers"), command=lambda: BrowserOptionsWindow(self))
         menu.add_separator()
         menu.add_command(label="🌐  Langue / Language…", command=self._open_lang_dialog)
         menu.tk_popup(self.winfo_pointerx(), self.winfo_pointery())

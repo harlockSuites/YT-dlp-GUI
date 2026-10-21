@@ -499,5 +499,10 @@
   "deps.status_optional": "– Opcjonalne",
   "deps.status_recommended": "○ Zalecane",
   "inspect.playlist": "Playlista „{title}”: {count} film(ów).",
-  "inspect.playlist_bad": "Playlista „{title}”: {count} film(ów), w tym {bad} niedostępnych (prywatnych, usuniętych lub ukrytych): nie da się ich pobrać."
+  "inspect.playlist_bad": "Playlista „{title}”: {count} film(ów), w tym {bad} niedostępnych (prywatnych, usuniętych lub ukrytych): nie da się ich pobrać.",
+  "toolbar.menu_browsers": "🍪  Przeglądarki dla cookies…",
+  "browsers.title": "Przeglądarki dla cookies",
+  "browsers.chk": "Pokaż także Edge, Chrome i Brave na listach przeglądarek",
+  "browsers.explain": "W systemie Windows Edge, Chrome i Brave szyfrują cookies w sposób, którego yt-dlp nie potrafi odczytać, nawet przy zamkniętej przeglądarce: w naszych testach nie działają, dlatego domyślnie są ukryte, aby nie zaśmiecać list. Zalecany jest Firefox (działa otwarty i zamknięty), a Opera działa przy zamkniętej przeglądarce. Zaznacz to pole, aby je znów pokazać, np. po aktualizacji yt-dlp, która to naprawi, lub w innym systemie.",
+  "browsers.close": "Zamknij"
 }

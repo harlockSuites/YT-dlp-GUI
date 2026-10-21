@@ -6,6 +6,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Ajouté
 - Téléchargeur individuel : « Inspecter » sur une adresse de playlist affiche maintenant le titre de la playlist, le nombre de vidéos et celles qui sont indisponibles (privées, supprimées ou masquées, donc impossibles à télécharger), au lieu de « Erreur : réponse JSON invalide » (une seule requête rapide, `--flat-playlist`, 15 langues). Le téléchargement de la playlist n'est pas modifié.
+- Cookies : Edge, Chrome et Brave, qui ne fonctionnent pas sous Windows (cookies chiffrés d'une façon que yt-dlp ne lit pas, même navigateur fermé), sont masqués par défaut dans toutes les listes de navigateurs (Windows seulement ; visibles par défaut ailleurs). Le menu des options a une entrée « Navigateurs pour les cookies… » avec une case pour les afficher à nouveau et une phrase qui explique ce choix (15 langues) ; les listes ouvertes se mettent à jour tout de suite. Un navigateur déjà choisi dans les réglages reste dans la liste tant qu'on ne l'a pas changé.
 
 ### Corrigé
 - Inspecteur de playlist : fermer la fenêtre pendant une analyse ouvrait trois boîtes « Erreur interne » (une par action de fin d'analyse planifiée après la fermeture). Ces actions sont maintenant ignorées quand la fenêtre n'existe plus.
