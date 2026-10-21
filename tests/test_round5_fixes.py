@@ -83,6 +83,31 @@ class InspectorListingCookiesTests(unittest.TestCase):
         self.assertTrue(any("2 élément(s) masqué(s)" in x for x in self.logged))
         self.assertEqual([c for c in self.calls if "--flat-playlist" not in c], [])
 
+    def test_single_private_video_of_the_connected_account_is_not_skipped(self):
+        """Adresse d'une vidéo seule : `availability` vaut « private » pour son propriétaire (« 1 élément masqué »)."""
+        self.insp.var_g_browser.set("opera")
+        stdout = json.dumps({"id": PRIVATE_ID, "title": "Pedro le film", "availability": "private"})
+        with self._fake_run(stdout):
+            self.insp._run_analyze_impl("https://www.youtube.com/watch?v=" + PRIVATE_ID)
+        self.assertFalse(any("masqué(s)" in x for x in self.logged), self.logged)
+        self.assertTrue(any(PRIVATE_ID in " ".join(c) for c in self.calls if "--flat-playlist" not in c))
+
+    def test_members_only_videos_are_still_skipped(self):
+        self.insp.var_g_browser.set("opera")
+        stdout = "\n".join(json.dumps({"id": f"v{n}", "title": "x", "availability": a})
+                           for n, a in enumerate(("subscriber_only", "premium_only")))
+        with self._fake_run(stdout):
+            self.insp._run_analyze_impl("https://www.youtube.com/playlist?list=PLabc")
+        self.assertTrue(any("2 élément(s) masqué(s)" in x for x in self.logged))
+
+    def test_duplicate_error_lines_are_logged_once(self):
+        self.insp.var_g_browser.set("opera")
+        error = "ERROR: Could not copy Chrome cookie database. See https://github.com/yt-dlp/yt-dlp/issues/7271"
+        with mock.patch.object(m, "browser_process_count", return_value=0), \
+                self._fake_run("", listing_rc=1, listing_stderr=error + "\n" + error + "\n"):
+            self.insp._run_analyze_impl("https://www.youtube.com/watch?v=" + PRIVATE_ID)
+        self.assertEqual(sum("Could not copy" in x for x in self.logged), 1, self.logged)
+
     def test_the_reason_of_a_failed_listing_is_logged(self):
         self.insp.var_g_browser.set("opera")
         with mock.patch.object(m, "browser_process_count", return_value=0), \

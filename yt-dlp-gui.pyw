@@ -3549,9 +3549,11 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 continue
             vid_id = info.get("id") or ""
             title = info.get("title") or ""
+            # « private » n'est pas retenu ici : une vidéo privée inaccessible n'a pas de titre (ou « [Private video] »),
+            # et pour une adresse de vidéo seule, `availability` vaut « private » quand c'est le propriétaire qui la voit.
             hidden = (not vid_id or not title
                       or title.startswith(("[Private video]", "[Deleted video]"))
-                      or info.get("availability") in ("private", "premium_only", "subscriber_only"))
+                      or info.get("availability") in ("premium_only", "subscriber_only"))
             if hidden:
                 skipped += 1
                 continue
@@ -3562,7 +3564,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
         if not videos:
             if result.returncode != 0:                        # raison de l'échec (cookies verrouillés, vidéo indisponible…)
-                for line in result.stderr.splitlines():
+                for line in dict.fromkeys(l for l in result.stderr.splitlines() if l.strip()):    # sans les doublons
                     self.after(0, lambda l=line: self._log(f"  [liste] {l}"))
                 hint = _cookie_hint(result.stderr, browser)
                 if hint:
