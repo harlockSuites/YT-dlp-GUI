@@ -418,7 +418,7 @@
   "inspect.auto_part": "（自动：{langs}）",
   "toolbar.btn_bug": "🐞 报告错误",
   "bug.window_title": "报告错误",
-  "bug.intro": "请描述问题。将附带一份技术报告（版本、系统、日志最后几行）；您的文件夹、用户名和电子邮件地址已被隐藏。不会自动发送任何内容：请先检查，再打开 GitHub 页面。",
+  "bug.intro": "请描述问题。将附带一份技术报告（版本、系统、日志最后几行）；您的文件夹、用户名和电子邮件地址已被隐藏。不会自动发送任何内容：请先检查，再打开 GitHub 页面。在 GitHub 上提交报告需要一个免费的 GitHub 账号。",
   "bug.label_summary": "问题摘要",
   "bug.label_description": "发生了什么？您当时在做什么？",
   "bug.label_report": "技术报告（可编辑）",
@@ -507,5 +507,8 @@
   "browsers.close": "关闭",
   "inspect.playlist_untitled": "无标题",
   "cookie.hint_private": "此视频为私享视频，只有所有者和受邀账号可以观看。若视频属于您，请确认 {browser} 已登录正确的 YouTube 账号且 Cookie 指示灯为绿色，然后重试。",
-  "cookie.hint_private_off": "此视频为私享视频，只有所有者和受邀账号可以观看。若视频属于您，请在 Cookie 区域选择已登录正确 YouTube 账号的浏览器（推荐 Firefox），然后重试。"
+  "cookie.hint_private_off": "此视频为私享视频，只有所有者和受邀账号可以观看。若视频属于您，请在 Cookie 区域选择已登录正确 YouTube 账号的浏览器（推荐 Firefox），然后重试。",
+  "net.offline": "未连接到互联网。请检查网络连接（网线、Wi-Fi、VPN 或防火墙）后重试。（详细信息：{detail}）",
+  "net.timeout": "服务器没有响应（超时）。请稍后重试。（详细信息：{detail}）",
+  "net.unreachable": "无法连接到服务器（连接被拒绝、中断或被阻止）。请检查网络连接、VPN 或防火墙后重试。（详细信息：{detail}）"
 }

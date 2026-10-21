@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Segnala un bug",
   "bug.window_title": "Segnala un bug",
-  "bug.intro": "Descrivi il problema. Viene allegato un rapporto tecnico (versione, sistema, ultime righe del registro); le tue cartelle, il nome utente e gli indirizzi e-mail sono oscurati. Nulla viene inviato automaticamente: controlla e poi apri la pagina di GitHub.",
+  "bug.intro": "Descrivi il problema. Viene allegato un rapporto tecnico (versione, sistema, ultime righe del registro); le tue cartelle, il nome utente e gli indirizzi e-mail sono oscurati. Nulla viene inviato automaticamente: controlla e poi apri la pagina di GitHub. Per inviare il rapporto su GitHub serve un account GitHub gratuito.",
   "bug.label_summary": "Riepilogo del problema",
   "bug.label_description": "Cosa è successo? Cosa stavi facendo?",
   "bug.label_report": "Rapporto tecnico (modificabile)",
@@ -507,5 +507,8 @@
   "browsers.close": "Chiudi",
   "inspect.playlist_untitled": "senza titolo",
   "cookie.hint_private": "Questo video è privato: possono vederlo solo il proprietario e gli account invitati. Se è tuo, verifica che {browser} sia connesso all'account YouTube corretto e che l'indicatore dei cookie sia verde, poi riprova.",
-  "cookie.hint_private_off": "Questo video è privato: possono vederlo solo il proprietario e gli account invitati. Se è tuo, scegli nel riquadro Cookie un browser connesso all'account YouTube corretto (si consiglia Firefox), poi riprova."
+  "cookie.hint_private_off": "Questo video è privato: possono vederlo solo il proprietario e gli account invitati. Se è tuo, scegli nel riquadro Cookie un browser connesso all'account YouTube corretto (si consiglia Firefox), poi riprova.",
+  "net.offline": "Nessuna connessione a Internet. Controlla la connessione (cavo, Wi-Fi, VPN o firewall) e riprova. (Dettaglio: {detail})",
+  "net.timeout": "Il server non risponde (tempo scaduto). Riprova tra poco. (Dettaglio: {detail})",
+  "net.unreachable": "Impossibile raggiungere il server (connessione rifiutata, interrotta o bloccata). Controlla la connessione, la VPN o il firewall e riprova. (Dettaglio: {detail})"
 }

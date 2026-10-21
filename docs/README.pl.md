@@ -56,7 +56,7 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 
 ### Zgłoś błąd
 
-- Przycisk „Zgłoś błąd” przygotowuje raport techniczny: wersje programu, Pythona, Windows i yt-dlp, niegroźne ustawienia i ostatnie linie dziennika. Twoje foldery, nazwa użytkownika i adresy e-mail są zasłaniane.
+- Przycisk „Zgłoś błąd” przygotowuje raport techniczny: wersje programu, Pythona, Windows i yt-dlp, niegroźne ustawienia i ostatnie linie dziennika. Twoje foldery, nazwa użytkownika i adresy e-mail są zasłaniane. Wysłanie raportu na GitHubie wymaga bezpłatnego konta GitHub.
 ## Instalacja
 
 - **Instalator (zalecany)**: pobierz `yt-dlp-gui-setup-X.Y.Z.exe` ze [strony wydań](https://github.com/harlockSuites/YT-dlp-GUI/releases) i uruchom go. Windows 10 lub 11 (64-bitowy), bez uprawnień administratora; Python nie jest potrzebny.

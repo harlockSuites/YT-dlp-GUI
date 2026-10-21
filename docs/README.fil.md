@@ -56,7 +56,7 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 
 ### Mag-ulat ng bug
 
-- Naghahanda ang button na "Mag-ulat ng bug" ng teknikal na ulat: mga bersyon ng software, Python, Windows at yt-dlp, mga hindi mapanganib na setting at ang mga huling linya ng log. Nakatago ang iyong mga folder, pangalan ng user at mga e-mail address.
+- Naghahanda ang button na "Mag-ulat ng bug" ng teknikal na ulat: mga bersyon ng software, Python, Windows at yt-dlp, mga hindi mapanganib na setting at ang mga huling linya ng log. Nakatago ang iyong mga folder, pangalan ng user at mga e-mail address. Kailangan ng libreng GitHub account para maipadala ang ulat sa GitHub.
 ## Pag-install
 
 - **Installer (inirerekomenda)**: i-download ang `yt-dlp-gui-setup-X.Y.Z.exe` mula sa [pahina ng mga release](https://github.com/harlockSuites/YT-dlp-GUI/releases) at patakbuhin ito. Windows 10 o 11 (64-bit), walang kailangang administrator rights; hindi kailangan ang Python.

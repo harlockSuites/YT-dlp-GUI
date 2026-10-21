@@ -56,7 +56,7 @@
 
 ### 버그 신고
 
-- '버그 신고' 버튼은 기술 보고서를 준비합니다: 소프트웨어, Python, Windows, yt-dlp의 버전, 무해한 설정, 로그의 마지막 줄. 폴더, 사용자 이름, 이메일 주소는 가려집니다.
+- '버그 신고' 버튼은 기술 보고서를 준비합니다: 소프트웨어, Python, Windows, yt-dlp의 버전, 무해한 설정, 로그의 마지막 줄. 폴더, 사용자 이름, 이메일 주소는 가려집니다. GitHub에 보고서를 보내려면 무료 GitHub 계정이 필요합니다.
 ## 설치
 
 - **설치 프로그램(권장)**: [릴리스 페이지](https://github.com/harlockSuites/YT-dlp-GUI/releases)에서 `yt-dlp-gui-setup-X.Y.Z.exe`를 내려받아 실행하세요. Windows 10 또는 11(64비트)에서 관리자 권한 없이 설치되며 Python은 필요하지 않습니다.

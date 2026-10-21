@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Mag-ulat ng bug",
   "bug.window_title": "Mag-ulat ng bug",
-  "bug.intro": "Ilarawan ang problema. May kalakip na teknikal na ulat (bersyon, sistema, huling linya ng log); nakatago ang iyong mga folder, pangalan ng user at e-mail. Walang awtomatikong ipinapadala: suriin muna, saka buksan ang pahina ng GitHub.",
+  "bug.intro": "Ilarawan ang problema. May kalakip na teknikal na ulat (bersyon, sistema, huling linya ng log); nakatago ang iyong mga folder, pangalan ng user at e-mail. Walang awtomatikong ipinapadala: suriin muna, saka buksan ang pahina ng GitHub. Kailangan ng libreng GitHub account para maipadala ang ulat sa GitHub.",
   "bug.label_summary": "Buod ng problema",
   "bug.label_description": "Ano ang nangyari? Ano ang ginagawa mo?",
   "bug.label_report": "Teknikal na ulat (maaaring i-edit)",
@@ -507,5 +507,8 @@
   "browsers.close": "Isara",
   "inspect.playlist_untitled": "walang pamagat",
   "cookie.hint_private": "Pribado ang video na ito: ang may-ari lang at ang mga inimbitahang account ang makakakita nito. Kung sa iyo ito, tiyaking naka-sign in ang {browser} sa tamang YouTube account at berde ang indicator ng cookies, saka subukan muli.",
-  "cookie.hint_private_off": "Pribado ang video na ito: ang may-ari lang at ang mga inimbitahang account ang makakakita nito. Kung sa iyo ito, pumili sa kahon ng Cookies ng browser na naka-sign in sa tamang YouTube account (inirerekomenda ang Firefox), saka subukan muli."
+  "cookie.hint_private_off": "Pribado ang video na ito: ang may-ari lang at ang mga inimbitahang account ang makakakita nito. Kung sa iyo ito, pumili sa kahon ng Cookies ng browser na naka-sign in sa tamang YouTube account (inirerekomenda ang Firefox), saka subukan muli.",
+  "net.offline": "Walang koneksyon sa Internet. Suriin ang koneksyon (kable, Wi-Fi, VPN o firewall), saka subukan muli. (Detalye: {detail})",
+  "net.timeout": "Hindi tumutugon ang server (nag-time out). Subukan muli maya-maya. (Detalye: {detail})",
+  "net.unreachable": "Hindi maabot ang server (tinanggihan, naputol o hinarang ang koneksyon). Suriin ang koneksyon, VPN o firewall, saka subukan muli. (Detalye: {detail})"
 }

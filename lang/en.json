@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Report a bug",
   "bug.window_title": "Report a bug",
-  "bug.intro": "Describe the problem. A technical report is attached (version, system, last log lines); your folders, user name and e-mail addresses are masked. Nothing is sent automatically: review it, then open the GitHub page.",
+  "bug.intro": "Describe the problem. A technical report is attached (version, system, last log lines); your folders, user name and e-mail addresses are masked. Nothing is sent automatically: review it, then open the GitHub page. Sending the report on GitHub requires a free GitHub account.",
   "bug.label_summary": "Summary of the problem",
   "bug.label_description": "What happened? What were you doing?",
   "bug.label_report": "Technical report (editable)",
@@ -507,5 +507,8 @@
   "browsers.close": "Close",
   "inspect.playlist_untitled": "untitled",
   "cookie.hint_private": "This video is private: only its owner and invited accounts can see it. If it is yours, check that {browser} is signed in to the right YouTube account and that the cookie indicator is green, then try again.",
-  "cookie.hint_private_off": "This video is private: only its owner and invited accounts can see it. If it is yours, pick in the Cookies box a browser signed in to the right YouTube account (Firefox is recommended), then try again."
+  "cookie.hint_private_off": "This video is private: only its owner and invited accounts can see it. If it is yours, pick in the Cookies box a browser signed in to the right YouTube account (Firefox is recommended), then try again.",
+  "net.offline": "No Internet connection. Check your connection (cable, Wi-Fi, VPN or firewall), then try again. (Detail: {detail})",
+  "net.timeout": "The server is not responding (timed out). Try again in a moment. (Detail: {detail})",
+  "net.unreachable": "Cannot reach the server (connection refused, interrupted or blocked). Check your connection, VPN or firewall, then try again. (Detail: {detail})"
 }

@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Prijavi grešku",
   "bug.window_title": "Prijavi grešku",
-  "bug.intro": "Opišite problem. Prilaže se tehnički izveštaj (verzija, sistem, poslednje linije dnevnika); vaše fascikle, korisničko ime i e-adrese su sakriveni. Ništa se ne šalje automatski: pregledajte, pa otvorite GitHub stranicu.",
+  "bug.intro": "Opišite problem. Prilaže se tehnički izveštaj (verzija, sistem, poslednje linije dnevnika); vaše fascikle, korisničko ime i e-adrese su sakriveni. Ništa se ne šalje automatski: pregledajte, pa otvorite GitHub stranicu. Za slanje izveštaja na GitHub potreban je besplatan GitHub nalog.",
   "bug.label_summary": "Rezime problema",
   "bug.label_description": "Šta se desilo? Šta ste radili?",
   "bug.label_report": "Tehnički izveštaj (može se menjati)",
@@ -507,5 +507,8 @@
   "browsers.close": "Zatvori",
   "inspect.playlist_untitled": "bez naslova",
   "cookie.hint_private": "Ovaj video je privatan: mogu da ga vide samo vlasnik i pozvani nalozi. Ako je vaš, proverite da li je u pregledaču {browser} prijavljen pravi YouTube nalog i da je indikator kolačića zelen, pa pokušajte ponovo.",
-  "cookie.hint_private_off": "Ovaj video je privatan: mogu da ga vide samo vlasnik i pozvani nalozi. Ako je vaš, izaberite u okviru Kolačići pregledač prijavljen na pravi YouTube nalog (preporučuje se Firefox), pa pokušajte ponovo."
+  "cookie.hint_private_off": "Ovaj video je privatan: mogu da ga vide samo vlasnik i pozvani nalozi. Ako je vaš, izaberite u okviru Kolačići pregledač prijavljen na pravi YouTube nalog (preporučuje se Firefox), pa pokušajte ponovo.",
+  "net.offline": "Nema internet veze. Proverite vezu (kabl, Wi-Fi, VPN ili zaštitni zid) pa pokušajte ponovo. (Detalji: {detail})",
+  "net.timeout": "Server ne odgovara (isteklo je vreme). Pokušajte ponovo za trenutak. (Detalji: {detail})",
+  "net.unreachable": "Nije moguće povezati se sa serverom (veza odbijena, prekinuta ili blokirana). Proverite vezu, VPN ili zaštitni zid pa pokušajte ponovo. (Detalji: {detail})"
 }

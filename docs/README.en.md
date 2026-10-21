@@ -56,7 +56,7 @@ A graphical interface for [yt-dlp](https://github.com/yt-dlp/yt-dlp), designed t
 
 ### Report a bug
 
-- The "Report a bug" button prepares a technical report: versions of the software, Python, Windows and yt-dlp, harmless settings and the last log lines. Your folders, user name and e-mail addresses are masked.
+- The "Report a bug" button prepares a technical report: versions of the software, Python, Windows and yt-dlp, harmless settings and the last log lines. Your folders, user name and e-mail addresses are masked. Sending the report on GitHub requires a free GitHub account.
 ## Installation
 
 - **Installer (recommended)**: download `yt-dlp-gui-setup-X.Y.Z.exe` from the [releases page](https://github.com/harlockSuites/YT-dlp-GUI/releases) and run it. Windows 10 or 11 (64-bit), no administrator rights needed; Python is not required.

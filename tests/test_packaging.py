@@ -1,6 +1,7 @@
 import importlib.util
 import os
 import re
+import sys
 import tempfile
 import unittest
 
@@ -124,6 +125,43 @@ class BuildScriptTests(unittest.TestCase):
         iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
         self.assertIn(f"AppMutex={m.RUN_MUTEX_NAME}", iss)
         self.assertIn("UninstallDisplayName={#AppName}", iss)
+
+    def test_installer_offers_to_force_close_the_running_application(self):
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        langs = [n for n, _rel in re.findall(r'^Name: "(\w+)"; MessagesFile: "([^"]+)"', iss, re.M)]
+        for lang in ["", *[f"{n}." for n in langs if n != "english"]]:
+            for key in ("AppRunningTitle", "AppRunningText", "AppRunningForce", "AppRunningRetry", "AppRunningCancel"):
+                line = next((l for l in iss.splitlines() if l.startswith(f"{lang}{key}=")), None)
+                self.assertIsNotNone(line, f"message manquant : {lang or 'english'} {key}")
+                self.assertGreaterEqual(len(line.split("=", 1)[1]), 2)
+        self.assertIn("function InitializeSetup", iss)
+        self.assertIn("function InitializeUninstall", iss)
+        self.assertIn("TaskDialogMsgBox", iss, "boutons personnalisés : « Forcer la fermeture »")
+        self.assertIn("/F /IM {#AppExe} /T", iss, "fermeture forcée avec les processus enfants (téléchargements)")
+        self.assertIn("{param:FORCECLOSE|0}", iss, "installation silencieuse : fermeture seulement avec /FORCECLOSE=1")
+        self.assertIn(f"RunMutexName = '{m.RUN_MUTEX_NAME}'", iss, "même mutex que le logiciel")
+
+    def test_no_pascal_line_starts_with_an_opening_bracket(self):
+        """Inno Setup lit « [ » en début de ligne comme une balise de section : « Invalid section tag »."""
+        iss = _read(os.path.join(ROOT, "packaging", "yt-dlp-gui.iss"))
+        code = iss.split("\n[Code]", 1)[1]
+        for number, line in enumerate(code.splitlines(), 1):
+            self.assertFalse(line.lstrip().startswith("["), f"[Code] ligne {number} : {line.strip()[:60]}")
+
+    @unittest.skipUnless(os.path.isfile(os.path.join(ROOT, "dist", "yt-dlp-gui", "yt-dlp-gui.exe")), "pas de build PyInstaller local")
+    def test_installer_script_compiles(self):
+        import subprocess
+        import tempfile
+        sys.path.insert(0, os.path.join(ROOT, "packaging"))
+        import build
+        iscc = build.find_iscc()
+        if not iscc:
+            self.skipTest("Inno Setup introuvable")
+        with tempfile.TemporaryDirectory() as out:
+            result = subprocess.run([iscc, "/Q", f"/O{out}", "/DAppVersion=9.9.9", "/DDataDirName=yt-dlp-GUI-test",
+                                     os.path.join(ROOT, "packaging", "yt-dlp-gui.iss")],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     @unittest.skipUnless(os.name == "nt", "mutex nommé Windows")
     def test_application_holds_the_named_mutex(self):

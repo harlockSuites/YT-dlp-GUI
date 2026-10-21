@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Relatar um erro",
   "bug.window_title": "Relatar um erro",
-  "bug.intro": "Descreva o problema. Um relatório técnico é anexado (versão, sistema, últimas linhas do registro); suas pastas, nome de usuário e e-mails são ocultados. Nada é enviado automaticamente: revise e abra a página do GitHub.",
+  "bug.intro": "Descreva o problema. Um relatório técnico é anexado (versão, sistema, últimas linhas do registro); suas pastas, nome de usuário e e-mails são ocultados. Nada é enviado automaticamente: revise e abra a página do GitHub. Enviar o relatório no GitHub exige uma conta gratuita do GitHub.",
   "bug.label_summary": "Resumo do problema",
   "bug.label_description": "O que aconteceu? O que você estava fazendo?",
   "bug.label_report": "Relatório técnico (editável)",
@@ -507,5 +507,8 @@
   "browsers.close": "Fechar",
   "inspect.playlist_untitled": "sem título",
   "cookie.hint_private": "Este vídeo é privado: apenas o proprietário e as contas convidadas podem vê-lo. Se for seu, confirme que o {browser} está conectado à conta correta do YouTube e que o indicador de cookies está verde; depois tente de novo.",
-  "cookie.hint_private_off": "Este vídeo é privado: apenas o proprietário e as contas convidadas podem vê-lo. Se for seu, escolha no quadro Cookies um navegador conectado à conta correta do YouTube (o Firefox é recomendado) e tente de novo."
+  "cookie.hint_private_off": "Este vídeo é privado: apenas o proprietário e as contas convidadas podem vê-lo. Se for seu, escolha no quadro Cookies um navegador conectado à conta correta do YouTube (o Firefox é recomendado) e tente de novo.",
+  "net.offline": "Sem conexão com a Internet. Verifique sua conexão (cabo, Wi-Fi, VPN ou firewall) e tente de novo. (Detalhe: {detail})",
+  "net.timeout": "O servidor não responde (tempo esgotado). Tente novamente em instantes. (Detalhe: {detail})",
+  "net.unreachable": "Não foi possível contatar o servidor (conexão recusada, interrompida ou bloqueada). Verifique sua conexão, VPN ou firewall e tente de novo. (Detalhe: {detail})"
 }

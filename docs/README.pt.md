@@ -56,7 +56,7 @@ Interface gráfica para o [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada pa
 
 ### Relatar um erro
 
-- O botão «Relatar um erro» prepara um relatório técnico: versões do programa, do Python, do Windows e do yt-dlp, configurações inofensivas e as últimas linhas do registro. Suas pastas, seu nome de usuário e seus e-mails são ocultados.
+- O botão «Relatar um erro» prepara um relatório técnico: versões do programa, do Python, do Windows e do yt-dlp, configurações inofensivas e as últimas linhas do registro. Suas pastas, seu nome de usuário e seus e-mails são ocultados. Enviar o relatório no GitHub exige uma conta gratuita do GitHub.
 ## Instalação
 
 - **Instalador (recomendado)**: baixe `yt-dlp-gui-setup-X.Y.Z.exe` na [página de versões](https://github.com/harlockSuites/YT-dlp-GUI/releases) e execute-o. Windows 10 ou 11 (64 bits), sem direitos de administrador; o Python não é necessário.

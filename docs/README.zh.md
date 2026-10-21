@@ -56,7 +56,7 @@
 
 ### 报告错误
 
-- “报告错误”按钮会准备一份技术报告：软件、Python、Windows 和 yt-dlp 的版本、无害的设置以及日志的最后几行。您的文件夹、用户名和电子邮件地址会被隐藏。
+- “报告错误”按钮会准备一份技术报告：软件、Python、Windows 和 yt-dlp 的版本、无害的设置以及日志的最后几行。您的文件夹、用户名和电子邮件地址会被隐藏。在 GitHub 上提交报告需要一个免费的 GitHub 账号。
 ## 安装
 
 - **安装程序（推荐）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-setup-X.Y.Z.exe` 并运行。适用于 Windows 10 或 11（64 位），无需管理员权限，也无需 Python。

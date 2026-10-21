@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Informar de un error",
   "bug.window_title": "Informar de un error",
-  "bug.intro": "Describa el problema. Se adjunta un informe técnico (versión, sistema, últimas líneas del registro); sus carpetas, nombre de usuario y correos electrónicos se ocultan. No se envía nada automáticamente: revíselo y abra la página de GitHub.",
+  "bug.intro": "Describa el problema. Se adjunta un informe técnico (versión, sistema, últimas líneas del registro); sus carpetas, nombre de usuario y correos electrónicos se ocultan. No se envía nada automáticamente: revíselo y abra la página de GitHub. Enviar el informe en GitHub requiere una cuenta de GitHub gratuita.",
   "bug.label_summary": "Resumen del problema",
   "bug.label_description": "¿Qué ocurrió? ¿Qué estaba haciendo?",
   "bug.label_report": "Informe técnico (editable)",
@@ -507,5 +507,8 @@
   "browsers.close": "Cerrar",
   "inspect.playlist_untitled": "sin título",
   "cookie.hint_private": "Este vídeo es privado: solo pueden verlo su propietario y las cuentas invitadas. Si es suyo, compruebe que {browser} tiene la sesión iniciada en la cuenta de YouTube correcta y que el indicador de cookies está en verde; después vuelva a intentarlo.",
-  "cookie.hint_private_off": "Este vídeo es privado: solo pueden verlo su propietario y las cuentas invitadas. Si es suyo, elija en el cuadro Cookies un navegador con la sesión iniciada en la cuenta de YouTube correcta (se recomienda Firefox) y vuelva a intentarlo."
+  "cookie.hint_private_off": "Este vídeo es privado: solo pueden verlo su propietario y las cuentas invitadas. Si es suyo, elija en el cuadro Cookies un navegador con la sesión iniciada en la cuenta de YouTube correcta (se recomienda Firefox) y vuelva a intentarlo.",
+  "net.offline": "Sin conexión a Internet. Compruebe su conexión (cable, Wi-Fi, VPN o cortafuegos) y vuelva a intentarlo. (Detalle: {detail})",
+  "net.timeout": "El servidor no responde (tiempo agotado). Inténtelo de nuevo en un momento. (Detalle: {detail})",
+  "net.unreachable": "No se puede contactar con el servidor (conexión rechazada, interrumpida o bloqueada). Compruebe su conexión, VPN o cortafuegos y vuelva a intentarlo. (Detalle: {detail})"
 }

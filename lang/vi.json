@@ -418,7 +418,7 @@
   "inspect.auto_part": " (tự động: {langs})",
   "toolbar.btn_bug": "🐞 Báo lỗi",
   "bug.window_title": "Báo lỗi",
-  "bug.intro": "Hãy mô tả vấn đề. Một báo cáo kỹ thuật được đính kèm (phiên bản, hệ thống, các dòng nhật ký cuối); thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Không có gì được gửi tự động: hãy xem lại rồi mở trang GitHub.",
+  "bug.intro": "Hãy mô tả vấn đề. Một báo cáo kỹ thuật được đính kèm (phiên bản, hệ thống, các dòng nhật ký cuối); thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Không có gì được gửi tự động: hãy xem lại rồi mở trang GitHub. Gửi báo cáo trên GitHub cần có tài khoản GitHub miễn phí.",
   "bug.label_summary": "Tóm tắt vấn đề",
   "bug.label_description": "Chuyện gì đã xảy ra? Bạn đang làm gì?",
   "bug.label_report": "Báo cáo kỹ thuật (có thể chỉnh sửa)",
@@ -507,5 +507,8 @@
   "browsers.close": "Đóng",
   "inspect.playlist_untitled": "không có tiêu đề",
   "cookie.hint_private": "Video này ở chế độ riêng tư: chỉ chủ sở hữu và các tài khoản được mời mới xem được. Nếu là video của bạn, hãy kiểm tra {browser} đã đăng nhập đúng tài khoản YouTube và đèn cookie đang xanh, rồi thử lại.",
-  "cookie.hint_private_off": "Video này ở chế độ riêng tư: chỉ chủ sở hữu và các tài khoản được mời mới xem được. Nếu là video của bạn, hãy chọn trong khung Cookie một trình duyệt đã đăng nhập đúng tài khoản YouTube (khuyến nghị Firefox), rồi thử lại."
+  "cookie.hint_private_off": "Video này ở chế độ riêng tư: chỉ chủ sở hữu và các tài khoản được mời mới xem được. Nếu là video của bạn, hãy chọn trong khung Cookie một trình duyệt đã đăng nhập đúng tài khoản YouTube (khuyến nghị Firefox), rồi thử lại.",
+  "net.offline": "Không có kết nối Internet. Hãy kiểm tra kết nối (cáp, Wi-Fi, VPN hoặc tường lửa) rồi thử lại. (Chi tiết: {detail})",
+  "net.timeout": "Máy chủ không phản hồi (hết thời gian chờ). Hãy thử lại sau ít phút. (Chi tiết: {detail})",
+  "net.unreachable": "Không thể kết nối tới máy chủ (kết nối bị từ chối, bị ngắt hoặc bị chặn). Hãy kiểm tra kết nối, VPN hoặc tường lửa rồi thử lại. (Chi tiết: {detail})"
 }

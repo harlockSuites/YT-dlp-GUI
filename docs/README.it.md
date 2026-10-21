@@ -56,7 +56,7 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 
 ### Segnala un bug
 
-- Il pulsante «Segnala un bug» prepara un rapporto tecnico: versioni del programma, di Python, di Windows e di yt-dlp, impostazioni innocue e ultime righe del registro. Le tue cartelle, il nome utente e gli indirizzi e-mail vengono oscurati.
+- Il pulsante «Segnala un bug» prepara un rapporto tecnico: versioni del programma, di Python, di Windows e di yt-dlp, impostazioni innocue e ultime righe del registro. Le tue cartelle, il nome utente e gli indirizzi e-mail vengono oscurati. Per inviare il rapporto su GitHub serve un account GitHub gratuito.
 ## Installazione
 
 - **Installatore (consigliato)**: scarica `yt-dlp-gui-setup-X.Y.Z.exe` dalla [pagina delle versioni](https://github.com/harlockSuites/YT-dlp-GUI/releases) e avvialo. Windows 10 o 11 (64 bit), senza diritti di amministratore; Python non è necessario.

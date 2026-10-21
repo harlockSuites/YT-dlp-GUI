@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto: {langs})",
   "toolbar.btn_bug": "🐞 Zgłoś błąd",
   "bug.window_title": "Zgłoś błąd",
-  "bug.intro": "Opisz problem. Dołączony jest raport techniczny (wersja, system, ostatnie linie dziennika); Twoje foldery, nazwa użytkownika i adresy e-mail są zasłonięte. Nic nie jest wysyłane automatycznie: sprawdź raport i otwórz stronę GitHub.",
+  "bug.intro": "Opisz problem. Dołączony jest raport techniczny (wersja, system, ostatnie linie dziennika); Twoje foldery, nazwa użytkownika i adresy e-mail są zasłonięte. Nic nie jest wysyłane automatycznie: sprawdź raport i otwórz stronę GitHub. Wysłanie raportu na GitHubie wymaga bezpłatnego konta GitHub.",
   "bug.label_summary": "Podsumowanie problemu",
   "bug.label_description": "Co się stało? Co robiłeś?",
   "bug.label_report": "Raport techniczny (do edycji)",
@@ -507,5 +507,8 @@
   "browsers.close": "Zamknij",
   "inspect.playlist_untitled": "bez tytułu",
   "cookie.hint_private": "Ten film jest prywatny: widzi go tylko jego właściciel i zaproszone konta. Jeśli należy do Ciebie, sprawdź, czy w przeglądarce {browser} jesteś zalogowany na właściwe konto YouTube i czy wskaźnik cookies jest zielony, a następnie spróbuj ponownie.",
-  "cookie.hint_private_off": "Ten film jest prywatny: widzi go tylko jego właściciel i zaproszone konta. Jeśli należy do Ciebie, wybierz w ramce Cookies przeglądarkę zalogowaną na właściwe konto YouTube (zalecany Firefox), a następnie spróbuj ponownie."
+  "cookie.hint_private_off": "Ten film jest prywatny: widzi go tylko jego właściciel i zaproszone konta. Jeśli należy do Ciebie, wybierz w ramce Cookies przeglądarkę zalogowaną na właściwe konto YouTube (zalecany Firefox), a następnie spróbuj ponownie.",
+  "net.offline": "Brak połączenia z Internetem. Sprawdź połączenie (kabel, Wi-Fi, VPN lub zaporę) i spróbuj ponownie. (Szczegóły: {detail})",
+  "net.timeout": "Serwer nie odpowiada (upłynął limit czasu). Spróbuj ponownie za chwilę. (Szczegóły: {detail})",
+  "net.unreachable": "Nie można połączyć się z serwerem (połączenie odrzucone, przerwane lub zablokowane). Sprawdź połączenie, VPN lub zaporę i spróbuj ponownie. (Szczegóły: {detail})"
 }

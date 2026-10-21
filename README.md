@@ -56,7 +56,7 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 
 ### Signaler un bogue
 
-- Le bouton « Signaler un bogue » prépare un rapport technique : versions du logiciel, de Python, de Windows et de yt-dlp, réglages sans danger et dernières lignes du journal. Vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués.
+- Le bouton « Signaler un bogue » prépare un rapport technique : versions du logiciel, de Python, de Windows et de yt-dlp, réglages sans danger et dernières lignes du journal. Vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués. Envoyer le rapport sur GitHub demande un compte GitHub gratuit.
 ## Installation
 
 - **Installateur (recommandé)** : téléchargez `yt-dlp-gui-setup-X.Y.Z.exe` depuis la page des [versions publiées](https://github.com/harlockSuites/YT-dlp-GUI/releases) et lancez-le. Windows 10 ou 11 (64 bits), sans droits administrateur ; Python n'est pas nécessaire.

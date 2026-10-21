@@ -56,7 +56,7 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 ### Hiba jelentése
 
-- A „Hiba jelentése” gomb műszaki jelentést készít: a program, a Python, a Windows és a yt-dlp verziója, ártalmatlan beállítások és a napló utolsó sorai. A mappái, a felhasználóneve és az e-mail-címei el vannak takarva.
+- A „Hiba jelentése” gomb műszaki jelentést készít: a program, a Python, a Windows és a yt-dlp verziója, ártalmatlan beállítások és a napló utolsó sorai. A mappái, a felhasználóneve és az e-mail-címei el vannak takarva. A jelentés GitHubon való elküldéséhez ingyenes GitHub-fiók szükséges.
 ## Telepítés
 
 - **Telepítő (ajánlott)**: töltse le a `yt-dlp-gui-setup-X.Y.Z.exe` fájlt a [kiadások oldaláról](https://github.com/harlockSuites/YT-dlp-GUI/releases), és futtassa. Windows 10 vagy 11 (64 bites), rendszergazdai jogosultság nélkül; Python nem szükséges.

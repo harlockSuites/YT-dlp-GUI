@@ -4790,7 +4790,7 @@ class SetupWizardWindow(tk.Toplevel):
                 self._ui(lambda n=label: self._log(t("setup.log_installed", name=n)))
             except Exception as exc:
                 ok = False
-                self._ui(lambda e=exc: self._log(t("setup.log_error", error=e)))
+                self._ui(lambda e=exc: self._log(t("setup.log_error", error=describe_network_error(e) or e)))
                 advice = av_advice(exc)
                 if advice:
                     self._ui(lambda a=advice: self._log(a))
@@ -4819,6 +4819,22 @@ class SetupWizardWindow(tk.Toplevel):
 RELEASES_API_URL = "https://api.github.com/repos/harlockSuites/YT-dlp-GUI/releases/latest"
 UPDATE_CHECK_INTERVAL = 24 * 3600
 _ASSET_PATTERNS = {"installer": "yt-dlp-gui-setup-*.exe", "portable": "yt-dlp-gui-portable-*.zip"}
+
+
+def describe_network_error(exc):
+    """Message clair pour une erreur réseau (pas de connexion, délai dépassé, serveur injoignable), ou None si
+    `exc` n'en est pas une. L'explication technique de Windows suit entre parenthèses."""
+    import socket
+    import ssl
+    reason = getattr(exc, "reason", exc)
+    detail = str(reason)
+    if isinstance(reason, socket.gaierror) or "getaddrinfo" in detail:
+        return t("net.offline", detail=detail)
+    if isinstance(reason, (TimeoutError, socket.timeout)) or "timed out" in detail.lower():
+        return t("net.timeout", detail=detail)
+    if isinstance(reason, (ConnectionError, ssl.SSLError)):
+        return t("net.unreachable", detail=detail)
+    return None
 
 
 class UpdateError(Exception):
@@ -4878,7 +4894,7 @@ def fetch_latest_release(opener=_open_url):
             raise UpdateError(t("app_update.error_not_found"), not_found=True)
         raise UpdateError(f"HTTP {e.code}")
     except (urllib.error.URLError, OSError, ValueError) as e:
-        raise UpdateError(str(getattr(e, "reason", e)))
+        raise UpdateError(describe_network_error(e) or str(getattr(e, "reason", e)))
     version = (data.get("tag_name") or "").lstrip("v")
     if _parse_version(version) is None:
         raise UpdateError(t("app_update.error_bad_release"))

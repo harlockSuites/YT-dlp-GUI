@@ -418,7 +418,7 @@
   "inspect.auto_part": " (auto : {langs})",
   "toolbar.btn_bug": "🐞 Signaler un bogue",
   "bug.window_title": "Signaler un bogue",
-  "bug.intro": "Décrivez le problème. Un rapport technique est joint (version, système, dernières lignes du journal) ; vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués. Rien n'est envoyé automatiquement : relisez, puis ouvrez la page GitHub.",
+  "bug.intro": "Décrivez le problème. Un rapport technique est joint (version, système, dernières lignes du journal) ; vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués. Rien n'est envoyé automatiquement : relisez, puis ouvrez la page GitHub. Envoyer le rapport sur GitHub demande un compte GitHub gratuit.",
   "bug.label_summary": "Résumé du problème",
   "bug.label_description": "Que s'est-il passé ? Que faisiez-vous ?",
   "bug.label_report": "Rapport technique (modifiable)",
@@ -507,5 +507,8 @@
   "browsers.close": "Fermer",
   "inspect.playlist_untitled": "sans titre",
   "cookie.hint_private": "Cette vidéo est privée : seuls son propriétaire et les comptes invités peuvent la voir. Si elle vous appartient, vérifiez que {browser} est connecté au bon compte YouTube et que le voyant des cookies est vert, puis réessayez.",
-  "cookie.hint_private_off": "Cette vidéo est privée : seuls son propriétaire et les comptes invités peuvent la voir. Si elle vous appartient, choisissez dans le cadre Cookies un navigateur connecté au bon compte YouTube (Firefox est recommandé), puis réessayez."
+  "cookie.hint_private_off": "Cette vidéo est privée : seuls son propriétaire et les comptes invités peuvent la voir. Si elle vous appartient, choisissez dans le cadre Cookies un navigateur connecté au bon compte YouTube (Firefox est recommandé), puis réessayez.",
+  "net.offline": "Pas de connexion à Internet. Vérifiez votre connexion (câble, Wi-Fi, VPN ou pare-feu), puis réessayez. (Détail : {detail})",
+  "net.timeout": "Le serveur ne répond pas (délai dépassé). Réessayez dans un moment. (Détail : {detail})",
+  "net.unreachable": "Impossible de joindre le serveur (connexion refusée, interrompue ou bloquée). Vérifiez votre connexion, votre VPN ou votre pare-feu, puis réessayez. (Détail : {detail})"
 }

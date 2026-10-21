@@ -56,7 +56,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 ### Báo lỗi
 
-- Nút «Báo lỗi» chuẩn bị một báo cáo kỹ thuật: phiên bản phần mềm, Python, Windows và yt-dlp, các cài đặt vô hại và những dòng nhật ký cuối. Thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi.
+- Nút «Báo lỗi» chuẩn bị một báo cáo kỹ thuật: phiên bản phần mềm, Python, Windows và yt-dlp, các cài đặt vô hại và những dòng nhật ký cuối. Thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Gửi báo cáo trên GitHub cần có tài khoản GitHub miễn phí.
 ## Cài đặt
 
 - **Trình cài đặt (khuyến nghị)**: tải `yt-dlp-gui-setup-X.Y.Z.exe` từ [trang các bản phát hành](https://github.com/harlockSuites/YT-dlp-GUI/releases) rồi chạy. Windows 10 hoặc 11 (64 bit), không cần quyền quản trị; không cần Python.
