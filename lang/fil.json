@@ -504,5 +504,8 @@
   "browsers.title": "Mga browser para sa cookies",
   "browsers.chk": "Ipakita rin ang Edge, Chrome at Brave sa mga listahan ng browser",
   "browsers.explain": "Sa Windows, ine-encrypt ng Edge, Chrome at Brave ang kanilang cookies sa paraang hindi mabasa ng yt-dlp, kahit nakasara ang browser: sa aming mga pagsubok ay hindi sila gumagana, kaya nakatago sila bilang default para hindi magulo ang mga listahan. Inirerekomenda ang Firefox (gumagana nang bukas o sarado) at gumagana ang Opera kapag nakasara ang browser. Lagyan ng tsek ang kahong ito para ipakita muli ang mga ito, halimbawa pagkatapos ng update ng yt-dlp na aayos nito, o sa ibang system.",
-  "browsers.close": "Isara"
+  "browsers.close": "Isara",
+  "inspect.playlist_untitled": "walang pamagat",
+  "cookie.hint_private": "Pribado ang video na ito: ang may-ari lang at ang mga inimbitahang account ang makakakita nito. Kung sa iyo ito, tiyaking naka-sign in ang {browser} sa tamang YouTube account at berde ang indicator ng cookies, saka subukan muli.",
+  "cookie.hint_private_off": "Pribado ang video na ito: ang may-ari lang at ang mga inimbitahang account ang makakakita nito. Kung sa iyo ito, pumili sa kahon ng Cookies ng browser na naka-sign in sa tamang YouTube account (inirerekomenda ang Firefox), saka subukan muli."
 }

@@ -504,5 +504,8 @@
   "browsers.title": "Trình duyệt cho cookie",
   "browsers.chk": "Hiện thêm Edge, Chrome và Brave trong danh sách trình duyệt",
   "browsers.explain": "Trên Windows, Edge, Chrome và Brave mã hóa cookie theo cách yt-dlp không đọc được, kể cả khi đã đóng trình duyệt: qua thử nghiệm của chúng tôi chúng không hoạt động, nên mặc định được ẩn để danh sách gọn hơn. Firefox được khuyến nghị (hoạt động cả khi mở lẫn đóng) và Opera hoạt động khi đã đóng trình duyệt. Chọn ô này để hiện lại, ví dụ sau khi yt-dlp cập nhật khắc phục điều này, hoặc trên hệ điều hành khác.",
-  "browsers.close": "Đóng"
+  "browsers.close": "Đóng",
+  "inspect.playlist_untitled": "không có tiêu đề",
+  "cookie.hint_private": "Video này ở chế độ riêng tư: chỉ chủ sở hữu và các tài khoản được mời mới xem được. Nếu là video của bạn, hãy kiểm tra {browser} đã đăng nhập đúng tài khoản YouTube và đèn cookie đang xanh, rồi thử lại.",
+  "cookie.hint_private_off": "Video này ở chế độ riêng tư: chỉ chủ sở hữu và các tài khoản được mời mới xem được. Nếu là video của bạn, hãy chọn trong khung Cookie một trình duyệt đã đăng nhập đúng tài khoản YouTube (khuyến nghị Firefox), rồi thử lại."
 }

@@ -366,13 +366,19 @@ _UNAVAILABLE_TITLES = ("[Private video]", "[Deleted video]")
 
 
 def is_playlist_url(url):
-    """Adresse de playlist seule (« …/playlist?list=… »), pas une vidéo qui appartient à une playlist (« watch?v=…&list=… »)."""
+    """Adresse de playlist seule, pas une vidéo qui appartient à une playlist (« watch?v=…&list=… »).
+
+    Deux écritures existent : « …/playlist?list=ID » (adresse officielle) et « …/show/VLID » (adresse brute d'une
+    série, où l'identifiant de la playlist est précédé de « VL » et ne figure pas dans la requête)."""
     from urllib.parse import urlparse, parse_qs
     try:
-        query = parse_qs(urlparse(url).query)
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
     except ValueError:
         return False
-    return "list" in query and "v" not in query
+    if "list" in query and "v" not in query:
+        return True
+    return parsed.path.startswith("/show/")
 
 
 def playlist_summary(info):
@@ -384,7 +390,10 @@ def playlist_summary(info):
     entries = [e for e in info["entries"] if isinstance(e, dict)]
     bad = sum(1 for e in entries if not e.get("title") or e.get("title") in _UNAVAILABLE_TITLES)
     count = len(entries) or int(info.get("playlist_count") or 0)
-    return {"title": info.get("title") or "?", "count": count, "bad": bad}
+    title = info.get("title") or ""
+    if title == "show" and info.get("id") == "show":          # adresse « /show/… » : yt-dlp n'y trouve pas de titre
+        title = ""
+    return {"title": title, "count": count, "bad": bad}
 
 
 _RE_PLAYLIST_ITEM = re.compile(r"\[download\] Downloading item \d+ of (\d+)")
@@ -409,6 +418,21 @@ def playlist_outcome(lines):
         return None
     failed = min(len(errors), total)
     return (total - failed, failed) if total - failed > 0 else None
+
+
+def format_table_languages(text):
+    """Langues audio lues dans la table des formats de `yt-dlp -F` (colonne « MORE INFO », « [en] »).
+
+    Seules les lignes du tableau comptent : une ligne d'information comme « [info] Available formats for … »
+    ressemblait à un code de langue et faisait afficher « Pistes audio : info »."""
+    found = set()
+    for line in text.splitlines():
+        if line.lstrip().startswith("[") or line.count("|") < 2:
+            continue
+        for code in re.findall(r"\[([a-z]{2,4})\]", line.rsplit("|", 1)[-1]):
+            if code != "und":
+                found.add(code)
+    return found
 
 
 def extract_url(text):
@@ -2711,6 +2735,8 @@ def _cookie_hint(text, browser=""):
     cookies_on = bool(browser) and browser != BROWSER_OFF
     if "cookies are no longer valid" in low:
         return t("cookie.hint_rotated", browser=name or "")
+    if "private video" in low:
+        return t("cookie.hint_private", browser=name) if cookies_on else t("cookie.hint_private_off")
     if "confirm your age" in low or "age-restricted" in low:
         return t("cookie.hint_age", browser=name) if cookies_on else t("cookie.hint_age_off")
     if "not a bot" in low:
@@ -5981,6 +6007,7 @@ class YtDlpGui(tk.Tk):
             self.after(0, self._show_inspect_box, t("inspect.box_failed"), "#c0392b", url)
             return
         key = "inspect.playlist_bad" if summary["bad"] else "inspect.playlist"
+        summary["title"] = summary["title"] or t("inspect.playlist_untitled")
         text = t(key, **summary)
         self._inspected_title, self._inspected_url = summary["title"], url
         self.after(0, self._log, text, "info")
@@ -6056,10 +6083,7 @@ class YtDlpGui(tk.Tk):
                             creationflags=subprocess.CREATE_NO_WINDOW,
                             cwd=os.path.dirname(YTDLP),
                         )
-                        for line in r2.stdout.splitlines():
-                            for m in re.findall(r'\[([a-z]{2,4})\]', line):
-                                if m != "und":
-                                    audio_langs.add(m)
+                        audio_langs.update(format_table_languages(r2.stdout))
                     except Exception:
                         pass
 

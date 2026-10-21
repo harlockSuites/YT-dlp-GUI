@@ -504,5 +504,8 @@
   "browsers.title": "Przeglądarki dla cookies",
   "browsers.chk": "Pokaż także Edge, Chrome i Brave na listach przeglądarek",
   "browsers.explain": "W systemie Windows Edge, Chrome i Brave szyfrują cookies w sposób, którego yt-dlp nie potrafi odczytać, nawet przy zamkniętej przeglądarce: w naszych testach nie działają, dlatego domyślnie są ukryte, aby nie zaśmiecać list. Zalecany jest Firefox (działa otwarty i zamknięty), a Opera działa przy zamkniętej przeglądarce. Zaznacz to pole, aby je znów pokazać, np. po aktualizacji yt-dlp, która to naprawi, lub w innym systemie.",
-  "browsers.close": "Zamknij"
+  "browsers.close": "Zamknij",
+  "inspect.playlist_untitled": "bez tytułu",
+  "cookie.hint_private": "Ten film jest prywatny: widzi go tylko jego właściciel i zaproszone konta. Jeśli należy do Ciebie, sprawdź, czy w przeglądarce {browser} jesteś zalogowany na właściwe konto YouTube i czy wskaźnik cookies jest zielony, a następnie spróbuj ponownie.",
+  "cookie.hint_private_off": "Ten film jest prywatny: widzi go tylko jego właściciel i zaproszone konta. Jeśli należy do Ciebie, wybierz w ramce Cookies przeglądarkę zalogowaną na właściwe konto YouTube (zalecany Firefox), a następnie spróbuj ponownie."
 }

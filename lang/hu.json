@@ -504,5 +504,8 @@
   "browsers.title": "Böngészők a cookie-khoz",
   "browsers.chk": "Az Edge, a Chrome és a Brave megjelenítése a böngészőlistákban is",
   "browsers.explain": "Windowson az Edge, a Chrome és a Brave úgy titkosítja a cookie-kat, hogy a yt-dlp nem tudja elolvasni őket, még bezárt böngészővel sem: a tesztjeink szerint nem működnek, ezért alapértelmezés szerint rejtettek, hogy ne zsúfolják a listákat. A Firefox ajánlott (nyitva és zárva is működik), az Opera pedig bezárt böngészővel működik. Jelölje be ezt a négyzetet, ha újra látni szeretné őket, például egy ezt javító yt-dlp-frissítés után vagy másik rendszeren.",
-  "browsers.close": "Bezárás"
+  "browsers.close": "Bezárás",
+  "inspect.playlist_untitled": "cím nélkül",
+  "cookie.hint_private": "Ez a videó privát: csak a tulajdonosa és a meghívott fiókok láthatják. Ha az öné, ellenőrizze, hogy a(z) {browser} a megfelelő YouTube-fiókba van bejelentkezve, és a cookie-jelző zöld, majd próbálja újra.",
+  "cookie.hint_private_off": "Ez a videó privát: csak a tulajdonosa és a meghívott fiókok láthatják. Ha az öné, válasszon a Cookie-k keretben egy olyan böngészőt, amely a megfelelő YouTube-fiókba van bejelentkezve (a Firefox ajánlott), majd próbálja újra."
 }

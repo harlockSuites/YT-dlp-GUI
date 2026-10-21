@@ -504,5 +504,8 @@
   "browsers.title": "用于 Cookie 的浏览器",
   "browsers.chk": "在浏览器列表中同时显示 Edge、Chrome 和 Brave",
   "browsers.explain": "在 Windows 上，Edge、Chrome 和 Brave 对 Cookie 的加密方式 yt-dlp 无法读取，即使浏览器已关闭：在我们的测试中它们无法使用，因此默认隐藏，以免列表杂乱。推荐使用 Firefox（打开或关闭均可），Opera 在浏览器关闭时可用。若要重新显示，请勾选此框，例如在 yt-dlp 更新修复此问题后，或在其他系统上。",
-  "browsers.close": "关闭"
+  "browsers.close": "关闭",
+  "inspect.playlist_untitled": "无标题",
+  "cookie.hint_private": "此视频为私享视频，只有所有者和受邀账号可以观看。若视频属于您，请确认 {browser} 已登录正确的 YouTube 账号且 Cookie 指示灯为绿色，然后重试。",
+  "cookie.hint_private_off": "此视频为私享视频，只有所有者和受邀账号可以观看。若视频属于您，请在 Cookie 区域选择已登录正确 YouTube 账号的浏览器（推荐 Firefox），然后重试。"
 }

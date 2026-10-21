@@ -504,5 +504,8 @@
   "browsers.title": "쿠키용 브라우저",
   "browsers.chk": "브라우저 목록에 Edge, Chrome, Brave도 표시",
   "browsers.explain": "Windows에서 Edge, Chrome, Brave는 브라우저를 닫아도 yt-dlp가 읽을 수 없는 방식으로 쿠키를 암호화합니다. 테스트에서는 동작하지 않아 목록이 복잡해지지 않도록 기본적으로 숨겨 둡니다. Firefox를 권장하며(열려 있거나 닫혀 있어도 동작), Opera는 브라우저를 닫았을 때 동작합니다. 다시 표시하려면 이 확인란을 선택하세요(예: 이 문제를 고친 yt-dlp 업데이트 이후나 다른 운영 체제에서).",
-  "browsers.close": "닫기"
+  "browsers.close": "닫기",
+  "inspect.playlist_untitled": "제목 없음",
+  "cookie.hint_private": "이 동영상은 비공개이며 소유자와 초대된 계정만 볼 수 있습니다. 본인의 동영상이라면 {browser}에 올바른 YouTube 계정으로 로그인되어 있는지, 쿠키 표시등이 녹색인지 확인한 뒤 다시 시도하세요.",
+  "cookie.hint_private_off": "이 동영상은 비공개이며 소유자와 초대된 계정만 볼 수 있습니다. 본인의 동영상이라면 쿠키 영역에서 올바른 YouTube 계정으로 로그인된 브라우저(Firefox 권장)를 선택한 뒤 다시 시도하세요."
 }

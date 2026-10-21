@@ -504,5 +504,8 @@
   "browsers.title": "Pregledači za kolačiće",
   "browsers.chk": "Prikaži i Edge, Chrome i Brave na listama pregledača",
   "browsers.explain": "U Windowsu Edge, Chrome i Brave šifruju kolačiće na način koji yt-dlp ne može da pročita, čak ni kada je pregledač zatvoren: u našim testovima ne rade, pa su podrazumevano skriveni da ne zatrpavaju liste. Preporučuje se Firefox (radi otvoren i zatvoren), a Opera radi kada je pregledač zatvoren. Označite ovo polje da ih ponovo prikažete, na primer posle ažuriranja yt-dlp koje to ispravlja, ili na drugom sistemu.",
-  "browsers.close": "Zatvori"
+  "browsers.close": "Zatvori",
+  "inspect.playlist_untitled": "bez naslova",
+  "cookie.hint_private": "Ovaj video je privatan: mogu da ga vide samo vlasnik i pozvani nalozi. Ako je vaš, proverite da li je u pregledaču {browser} prijavljen pravi YouTube nalog i da je indikator kolačića zelen, pa pokušajte ponovo.",
+  "cookie.hint_private_off": "Ovaj video je privatan: mogu da ga vide samo vlasnik i pozvani nalozi. Ako je vaš, izaberite u okviru Kolačići pregledač prijavljen na pravi YouTube nalog (preporučuje se Firefox), pa pokušajte ponovo."
 }

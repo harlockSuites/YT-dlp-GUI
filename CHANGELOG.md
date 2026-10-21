@@ -5,10 +5,12 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 ## [Non publié]
 
 ### Ajouté
-- Téléchargeur individuel : « Inspecter » sur une adresse de playlist affiche maintenant le titre de la playlist, le nombre de vidéos et celles qui sont indisponibles (privées, supprimées ou masquées, donc impossibles à télécharger), au lieu de « Erreur : réponse JSON invalide » (une seule requête rapide, `--flat-playlist`, 15 langues). Le téléchargement de la playlist n'est pas modifié.
+- Vidéo privée : quand yt-dlp répond « Private video », un conseil clair s'affiche dans le journal (téléchargeur individuel, file d'attente, inspecteurs) : la vidéo est privée, seuls son propriétaire et les comptes invités la voient ; si elle vous appartient, vérifier que le navigateur choisi est connecté au bon compte YouTube (ou en choisir un dans le cadre Cookies quand ils sont désactivés). 15 langues.
+- Téléchargeur individuel : « Inspecter » sur une adresse de playlist affiche maintenant le titre de la playlist, le nombre de vidéos et celles qui sont indisponibles (privées, supprimées ou masquées, donc impossibles à télécharger), au lieu de « Erreur : réponse JSON invalide » (une seule requête rapide, `--flat-playlist`, 15 langues). Les deux écritures d'adresse sont reconnues (« …/playlist?list=… » et l'adresse brute « …/show/VL… » d'une série, dont le titre est alors indiqué « sans titre »). Le téléchargement de la playlist n'est pas modifié.
 - Cookies : Edge, Chrome et Brave, qui ne fonctionnent pas sous Windows (cookies chiffrés d'une façon que yt-dlp ne lit pas, même navigateur fermé), sont masqués par défaut dans toutes les listes de navigateurs (Windows seulement ; visibles par défaut ailleurs). Le menu des options a une entrée « Navigateurs pour les cookies… » avec une case pour les afficher à nouveau et une phrase qui explique ce choix (15 langues) ; les listes ouvertes se mettent à jour tout de suite. Un navigateur déjà choisi dans les réglages reste dans la liste tant qu'on ne l'a pas changé.
 
 ### Corrigé
+- Analyse d'une vidéo dans le téléchargeur individuel : « Pistes audio : info » s'affichait pour une vidéo sans langue déclarée (par exemple une vidéo privée analysée avec le bon compte), car la ligne « [info] Available formats for … » de yt-dlp était lue comme un code de langue ; seules les lignes du tableau des formats comptent maintenant.
 - Inspecteur de playlist : fermer la fenêtre pendant une analyse ouvrait trois boîtes « Erreur interne » (une par action de fin d'analyse planifiée après la fermeture). Ces actions sont maintenant ignorées quand la fenêtre n'existe plus.
 
 ## [0.1.6] — 2026-10-20
