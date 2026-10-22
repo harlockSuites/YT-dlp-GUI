@@ -6,6 +6,7 @@ import tarfile
 import tempfile
 import time
 import unittest
+from unittest import mock
 
 from tests._loader import ROOT
 
@@ -95,8 +96,11 @@ class CopyCompiledTests(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(target, "Windows-64bit-intel", "old.exe")))
             self.assertFalse(os.path.exists(os.path.join(target, "Linux-64bit")))
 
-    def test_installed_pyinstaller_version_is_read(self):
-        self.assertRegex(bb.installed_version(), r"^\d+\.\d+")
+    def test_installed_pyinstaller_version_is_read_from_the_package_metadata(self):
+        """Le workflow « Tests » n'installe pas PyInstaller : la lecture est simulée."""
+        with mock.patch("importlib.metadata.version", return_value="6.20.0") as read:
+            self.assertEqual(bb.installed_version(), "6.20.0")
+        read.assert_called_once_with("pyinstaller")
 
 
 class WorkflowTests(unittest.TestCase):
