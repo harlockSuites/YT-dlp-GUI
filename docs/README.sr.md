@@ -57,6 +57,8 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 ### Prijavi grešku
 
 - Dugme „Prijavi grešku” priprema tehnički izveštaj: verzije programa, Pythona, Windowsa i yt-dlp-a, bezopasna podešavanja i poslednje linije dnevnika. Vaše fascikle, korisničko ime i e-adrese su sakriveni. Za slanje izveštaja na GitHub potreban je besplatan GitHub nalog.
+- Ništa se ne šalje automatski: pregledate i menjate izveštaj, pa otvarate unapred popunjenu stranicu GitHub prijave (ili kopirate izveštaj).
+
 ## Instalacija
 
 - **Instalater (preporučeno)**: preuzmite `yt-dlp-gui-setup-X.Y.Z.exe` sa [stranice izdanja](https://github.com/harlockSuites/YT-dlp-GUI/releases) i pokrenite ga. Windows 10 ili 11 (64-bitni), bez administratorskih prava; Python nije potreban.
@@ -71,7 +73,20 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 ```
 
-- Ništa se ne šalje automatski: pregledate i menjate izveštaj, pa otvarate unapred popunjenu stranicu GitHub prijave (ili kopirate izveštaj).
+## Upozorenja Windowsa i pregledača
+
+Ovaj program je besplatan, objavljuje ga jedna osoba, a njegovi fajlovi **još nisu digitalno potpisani**. Nov fajl koji skoro niko nije preuzeo nema „reputaciju“: pregledači i Windows zato prikazuju upozorenja **čak i za bezbedan program**. Upozorenje ne dokazuje da je fajl opasan, a njegovo odsustvo ne dokazuje da je bezbedan: evo kako da proverite sami.
+
+- **Pregledač** (Firefox, Chrome, Edge, Brave): preuzimanje može biti označeno kao „retko preuzimano“ ili kao „sadrži virus ili zlonamerni softver“. To je automatska provera reputacije fajla. Prvo proverite kontrolni zbir (ispod); ako se poklapa, možete izabrati opciju koja dozvoljava ili zadržava preuzimanje.
+- **Windows SmartScreen**: „Windows je zaštitio vaš računar“ → kliknite na „Više informacija“, pa na „Svejedno pokreni“, **nakon** provere kontrolnog zbira.
+- **Antivirus**: nekoliko mehanizama prikazuje opšte detekcije (pogledajte antivirusnu analizu iznad). Da biste videli analizu svog fajla, nalepite njegov SHA-256 zbir u polje za pretragu [VirusTotal](https://www.virustotal.com/): ako je fajl već poznat, dobijate izveštaj bez slanja fajla.
+- **Proverite preuzimanje**: preuzmite i `SHA256SUMS.txt` sa iste stranice izdanja, otvorite PowerShell u fascikli sa fajlovima i pokrenite komandu ispod: ona poredi svaki fajl sa objavljenim zbirom i ispisuje `OK` ili `DIFFERENT`. Ako je fajl `DIFFERENT`, ne pokrećite ga.
+
+```powershell
+Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
+```
+
+- Ova provera dokazuje da je vaš fajl **identičan** onom objavljenom na GitHubu; sama po sebi ne dokazuje da je bezopasan. Izvorni kod i automatska izgradnja fajlova ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) su javni, a digitalni potpis je u pripremi (pogledajte „Code signing policy“).
 
 ## Zahtevi
 

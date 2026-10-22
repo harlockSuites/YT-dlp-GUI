@@ -2,6 +2,14 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [Non publié]
+
+### Ajouté
+- README (15 langues) : nouvelle section « Avertissements de Windows et des navigateurs » qui explique pourquoi un fichier neuf et non signé est signalé (réputation absente, détection heuristique), quoi faire dans le navigateur, avec SmartScreen et avec l'antivirus, et comment vérifier soi-même son téléchargement : commande PowerShell qui compare chaque fichier à `SHA256SUMS.txt` (affiche `OK` ou `DIFFERENT`), recherche de la somme sur VirusTotal, et rappel de ce que la vérification prouve ou non.
+
+### Corrigé
+- README (15 langues) : la seconde puce de « Signaler un bogue » se trouvait par erreur après le bloc de code de la section Installation ; elle est remise à sa place.
+
 ## [0.1.7] — 2026-10-21
 
 ### Ajouté

@@ -57,6 +57,8 @@
 ### 报告错误
 
 - “报告错误”按钮会准备一份技术报告：软件、Python、Windows 和 yt-dlp 的版本、无害的设置以及日志的最后几行。您的文件夹、用户名和电子邮件地址会被隐藏。在 GitHub 上提交报告需要一个免费的 GitHub 账号。
+- 不会自动发送任何内容：您先查看并编辑报告，然后打开已预先填写的 GitHub 问题页面（或复制报告）。
+
 ## 安装
 
 - **安装程序（推荐）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-setup-X.Y.Z.exe` 并运行。适用于 Windows 10 或 11（64 位），无需管理员权限，也无需 Python。
@@ -71,7 +73,20 @@
 Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 ```
 
-- 不会自动发送任何内容：您先查看并编辑报告，然后打开已预先填写的 GitHub 问题页面（或复制报告）。
+## Windows 和浏览器的警告
+
+本软件免费，由一个人发布，其文件**尚未进行数字签名**。几乎没人下载过的新文件没有“信誉”：因此浏览器和 Windows 即使对**安全的软件**也会显示警告。警告不能证明文件危险，没有警告也不能证明文件安全：下面是自行验证的方法。
+
+- **浏览器**（Firefox、Chrome、Edge、Brave）：下载可能被标记为“不常见”或“包含病毒或恶意软件”。这是对文件信誉的自动检查。请先核对下面的校验和；若一致，可以选择允许或保留该下载的选项。
+- **Windows SmartScreen**：“Windows 已保护你的电脑”→ 在核对校验和**之后**，点击“更多信息”，再点击“仍要运行”。
+- **杀毒软件**：少数引擎显示通用检测（见上文的杀毒软件检测）。要查看你的文件的检测结果，请把它的 SHA-256 校验值粘贴到 [VirusTotal](https://www.virustotal.com/) 的搜索栏：如果该文件已为人所知，无需上传即可得到报告。
+- **核对你的下载**：从同一发布页面一并下载 `SHA256SUMS.txt`，在文件所在文件夹中打开 PowerShell，运行下面的命令：它把每个文件与已发布的校验值比较，显示 `OK` 或 `DIFFERENT`。若某个文件显示 `DIFFERENT`，请不要运行它。
+
+```powershell
+Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
+```
+
+- 此核对证明你的文件与 GitHub 上发布的文件**完全相同**；仅凭它并不能证明文件无害。源代码和文件的自动构建（[GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)）是公开的，数字签名正在准备中（见“Code signing policy”）。
 
 ## 系统要求
 

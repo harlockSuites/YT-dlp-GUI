@@ -57,6 +57,8 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 ### Hiba jelentése
 
 - A „Hiba jelentése” gomb műszaki jelentést készít: a program, a Python, a Windows és a yt-dlp verziója, ártalmatlan beállítások és a napló utolsó sorai. A mappái, a felhasználóneve és az e-mail-címei el vannak takarva. A jelentés GitHubon való elküldéséhez ingyenes GitHub-fiók szükséges.
+- Semmi nem megy el automatikusan: Ön átnézi és szerkeszti a jelentést, majd megnyit egy előre kitöltött GitHub-hibajegyoldalt (vagy kimásolja a jelentést).
+
 ## Telepítés
 
 - **Telepítő (ajánlott)**: töltse le a `yt-dlp-gui-setup-X.Y.Z.exe` fájlt a [kiadások oldaláról](https://github.com/harlockSuites/YT-dlp-GUI/releases), és futtassa. Windows 10 vagy 11 (64 bites), rendszergazdai jogosultság nélkül; Python nem szükséges.
@@ -71,7 +73,20 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 ```
 
-- Semmi nem megy el automatikusan: Ön átnézi és szerkeszti a jelentést, majd megnyit egy előre kitöltött GitHub-hibajegyoldalt (vagy kimásolja a jelentést).
+## A Windows és a böngészők figyelmeztetései
+
+Ez a program ingyenes, egyetlen személy adja ki, és a fájljai **még nincsenek digitálisan aláírva**. Egy új fájlnak, amelyet szinte senki sem töltött le, nincs „hírneve”: a böngészők és a Windows ezért **még biztonságos programnál is** figyelmeztetést jelenítenek meg. A figyelmeztetés nem bizonyítja, hogy a fájl veszélyes, hiánya pedig nem bizonyítja, hogy biztonságos: így ellenőrizheti saját maga.
+
+- **Böngésző** (Firefox, Chrome, Edge, Brave): a letöltést „ritkán letöltöttként” vagy „vírust vagy kártevőt tartalmazóként” jelölheti meg. Ez a fájl hírnevének automatikus vizsgálata. Először ellenőrizze az ellenőrző összeget (lent); ha egyezik, kiválaszthatja a letöltést engedélyező vagy megtartó lehetőséget.
+- **Windows SmartScreen**: „A Windows megvédte a számítógépét” → kattintson a „További információ”, majd a „Futtatás mindenképp” gombra, az ellenőrző összeg ellenőrzése **után**.
+- **Víruskereső**: néhány motor általános észlelést jelez (lásd fent a víruskeresős elemzést). A fájl elemzésének megtekintéséhez illessze be az SHA-256 összegét a [VirusTotal](https://www.virustotal.com/) keresőjébe: ha a fájl már ismert, feltöltés nélkül megkapja a jelentést.
+- **Ellenőrizze a letöltést**: töltse le a `SHA256SUMS.txt` fájlt is ugyanarról a kiadási oldalról, nyissa meg a PowerShellt a fájlok mappájában, és futtassa az alábbi parancsot: minden fájlt összehasonlít a közzétett összeggel, és `OK` vagy `DIFFERENT` értéket ír ki. Ha egy fájl `DIFFERENT`, ne futtassa.
+
+```powershell
+Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
+```
+
+- Ez az ellenőrzés azt bizonyítja, hogy a fájl **azonos** a GitHubon közzétettel; önmagában nem bizonyítja, hogy ártalmatlan. A forráskód és a fájlok automatikus összeállítása ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) nyilvános, a digitális aláírás előkészítés alatt áll (lásd a „Code signing policy” részt).
 
 ## Követelmények
 

@@ -57,6 +57,8 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 ### Informar de un error
 
 - El botón «Informar de un error» prepara un informe técnico: versiones del programa, de Python, de Windows y de yt-dlp, ajustes inofensivos y las últimas líneas del registro. Se ocultan sus carpetas, su nombre de usuario y sus direcciones de correo. Enviar el informe en GitHub requiere una cuenta de GitHub gratuita.
+- No se envía nada automáticamente: usted revisa y edita el informe y luego abre una página de incidencia de GitHub ya rellenada (o copia el informe).
+
 ## Instalación
 
 - **Instalador (recomendado)**: descargue `yt-dlp-gui-setup-X.Y.Z.exe` desde la [página de versiones](https://github.com/harlockSuites/YT-dlp-GUI/releases) y ejecútelo. Windows 10 u 11 (64 bits), sin permisos de administrador; no hace falta Python.
@@ -71,7 +73,20 @@ Interfaz gráfica para [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensada para 
 Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 ```
 
-- No se envía nada automáticamente: usted revisa y edita el informe y luego abre una página de incidencia de GitHub ya rellenada (o copia el informe).
+## Avisos de Windows y de los navegadores
+
+Este programa es gratuito, lo publica una sola persona y sus archivos **todavía no están firmados digitalmente**. Un archivo nuevo, que casi nadie ha descargado, no tiene «reputación»: por eso los navegadores y Windows muestran avisos **incluso para un programa seguro**. Un aviso no demuestra que un archivo sea peligroso, y su ausencia no demuestra que sea seguro: así puede comprobarlo usted mismo.
+
+- **Navegador** (Firefox, Chrome, Edge, Brave): la descarga puede marcarse como «poco común» o como «contiene un virus o software malicioso». Es un análisis automático de la reputación del archivo. Compruebe primero la suma de comprobación (abajo); si coincide, puede elegir la opción que permite o conserva la descarga.
+- **Windows SmartScreen**: «Windows protegió su PC» → haga clic en «Más información» y luego en «Ejecutar de todas formas», **después** de comprobar la suma de comprobación.
+- **Antivirus**: algunos motores muestran detecciones genéricas (véase el análisis antivirus más arriba). Para ver el análisis de su archivo, pegue su suma SHA-256 en la barra de búsqueda de [VirusTotal](https://www.virustotal.com/): si el archivo ya es conocido, obtiene el informe sin subirlo.
+- **Compruebe su descarga**: descargue también `SHA256SUMS.txt` de la misma página de versión, abra PowerShell en la carpeta de los archivos y ejecute el comando siguiente: compara cada archivo con la suma publicada y muestra `OK` o `DIFFERENT`. Si un archivo es `DIFFERENT`, no lo ejecute.
+
+```powershell
+Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
+```
+
+- Esta comprobación demuestra que su archivo es **idéntico** al publicado en GitHub; por sí sola no demuestra que sea inofensivo. El código fuente y la compilación automática de los archivos ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) son públicos, y se está preparando una firma digital (véase la «Code signing policy»).
 
 ## Requisitos
 

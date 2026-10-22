@@ -57,6 +57,8 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 ### Báo lỗi
 
 - Nút «Báo lỗi» chuẩn bị một báo cáo kỹ thuật: phiên bản phần mềm, Python, Windows và yt-dlp, các cài đặt vô hại và những dòng nhật ký cuối. Thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Gửi báo cáo trên GitHub cần có tài khoản GitHub miễn phí.
+- Không có gì được gửi tự động: bạn xem lại và chỉnh sửa báo cáo, rồi mở trang phiếu GitHub đã điền sẵn (hoặc sao chép báo cáo).
+
 ## Cài đặt
 
 - **Trình cài đặt (khuyến nghị)**: tải `yt-dlp-gui-setup-X.Y.Z.exe` từ [trang các bản phát hành](https://github.com/harlockSuites/YT-dlp-GUI/releases) rồi chạy. Windows 10 hoặc 11 (64 bit), không cần quyền quản trị; không cần Python.
@@ -71,7 +73,20 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 ```
 
-- Không có gì được gửi tự động: bạn xem lại và chỉnh sửa báo cáo, rồi mở trang phiếu GitHub đã điền sẵn (hoặc sao chép báo cáo).
+## Cảnh báo của Windows và trình duyệt
+
+Phần mềm này miễn phí, do một người phát hành, và các tệp của nó **chưa được ký số**. Một tệp mới mà hầu như chưa ai tải xuống thì chưa có «uy tín»: vì vậy trình duyệt và Windows hiển thị cảnh báo **ngay cả với phần mềm an toàn**. Cảnh báo không chứng minh tệp nguy hiểm, và việc không có cảnh báo cũng không chứng minh tệp an toàn: đây là cách tự kiểm tra.
+
+- **Trình duyệt** (Firefox, Chrome, Edge, Brave): lượt tải có thể bị gắn nhãn «ít phổ biến» hoặc «chứa vi-rút hoặc phần mềm độc hại». Đây là bước kiểm tra uy tín tự động của tệp. Hãy kiểm tra tổng kiểm tra trước (bên dưới); nếu khớp, bạn có thể chọn tùy chọn cho phép hoặc giữ lại lượt tải.
+- **Windows SmartScreen**: «Windows đã bảo vệ PC của bạn» → bấm «Thông tin thêm» rồi «Vẫn chạy», **sau khi** đã kiểm tra tổng kiểm tra.
+- **Diệt virus**: một vài công cụ hiển thị phát hiện chung (xem phần phân tích diệt virus ở trên). Để xem phân tích tệp của bạn, hãy dán tổng SHA-256 của nó vào ô tìm kiếm của [VirusTotal](https://www.virustotal.com/): nếu tệp đã được biết, bạn nhận được báo cáo mà không cần tải lên.
+- **Kiểm tra lượt tải của bạn**: hãy tải thêm `SHA256SUMS.txt` từ cùng trang phiên bản, mở PowerShell trong thư mục chứa các tệp và chạy lệnh bên dưới: lệnh so sánh từng tệp với tổng đã công bố và in `OK` hoặc `DIFFERENT`. Nếu một tệp là `DIFFERENT`, đừng chạy nó.
+
+```powershell
+Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
+```
+
+- Việc kiểm tra này chứng minh tệp của bạn **giống hệt** tệp đã đăng trên GitHub; bản thân nó không chứng minh tệp vô hại. Mã nguồn và quy trình dựng tệp tự động ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) là công khai, và chữ ký số đang được chuẩn bị (xem «Code signing policy»).
 
 ## Yêu cầu
 

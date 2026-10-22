@@ -57,6 +57,8 @@
 ### 버그 신고
 
 - '버그 신고' 버튼은 기술 보고서를 준비합니다: 소프트웨어, Python, Windows, yt-dlp의 버전, 무해한 설정, 로그의 마지막 줄. 폴더, 사용자 이름, 이메일 주소는 가려집니다. GitHub에 보고서를 보내려면 무료 GitHub 계정이 필요합니다.
+- 자동으로 전송되는 것은 없습니다: 보고서를 검토하고 편집한 뒤 미리 채워진 GitHub 이슈 페이지를 열거나 보고서를 복사합니다.
+
 ## 설치
 
 - **설치 프로그램(권장)**: [릴리스 페이지](https://github.com/harlockSuites/YT-dlp-GUI/releases)에서 `yt-dlp-gui-setup-X.Y.Z.exe`를 내려받아 실행하세요. Windows 10 또는 11(64비트)에서 관리자 권한 없이 설치되며 Python은 필요하지 않습니다.
@@ -71,7 +73,20 @@
 Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 ```
 
-- 자동으로 전송되는 것은 없습니다: 보고서를 검토하고 편집한 뒤 미리 채워진 GitHub 이슈 페이지를 열거나 보고서를 복사합니다.
+## Windows 및 브라우저 경고
+
+이 소프트웨어는 무료이며 한 사람이 배포하고, 파일은 **아직 디지털 서명이 되어 있지 않습니다**. 거의 아무도 내려받지 않은 새 파일에는 '평판'이 없으므로, 브라우저와 Windows는 **안전한 소프트웨어에도** 경고를 표시합니다. 경고가 있다고 위험하다는 증거는 아니며, 경고가 없다고 안전하다는 증거도 아닙니다. 직접 확인하는 방법은 다음과 같습니다.
+
+- **브라우저**(Firefox, Chrome, Edge, Brave): 다운로드가 '흔하지 않음' 또는 '바이러스나 악성 소프트웨어 포함'으로 표시될 수 있습니다. 파일 평판의 자동 검사입니다. 먼저 아래의 체크섬을 확인하고, 일치하면 다운로드를 허용하거나 유지하는 옵션을 선택할 수 있습니다.
+- **Windows SmartScreen**: 'Windows에서 PC를 보호했습니다' → 체크섬을 확인한 **후에** '추가 정보'를 클릭한 다음 '실행'을 클릭합니다.
+- **백신**: 일부 엔진이 일반적인 탐지를 표시합니다(위의 백신 분석 참조). 내 파일의 분석을 보려면 SHA-256 합계를 [VirusTotal](https://www.virustotal.com/) 검색창에 붙여 넣으세요. 이미 알려진 파일이면 업로드하지 않고도 보고서를 볼 수 있습니다.
+- **다운로드 확인**: 같은 릴리스 페이지에서 `SHA256SUMS.txt`도 내려받고, 파일이 있는 폴더에서 PowerShell을 열어 아래 명령을 실행하세요. 각 파일을 게시된 값과 비교해 `OK` 또는 `DIFFERENT`를 표시합니다. `DIFFERENT`인 파일은 실행하지 마세요.
+
+```powershell
+Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
+```
+
+- 이 확인은 파일이 GitHub에 게시된 파일과 **동일**함을 증명하며, 그것만으로 무해함을 증명하지는 않습니다. 소스 코드와 파일의 자동 빌드([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions))는 공개되어 있으며, 디지털 서명은 준비 중입니다('Code signing policy' 참조).
 
 ## 요구 사항
 
