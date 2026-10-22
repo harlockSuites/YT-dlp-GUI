@@ -32,9 +32,22 @@ class ReadmeWarningsSectionTests(unittest.TestCase):
                 section = "\n".join(lines[heads[2]:heads[3]])
                 for needle in ("SHA256SUMS.txt", "Get-FileHash", "Get-Content .\\SHA256SUMS.txt",
                                "-Algorithm SHA256", "OK", "DIFFERENT", "https://www.virustotal.com/",
-                               "https://github.com/harlockSuites/YT-dlp-GUI/actions", "PowerShell", "Code signing policy"):
+                               "https://github.com/harlockSuites/YT-dlp-GUI/actions", "PowerShell", "Code signing policy",
+                               "Microsoft Defender", "Trojan:Win32/Wacatac.C!ml", "!ml"):
                     self.assertIn(needle, section)
                 self.assertEqual(section.count("```"), 2, "un seul bloc de code : la commande de vérification")
+
+    def test_defender_bullet_comes_right_after_smartscreen_and_says_how_to_restore(self):
+        for code, path in _readmes().items():
+            with self.subTest(lang=code):
+                lines = _lines(path)
+                heads = [i for i, l in enumerate(lines) if l.startswith("## ")]
+                bullets = [l for l in lines[heads[2]:heads[3]] if l.startswith("- ")]
+                self.assertEqual(len(bullets), 6)
+                self.assertIn("SmartScreen", bullets[1])
+                self.assertIn("Defender", bullets[2])
+                self.assertIn("SHA-256", bullets[2], "restaurer seulement après vérification de la somme")
+                self.assertEqual(bullets[2].count("›"), 5, "chemin Sécurité Windows › … › Actions › Autoriser")
 
     def test_the_command_is_identical_in_every_language(self):
         commands = set()

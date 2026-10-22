@@ -5,6 +5,8 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 ## [Non publié]
 
 ### Ajouté
+- README (15 langues), section « Avertissements de Windows et des navigateurs » : une puce explique que Microsoft Defender peut mettre en quarantaine ou supprimer le fichier (« Trojan:Win32/Wacatac.C!ml », détection automatique par apprentissage automatique d'un fichier neuf et non signé, signalée à Microsoft comme faux positif) et comment le restaurer après vérification de la somme SHA-256 (Sécurité Windows › Historique de protection › Autoriser sur l'appareil), sans désactiver la protection ni élargir les exclusions.
+- Outillage (aucun effet sur le logiciel publié) : `packaging/build_bootloader.py` compile le lanceur de PyInstaller depuis ses sources (archive PyPI à la somme SHA-256 vérifiée, compilateur Visual C++) et remplace celui de l'installation ; le workflow manuel `Essai lanceur compilé` construit les fichiers avec ce lanceur et produit un artefact à comparer sur VirusTotal. Il ne publie jamais : lecture seule, sans étiquette ni release.
 - README (15 langues) : nouvelle section « Avertissements de Windows et des navigateurs » qui explique pourquoi un fichier neuf et non signé est signalé (réputation absente, détection heuristique), quoi faire dans le navigateur, avec SmartScreen et avec l'antivirus, et comment vérifier soi-même son téléchargement : commande PowerShell qui compare chaque fichier à `SHA256SUMS.txt` (affiche `OK` ou `DIFFERENT`), recherche de la somme sur VirusTotal, et rappel de ce que la vérification prouve ou non.
 
 ### Corrigé

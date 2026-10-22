@@ -79,6 +79,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 
 - **浏览器**（Firefox、Chrome、Edge、Brave）：下载可能被标记为“不常见”或“包含病毒或恶意软件”。这是对文件信誉的自动检查。请先核对下面的校验和；若一致，可以选择允许或保留该下载的选项。
 - **Windows SmartScreen**：“Windows 已保护你的电脑”→ 在核对校验和**之后**，点击“更多信息”，再点击“仍要运行”。
+- **Microsoft Defender（Windows 安全中心）**：它可能隔离或删除该文件，并显示“Trojan:Win32/Wacatac.C!ml”。后缀 `!ml` 表示由机器学习自动检测，常见于新的、未签名的文件；这些检测已作为误报报告给 Microsoft。核对 SHA-256 校验值（见下文）之后，可以还原该文件：Windows 安全中心 › 病毒和威胁防护 › 保护历史记录 › 打开该项 › 操作 › “在设备上允许”（或“还原”）。请不要关闭 Windows 的保护，也不要添加比这一个文件更宽泛的排除项。
 - **杀毒软件**：少数引擎显示通用检测（见上文的杀毒软件检测）。要查看你的文件的检测结果，请把它的 SHA-256 校验值粘贴到 [VirusTotal](https://www.virustotal.com/) 的搜索栏：如果该文件已为人所知，无需上传即可得到报告。
 - **核对你的下载**：从同一发布页面一并下载 `SHA256SUMS.txt`，在文件所在文件夹中打开 PowerShell，运行下面的命令：它把每个文件与已发布的校验值比较，显示 `OK` 或 `DIFFERENT`。若某个文件显示 `DIFFERENT`，请不要运行它。
 
