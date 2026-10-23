@@ -66,7 +66,7 @@
 - **स्रोत कोड से**: नीचे «आवश्यकताएँ» और «त्वरित शुरुआत» अनुभाग देखें।
 - **अनइंस्टॉल**: Windows सेटिंग्स › ऐप्स › इंस्टॉल किए गए ऐप्स › yt-dlp GUI, या Start मेनू में «अनइंस्टॉल» शॉर्टकट। सॉफ़्टवेयर अपना डेटा (सेटिंग्स, कतार, डाउनलोड किए गए yt-dlp और ffmpeg) भी हटाने का विकल्प देता है; आपके वीडियो कभी नहीं हटाए जाते। चूँकि इंस्टॉलेशन हर Windows खाते का अलग होता है, सॉफ़्टवेयर केवल उसी खाते की सूची में दिखता है जिसने उसे इंस्टॉल किया। पोर्टेबल संस्करण के लिए बस उसका फ़ोल्डर हटा दें। Chocolatey से अलग से इंस्टॉल किए गए टूल (ffmpeg, Deno…) नहीं हटाए जाते।
 - **एंटीवायरस विश्लेषण (VirusTotal)**: संस्करण 0.1.7 का विश्लेषण 21 अक्टूबर 2026 को किया गया। [इंस्टॉलर](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) को 69 में से 4 इंजनों (Arctic Wolf, Microsoft, SecureAge, Skyhigh) ने सामान्य ह्यूरिस्टिक पहचान के साथ चिह्नित किया; [पोर्टेबल संस्करण के लॉन्चर](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) को 70 में से 5 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya) ने और [पोर्टेबल ZIP आर्काइव](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) को 66 में से 1 (Zillya, आर्काइव पर ही) ने चिह्नित किया। ये संभवतः संपीड़ित और बिना हस्ताक्षर वाले प्रोग्राम के कारण झूठे अलार्म हैं। ये नतीजे केवल इसी संस्करण पर लागू होते हैं। संदेह हो तो SHA-256 योग जाँचें।
-- **Code signing policy**: आगामी संस्करणों पर डिजिटल हस्ताक्षर की तैयारी चल रही है (SignPath Foundation को आवेदन); [कोड साइनिंग नीति](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md) प्रक्रिया बताती है। 0.1.4 तक के संस्करण हस्ताक्षरित नहीं हैं।
+- **Code signing policy**: फ़ाइलें डिजिटल रूप से हस्ताक्षरित नहीं हैं। SignPath Foundation से मुफ़्त हस्ताक्षर का अनुरोध 19 अक्टूबर 2026 को अस्वीकृत हुआ (परियोजना की सार्वजनिक दृश्यता अभी पर्याप्त नहीं है) और इसे दोबारा भेजा जा सकता है; प्रमाणपत्र मिलने पर अपनाई जाने वाली प्रक्रिया [कोड साइनिंग नीति](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md) में है।
 - **Windows SmartScreen चेतावनी**: इंस्टॉलर डिजिटल रूप से हस्ताक्षरित नहीं है, इसलिए Windows «Windows ने आपके PC की सुरक्षा की» दिखा सकता है। «अधिक जानकारी» पर क्लिक करें, फिर «फिर भी चलाएँ»। फ़ाइल की प्रामाणिकता जाँचने के लिए उसका SHA-256 योग हर रिलीज़ के साथ प्रकाशित `SHA256SUMS.txt` से मिलाएँ:
 
 ```powershell
@@ -87,7 +87,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
 ```
 
-- यह जाँच साबित करती है कि आपकी फ़ाइल GitHub पर प्रकाशित फ़ाइल के **समान** है; अकेले यह साबित नहीं करती कि फ़ाइल हानिरहित है। स्रोत कोड और फ़ाइलों का स्वचालित निर्माण ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) सार्वजनिक हैं, और डिजिटल हस्ताक्षर तैयार किया जा रहा है («Code signing policy» देखें)।
+- यह जाँच साबित करती है कि आपकी फ़ाइल GitHub पर प्रकाशित फ़ाइल के **समान** है; अकेले यह साबित नहीं करती कि फ़ाइल हानिरहित है। स्रोत कोड और फ़ाइलों का स्वचालित निर्माण ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) सार्वजनिक हैं, और अभी डिजिटल हस्ताक्षर नहीं है: SignPath Foundation को आवेदन 19 अक्टूबर 2026 को अस्वीकृत हुआ («Code signing policy» देखें)।
 
 ## आवश्यकताएँ
 

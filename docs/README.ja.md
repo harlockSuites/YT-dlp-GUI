@@ -66,7 +66,7 @@
 - **ソースから**：下の「必要条件」と「クイックスタート」を参照してください。
 - **アンインストール**：Windows の設定 › アプリ › インストールされているアプリ › yt-dlp GUI、またはスタートメニューの「アンインストール」ショートカット。ソフトウェアは自身のデータ（設定、キュー、ダウンロードした yt-dlp と ffmpeg）も削除するか尋ねます。動画は決して削除されません。インストールは Windows アカウントごとのため、インストールしたアカウントの一覧にのみ表示されます。ポータブル版はフォルダーを削除するだけです。Chocolatey で別途インストールしたツール（ffmpeg、Deno など）は削除されません。
 - **ウイルス対策の検査結果（VirusTotal）**：バージョン 0.1.7 は 2026 年 10 月 21 日に検査されました。[インストーラー](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)は 69 エンジン中 4 つ（Arctic Wolf、Microsoft、SecureAge、Skyhigh）が汎用のヒューリスティック検出として検出しています。[ポータブル版のランチャー](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)は 70 中 5 つ（Arctic Wolf、CrowdStrike Falcon、Microsoft、SecureAge、Zillya）、[ポータブル版の ZIP アーカイブ](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)は 66 中 1 つ（Zillya、アーカイブ自体に対する検出）が検出しています。圧縮された未署名のプログラムによる誤検出の可能性が高いです。この結果はこのバージョンのみに該当します。不安な場合は SHA-256 を確認してください。
-- **Code signing policy**：今後のバージョンのデジタル署名を準備中です（SignPath Foundation への申請）。[コード署名ポリシー](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)に手順を記載しています。0.1.4 までのバージョンは署名されていません。
+- **Code signing policy**：ファイルには電子署名がありません。SignPath Foundation への無償署名の申請は 2026 年 10 月 19 日に却下されました（プロジェクトの公開上の認知度がまだ足りないため）。再申請する可能性があります。証明書を取得した場合の予定プロセスは[コード署名ポリシー](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)に記載しています。
 - **Windows SmartScreen の警告**：インストーラーにはデジタル署名がないため、Windows に「Windows によって PC が保護されました」と表示されることがあります。「詳細情報」をクリックし、「実行」を選んでください。ファイルの真正性を確認するには、各リリースと一緒に公開されている `SHA256SUMS.txt` の SHA-256 値と比較します：
 
 ```powershell
@@ -87,7 +87,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
 ```
 
-- この確認は、ファイルが GitHub で公開されたものと**同一**であることを示しますが、それだけで無害であることの証明にはなりません。ソースコードとファイルの自動ビルド（[GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)）は公開されており、電子署名は準備中です（「Code signing policy」を参照）。
+- この確認は、ファイルが GitHub で公開されたものと**同一**であることを示しますが、それだけで無害であることの証明にはなりません。ソースコードとファイルの自動ビルド（[GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)）は公開されており、電子署名はまだありません。SignPath Foundation への申請は 2026 年 10 月 19 日に却下されました（「Code signing policy」を参照）。
 
 ## 必要条件
 

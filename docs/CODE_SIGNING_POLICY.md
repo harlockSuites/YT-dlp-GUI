@@ -7,9 +7,9 @@
 
 # Code signing policy
 
-Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+If a certificate is obtained, free code signing would be provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
 
-> **Status:** code signing for yt-dlp GUI is being set up. Versions up to 0.1.4 are **not** signed. This page describes how signed releases will be produced.
+> **Status (23 October 2026):** the files of yt-dlp GUI are **not** code-signed, in any version. An application to the [SignPath Foundation](https://signpath.org) free program for open-source projects was **declined on 19 October 2026**: the project does not yet show enough public visibility (community adoption, external references). It may be submitted again later. This page describes how releases would be produced and signed if a certificate is obtained.
 
 ## Scope
 

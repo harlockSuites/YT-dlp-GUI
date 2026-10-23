@@ -66,7 +66,7 @@
 - **从源代码运行**：请参阅下方的“系统要求”和“快速开始”。
 - **卸载**：Windows 设置 › 应用 › 已安装的应用 › yt-dlp GUI，或开始菜单中的“卸载”快捷方式。软件会询问是否一并删除其数据（设置、队列、已下载的 yt-dlp 和 ffmpeg）；您的视频绝不会被删除。由于安装属于各个 Windows 账户，软件只出现在安装它的账户的列表中。便携版只需删除其文件夹。通过 Chocolatey 单独安装的工具（ffmpeg、Deno 等）不会被移除。
 - **杀毒软件检测（VirusTotal）**：0.1.7 版本已于 2026 年 10 月 21 日检测。[安装程序](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)被 69 个引擎中的 4 个标记（Arctic Wolf、Microsoft、SecureAge、Skyhigh），均为通用启发式检测；[便携版的启动程序](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)被 70 个中的 5 个标记（Arctic Wolf、CrowdStrike Falcon、Microsoft、SecureAge、Zillya），[便携版 ZIP 压缩包](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)被 66 个中的 1 个标记（Zillya，针对压缩包本身）。很可能是因程序经过压缩且未签名而产生的误报。这些结果仅适用于该版本。如有疑虑，请核对 SHA-256 校验值。
-- **Code signing policy**：后续版本的数字签名正在筹备中（拟向 SignPath Foundation 申请）；[代码签名政策](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)说明了流程。0.1.4 及之前的版本未签名。
+- **Code signing policy**：文件没有数字签名。向 SignPath Foundation 提出的免费签名申请已于 2026 年 10 月 19 日被拒绝（项目的公开知名度尚不足），以后可以再次申请。若获得证书，预期的流程见[代码签名政策](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)。
 - **Windows SmartScreen 警告**：安装程序没有数字签名，因此 Windows 可能显示“Windows 已保护你的电脑”。请点击“更多信息”，再点击“仍要运行”。若要核实文件的真实性，请将其 SHA-256 校验和与每个版本附带的 `SHA256SUMS.txt` 中的值进行比较：
 
 ```powershell
@@ -87,7 +87,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
 ```
 
-- 此核对证明你的文件与 GitHub 上发布的文件**完全相同**；仅凭它并不能证明文件无害。源代码和文件的自动构建（[GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)）是公开的，数字签名正在准备中（见“Code signing policy”）。
+- 此核对证明你的文件与 GitHub 上发布的文件**完全相同**；仅凭它并不能证明文件无害。源代码和文件的自动构建（[GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)）是公开的，目前还没有数字签名：向 SignPath Foundation 提交的申请已于 2026 年 10 月 19 日被拒绝（见“Code signing policy”）。
 
 ## 系统要求
 

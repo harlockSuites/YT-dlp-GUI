@@ -11,6 +11,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Corrigé
 - README (15 langues) : la seconde puce de « Signaler un bogue » se trouvait par erreur après le bloc de code de la section Installation ; elle est remise à sa place.
+- Documentation (README en 15 langues et `docs/CODE_SIGNING_POLICY.md`) : la signature numérique n'était plus « en préparation » : la demande à la SignPath Foundation a été refusée le 19 octobre 2026 (visibilité publique encore insuffisante) et peut être renouvelée. Les fichiers ne sont signés dans aucune version ; la page de politique décrit le processus prévu si un certificat est obtenu.
 
 ## [0.1.7] — 2026-10-21
 

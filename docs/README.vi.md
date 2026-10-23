@@ -66,7 +66,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Từ mã nguồn**: xem các mục «Yêu cầu» và «Bắt đầu nhanh» bên dưới.
 - **Gỡ cài đặt**: Cài đặt Windows › Ứng dụng › Ứng dụng đã cài đặt › yt-dlp GUI, hoặc lối tắt «Gỡ cài đặt» trong menu Start. Phần mềm đề nghị xóa luôn dữ liệu của nó (cài đặt, hàng đợi, yt-dlp và ffmpeg đã tải); video của bạn không bao giờ bị xóa. Vì việc cài đặt gắn với từng tài khoản Windows, phần mềm chỉ xuất hiện trong danh sách của tài khoản đã cài đặt. Với bản portable, chỉ cần xóa thư mục của nó. Các công cụ cài riêng bằng Chocolatey (ffmpeg, Deno…) không bị gỡ.
 - **Phân tích diệt virus (VirusTotal)**: phiên bản 0.1.7 được phân tích ngày 21 tháng 10 năm 2026. [Trình cài đặt](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) bị 4 trên 69 công cụ gắn cờ (Arctic Wolf, Microsoft, SecureAge, Skyhigh) bằng các phát hiện heuristic chung; [trình khởi chạy của bản portable](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) bị 5 trên 70 công cụ gắn cờ (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya) và [tệp ZIP portable](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) bị 1 trên 66 (Zillya, trên chính tệp lưu trữ). Nhiều khả năng là báo động giả do chương trình được nén và chưa ký số. Kết quả này chỉ áp dụng cho phiên bản này. Nếu còn nghi ngờ, hãy kiểm tra tổng SHA-256.
-- **Code signing policy**: chữ ký số cho các phiên bản sau đang được chuẩn bị (đơn gửi SignPath Foundation); [chính sách ký mã](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md) mô tả quy trình. Các phiên bản đến 0.1.4 chưa được ký.
+- **Code signing policy**: các tệp chưa được ký số. Yêu cầu ký số miễn phí gửi SignPath Foundation đã bị từ chối ngày 19 tháng 10 năm 2026 (dự án chưa đủ hiện diện công khai) và có thể gửi lại; [chính sách ký mã](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md) mô tả quy trình dự kiến nếu có được chứng chỉ.
 - **Cảnh báo Windows SmartScreen**: trình cài đặt chưa được ký số nên Windows có thể hiện «Windows đã bảo vệ PC của bạn». Bấm «Thông tin thêm», rồi «Vẫn chạy». Để kiểm tra tính xác thực của tệp, hãy so sánh tổng SHA-256 của nó với tổng trong `SHA256SUMS.txt` được công bố cùng mỗi bản phát hành:
 
 ```powershell
@@ -87,7 +87,7 @@ Phần mềm này miễn phí, do một người phát hành, và các tệp c�
 Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
 ```
 
-- Việc kiểm tra này chứng minh tệp của bạn **giống hệt** tệp đã đăng trên GitHub; bản thân nó không chứng minh tệp vô hại. Mã nguồn và quy trình dựng tệp tự động ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) là công khai, và chữ ký số đang được chuẩn bị (xem «Code signing policy»).
+- Việc kiểm tra này chứng minh tệp của bạn **giống hệt** tệp đã đăng trên GitHub; bản thân nó không chứng minh tệp vô hại. Mã nguồn và quy trình dựng tệp tự động ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) là công khai, và chưa có chữ ký số: đơn gửi SignPath Foundation đã bị từ chối ngày 19 tháng 10 năm 2026 (xem «Code signing policy»).
 
 ## Yêu cầu
 

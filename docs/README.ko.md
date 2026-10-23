@@ -66,7 +66,7 @@
 - **소스에서 실행**: 아래의 '요구 사항'과 '빠른 시작'을 참고하세요.
 - **제거**: Windows 설정 › 앱 › 설치된 앱 › yt-dlp GUI, 또는 시작 메뉴의 '제거' 바로 가기. 소프트웨어가 자체 데이터(설정, 대기열, 내려받은 yt-dlp와 ffmpeg)도 삭제할지 묻습니다. 동영상은 절대 삭제되지 않습니다. 설치는 Windows 계정별로 이루어지므로, 소프트웨어는 설치한 계정의 목록에만 나타납니다. 포터블 버전은 폴더만 삭제하면 됩니다. Chocolatey로 따로 설치한 도구(ffmpeg, Deno 등)는 제거되지 않습니다.
 - **백신 분석(VirusTotal)**: 0.1.7 버전은 2026년 10월 21일에 분석되었습니다. [설치 프로그램](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)은 69개 엔진 중 4개(Arctic Wolf, Microsoft, SecureAge, Skyhigh)에서 일반적인 휴리스틱 탐지로 표시되었고, [포터블 버전의 실행 파일](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)은 70개 중 5개(Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya), [포터블 ZIP 아카이브](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)는 66개 중 1개(Zillya, 아카이브 자체에 대한 탐지)에서 표시되었습니다. 압축되고 서명되지 않은 프로그램 때문에 생긴 오탐일 가능성이 높습니다. 이 결과는 이 버전에만 해당합니다. 걱정되면 SHA-256 합계를 확인하세요.
-- **Code signing policy**: 앞으로의 버전에 대한 디지털 서명을 준비 중입니다(SignPath Foundation 신청). [코드 서명 정책](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)에 절차가 설명되어 있습니다. 0.1.4까지의 버전은 서명되지 않았습니다.
+- **Code signing policy**: 파일에는 디지털 서명이 없습니다. SignPath Foundation에 대한 무료 서명 신청은 2026년 10월 19일에 거절되었습니다(프로젝트의 대외 인지도가 아직 부족함). 다시 신청할 수 있습니다. 인증서를 얻을 경우의 예정 절차는 [코드 서명 정책](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md)에 설명되어 있습니다.
 - **Windows SmartScreen 경고**: 설치 프로그램에는 디지털 서명이 없어 Windows에 'Windows의 PC 보호' 화면이 나타날 수 있습니다. '추가 정보'를 누른 다음 '실행'을 선택하세요. 파일의 진위를 확인하려면 각 릴리스와 함께 게시되는 `SHA256SUMS.txt`의 SHA-256 값과 비교하세요:
 
 ```powershell
@@ -87,7 +87,7 @@ Get-FileHash .\yt-dlp-gui-setup-X.Y.Z.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
 ```
 
-- 이 확인은 파일이 GitHub에 게시된 파일과 **동일**함을 증명하며, 그것만으로 무해함을 증명하지는 않습니다. 소스 코드와 파일의 자동 빌드([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions))는 공개되어 있으며, 디지털 서명은 준비 중입니다('Code signing policy' 참조).
+- 이 확인은 파일이 GitHub에 게시된 파일과 **동일**함을 증명하며, 그것만으로 무해함을 증명하지는 않습니다. 소스 코드와 파일의 자동 빌드([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions))는 공개되어 있으며, 디지털 서명은 아직 없습니다. SignPath Foundation 신청은 2026년 10월 19일에 거절되었습니다('Code signing policy' 참조).
 
 ## 요구 사항
 

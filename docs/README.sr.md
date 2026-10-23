@@ -66,7 +66,7 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Iz izvornog koda**: pogledajte odeljke „Zahtevi” i „Brzi početak” ispod.
 - **Deinstalacija**: Windows Podešavanja › Aplikacije › Instalirane aplikacije › yt-dlp GUI ili prečica „Deinstaliraj” u meniju Start. Program nudi da obriše i svoje podatke (podešavanja, red čekanja, preuzeti yt-dlp i ffmpeg); vaši video snimci se nikada ne brišu. Pošto je instalacija vezana za svaki Windows nalog, program se pojavljuje samo na listi naloga koji ga je instalirao. Kod prenosive verzije dovoljno je obrisati njen folder. Alati instalirani zasebno preko Chocolatey-ja (ffmpeg, Deno…) se ne uklanjaju.
 - **Antivirusna analiza (VirusTotal)**: verzija 0.1.7 analizirana je 21. oktobra 2026. [Instalaciju](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) označava 4 od 69 mehanizama (Arctic Wolf, Microsoft, SecureAge, Skyhigh) opštim heurističkim detekcijama; [pokretač prenosive verzije](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) označavaju 5 od 70 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya), a [prenosivu ZIP arhivu](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) 1 od 66 (Zillya, na samoj arhivi). Verovatno su to lažne uzbune zbog nepotpisanog, kompresovanog programa. Rezultati važe samo za ovu verziju. Ako sumnjate, proverite SHA-256 zbir.
-- **Code signing policy**: digitalno potpisivanje budućih verzija je u pripremi (zahtev SignPath Foundation); [politika potpisivanja koda](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md) opisuje proces. Verzije do 0.1.4 nisu potpisane.
+- **Code signing policy**: fajlovi nisu digitalno potpisani. Zahtev za besplatno potpisivanje prema SignPath Foundation odbijen je 19. oktobra 2026. (projekat još nije dovoljno javno vidljiv) i može se ponovo podneti; [politika potpisivanja koda](https://github.com/harlockSuites/YT-dlp-GUI/blob/main/docs/CODE_SIGNING_POLICY.md) opisuje planirani proces ako se dobije sertifikat.
 - **Upozorenje Windows SmartScreen**: instalater nije digitalno potpisan, pa Windows može da prikaže „Windows je zaštitio vaš računar”. Kliknite na „Više informacija”, a zatim na „Ipak pokreni”. Da proverite autentičnost fajla, uporedite njegovu SHA-256 sumu sa onom iz `SHA256SUMS.txt`, objavljenog uz svako izdanje:
 
 ```powershell
@@ -87,7 +87,7 @@ Ovaj program je besplatan, objavljuje ga jedna osoba, a njegovi fajlovi **još n
 Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; if ((Get-FileHash $n -Algorithm SHA256).Hash -eq $h.ToUpper()) { "$n : OK" } else { "$n : DIFFERENT" } }
 ```
 
-- Ova provera dokazuje da je vaš fajl **identičan** onom objavljenom na GitHubu; sama po sebi ne dokazuje da je bezopasan. Izvorni kod i automatska izgradnja fajlova ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) su javni, a digitalni potpis je u pripremi (pogledajte „Code signing policy“).
+- Ova provera dokazuje da je vaš fajl **identičan** onom objavljenom na GitHubu; sama po sebi ne dokazuje da je bezopasan. Izvorni kod i automatska izgradnja fajlova ([GitHub Actions](https://github.com/harlockSuites/YT-dlp-GUI/actions)) su javni, a digitalnog potpisa još nema: zahtev prema SignPath Foundation odbijen je 19. oktobra 2026. (pogledajte „Code signing policy“).
 
 ## Zahtevi
 
