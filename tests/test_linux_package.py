@@ -15,8 +15,10 @@ from tests._loader import ROOT, load_gui, tk_available
 m = load_gui()
 
 
-def _read(*parts):
-    with open(os.path.join(ROOT, *parts), encoding="utf-8", newline="") as f:
+def _read(*parts, raw=False):
+    """Contenu d'un fichier du dépôt. Les fins de ligne sont normalisées (une copie Windows du dépôt les a en CRLF,
+    comme sur le serveur d'intégration), sauf avec `raw=True` pour les fichiers Linux qui doivent rester en LF."""
+    with open(os.path.join(ROOT, *parts), encoding="utf-8", newline="" if raw else None) as f:
         return f.read()
 
 
@@ -147,13 +149,13 @@ class IconTests(unittest.TestCase):
 
 class LinuxPackageFilesTests(unittest.TestCase):
     def test_apprun_is_a_posix_script_with_lf_endings_that_starts_the_program(self):
-        text = _read("packaging", "linux", "AppRun")
+        text = _read("packaging", "linux", "AppRun", raw=True)   # .gitattributes : LF même après une copie sous Windows
         self.assertTrue(text.startswith("#!/bin/sh\n"))
         self.assertNotIn("\r", text)
         self.assertIn('exec "$HERE/usr/lib/yt-dlp-gui/yt-dlp-gui" "$@"', text)
 
     def test_desktop_file_matches_the_icon_and_the_window_class(self):
-        text = _read("packaging", "linux", "yt-dlp-gui.desktop")
+        text = _read("packaging", "linux", "yt-dlp-gui.desktop", raw=True)
         self.assertNotIn("\r", text)
         entries = dict(line.split("=", 1) for line in text.splitlines() if "=" in line)
         self.assertEqual(entries["Type"], "Application")

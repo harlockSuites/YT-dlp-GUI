@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from tests._loader import load_gui, tk_available
@@ -43,6 +44,13 @@ class QueueButtonsStayVisibleTests(unittest.TestCase):
         self.app = m.YtDlpGui()
         self.app.update()
         self.addCleanup(self._close)
+        # Les hauteurs minimales des volets sont fixées 50 ms après le démarrage (after) : sur une machine rapide,
+        # 40 mises à jour tiennent en moins de temps et le test agirait avant. On attend que ce soit fait.
+        end = time.time() + 3
+        while time.time() < end and int(self.app._paned.panecget(self.app._frm_log, "minsize")) != 90:
+            self.app.update()
+            time.sleep(0.01)
+        self.assertEqual(int(self.app._paned.panecget(self.app._frm_log, "minsize")), 90)
 
     def _close(self):
         self.app.destroy()

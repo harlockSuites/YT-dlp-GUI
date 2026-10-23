@@ -18,9 +18,10 @@ _TREE = ("import subprocess, sys, time\n"
 
 def _alive(pid):
     if os.name == "nt":
-        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True,
-                             **m.NO_WINDOW).stdout
-        return str(pid) in out
+        # sortie lue en octets : tasklist écrit dans la page de code de la console, que le mode UTF-8 de Python
+        # (-X utf8, comme sur le serveur d'intégration) ne sait pas décoder
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, **m.NO_WINDOW).stdout
+        return str(pid).encode() in out
     try:
         with open(f"/proc/{pid}/stat", "rb") as f:
             return f.read().decode("utf-8", "replace").rsplit(")", 1)[1].split()[0] != "Z"   # zombie = mort
