@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Không tìm thấy tổng kiểm cho {name}.",
   "setup.err_checksum": "Tổng kiểm không hợp lệ cho {name}: đã xóa tệp.",
-  "setup.err_no_tools": "Không tìm thấy ffmpeg.exe và ffprobe.exe trong tệp nén.",
   "setup.err_cancelled": "Đã hủy.",
   "toolbar.menu_setup": "Trình hướng dẫn cài đặt…",
   "toolbar.menu_check_update": "Kiểm tra bản cập nhật phần mềm…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "Video này ở chế độ riêng tư: chỉ chủ sở hữu và các tài khoản được mời mới xem được. Nếu là video của bạn, hãy chọn trong khung Cookie một trình duyệt đã đăng nhập đúng tài khoản YouTube (khuyến nghị Firefox), rồi thử lại.",
   "net.offline": "Không có kết nối Internet. Hãy kiểm tra kết nối (cáp, Wi-Fi, VPN hoặc tường lửa) rồi thử lại. (Chi tiết: {detail})",
   "net.timeout": "Máy chủ không phản hồi (hết thời gian chờ). Hãy thử lại sau ít phút. (Chi tiết: {detail})",
-  "net.unreachable": "Không thể kết nối tới máy chủ (kết nối bị từ chối, bị ngắt hoặc bị chặn). Hãy kiểm tra kết nối, VPN hoặc tường lửa rồi thử lại. (Chi tiết: {detail})"
+  "net.unreachable": "Không thể kết nối tới máy chủ (kết nối bị từ chối, bị ngắt hoặc bị chặn). Hãy kiểm tra kết nối, VPN hoặc tường lửa rồi thử lại. (Chi tiết: {detail})",
+  "setup.err_no_tools_found": "Không tìm thấy {tools} trong tệp lưu trữ.",
+  "setup.err_unsupported": "Không có bản tải chính thức của {name} cho hệ thống này ({system}). Hãy cài bằng trình quản lý gói của bản phân phối.",
+  "setup.status_unavailable": "– không có",
+  "deps.linux_note": "Trên Linux, ffmpeg và Deno được tải từ kho chính thức của chúng (đã kiểm tra tổng SHA-256), không cần quyền quản trị. Các công cụ tùy chọn được cài bằng trình quản lý gói của bản phân phối.",
+  "deps.footnote_linux": "* Cần để ghép video/âm thanh và cho phụ đề.",
+  "deps.linux_command_label": "Công cụ tùy chọn: lệnh để sao chép vào terminal",
+  "deps.btn_copy_command": "Sao chép",
+  "deps.linux_command_copied": "Đã sao chép lệnh: hãy dán vào terminal.",
+  "deps.linux_no_manager": "Không nhận ra trình quản lý gói: hãy dùng trang chính thức của từng công cụ.",
+  "cookie.hint_locked_running_linux": "{browser} vẫn đang chạy ({n} tiến trình), có thể ở nền dù cửa sổ đã đóng: chính nó đang khóa cơ sở dữ liệu cookie. Hãy tắt nó bằng trình giám sát hệ thống (hoặc lệnh pkill trong terminal) rồi thử lại. Firefox, được khuyến nghị, không có giới hạn này.",
+  "cookie.hint_decrypt_linux": "Không thể giải mã cookie của {browser}: trên Linux chúng được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring hoặc KWallet) và chùm khóa này phải được mở khóa. Hãy dùng phiên đồ họa bình thường hoặc Firefox (khuyến nghị).",
+  "cookie.note_keyring": "Cookie của trình duyệt này được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring, KWallet): phải được mở khóa, tức là phải có phiên đồ họa đang mở. Nên dùng Firefox."
 }

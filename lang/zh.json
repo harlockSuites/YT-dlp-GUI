@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "未找到 {name} 的校验和。",
   "setup.err_checksum": "{name} 的校验和无效：文件已删除。",
-  "setup.err_no_tools": "压缩包中未找到 ffmpeg.exe 和 ffprobe.exe。",
   "setup.err_cancelled": "已取消。",
   "toolbar.menu_setup": "安装向导…",
   "toolbar.menu_check_update": "检查软件更新…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "此视频为私享视频，只有所有者和受邀账号可以观看。若视频属于您，请在 Cookie 区域选择已登录正确 YouTube 账号的浏览器（推荐 Firefox），然后重试。",
   "net.offline": "未连接到互联网。请检查网络连接（网线、Wi-Fi、VPN 或防火墙）后重试。（详细信息：{detail}）",
   "net.timeout": "服务器没有响应（超时）。请稍后重试。（详细信息：{detail}）",
-  "net.unreachable": "无法连接到服务器（连接被拒绝、中断或被阻止）。请检查网络连接、VPN 或防火墙后重试。（详细信息：{detail}）"
+  "net.unreachable": "无法连接到服务器（连接被拒绝、中断或被阻止）。请检查网络连接、VPN 或防火墙后重试。（详细信息：{detail}）",
+  "setup.err_no_tools_found": "在压缩包中未找到 {tools}。",
+  "setup.err_unsupported": "此系统（{system}）没有 {name} 的官方下载。请使用发行版的包管理器安装。",
+  "setup.status_unavailable": "– 不可用",
+  "deps.linux_note": "在 Linux 上，ffmpeg 和 Deno 从其官方仓库下载（会校验 SHA-256），无需管理员权限。可选工具请用发行版的包管理器安装。",
+  "deps.footnote_linux": "* 合并视频/音频和处理字幕时需要。",
+  "deps.linux_command_label": "可选工具：请复制到终端执行的命令",
+  "deps.btn_copy_command": "复制",
+  "deps.linux_command_copied": "命令已复制：请粘贴到终端中。",
+  "deps.linux_no_manager": "无法识别包管理器：请使用各工具的官方网站。",
+  "cookie.hint_locked_running_linux": "{browser} 仍在运行（{n} 个进程），可能在后台运行，尽管窗口已关闭：正是它锁定了 Cookie 数据库。请用系统监视器结束它（或在终端中使用 pkill 命令），然后重试。推荐的 Firefox 没有此限制。",
+  "cookie.hint_decrypt_linux": "无法解密 {browser} 的 Cookie：在 Linux 上，它们由桌面密钥环（GNOME Keyring 或 KWallet）保护，密钥环必须处于解锁状态。请使用正常的图形会话，或使用 Firefox（推荐）。",
+  "cookie.note_keyring": "此浏览器的 Cookie 由桌面密钥环（GNOME Keyring、KWallet）保护：密钥环必须解锁，也就是说需要已打开的图形会话。推荐使用 Firefox。"
 }

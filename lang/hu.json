@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Nem található ellenőrzőösszeg ehhez: {name}.",
   "setup.err_checksum": "Érvénytelen ellenőrzőösszeg ehhez: {name}; a fájl törölve.",
-  "setup.err_no_tools": "Az ffmpeg.exe és az ffprobe.exe nem található az archívumban.",
   "setup.err_cancelled": "Megszakítva.",
   "toolbar.menu_setup": "Telepítő varázsló…",
   "toolbar.menu_check_update": "Programfrissítés keresése…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "Ez a videó privát: csak a tulajdonosa és a meghívott fiókok láthatják. Ha az öné, válasszon a Cookie-k keretben egy olyan böngészőt, amely a megfelelő YouTube-fiókba van bejelentkezve (a Firefox ajánlott), majd próbálja újra.",
   "net.offline": "Nincs internetkapcsolat. Ellenőrizze a kapcsolatot (kábel, Wi-Fi, VPN vagy tűzfal), majd próbálja újra. (Részletek: {detail})",
   "net.timeout": "A kiszolgáló nem válaszol (időtúllépés). Próbálja újra egy kis idő múlva. (Részletek: {detail})",
-  "net.unreachable": "A kiszolgáló nem érhető el (a kapcsolat megtagadva, megszakadt vagy blokkolva van). Ellenőrizze a kapcsolatot, a VPN-t vagy a tűzfalat, majd próbálja újra. (Részletek: {detail})"
+  "net.unreachable": "A kiszolgáló nem érhető el (a kapcsolat megtagadva, megszakadt vagy blokkolva van). Ellenőrizze a kapcsolatot, a VPN-t vagy a tűzfalat, majd próbálja újra. (Részletek: {detail})",
+  "setup.err_no_tools_found": "Nem található az archívumban: {tools}.",
+  "setup.err_unsupported": "Ehhez a rendszerhez ({system}) nincs hivatalos letöltés a(z) {name} eszközhöz. Telepítse a disztribúció csomagkezelőjével.",
+  "setup.status_unavailable": "– nem érhető el",
+  "deps.linux_note": "Linuxon az ffmpeg és a Deno a hivatalos tárolóikból töltődik le (SHA-256 összeg ellenőrizve), rendszergazdai jogok nélkül. A választható eszközök a disztribúció csomagkezelőjével telepíthetők.",
+  "deps.footnote_linux": "* A videó/hang egyesítéséhez és a feliratokhoz szükséges.",
+  "deps.linux_command_label": "Választható eszközök: terminálba másolandó parancs",
+  "deps.btn_copy_command": "Másolás",
+  "deps.linux_command_copied": "A parancs a vágólapon van: illessze be egy terminálba.",
+  "deps.linux_no_manager": "A csomagkezelő nem ismerhető fel: használja az egyes eszközök hivatalos oldalát.",
+  "cookie.hint_locked_running_linux": "A(z) {browser} még fut ({n} folyamat), talán a háttérben, bár az ablaka be van zárva: ő tartja zárolva a sütiadatbázist. Állítsa le a rendszerfigyelővel (vagy a pkill paranccsal egy terminálban), majd próbálja újra. A Firefoxnak, amely ajánlott, nincs ilyen korlátja.",
+  "cookie.hint_decrypt_linux": "A(z) {browser} sütijei nem fejthetők vissza: Linuxon az asztali kulcstartó (GNOME Keyring vagy KWallet) védi őket, amelynek feloldva kell lennie. Használjon normál grafikus munkamenetet, vagy a Firefoxot (ajánlott).",
+  "cookie.note_keyring": "Ennek a böngészőnek a sütijeit az asztali kulcstartó (GNOME Keyring, KWallet) védi: feloldottnak kell lennie, vagyis grafikus munkamenetnek kell nyitva lennie. A Firefox ajánlott."
 }

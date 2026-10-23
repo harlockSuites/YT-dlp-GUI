@@ -883,6 +883,42 @@ def choco_available():
     return shutil.which("choco") is not None
 
 
+# Linux : les outils facultatifs viennent du gestionnaire de paquets de la distribution (le logiciel affiche la
+# commande, sans jamais la lancer lui-même). Nom du paquet de chaque outil, par gestionnaire.
+LINUX_PACKAGES = {
+    "AtomicParsley": {"apt": "atomicparsley", "dnf": "AtomicParsley", "pacman": "atomicparsley",
+                      "zypper": "AtomicParsley"},
+    "MKVToolNix": {"apt": "mkvtoolnix", "dnf": "mkvtoolnix", "pacman": "mkvtoolnix-cli", "zypper": "mkvtoolnix"},
+    "aria2": {"apt": "aria2", "dnf": "aria2", "pacman": "aria2", "zypper": "aria2"},
+}
+_LINUX_INSTALL_COMMANDS = {"apt": "sudo apt install", "dnf": "sudo dnf install", "pacman": "sudo pacman -S",
+                           "zypper": "sudo zypper install"}
+
+
+def linux_package_manager():
+    """Gestionnaire de paquets de la distribution (apt, dnf, pacman, zypper), ou None s'il n'est pas reconnu."""
+    return next((name for name in _LINUX_INSTALL_COMMANDS if shutil.which(name)), None)
+
+
+def linux_install_command(tool_names, manager=None):
+    """Commande à copier dans un terminal pour installer ces outils facultatifs, ou None si le gestionnaire de
+    paquets est inconnu ou si aucun outil ne s'installe ainsi."""
+    manager = manager or linux_package_manager()
+    packages = sorted({LINUX_PACKAGES[n][manager] for n in tool_names if n in LINUX_PACKAGES and manager in
+                       LINUX_PACKAGES[n]})
+    if not manager or not packages:
+        return None
+    return f"{_LINUX_INSTALL_COMMANDS[manager]} {' '.join(packages)}"
+
+
+def dep_direct(dep):
+    """L'assistant sait-il installer cet outil lui-même (téléchargement vérifié, sans droits administrateur) ?
+    Deno partout ; ffmpeg et ffprobe sous Linux (sous Windows ils passent par Chocolatey)."""
+    if dep.get("direct"):
+        return True
+    return not IS_WINDOWS and dep["name"] in ("ffmpeg", "ffprobe") and bool(FFMPEG_URL)
+
+
 def dep_installed(exe):
     if shutil.which(exe) is not None:
         return True
@@ -907,7 +943,7 @@ def _known_exe_paths(dep):
     le PATH utilisateur n'est pas celui de la session courante)."""
     paths = [os.path.expandvars(p) for p in dep.get("known_paths", [])]
     pkg = dep.get("choco")
-    if pkg:
+    if pkg and IS_WINDOWS:
         root = os.environ.get("ChocolateyInstall") or os.path.join(os.environ.get("ProgramData", ""), "chocolatey")
         base = os.path.join(root, "lib", pkg)
         paths += [os.path.join(d, dep["exe"] + ".exe") for d in (base, os.path.join(base, "tools"))]
@@ -983,7 +1019,9 @@ if IS_WINDOWS:
 else:
     _BROWSER_EXES = {"chrome": ("chrome", "google-chrome"), "edge": ("msedge", "microsoft-edge"),
                      "brave": ("brave", "brave-browser"), "opera": ("opera",),
-                     "firefox": ("firefox", "firefox-esr", "firefox-bin")}
+                     "firefox": ("firefox", "firefox-esr", "firefox-bin"),
+                     "chromium": ("chromium", "chromium-browse"),   # le nom d'un processus est coupé à 15 lettres
+                     "vivaldi": ("vivaldi", "vivaldi-bin")}
 
 
 def browser_process_count(browser):
@@ -1037,7 +1075,10 @@ class DepsWindow(tk.Toplevel):
                   foreground="#2e7d32").pack(anchor="w", padx=12, pady=(0, 6))
 
         # Information si Chocolatey est absent (facultatif : il ne sert qu'aux installations automatiques)
-        if not choco_available():
+        if not IS_WINDOWS:
+            ttk.Label(self, text=t("deps.linux_note"), wraplength=560, justify="left",
+                      foreground="#555555").pack(anchor="w", padx=12, pady=(0, 6))
+        elif not choco_available():
             frm_warn = ttk.Frame(self, relief="solid", borderwidth=1)
             frm_warn.pack(fill="x", padx=12, pady=(0, 6))
             ttk.Label(
@@ -1059,8 +1100,8 @@ class DepsWindow(tk.Toplevel):
         frm_table = ttk.Frame(self)
         frm_table.pack(fill="x", padx=12)
 
-        has_choco = choco_available()
-        headers = [t("deps.col_tool"), t("deps.col_status"), t("deps.col_role"), t("deps.col_action")]
+        has_choco = IS_WINDOWS and choco_available()
+        headers =[t("deps.col_tool"), t("deps.col_status"), t("deps.col_role"), t("deps.col_action")]
         widths   = [14,       16,       54,      14]
         for col, (h, w) in enumerate(zip(headers, widths)):
             ttk.Label(frm_table, text=h, font=("Segoe UI", 9, "bold"),
@@ -1082,7 +1123,7 @@ class DepsWindow(tk.Toplevel):
             lbl_desc.grid(row=row, column=2, padx=4, pady=2, sticky="w")
 
             url = dep.get("url", "")
-            if dep.get("direct"):
+            if dep_direct(dep):
                 btn = ttk.Button(frm_table, text=t("deps.btn_install"), command=self._install_direct)
             elif has_choco:
                 btn = ttk.Button(frm_table, text=t("deps.btn_install"),
@@ -1095,15 +1136,19 @@ class DepsWindow(tk.Toplevel):
 
             self._rows.append({"dep": dep, "lbl_status": lbl_status, "btn": btn})
 
-        ttk.Label(self, text=t("deps.footnote"), font=("Segoe UI", 8), foreground="#666",
-                  wraplength=560, justify="left").pack(anchor="w", padx=12)
+        ttk.Label(self, text=t("deps.footnote" if IS_WINDOWS else "deps.footnote_linux"), font=("Segoe UI", 8),
+                  foreground="#666", wraplength=560, justify="left").pack(anchor="w", padx=12)
 
         # Boutons du bas
         frm_btn = ttk.Frame(self)
         frm_btn.pack(fill="x", padx=12, pady=10)
+        self._frm_btn = frm_btn
 
-        ttk.Button(frm_btn, text=t("deps.btn_install_all"), command=self._install_all,
-                   state="normal" if choco_available() else "disabled").pack(side="left", ipadx=6)
+        if IS_WINDOWS:
+            ttk.Button(frm_btn, text=t("deps.btn_install_all"), command=self._install_all,
+                       state="normal" if choco_available() else "disabled").pack(side="left", ipadx=6)
+        else:
+            self._build_command_frame()
         ttk.Button(frm_btn, text=t("deps.btn_refresh"),
                    command=self._refresh).pack(side="left", padx=(8, 0), ipadx=6)
         ttk.Button(frm_btn, text=t("deps.btn_close"),
@@ -1121,6 +1166,30 @@ class DepsWindow(tk.Toplevel):
         sb.pack(side="right", fill="y")
         self.log.pack(fill="both", expand=True)
 
+    def _build_command_frame(self):
+        """Linux : commande du gestionnaire de paquets pour les outils facultatifs absents (à copier, jamais lancée)."""
+        self._cmd_frame = ttk.LabelFrame(self, text=t("deps.linux_command_label"), padding=6)
+        self._cmd_var = tk.StringVar()
+        ttk.Entry(self._cmd_frame, textvariable=self._cmd_var, state="readonly",
+                  font=("Consolas", 9)).pack(side="left", fill="x", expand=True)
+        self._btn_copy = ttk.Button(self._cmd_frame, text=t("deps.btn_copy_command"), command=self._copy_command)
+        self._btn_copy.pack(side="left", padx=(6, 0))
+
+    def _update_command_frame(self):
+        missing = [d["name"] for d in DEPS if d["name"] in LINUX_PACKAGES and not dep_installed(d["exe"])]
+        if not missing:
+            self._cmd_frame.pack_forget()
+            return
+        command = linux_install_command(missing)
+        self._cmd_var.set(command or t("deps.linux_no_manager"))
+        self._btn_copy.configure(state="normal" if command else "disabled")
+        self._cmd_frame.pack(fill="x", padx=12, pady=(0, 4), before=self._frm_btn)
+
+    def _copy_command(self):
+        self.clipboard_clear()
+        self.clipboard_append(self._cmd_var.get())
+        self._log(t("deps.linux_command_copied"), "#27ae60")
+
     def _log(self, text, color=None):
         self.log.configure(state="normal")
         tag = None
@@ -1137,7 +1206,7 @@ class DepsWindow(tk.Toplevel):
             webbrowser.open(url)
 
     def _refresh(self):
-        has_choco = choco_available()
+        has_choco = IS_WINDOWS and choco_available()
         for row in self._rows:
             dep = row["dep"]
             installed = dep_installed(dep["exe"])
@@ -1150,11 +1219,13 @@ class DepsWindow(tk.Toplevel):
                                "recommended": ("deps.status_recommended", "#b9770e"),
                                "optional": ("deps.status_optional", "#7f8c8d")}[level]
                 row["lbl_status"].configure(text=t(text), foreground=color)
-                if dep.get("direct") or has_choco:
+                if dep_direct(dep) or has_choco:
                     row["btn"].configure(state="normal")
                 else:
                     url = dep.get("url", "")
                     row["btn"].configure(state="normal" if url else "disabled")
+        if not IS_WINDOWS:
+            self._update_command_frame()
 
     def _install(self, dep):
         # ffprobe est installé via le paquet ffmpeg — on évite de le lancer deux fois
@@ -2755,7 +2826,11 @@ def show_blocked_browsers():
 
 def visible_browsers(show_blocked, current=""):
     """Navigateurs proposés dans les listes. Le navigateur déjà choisi reste toujours dans la liste, pour qu'un
-    réglage existant ne disparaisse pas sans que l'utilisateur l'ait changé."""
+    réglage existant ne disparaisse pas sans que l'utilisateur l'ait changé. Sous Linux, yt-dlp lit tous les
+    navigateurs (Chromium et dérivés via le trousseau de clés du bureau) : aucun n'est masqué."""
+    if not IS_WINDOWS:
+        extra = [current] if current and current != BROWSER_OFF and current not in _LINUX_BROWSERS else []
+        return list(_LINUX_BROWSERS) + extra
     return ["firefox", "opera"] + [b for b in _COOKIE_ENCRYPTED_BROWSERS if show_blocked or b == current]
 
 
@@ -2814,10 +2889,11 @@ def _cookie_hint(text, browser=""):
     if "database is locked" in low or ("could not copy" in low and "cookie" in low):
         running = browser_process_count(browser)
         if running:
-            return t("cookie.hint_locked_running", browser=name, n=running)
+            return t("cookie.hint_locked_running" if IS_WINDOWS else "cookie.hint_locked_running_linux",
+                     browser=name, n=running)
         return t("cookie.hint_locked", browser=name)
-    if "failed to decrypt" in low or "dpapi" in low:
-        return t("cookie.hint_decrypt", browser=name)
+    if "failed to decrypt" in low or "dpapi" in low or ("cannot decrypt" in low and not IS_WINDOWS):
+        return t("cookie.hint_decrypt" if IS_WINDOWS else "cookie.hint_decrypt_linux", browser=name)
     if "could not find" in low and "cookies database" in low:
         return t("cookie.hint_notfound", browser=name)
     cookies_on = bool(browser) and browser != BROWSER_OFF
@@ -2836,6 +2912,10 @@ def _cookie_hint(text, browser=""):
 # yt-dlp ne lit pas toujours, même fermés ; Opera n'est lisible que fermé ; Firefox toujours.
 _COOKIE_ENCRYPTED_BROWSERS = ("chrome", "edge", "brave")
 _COOKIE_CLOSED_BROWSERS = ("opera",)
+# Linux : Firefox d'abord, puis les navigateurs Chromium, dont les cookies sont protégés par le trousseau de clés
+# du bureau (GNOME Keyring, KWallet) : il doit être déverrouillé, donc une session graphique ouverte.
+_LINUX_BROWSERS = ("firefox", "chromium", "chrome", "brave", "edge", "opera", "vivaldi")
+_LINUX_KEYRING_BROWSERS = _LINUX_BROWSERS[1:]
 _COOKIE_COLORS = {"off": "#e74c3c", "untested": "#f5a623", "testing": "#f5a623",
                   "ok": "#4ec94e", "fail": "#e74c3c"}
 
@@ -2868,6 +2948,8 @@ class CookieFrame(ttk.LabelFrame):
     def _note_key(self):
         """Limite connue du navigateur choisi (clé de traduction) ou chaîne vide."""
         browser = self._var.get()
+        if not IS_WINDOWS:
+            return "cookie.note_keyring" if browser in _LINUX_KEYRING_BROWSERS else ""
         if browser in _COOKIE_ENCRYPTED_BROWSERS:
             return "cookie.note_blocked"
         if browser in _COOKIE_CLOSED_BROWSERS:
@@ -4652,14 +4734,37 @@ class BugReportWindow(tk.Toplevel):
 # ══════════════════════════════════════════════════════════════════
 #  Assistant d'installation (yt-dlp + ffmpeg), téléchargements vérifiés
 # ══════════════════════════════════════════════════════════════════
-YTDLP_URL       = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"
-YTDLP_SUMS_URL  = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS"
-FFMPEG_ZIP_NAME = "ffmpeg-master-latest-win64-gpl.zip"
-FFMPEG_URL      = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/" + FFMPEG_ZIP_NAME
-FFMPEG_SUMS_URL = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/checksums.sha256"
-DENO_ZIP_NAME   = "deno-x86_64-pc-windows-msvc.zip"
-DENO_URL        = "https://github.com/denoland/deno/releases/latest/download/" + DENO_ZIP_NAME
-DENO_SUMS_URL   = DENO_URL + ".sha256sum"
+def _release_assets(system, machine):
+    """Fichiers officiels à télécharger selon le système (« windows » ou « linux ») et l'architecture :
+    binaire yt-dlp de ses versions GitHub, archives ffmpeg et Deno (None si le projet n'en publie pas pour
+    cette architecture : l'outil vient alors du gestionnaire de paquets du système), suffixe des exécutables."""
+    machine = (machine or "").lower()
+    if system == "windows":
+        return {"ytdlp": "yt-dlp.exe", "ffmpeg": "ffmpeg-master-latest-win64-gpl.zip",
+                "deno": "deno-x86_64-pc-windows-msvc.zip", "exe": ".exe"}
+    if machine in ("x86_64", "amd64"):
+        return {"ytdlp": "yt-dlp_linux", "ffmpeg": "ffmpeg-master-latest-linux64-gpl.tar.xz",
+                "deno": "deno-x86_64-unknown-linux-gnu.zip", "exe": ""}
+    if machine in ("aarch64", "arm64"):
+        return {"ytdlp": "yt-dlp_linux_aarch64", "ffmpeg": "ffmpeg-master-latest-linuxarm64-gpl.tar.xz",
+                "deno": "deno-aarch64-unknown-linux-gnu.zip", "exe": ""}
+    # Autre architecture : yt-dlp en script (il demande python3 sur le système), ni ffmpeg ni Deno à télécharger.
+    return {"ytdlp": "yt-dlp", "ffmpeg": None, "deno": None, "exe": ""}
+
+
+_ASSETS = _release_assets("windows" if IS_WINDOWS else "linux", platform.machine())
+EXE_SUFFIX          = _ASSETS["exe"]
+YTDLP_ASSET         = _ASSETS["ytdlp"]
+YTDLP_URL           = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/" + YTDLP_ASSET
+YTDLP_SUMS_URL      = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/SHA2-256SUMS"
+FFMPEG_ARCHIVE_NAME = _ASSETS["ffmpeg"]
+FFMPEG_URL          = ("https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/" + FFMPEG_ARCHIVE_NAME
+                       if FFMPEG_ARCHIVE_NAME else None)
+FFMPEG_SUMS_URL     = "https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/checksums.sha256"
+DENO_ARCHIVE_NAME   = _ASSETS["deno"]
+DENO_URL            = ("https://github.com/denoland/deno/releases/latest/download/" + DENO_ARCHIVE_NAME
+                       if DENO_ARCHIVE_NAME else None)
+DENO_SUMS_URL       = DENO_URL + ".sha256sum" if DENO_URL else None
 
 
 class SetupError(Exception):
@@ -4746,42 +4851,75 @@ def _verified_download(url, sums_url, name, dest, progress=None, stop=None, log=
     return dest
 
 
-def _extract_tools(zip_path, dest_dir, names=("ffmpeg.exe", "ffprobe.exe")):
-    """Extrait uniquement ffmpeg/ffprobe (par nom de fichier, jamais par chemin de l'archive)."""
-    import zipfile
+def _tool_names(*names):
+    """Noms de fichiers des outils pour ce système (« ffmpeg » -> « ffmpeg.exe » sous Windows)."""
+    return tuple(n + EXE_SUFFIX for n in names)
+
+
+def _archive_files(path):
+    """(nom de fichier en minuscules, fonction d'ouverture) de chaque fichier ordinaire d'une archive .zip ou
+    .tar.xz. Les chemins de l'archive sont ignorés ; liens, dossiers et fichiers spéciaux ne sont pas listés."""
     import posixpath
+    if path.endswith(".zip"):
+        import zipfile
+        with zipfile.ZipFile(path) as zf:
+            for info in zf.infolist():
+                if not info.is_dir():
+                    yield posixpath.basename(info.filename.replace("\\", "/")).lower(), lambda i=info: zf.open(i)
+    else:
+        import tarfile
+        with tarfile.open(path, "r:*") as tf:
+            for member in tf:
+                if member.isfile():
+                    yield posixpath.basename(member.name).lower(), lambda mb=member: tf.extractfile(mb)
+
+
+def _extract_tools(archive_path, dest_dir, names=None):
+    """Extrait d'une archive .zip ou .tar.xz uniquement les outils demandés (ffmpeg/ffprobe par défaut),
+    par nom de fichier, jamais par chemin de l'archive. Hors Windows, ils reçoivent le droit d'exécution."""
+    names = names or _tool_names("ffmpeg", "ffprobe")
     os.makedirs(dest_dir, exist_ok=True)
     done = []
-    with zipfile.ZipFile(zip_path) as zf:
-        for info in zf.infolist():
-            base = posixpath.basename(info.filename.replace("\\", "/")).lower()
-            if info.is_dir() or base not in names or base in done:
-                continue
-            target = os.path.join(dest_dir, base)
-            with zf.open(info) as src, open(target + ".new", "wb") as dst:
-                shutil.copyfileobj(src, dst)
-            _replace_with_retry(target + ".new", target)
-            done.append(base)
+    for base, opener in _archive_files(archive_path):
+        if base not in names or base in done:
+            continue
+        target = os.path.join(dest_dir, base)
+        with opener() as src, open(target + ".new", "wb") as dst:
+            shutil.copyfileobj(src, dst)
+        if not IS_WINDOWS:
+            os.chmod(target + ".new", 0o755)
+        _replace_with_retry(target + ".new", target)
+        done.append(base)
+        if len(done) == len(names):
+            break   # inutile de lire le reste d'une archive de plusieurs centaines de Mo
     if not done:
-        raise SetupError(t("setup.err_no_tools"))
+        raise SetupError(t("setup.err_no_tools_found", tools=", ".join(names)))
     return done
 
 
 def install_ytdlp(progress=None, stop=None, log=None):
     tmp = YTDLP + ".new"
-    _verified_download(YTDLP_URL, YTDLP_SUMS_URL, "yt-dlp.exe", tmp, progress, stop, log)
+    _verified_download(YTDLP_URL, YTDLP_SUMS_URL, YTDLP_ASSET, tmp, progress, stop, log)
+    if not IS_WINDOWS:
+        os.chmod(tmp, 0o755)
     if os.path.exists(YTDLP):
         shutil.copy2(YTDLP, YTDLP + ".bak")
     _replace_with_retry(tmp, YTDLP)
 
 
+def _require_download(name, url):
+    if not url:
+        raise SetupError(t("setup.err_unsupported", name=name, system=f"{platform.system()} {platform.machine()}"))
+
+
 def install_ffmpeg(progress=None, stop=None, log=None):
     import tempfile
+    _require_download("ffmpeg", FFMPEG_URL)
     work = tempfile.mkdtemp(prefix="ytgui-ffmpeg-")
     try:
-        zip_path = os.path.join(work, FFMPEG_ZIP_NAME)
-        _verified_download(FFMPEG_URL, FFMPEG_SUMS_URL, FFMPEG_ZIP_NAME, zip_path, progress, stop, log)
-        _extract_tools(zip_path, LOCAL_BIN)
+        archive = os.path.join(work, FFMPEG_ARCHIVE_NAME)
+        _verified_download(FFMPEG_URL, FFMPEG_SUMS_URL, FFMPEG_ARCHIVE_NAME, archive, progress, stop, log)
+        _extract_tools(archive, LOCAL_BIN)
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -4789,11 +4927,12 @@ def install_ffmpeg(progress=None, stop=None, log=None):
 def install_deno(progress=None, stop=None, log=None):
     """Deno : moteur JavaScript que yt-dlp utilise pour YouTube, installé dans le dossier de données."""
     import tempfile
+    _require_download("deno", DENO_URL)
     work = tempfile.mkdtemp(prefix="ytgui-deno-")
     try:
-        zip_path = os.path.join(work, DENO_ZIP_NAME)
-        _verified_download(DENO_URL, DENO_SUMS_URL, DENO_ZIP_NAME, zip_path, progress, stop, log)
-        _extract_tools(zip_path, LOCAL_BIN, names=("deno.exe",))
+        archive = os.path.join(work, DENO_ARCHIVE_NAME)
+        _verified_download(DENO_URL, DENO_SUMS_URL, DENO_ARCHIVE_NAME, archive, progress, stop, log)
+        _extract_tools(archive, LOCAL_BIN, names=_tool_names("deno"))
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -4816,18 +4955,25 @@ class SetupWizardWindow(tk.Toplevel):
         frm_items = ttk.Frame(frm)
         frm_items.pack(fill="x", pady=(12, 4))
         self._items = {}
-        for key, label, installed in (
-                ("ytdlp", t("setup.item_ytdlp"), os.path.isfile(YTDLP)),
-                ("ffmpeg", t("setup.item_ffmpeg"), dep_installed("ffmpeg") and dep_installed("ffprobe")),
-                ("deno", t("setup.item_deno"), dep_installed("deno"))):
-            var = tk.BooleanVar(value=not installed)
+        for key, label, installed, downloadable in (
+                ("ytdlp", t("setup.item_ytdlp"), os.path.isfile(YTDLP), True),
+                ("ffmpeg", t("setup.item_ffmpeg"), dep_installed("ffmpeg") and dep_installed("ffprobe"),
+                 bool(FFMPEG_URL)),
+                ("deno", t("setup.item_deno"), dep_installed("deno"), bool(DENO_URL))):
+            todo = not installed and downloadable   # pas de téléchargement officiel pour cette architecture
+            var = tk.BooleanVar(value=todo)
             row = ttk.Frame(frm_items)
             row.pack(fill="x", pady=2)
             cb = ttk.Checkbutton(row, text=label, variable=var,
-                                 state="disabled" if installed else "normal")
+                                 state="normal" if todo else "disabled")
             cb.pack(side="left")
-            ttk.Label(row, text=t("setup.status_ok") if installed else t("setup.status_missing"),
-                      foreground="#27ae60" if installed else "#c0392b").pack(side="right")
+            if installed:
+                status, color = t("setup.status_ok"), "#27ae60"
+            elif not downloadable:
+                status, color = t("setup.status_unavailable"), "#7f8c8d"
+            else:
+                status, color = t("setup.status_missing"), "#c0392b"
+            ttk.Label(row, text=status, foreground=color).pack(side="right")
             self._items[key] = var
 
         self.var_progress = tk.DoubleVar(value=0)
@@ -5640,7 +5786,8 @@ class YtDlpGui(tk.Tk):
                              command=self._toggle_auto_update)
         menu.add_command(label=t("toolbar.menu_deps"),   command=self._open_deps)
         menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
-        menu.add_command(label=t("toolbar.menu_browsers"), command=lambda: BrowserOptionsWindow(self))
+        if IS_WINDOWS:   # ailleurs, tous les navigateurs sont proposés : rien à masquer
+            menu.add_command(label=t("toolbar.menu_browsers"), command=lambda: BrowserOptionsWindow(self))
         menu.add_separator()
         menu.add_command(label="🌐  Langue / Language…", command=self._open_lang_dialog)
         menu.tk_popup(self.winfo_pointerx(), self.winfo_pointery())

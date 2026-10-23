@@ -55,6 +55,7 @@ class ReportAndDepsTests(unittest.TestCase):
             self.assertIn(status, win._STATUS_COLOR)
             self.assertIn(status, win._STATUS_LABEL)
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_deps_window_explains_the_disabled_install_all_button(self):
         with mock.patch.object(m, "choco_available", return_value=False), \
                 mock.patch.object(m, "dep_installed", return_value=False), \

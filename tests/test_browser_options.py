@@ -12,6 +12,9 @@ class VisibleBrowsersTests(unittest.TestCase):
     def setUp(self):
         m.save_config({})
         self.addCleanup(m.save_config, {})
+        patcher = mock.patch.object(m, "IS_WINDOWS", True)   # listes décrites ici : celles de Windows
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def test_blocked_browsers_are_hidden_by_default_on_windows(self):
         with mock.patch.object(m.sys, "platform", "win32"):
@@ -56,7 +59,10 @@ class BrowserComboTests(unittest.TestCase):
     def setUp(self):
         m.save_config({"show_blocked_browsers": False})
         self.addCleanup(m.save_config, {})
-        self.var = m.tk.StringVar(master=self.app, value=m.BROWSER_OFF)
+        patcher = mock.patch.object(m, "IS_WINDOWS", True)   # listes décrites ici : celles de Windows
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.var =m.tk.StringVar(master=self.app, value=m.BROWSER_OFF)
         self.combo = m._browser_combo(self.app, self.var)
         self.addCleanup(self.combo.destroy)
 

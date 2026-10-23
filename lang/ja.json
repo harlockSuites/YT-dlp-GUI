@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "{name} のチェックサムが見つかりません。",
   "setup.err_checksum": "{name} のチェックサムが無効です：ファイルを削除しました。",
-  "setup.err_no_tools": "アーカイブに ffmpeg.exe と ffprobe.exe が見つかりません。",
   "setup.err_cancelled": "キャンセルしました。",
   "toolbar.menu_setup": "セットアップアシスタント…",
   "toolbar.menu_check_update": "ソフトウェアの更新を確認…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "この動画は非公開で、所有者と招待されたアカウントだけが見られます。ご自身の動画の場合は、Cookie の枠で正しい YouTube アカウントにログイン済みのブラウザー（Firefox を推奨）を選んで、もう一度お試しください。",
   "net.offline": "インターネットに接続されていません。接続（ケーブル、Wi-Fi、VPN、ファイアウォール）を確認して、もう一度お試しください。（詳細：{detail}）",
   "net.timeout": "サーバーが応答しません（タイムアウト）。しばらくしてからもう一度お試しください。（詳細：{detail}）",
-  "net.unreachable": "サーバーに接続できません（接続の拒否、中断、またはブロック）。接続、VPN、ファイアウォールを確認して、もう一度お試しください。（詳細：{detail}）"
+  "net.unreachable": "サーバーに接続できません（接続の拒否、中断、またはブロック）。接続、VPN、ファイアウォールを確認して、もう一度お試しください。（詳細：{detail}）",
+  "setup.err_no_tools_found": "アーカイブ内に {tools} が見つかりません。",
+  "setup.err_unsupported": "このシステム（{system}）には {name} の公式ダウンロードがありません。お使いのディストリビューションのパッケージマネージャーでインストールしてください。",
+  "setup.status_unavailable": "– 利用不可",
+  "deps.linux_note": "Linux では、ffmpeg と Deno を公式リポジトリからダウンロードします（SHA-256 を検証）。管理者権限は不要です。任意のツールは、お使いのディストリビューションのパッケージマネージャーでインストールします。",
+  "deps.footnote_linux": "* 映像/音声の結合と字幕に必要です。",
+  "deps.linux_command_label": "任意のツール：ターミナルにコピーするコマンド",
+  "deps.btn_copy_command": "コピー",
+  "deps.linux_command_copied": "コマンドをコピーしました。ターミナルに貼り付けてください。",
+  "deps.linux_no_manager": "パッケージマネージャーを認識できません。各ツールの公式サイトをご利用ください。",
+  "cookie.hint_locked_running_linux": "{browser} はまだ実行中です（{n} プロセス）。ウィンドウを閉じていてもバックグラウンドで動いている可能性があり、Cookie データベースをロックしているのはそのプロセスです。システムモニターで（またはターミナルで pkill コマンドを使って）終了してから、もう一度お試しください。推奨の Firefox にはこの制限がありません。",
+  "cookie.hint_decrypt_linux": "{browser} の Cookie を復号できません。Linux では Cookie はデスクトップのキーリング（GNOME Keyring または KWallet）で保護されており、キーリングのロックを解除しておく必要があります。通常のグラフィカルセッションを使うか、Firefox をお使いください（推奨）。",
+  "cookie.note_keyring": "このブラウザーの Cookie はデスクトップのキーリング（GNOME Keyring、KWallet）で保護されています。ロックを解除しておく必要があるため、グラフィカルセッションを開いておいてください。Firefox を推奨します。"
 }

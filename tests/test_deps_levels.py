@@ -67,6 +67,7 @@ class DepsLevelsTests(unittest.TestCase):
         win = self._window()
         self.assertIn(m.t("deps.optional_note"), _labels(win))
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_missing_chocolatey_is_not_presented_as_a_warning(self):
         win = self._window()
         shown = [x for x in _labels(win) if x == m.t("deps.choco_warn")]

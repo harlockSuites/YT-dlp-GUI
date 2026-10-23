@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Nie znaleziono sumy kontrolnej dla {name}.",
   "setup.err_checksum": "Nieprawidłowa suma kontrolna dla {name}: plik usunięto.",
-  "setup.err_no_tools": "Nie znaleziono ffmpeg.exe i ffprobe.exe w archiwum.",
   "setup.err_cancelled": "Anulowano.",
   "toolbar.menu_setup": "Asystent instalacji…",
   "toolbar.menu_check_update": "Sprawdź aktualizację programu…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "Ten film jest prywatny: widzi go tylko jego właściciel i zaproszone konta. Jeśli należy do Ciebie, wybierz w ramce Cookies przeglądarkę zalogowaną na właściwe konto YouTube (zalecany Firefox), a następnie spróbuj ponownie.",
   "net.offline": "Brak połączenia z Internetem. Sprawdź połączenie (kabel, Wi-Fi, VPN lub zaporę) i spróbuj ponownie. (Szczegóły: {detail})",
   "net.timeout": "Serwer nie odpowiada (upłynął limit czasu). Spróbuj ponownie za chwilę. (Szczegóły: {detail})",
-  "net.unreachable": "Nie można połączyć się z serwerem (połączenie odrzucone, przerwane lub zablokowane). Sprawdź połączenie, VPN lub zaporę i spróbuj ponownie. (Szczegóły: {detail})"
+  "net.unreachable": "Nie można połączyć się z serwerem (połączenie odrzucone, przerwane lub zablokowane). Sprawdź połączenie, VPN lub zaporę i spróbuj ponownie. (Szczegóły: {detail})",
+  "setup.err_no_tools_found": "Nie znaleziono w archiwum: {tools}.",
+  "setup.err_unsupported": "Brak oficjalnego pliku do pobrania dla {name} w tym systemie ({system}). Zainstaluj go menedżerem pakietów swojej dystrybucji.",
+  "setup.status_unavailable": "– niedostępne",
+  "deps.linux_note": "W systemie Linux ffmpeg i Deno są pobierane z oficjalnych repozytoriów (suma SHA-256 sprawdzana), bez uprawnień administratora. Narzędzia opcjonalne instaluje się menedżerem pakietów dystrybucji.",
+  "deps.footnote_linux": "* Wymagane do łączenia wideo/audio i do napisów.",
+  "deps.linux_command_label": "Narzędzia opcjonalne: polecenie do skopiowania w terminalu",
+  "deps.btn_copy_command": "Kopiuj",
+  "deps.linux_command_copied": "Polecenie skopiowane: wklej je w terminalu.",
+  "deps.linux_no_manager": "Nie rozpoznano menedżera pakietów: użyj oficjalnej strony każdego narzędzia.",
+  "cookie.hint_locked_running_linux": "{browser} nadal działa ({n} procesów), być może w tle mimo zamkniętego okna: to on blokuje swoją bazę ciasteczek. Zakończ go w monitorze systemu (lub poleceniem pkill w terminalu) i spróbuj ponownie. Firefox, zalecany, nie ma tego ograniczenia.",
+  "cookie.hint_decrypt_linux": "Nie można odszyfrować ciasteczek przeglądarki {browser}: w systemie Linux chroni je pęk kluczy pulpitu (GNOME Keyring lub KWallet), który musi być odblokowany. Użyj zwykłej sesji graficznej albo Firefoksa (zalecany).",
+  "cookie.note_keyring": "Ciasteczka tej przeglądarki chroni pęk kluczy pulpitu (GNOME Keyring, KWallet): musi być odblokowany, czyli sesja graficzna musi być otwarta. Zalecamy Firefoksa."
 }

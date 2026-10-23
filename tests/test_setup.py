@@ -138,6 +138,29 @@ def _zip_bytes(entries):
     return buf.getvalue()
 
 
+def _tar_xz_bytes(entries, links=None):
+    """Archive .tar.xz ; `links` : {nom: cible} de liens symboliques ajoutés."""
+    import tarfile
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:xz") as tf:
+        for name, data in entries.items():
+            info = tarfile.TarInfo(name)
+            info.size = len(data)
+            info.mode = 0o644
+            tf.addfile(info, io.BytesIO(data))
+        for name, target in (links or {}).items():
+            info = tarfile.TarInfo(name)
+            info.type = tarfile.SYMTYPE
+            info.linkname = target
+            tf.addfile(info)
+    return buf.getvalue()
+
+
+def _archive_bytes(archive_name, entries):
+    """Archive du format de ce nom de fichier (.zip ou .tar.xz), comme celles que publient les éditeurs."""
+    return _zip_bytes(entries) if archive_name.endswith(".zip") else _tar_xz_bytes(entries)
+
+
 class ExtractTests(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.mkdtemp(prefix="zip-")
@@ -149,21 +172,80 @@ class ExtractTests(unittest.TestCase):
             f.write(_zip_bytes(entries))
         return path
 
+    def _tar(self, entries, links=None):
+        path = os.path.join(self.d, "a.tar.xz")
+        with open(path, "wb") as f:
+            f.write(_tar_xz_bytes(entries, links))
+        return path
+
     def test_extracts_only_ffmpeg_and_ffprobe_by_basename(self):
         z = self._zip({"ffmpeg-x/bin/ffmpeg.exe": b"F", "ffmpeg-x/bin/ffprobe.exe": b"P",
                        "ffmpeg-x/bin/ffplay.exe": b"L", "../evil.exe": b"E",
                        "doc/readme.txt": b"R"})
         dest = os.path.join(self.d, "bin")
-        done = m._extract_tools(z, dest)
+        done = m._extract_tools(z, dest, names=("ffmpeg.exe", "ffprobe.exe"))
         self.assertEqual(sorted(done), ["ffmpeg.exe", "ffprobe.exe"])
         self.assertEqual(sorted(os.listdir(dest)), ["ffmpeg.exe", "ffprobe.exe"])
         self.assertFalse(os.path.exists(os.path.join(self.d, "evil.exe")))
         with open(os.path.join(dest, "ffmpeg.exe"), "rb") as f:
             self.assertEqual(f.read(), b"F")
 
+    def test_extracts_only_ffmpeg_and_ffprobe_from_a_tar_xz(self):
+        t = self._tar({"ffmpeg-x/bin/ffmpeg": b"F", "ffmpeg-x/bin/ffprobe": b"P", "ffmpeg-x/bin/ffplay": b"L",
+                       "../evil": b"E", "ffmpeg-x/doc/readme.txt": b"R"},
+                      links={"ffmpeg-x/bin/ffmpeg-link": "/etc/passwd", "ffmpeg": "/etc/passwd"})
+        dest = os.path.join(self.d, "bin")
+        done = m._extract_tools(t, dest, names=("ffmpeg", "ffprobe"))
+        self.assertEqual(sorted(done), ["ffmpeg", "ffprobe"])
+        self.assertEqual(sorted(os.listdir(dest)), ["ffmpeg", "ffprobe"])
+        self.assertFalse(os.path.exists(os.path.join(self.d, "evil")))
+        with open(os.path.join(dest, "ffmpeg"), "rb") as f:
+            self.assertEqual(f.read(), b"F", "un lien symbolique nommé ffmpeg n'est jamais suivi")
+
+    @unittest.skipIf(os.name == "nt", "droits d'exécution POSIX")
+    def test_extracted_tools_are_executable_on_linux(self):
+        dest = os.path.join(self.d, "bin")
+        m._extract_tools(self._zip({"deno": b"D"}), dest, names=("deno",))
+        self.assertEqual(os.stat(os.path.join(dest, "deno")).st_mode & 0o777, 0o755)
+
+    def test_default_names_follow_the_system(self):
+        self.assertEqual(m._tool_names("ffmpeg", "ffprobe"),
+                         ("ffmpeg.exe", "ffprobe.exe") if m.IS_WINDOWS else ("ffmpeg", "ffprobe"))
+
     def test_archive_without_tools_raises(self):
         with self.assertRaises(m.SetupError):
             m._extract_tools(self._zip({"x/readme.txt": b"R"}), os.path.join(self.d, "bin"))
+        with self.assertRaises(m.SetupError):
+            m._extract_tools(self._tar({"x/readme.txt": b"R"}), os.path.join(self.d, "bin"))
+
+
+class ReleaseAssetsTests(unittest.TestCase):
+    def test_windows_assets_are_the_published_ones(self):
+        a = m._release_assets("windows", "AMD64")
+        self.assertEqual(a, {"ytdlp": "yt-dlp.exe", "ffmpeg": "ffmpeg-master-latest-win64-gpl.zip",
+                             "deno": "deno-x86_64-pc-windows-msvc.zip", "exe": ".exe"})
+
+    def test_linux_assets_by_architecture(self):
+        for machine in ("x86_64", "AMD64", "X86_64"):
+            a = m._release_assets("linux", machine)
+            self.assertEqual((a["ytdlp"], a["ffmpeg"], a["deno"], a["exe"]),
+                             ("yt-dlp_linux", "ffmpeg-master-latest-linux64-gpl.tar.xz",
+                              "deno-x86_64-unknown-linux-gnu.zip", ""), machine)
+        for machine in ("aarch64", "arm64"):
+            a = m._release_assets("linux", machine)
+            self.assertEqual((a["ytdlp"], a["ffmpeg"], a["deno"]),
+                             ("yt-dlp_linux_aarch64", "ffmpeg-master-latest-linuxarm64-gpl.tar.xz",
+                              "deno-aarch64-unknown-linux-gnu.zip"), machine)
+
+    def test_unknown_architecture_only_gets_the_ytdlp_script(self):
+        for machine in ("armv7l", "riscv64", "", None):
+            a = m._release_assets("linux", machine)
+            self.assertEqual((a["ytdlp"], a["ffmpeg"], a["deno"]), ("yt-dlp", None, None), machine)
+
+    def test_archives_are_zip_or_tar_xz(self):
+        for system, machine in (("windows", "AMD64"), ("linux", "x86_64"), ("linux", "aarch64")):
+            for key in ("ffmpeg", "deno"):
+                self.assertRegex(m._release_assets(system, machine)[key], r"\.(zip|tar\.xz)$")
 
 
 class InstallTests(LocalServerCase):
@@ -172,8 +254,8 @@ class InstallTests(LocalServerCase):
         target = os.path.join(self.d, "yt-dlp.exe")
         with open(target, "wb") as f:
             f.write(b"ANCIEN")
-        url = self.serve("/yt-dlp.exe", data)
-        sums = self.serve("/SHA2-256SUMS", f"{_sha(data)}  yt-dlp.exe\n".encode())
+        url = self.serve("/" + m.YTDLP_ASSET, data)
+        sums = self.serve("/SHA2-256SUMS", f"{_sha(data)}  {m.YTDLP_ASSET}\n".encode())
         with mock.patch.object(m, "YTDLP", target), mock.patch.object(m, "YTDLP_URL", url), \
                 mock.patch.object(m, "YTDLP_SUMS_URL", sums):
             m.install_ytdlp()
@@ -182,13 +264,15 @@ class InstallTests(LocalServerCase):
         with open(target + ".bak", "rb") as f:
             self.assertEqual(f.read(), b"ANCIEN")
         self.assertFalse(os.path.exists(target + ".new"))
+        if not m.IS_WINDOWS:
+            self.assertEqual(os.stat(target).st_mode & 0o777, 0o755, "le binaire téléchargé est exécutable")
 
     def test_install_ytdlp_bad_checksum_keeps_old_file(self):
         target = os.path.join(self.d, "yt-dlp.exe")
         with open(target, "wb") as f:
             f.write(b"ANCIEN")
-        url = self.serve("/yt-dlp.exe", b"corrompu")
-        sums = self.serve("/SHA2-256SUMS", f"{'1' * 64}  yt-dlp.exe\n".encode())
+        url = self.serve("/" + m.YTDLP_ASSET, b"corrompu")
+        sums = self.serve("/SHA2-256SUMS", f"{'1' * 64}  {m.YTDLP_ASSET}\n".encode())
         with mock.patch.object(m, "YTDLP", target), mock.patch.object(m, "YTDLP_URL", url), \
                 mock.patch.object(m, "YTDLP_SUMS_URL", sums):
             with self.assertRaises(m.SetupError):
@@ -198,38 +282,50 @@ class InstallTests(LocalServerCase):
         self.assertEqual(os.listdir(self.d), ["yt-dlp.exe"])
 
     def test_install_ffmpeg_extracts_to_local_bin(self):
-        archive = _zip_bytes({"b/bin/ffmpeg.exe": b"F", "b/bin/ffprobe.exe": b"P"})
-        url = self.serve("/" + m.FFMPEG_ZIP_NAME, archive)
-        sums = self.serve("/checksums.sha256", f"{_sha(archive)}  {m.FFMPEG_ZIP_NAME}\n".encode())
+        ffmpeg, ffprobe = m._tool_names("ffmpeg", "ffprobe")
+        archive = _archive_bytes(m.FFMPEG_ARCHIVE_NAME, {f"b/bin/{ffmpeg}": b"F", f"b/bin/{ffprobe}": b"P"})
+        url = self.serve("/" + m.FFMPEG_ARCHIVE_NAME, archive)
+        sums = self.serve("/checksums.sha256", f"{_sha(archive)}  {m.FFMPEG_ARCHIVE_NAME}\n".encode())
         bin_dir = os.path.join(self.d, "bin")
         with mock.patch.object(m, "LOCAL_BIN", bin_dir), mock.patch.object(m, "FFMPEG_URL", url), \
                 mock.patch.object(m, "FFMPEG_SUMS_URL", sums):
             m.install_ffmpeg()
-        self.assertEqual(sorted(os.listdir(bin_dir)), ["ffmpeg.exe", "ffprobe.exe"])
+        self.assertEqual(sorted(os.listdir(bin_dir)), sorted([ffmpeg, ffprobe]))
 
     def test_install_deno_extracts_to_local_bin_without_chocolatey(self):
-        archive = _zip_bytes({"deno.exe": b"D", "LICENSE.md": b"L"})
-        url = self.serve("/" + m.DENO_ZIP_NAME, archive)
-        h = _sha(archive).upper()
-        sums = self.serve("/" + m.DENO_ZIP_NAME + ".sha256sum",
-                          f"Algorithm : SHA256\nHash      : {h}\nPath      : C:\\build\\{m.DENO_ZIP_NAME}\n".encode())
-        bin_dir = os.path.join(self.d, "bin")
-        with mock.patch.object(m, "LOCAL_BIN", bin_dir), mock.patch.object(m, "DENO_URL", url), \
-                mock.patch.object(m, "DENO_SUMS_URL", sums):
-            m.install_deno()
-        self.assertEqual(os.listdir(bin_dir), ["deno.exe"])
+        (deno,) = m._tool_names("deno")
+        archive = _archive_bytes(m.DENO_ARCHIVE_NAME, {deno: b"D", "LICENSE.md": b"L"})
+        url = self.serve("/" + m.DENO_ARCHIVE_NAME, archive)
+        h = _sha(archive)
+        # Deno publie « hash  nom » pour Linux et un listing Get-FileHash pour Windows : les deux sont lus
+        for body in (f"{h}  {m.DENO_ARCHIVE_NAME}\n",
+                     f"Algorithm : SHA256\nHash      : {h.upper()}\nPath      : C:\\build\\{m.DENO_ARCHIVE_NAME}\n"):
+            sums = self.serve("/" + m.DENO_ARCHIVE_NAME + ".sha256sum", body.encode())
+            bin_dir = os.path.join(self.d, "bin" + str(abs(hash(body))))
+            with mock.patch.object(m, "LOCAL_BIN", bin_dir), mock.patch.object(m, "DENO_URL", url), \
+                    mock.patch.object(m, "DENO_SUMS_URL", sums):
+                m.install_deno()
+            self.assertEqual(os.listdir(bin_dir), [deno])
 
     def test_install_deno_refuses_a_wrong_checksum(self):
-        archive = _zip_bytes({"deno.exe": b"D"})
-        url = self.serve("/" + m.DENO_ZIP_NAME, archive)
-        sums = self.serve("/" + m.DENO_ZIP_NAME + ".sha256sum",
-                          f"Hash : {'1' * 64}\nPath : {m.DENO_ZIP_NAME}\n".encode())
+        (deno,) = m._tool_names("deno")
+        archive = _archive_bytes(m.DENO_ARCHIVE_NAME, {deno: b"D"})
+        url = self.serve("/" + m.DENO_ARCHIVE_NAME, archive)
+        sums = self.serve("/" + m.DENO_ARCHIVE_NAME + ".sha256sum",
+                          f"Hash : {'1' * 64}\nPath : {m.DENO_ARCHIVE_NAME}\n".encode())
         bin_dir = os.path.join(self.d, "bin")
         with mock.patch.object(m, "LOCAL_BIN", bin_dir), mock.patch.object(m, "DENO_URL", url), \
                 mock.patch.object(m, "DENO_SUMS_URL", sums):
             with self.assertRaises(m.SetupError):
                 m.install_deno()
-        self.assertFalse(os.path.exists(os.path.join(bin_dir, "deno.exe")))
+        self.assertFalse(os.path.exists(os.path.join(bin_dir, deno)))
+
+    def test_no_official_download_for_this_architecture_is_explained(self):
+        with mock.patch.object(m, "FFMPEG_URL", None), mock.patch.object(m, "DENO_URL", None):
+            for install in (m.install_ffmpeg, m.install_deno):
+                with self.assertRaises(m.SetupError) as ctx:
+                    install()
+                self.assertIn(m.platform.machine(), str(ctx.exception))
 
     def test_deno_urls_are_official_github(self):
         for url in (m.DENO_URL, m.DENO_SUMS_URL):

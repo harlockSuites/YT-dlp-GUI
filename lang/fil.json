@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Walang nakitang checksum para sa {name}.",
   "setup.err_checksum": "Di-wastong checksum para sa {name}: binura ang file.",
-  "setup.err_no_tools": "Hindi makita ang ffmpeg.exe at ffprobe.exe sa archive.",
   "setup.err_cancelled": "Kinansela.",
   "toolbar.menu_setup": "Katulong sa pag-install…",
   "toolbar.menu_check_update": "Maghanap ng update ng software…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "Pribado ang video na ito: ang may-ari lang at ang mga inimbitahang account ang makakakita nito. Kung sa iyo ito, pumili sa kahon ng Cookies ng browser na naka-sign in sa tamang YouTube account (inirerekomenda ang Firefox), saka subukan muli.",
   "net.offline": "Walang koneksyon sa Internet. Suriin ang koneksyon (kable, Wi-Fi, VPN o firewall), saka subukan muli. (Detalye: {detail})",
   "net.timeout": "Hindi tumutugon ang server (nag-time out). Subukan muli maya-maya. (Detalye: {detail})",
-  "net.unreachable": "Hindi maabot ang server (tinanggihan, naputol o hinarang ang koneksyon). Suriin ang koneksyon, VPN o firewall, saka subukan muli. (Detalye: {detail})"
+  "net.unreachable": "Hindi maabot ang server (tinanggihan, naputol o hinarang ang koneksyon). Suriin ang koneksyon, VPN o firewall, saka subukan muli. (Detalye: {detail})",
+  "setup.err_no_tools_found": "Hindi nakita ang {tools} sa archive.",
+  "setup.err_unsupported": "Walang opisyal na download ng {name} para sa sistemang ito ({system}). I-install ito gamit ang package manager ng iyong distribution.",
+  "setup.status_unavailable": "– hindi available",
+  "deps.linux_note": "Sa Linux, dina-download ang ffmpeg at Deno mula sa kanilang opisyal na repository (bine-verify ang SHA-256 checksum), nang walang karapatan ng administrator. Ang mga opsyonal na tool ay ini-install gamit ang package manager ng iyong distribution.",
+  "deps.footnote_linux": "* Kailangan sa pagsasama ng video/audio at sa mga subtitle.",
+  "deps.linux_command_label": "Mga opsyonal na tool: command na kokopyahin sa terminal",
+  "deps.btn_copy_command": "Kopyahin",
+  "deps.linux_command_copied": "Nakopya na ang command: i-paste ito sa terminal.",
+  "deps.linux_no_manager": "Hindi makilala ang package manager: gamitin ang opisyal na site ng bawat tool.",
+  "cookie.hint_locked_running_linux": "Tumatakbo pa ang {browser} ({n} proseso), posibleng nasa background kahit sarado ang window nito: ito ang nagla-lock sa database nito ng cookie. Tapusin ito gamit ang system monitor (o ang command na pkill sa terminal), saka subukan muli. Ang Firefox, na inirerekomenda, ay walang ganitong limitasyon.",
+  "cookie.hint_decrypt_linux": "Hindi ma-decrypt ang mga cookie ng {browser}: sa Linux, pinoprotektahan ang mga ito ng key ring ng desktop (GNOME Keyring o KWallet), na dapat naka-unlock. Gumamit ng normal na graphical session, o gamitin ang Firefox (inirerekomenda).",
+  "cookie.note_keyring": "Pinoprotektahan ng key ring ng desktop (GNOME Keyring, KWallet) ang mga cookie ng browser na ito: dapat itong naka-unlock, kaya dapat bukas ang isang graphical session. Inirerekomenda ang Firefox."
 }

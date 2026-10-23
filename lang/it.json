@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Somma di controllo non trovata per {name}.",
   "setup.err_checksum": "Somma di controllo non valida per {name}: file eliminato.",
-  "setup.err_no_tools": "ffmpeg.exe e ffprobe.exe non trovati nell'archivio.",
   "setup.err_cancelled": "Annullato.",
   "toolbar.menu_setup": "Assistente di installazione…",
   "toolbar.menu_check_update": "Cerca un aggiornamento del programma…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "Questo video è privato: possono vederlo solo il proprietario e gli account invitati. Se è tuo, scegli nel riquadro Cookie un browser connesso all'account YouTube corretto (si consiglia Firefox), poi riprova.",
   "net.offline": "Nessuna connessione a Internet. Controlla la connessione (cavo, Wi-Fi, VPN o firewall) e riprova. (Dettaglio: {detail})",
   "net.timeout": "Il server non risponde (tempo scaduto). Riprova tra poco. (Dettaglio: {detail})",
-  "net.unreachable": "Impossibile raggiungere il server (connessione rifiutata, interrotta o bloccata). Controlla la connessione, la VPN o il firewall e riprova. (Dettaglio: {detail})"
+  "net.unreachable": "Impossibile raggiungere il server (connessione rifiutata, interrotta o bloccata). Controlla la connessione, la VPN o il firewall e riprova. (Dettaglio: {detail})",
+  "setup.err_no_tools_found": "{tools} non trovato nell'archivio.",
+  "setup.err_unsupported": "Nessun download ufficiale di {name} per questo sistema ({system}). Installalo con il gestore di pacchetti della tua distribuzione.",
+  "setup.status_unavailable": "– non disponibile",
+  "deps.linux_note": "Su Linux, ffmpeg e Deno vengono scaricati dai loro repository ufficiali (somma SHA-256 verificata), senza diritti di amministratore. Gli strumenti facoltativi si installano con il gestore di pacchetti della tua distribuzione.",
+  "deps.footnote_linux": "* Necessario per unire video/audio e per i sottotitoli.",
+  "deps.linux_command_label": "Strumenti facoltativi: comando da copiare in un terminale",
+  "deps.btn_copy_command": "Copia",
+  "deps.linux_command_copied": "Comando copiato: incollalo in un terminale.",
+  "deps.linux_no_manager": "Gestore di pacchetti non riconosciuto: usa il sito ufficiale di ogni strumento.",
+  "cookie.hint_locked_running_linux": "{browser} è ancora in esecuzione ({n} processi), forse in background anche con la finestra chiusa: è lui a tenere bloccato il database dei cookie. Termina il processo con il monitor di sistema (o con il comando pkill in un terminale), poi riprova. Firefox, consigliato, non ha questo limite.",
+  "cookie.hint_decrypt_linux": "Impossibile decrittare i cookie di {browser}: su Linux sono protetti dal portachiavi del desktop (GNOME Keyring o KWallet), che deve essere sbloccato. Usa una normale sessione grafica, oppure Firefox (consigliato).",
+  "cookie.note_keyring": "I cookie di questo browser sono protetti dal portachiavi del desktop (GNOME Keyring, KWallet): deve essere sbloccato, quindi serve una sessione grafica aperta. Si consiglia Firefox."
 }

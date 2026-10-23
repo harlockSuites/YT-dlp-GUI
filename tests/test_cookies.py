@@ -28,6 +28,7 @@ class CookieHintTests(unittest.TestCase):
         self.assertIn("Fermez-le complètement", hint)
         self.assertIn("Firefox", hint)
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_locked_database_with_the_browser_still_running_says_so(self):
         with mock.patch.object(m, "browser_process_count", return_value=7):
             hint = m._cookie_hint(CHROME_LOCKED, "edge")
@@ -118,6 +119,7 @@ class PathRefreshTests(unittest.TestCase):
             self.assertTrue(m.dep_installed("outil-fictif-zz"), "trouvé grâce au PATH lu dans le registre")
             self.assertIn(d, os.environ["PATH"].split(os.pathsep))
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_tool_in_the_chocolatey_package_folder_is_found_without_path(self):
         """Paquet installé par un autre compte administrateur : son dossier n'est pas dans le PATH
         de la session courante (cas réel de Deno : lib\\deno\\deno.exe)."""
@@ -136,6 +138,7 @@ class PathRefreshTests(unittest.TestCase):
             self.assertTrue(m.dep_installed("outil-fictif-choco"))
             self.assertIn(pkg, os.environ["PATH"].split(os.pathsep), "dossier ajouté pour yt-dlp")
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_deno_looks_in_the_usual_places(self):
         dep = next(d for d in m.DEPS if d["exe"] == "deno")
         paths = [p.lower() for p in m._known_exe_paths(dep)]
@@ -192,6 +195,7 @@ class CookieFrameTests(unittest.TestCase):
         self.assertFalse(frame.warn.winfo_manager(), "avertissement masqué quand un navigateur est choisi")
         self.app.var_browser.set(m.BROWSER_OFF)
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_known_browser_limits_are_shown_under_the_menu(self):
         frame = self.app._cookie_frame
         for browser in ("chrome", "edge", "brave"):

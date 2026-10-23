@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Checksum not found for {name}.",
   "setup.err_checksum": "Invalid checksum for {name}: file deleted.",
-  "setup.err_no_tools": "ffmpeg.exe and ffprobe.exe not found in the archive.",
   "setup.err_cancelled": "Cancelled.",
   "toolbar.menu_setup": "Setup assistant…",
   "toolbar.menu_check_update": "Check for a software update…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "This video is private: only its owner and invited accounts can see it. If it is yours, pick in the Cookies box a browser signed in to the right YouTube account (Firefox is recommended), then try again.",
   "net.offline": "No Internet connection. Check your connection (cable, Wi-Fi, VPN or firewall), then try again. (Detail: {detail})",
   "net.timeout": "The server is not responding (timed out). Try again in a moment. (Detail: {detail})",
-  "net.unreachable": "Cannot reach the server (connection refused, interrupted or blocked). Check your connection, VPN or firewall, then try again. (Detail: {detail})"
+  "net.unreachable": "Cannot reach the server (connection refused, interrupted or blocked). Check your connection, VPN or firewall, then try again. (Detail: {detail})",
+  "setup.err_no_tools_found": "{tools} not found in the archive.",
+  "setup.err_unsupported": "No official download of {name} for this system ({system}). Install it with your distribution's package manager.",
+  "setup.status_unavailable": "– unavailable",
+  "deps.linux_note": "On Linux, ffmpeg and Deno are downloaded from their official repositories (SHA-256 checksum verified), without administrator rights. Optional tools are installed with your distribution's package manager.",
+  "deps.footnote_linux": "* Required for video/audio merging and subtitles.",
+  "deps.linux_command_label": "Optional tools: command to copy into a terminal",
+  "deps.btn_copy_command": "Copy",
+  "deps.linux_command_copied": "Command copied: paste it into a terminal.",
+  "deps.linux_no_manager": "Package manager not recognised: use the official site of each tool.",
+  "cookie.hint_locked_running_linux": "{browser} is still running ({n} processes), possibly in the background even though its window is closed: it is what keeps its cookie database locked. End it with the system monitor (or the pkill command in a terminal), then try again. Firefox, recommended, does not have this limit.",
+  "cookie.hint_decrypt_linux": "Unable to decrypt the cookies of {browser}: on Linux they are protected by the desktop key ring (GNOME Keyring or KWallet), which must be unlocked. Use a normal graphical session, or use Firefox (recommended).",
+  "cookie.note_keyring": "This browser's cookies are protected by the desktop key ring (GNOME Keyring, KWallet): it must be unlocked, so a graphical session must be open. Firefox is recommended."
 }

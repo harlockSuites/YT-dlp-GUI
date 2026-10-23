@@ -448,7 +448,6 @@
   "setup.progress": "{done} / {total} MB",
   "setup.err_no_checksum": "Kontrolna suma nije pronađena za {name}.",
   "setup.err_checksum": "Neispravna kontrolna suma za {name}: fajl je obrisan.",
-  "setup.err_no_tools": "ffmpeg.exe i ffprobe.exe nisu pronađeni u arhivi.",
   "setup.err_cancelled": "Otkazano.",
   "toolbar.menu_setup": "Pomoćnik za instalaciju…",
   "toolbar.menu_check_update": "Potraži ažuriranje programa…",
@@ -510,5 +509,17 @@
   "cookie.hint_private_off": "Ovaj video je privatan: mogu da ga vide samo vlasnik i pozvani nalozi. Ako je vaš, izaberite u okviru Kolačići pregledač prijavljen na pravi YouTube nalog (preporučuje se Firefox), pa pokušajte ponovo.",
   "net.offline": "Nema internet veze. Proverite vezu (kabl, Wi-Fi, VPN ili zaštitni zid) pa pokušajte ponovo. (Detalji: {detail})",
   "net.timeout": "Server ne odgovara (isteklo je vreme). Pokušajte ponovo za trenutak. (Detalji: {detail})",
-  "net.unreachable": "Nije moguće povezati se sa serverom (veza odbijena, prekinuta ili blokirana). Proverite vezu, VPN ili zaštitni zid pa pokušajte ponovo. (Detalji: {detail})"
+  "net.unreachable": "Nije moguće povezati se sa serverom (veza odbijena, prekinuta ili blokirana). Proverite vezu, VPN ili zaštitni zid pa pokušajte ponovo. (Detalji: {detail})",
+  "setup.err_no_tools_found": "{tools} nije pronađeno u arhivi.",
+  "setup.err_unsupported": "Nema zvaničnog preuzimanja za {name} na ovom sistemu ({system}). Instalirajte ga menadžerom paketa vaše distribucije.",
+  "setup.status_unavailable": "– nije dostupno",
+  "deps.linux_note": "Na Linuxu se ffmpeg i Deno preuzimaju sa svojih zvaničnih repozitorijuma (SHA-256 zbir se proverava), bez administratorskih prava. Opcioni alati se instaliraju menadžerom paketa vaše distribucije.",
+  "deps.footnote_linux": "* Potrebno za spajanje videa/zvuka i za titlove.",
+  "deps.linux_command_label": "Opcioni alati: komanda za kopiranje u terminal",
+  "deps.btn_copy_command": "Kopiraj",
+  "deps.linux_command_copied": "Komanda je kopirana: nalepite je u terminal.",
+  "deps.linux_no_manager": "Menadžer paketa nije prepoznat: koristite zvaničnu stranicu svakog alata.",
+  "cookie.hint_locked_running_linux": "{browser} je još pokrenut ({n} procesa), možda u pozadini iako je prozor zatvoren: on drži zaključanu bazu kolačića. Prekinite ga u sistemskom monitoru (ili komandom pkill u terminalu), pa pokušajte ponovo. Firefox, koji se preporučuje, nema to ograničenje.",
+  "cookie.hint_decrypt_linux": "Nije moguće dešifrovati kolačiće pregledača {browser}: na Linuxu ih štiti priveznik ključeva radne površine (GNOME Keyring ili KWallet), koji mora biti otključan. Koristite običnu grafičku sesiju ili Firefox (preporučuje se).",
+  "cookie.note_keyring": "Kolačiće ovog pregledača štiti priveznik ključeva radne površine (GNOME Keyring, KWallet): mora biti otključan, odnosno grafička sesija mora biti otvorena. Preporučuje se Firefox."
 }
