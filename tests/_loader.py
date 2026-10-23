@@ -1,6 +1,7 @@
 """Charge yt-dlp-gui.pyw comme module, avec une config isolée (jamais celle de l'utilisateur)."""
 import importlib.util
 import os
+from importlib.machinery import SourceFileLoader
 import sys
 import tempfile
 
@@ -11,7 +12,9 @@ _SESSION_DIR = tempfile.mkdtemp(prefix="ytgui-tests-")
 def load_gui():
     if "ytgui" in sys.modules:
         return sys.modules["ytgui"]
-    spec = importlib.util.spec_from_file_location("ytgui", os.path.join(ROOT, "yt-dlp-gui.pyw"))
+    path = os.path.join(ROOT, "yt-dlp-gui.pyw")
+    # Le chargeur est donné explicitement : hors Windows, importlib ne reconnaît pas l'extension .pyw.
+    spec = importlib.util.spec_from_file_location("ytgui", path, loader=SourceFileLoader("ytgui", path))
     m = importlib.util.module_from_spec(spec)
     sys.modules["ytgui"] = m
     spec.loader.exec_module(m)

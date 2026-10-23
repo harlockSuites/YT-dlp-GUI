@@ -9,8 +9,10 @@ from tests._loader import load_gui, tk_available
 m = load_gui()
 
 
-def _winerror(code):
-    exc = OSError(0, "message", None, code)   # sous Windows, le 4e argument devient .winerror
+def _winerror(code, cls=OSError, errno=0, message="message"):
+    exc = cls(errno, message, None, code)   # sous Windows, le 4e argument devient .winerror
+    if getattr(exc, "winerror", None) != code:   # ailleurs il devient filename2 : on pose l'attribut à la main
+        exc.winerror = code
     return exc
 
 
@@ -53,7 +55,7 @@ class ReplaceWithRetryTests(unittest.TestCase):
         def flaky(a, b):
             calls.append(1)
             if len(calls) < 3:
-                raise PermissionError(13, "utilisé par un autre processus", None, 32)
+                raise _winerror(32, PermissionError, 13, "utilisé par un autre processus")
             real(a, b)
 
         with mock.patch.object(m.os, "replace", flaky), mock.patch.object(m.time, "sleep") as sleep:
@@ -65,7 +67,7 @@ class ReplaceWithRetryTests(unittest.TestCase):
 
     def test_gives_up_after_the_last_attempt(self):
         def always(a, b):
-            raise PermissionError(13, "utilisé", None, 32)
+            raise _winerror(32, PermissionError, 13, "utilisé")
 
         with mock.patch.object(m.os, "replace", always), mock.patch.object(m.time, "sleep"):
             with self.assertRaises(PermissionError):
@@ -76,7 +78,7 @@ class ReplaceWithRetryTests(unittest.TestCase):
 
         def broken(a, b):
             calls.append(1)
-            raise OSError(0, "autre", None, 3)
+            raise _winerror(3, message="autre")
 
         with mock.patch.object(m.os, "replace", broken), mock.patch.object(m.time, "sleep") as sleep:
             with self.assertRaises(OSError):

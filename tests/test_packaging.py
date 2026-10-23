@@ -1,4 +1,5 @@
 import importlib.util
+import ntpath
 import os
 import re
 import sys
@@ -30,7 +31,7 @@ class ResolveDirsTests(unittest.TestCase):
     def test_installed_exe_uses_local_app_data(self):
         d = tempfile.mkdtemp()
         res, data = m._resolve_dirs(True, os.path.join(d, "yt-dlp-gui.exe"), "ignoré", os.path.join(d, "_internal"),
-                                    {"LOCALAPPDATA": r"C:\Users\x\AppData\Local"})
+                                    {"LOCALAPPDATA": r"C:\Users\x\AppData\Local"}, windows=True)
         self.assertEqual(res, os.path.join(d, "_internal"))
         self.assertEqual(data, os.path.join(r"C:\Users\x\AppData\Local", "yt-dlp-GUI"))
 
@@ -45,8 +46,28 @@ class ResolveDirsTests(unittest.TestCase):
 
     def test_missing_local_app_data_falls_back_to_home(self):
         d = tempfile.mkdtemp()
-        _, data = m._resolve_dirs(True, os.path.join(d, "x.exe"), "", None, {})
+        _, data = m._resolve_dirs(True, os.path.join(d, "x.exe"), "", None, {}, windows=True)
         self.assertTrue(data.endswith(os.path.join("AppData", "Local", "yt-dlp-GUI")))
+
+    def test_linux_installed_exe_uses_xdg_data_home(self):
+        d = tempfile.mkdtemp()
+        res, data = m._resolve_dirs(True, os.path.join(d, "yt-dlp-gui"), "ignoré", os.path.join(d, "_internal"),
+                                    {"XDG_DATA_HOME": os.path.join(d, "xdg"), "LOCALAPPDATA": "ignoré"}, windows=False)
+        self.assertEqual(res, os.path.join(d, "_internal"))
+        self.assertEqual(data, os.path.join(d, "xdg", "yt-dlp-GUI"))
+
+    def test_linux_without_xdg_data_home_uses_local_share(self):
+        d = tempfile.mkdtemp()
+        for env in ({}, {"XDG_DATA_HOME": ""}, {"XDG_DATA_HOME": "relatif"}):   # vide ou relatif : ignoré
+            _, data = m._resolve_dirs(True, os.path.join(d, "x"), "", None, env, windows=False)
+            self.assertEqual(data, os.path.join(os.path.expanduser("~"), ".local", "share", "yt-dlp-GUI"), env)
+
+    def test_linux_portable_flag_keeps_data_next_to_the_program(self):
+        d = tempfile.mkdtemp()
+        with open(os.path.join(d, "portable.flag"), "w") as f:
+            f.write("x")
+        _, data = m._resolve_dirs(True, os.path.join(d, "yt-dlp-gui"), "", None, {}, windows=False)
+        self.assertEqual(data, d)
 
     def test_current_constants_are_consistent(self):
         self.assertEqual(m.RESOURCE_DIR, ROOT)
@@ -87,7 +108,7 @@ class BuildScriptTests(unittest.TestCase):
         entries = re.findall(r'^Name: "(\w+)"; MessagesFile: "([^"]+)"', iss, re.M)
         self.assertEqual(len(entries), 14)
         local = [rel for _name, rel in entries if not rel.startswith("compiler:")]
-        self.assertEqual(sorted(os.path.basename(r) for r in local),
+        self.assertEqual(sorted(ntpath.basename(r) for r in local),   # chemins écrits à la Windows dans le .iss
                          ["ChineseSimplified.isl", "Hindi.islu", "SerbianLatin.isl", "Vietnamese.isl"])
         for rel in local:
             self.assertTrue(os.path.isfile(os.path.join(ROOT, "packaging", rel.replace("\\", os.sep))), rel)

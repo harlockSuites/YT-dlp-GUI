@@ -37,7 +37,8 @@ class CookieHintTests(unittest.TestCase):
         self.assertIn("arrière-plan", hint)
 
     def test_process_count_matches_the_browser_programs(self):
-        procs = [(1, 0, "msedge.exe"), (2, 1, "msedge.exe"), (3, 0, "firefox.exe"), (4, 0, "notepad.exe")]
+        edge, firefox = m._BROWSER_EXES["edge"][0], m._BROWSER_EXES["firefox"][0]   # propres au système
+        procs = [(1, 0, edge), (2, 1, edge), (3, 0, firefox), (4, 0, "notepad.exe")]
         with mock.patch.object(m, "_iter_processes", return_value=iter(procs)):
             self.assertEqual(REAL_PROCESS_COUNT("edge"), 2)
         with mock.patch.object(m, "_iter_processes", return_value=iter(procs)):
@@ -95,12 +96,13 @@ class PathRefreshTests(unittest.TestCase):
         d1, d2 = tempfile.mkdtemp(), tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, d1, ignore_errors=True)
         self.addCleanup(shutil.rmtree, d2, ignore_errors=True)
-        merged = m._merge_path(os.pathsep.join(["C:\\existant", d1]), [d1.upper(), d2, os.path.join(d2, "absent"), ""])
+        first = os.path.join(os.sep, "existant")   # ni testé ni modifié : `current` est repris tel quel
+        merged = m._merge_path(os.pathsep.join([first, d1]), [d1.upper(), d2, os.path.join(d2, "absent"), ""])
         parts = merged.split(os.pathsep)
         self.assertEqual(parts.count(d1), 1, "pas de doublon (casse ignorée)")
         self.assertIn(d2, parts)
         self.assertNotIn(os.path.join(d2, "absent"), parts, "dossier inexistant ignoré")
-        self.assertEqual(parts[0], "C:\\existant")
+        self.assertEqual(parts[0], first)
 
     def test_tool_installed_after_launch_is_detected(self):
         d = tempfile.mkdtemp()

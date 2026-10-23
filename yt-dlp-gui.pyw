@@ -15,26 +15,121 @@ import sys
 import time
 import platform
 import getpass
+import signal
 import webbrowser
 from urllib.parse import quote
 
 __version__ = "0.1.7"
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
-def _resolve_dirs(frozen, executable, script_dir, meipass, env):
+# ══════════════════════════════════════════════════════════════════
+#  Couche de plateforme : tout ce qui diffère entre Windows et Linux passe par ici.
+#  Sous Windows, chaque fonction fait exactement ce que le code faisait avant (taskkill, NtSuspendProcess,
+#  os.startfile, CREATE_NO_WINDOW) ; le reste du fichier n'a plus à connaître le système.
+# ══════════════════════════════════════════════════════════════════
+IS_WINDOWS = sys.platform == "win32"
+
+# Arguments de subprocess : pas de fenêtre de console sous Windows ; rien à ajouter ailleurs.
+NO_WINDOW = {"creationflags": subprocess.CREATE_NO_WINDOW} if IS_WINDOWS else {}
+# Idem pour un processus que le logiciel devra arrêter avec ses enfants : hors Windows, il devient chef de son
+# propre groupe de processus, ce qui permet de tuer le groupe entier sans toucher au logiciel.
+PROCESS_GROUP = NO_WINDOW if IS_WINDOWS else {"start_new_session": True}
+
+
+def kill_process_tree(proc, timeout=5):
+    """Arrête de force le processus `proc` (subprocess.Popen) et tous ses descendants."""
+    if IS_WINDOWS:
+        try:
+            subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)], **NO_WINDOW, timeout=timeout)
+        except Exception:
+            try:
+                proc.terminate()
+            except Exception:
+                pass
+        return
+    try:
+        pgid = os.getpgid(proc.pid)
+        # Le groupe n'est visé que s'il a été créé pour ce processus (PROCESS_GROUP) : jamais le nôtre.
+        if pgid == proc.pid and pgid != os.getpgrp():
+            os.killpg(pgid, signal.SIGKILL)
+            return
+    except OSError:
+        pass
+    try:
+        proc.kill()
+    except Exception:
+        pass
+
+
+def _signal_processes(pids, resume):
+    """Suspend (ou reprend si `resume`) chacun des processus de `pids`, dans l'ordre."""
+    if IS_WINDOWS:
+        import ctypes
+        kernel32 = ctypes.windll.kernel32
+        ntdll = ctypes.windll.ntdll
+        action = ntdll.NtResumeProcess if resume else ntdll.NtSuspendProcess
+        for pid in pids:
+            h = kernel32.OpenProcess(0x1F0FFF, False, pid)
+            if h:
+                action(h)
+                kernel32.CloseHandle(h)
+        return
+    sig = signal.SIGCONT if resume else signal.SIGSTOP
+    for pid in pids:
+        try:
+            os.kill(pid, sig)
+        except OSError:
+            pass
+
+
+def suspend_process_tree(pid):
+    """Met en pause le processus et ses enfants (ex. ffmpeg, aria2c) : les enfants d'abord, puis le parent."""
+    try:
+        _signal_processes(_child_pids(pid) + [pid], resume=False)
+    except Exception:
+        pass
+
+
+def resume_process_tree(pid):
+    """Reprend le processus et ses enfants : le parent en premier, puis les enfants."""
+    try:
+        _signal_processes([pid], resume=True)
+        _signal_processes(_child_pids(pid), resume=True)
+    except Exception:
+        pass
+
+
+def open_path(path):
+    """Ouvre un fichier avec le programme associé du système. Lève OSError s'il n'y en a pas."""
+    if IS_WINDOWS:
+        os.startfile(path)
+    else:
+        subprocess.Popen(["xdg-open", path], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL, start_new_session=True)
+
+
+def _resolve_dirs(frozen, executable, script_dir, meipass, env, windows=None):
     """Retourne (RESOURCE_DIR, DATA_DIR).
     - RESOURCE_DIR : fichiers du programme en lecture seule (traductions, images, icône).
-    - DATA_DIR : fichiers modifiables (config, file d'attente, yt-dlp.exe, ffmpeg).
+    - DATA_DIR : fichiers modifiables (config, file d'attente, yt-dlp, ffmpeg).
     Depuis les sources, tout reste à côté du script. Dans l'exécutable : à côté de l'exécutable si
     le fichier « portable.flag » s'y trouve (version portable), sinon dans %LOCALAPPDATA%\\yt-dlp-GUI
-    (le dossier d'installation, ex. Program Files, n'est pas modifiable sans droits administrateur)."""
+    (le dossier d'installation, ex. Program Files, n'est pas modifiable sans droits administrateur) ;
+    sous Linux, dans $XDG_DATA_HOME/yt-dlp-GUI (par défaut ~/.local/share/yt-dlp-GUI).
+    `windows` force le système (tests) ; par défaut, celui qui exécute le logiciel."""
+    if windows is None:
+        windows = IS_WINDOWS
     if not frozen:
         return script_dir, script_dir
     exe_dir = os.path.dirname(os.path.abspath(executable))
     resources = meipass or exe_dir
     if os.path.isfile(os.path.join(exe_dir, "portable.flag")):
         return resources, exe_dir
-    base = env.get("LOCALAPPDATA") or os.path.join(os.path.expanduser("~"), "AppData", "Local")
+    if windows:
+        base = env.get("LOCALAPPDATA") or os.path.join(os.path.expanduser("~"), "AppData", "Local")
+    else:
+        xdg = env.get("XDG_DATA_HOME")
+        base = xdg if xdg and os.path.isabs(xdg) else os.path.join(os.path.expanduser("~"), ".local", "share")
     return resources, os.path.join(base, "yt-dlp-GUI")
 
 
@@ -46,7 +141,7 @@ try:
 except OSError:
     pass
 
-YTDLP              = os.path.join(DATA_DIR, "yt-dlp.exe")
+YTDLP              = os.path.join(DATA_DIR, "yt-dlp.exe" if IS_WINDOWS else "yt-dlp")
 CONFIG_FILE        = os.path.join(DATA_DIR, "gui-config.json")
 QUEUE_FILE         = os.path.join(DATA_DIR, "download-queue.json")
 CUSTOM_BLOCKS_FILE = os.path.join(DATA_DIR, "custom-blocks.json")
@@ -92,11 +187,12 @@ def _merge_path(current, extra):
 
 def _refresh_process_path():
     home = os.path.expanduser("~")
-    extra = _registry_path_dirs() + [
-        os.path.join(home, ".deno", "bin"),
-        os.path.join(os.environ.get("LOCALAPPDATA", ""), "Microsoft", "WinGet", "Links"),
-        os.path.join(os.environ.get("ProgramData", ""), "chocolatey", "bin"),
-    ]
+    extra = _registry_path_dirs() + [os.path.join(home, ".deno", "bin")]
+    if IS_WINDOWS:
+        extra += [
+            os.path.join(os.environ.get("LOCALAPPDATA", ""), "Microsoft", "WinGet", "Links"),
+            os.path.join(os.environ.get("ProgramData", ""), "chocolatey", "bin"),
+        ]
     os.environ["PATH"] = _merge_path(os.environ.get("PATH", ""), extra)
 
 
@@ -819,7 +915,32 @@ def _known_exe_paths(dep):
 
 
 def _iter_processes():
-    """(pid, pid_parent, nom_exe_en_minuscules) de tous les processus (Toolhelp32 ; wmic a disparu des Windows récents)."""
+    """(pid, pid_parent, nom_du_programme_en_minuscules) de tous les processus."""
+    return _iter_processes_windows() if IS_WINDOWS else _iter_processes_posix()
+
+
+def _iter_processes_posix():
+    """Lit /proc/<pid>/stat (« pid (nom) état pid_parent … » ; le nom peut contenir espaces et parenthèses)."""
+    for entry in os.listdir("/proc"):
+        if not entry.isdigit():
+            continue
+        try:
+            with open(f"/proc/{entry}/stat", "rb") as f:
+                data = f.read().decode("utf-8", "replace")
+        except OSError:
+            continue   # le processus s'est terminé entre-temps
+        start, end = data.find("("), data.rfind(")")
+        if start < 0 or end < start:
+            continue
+        fields = data[end + 2:].split()
+        try:
+            yield int(entry), int(fields[1]), data[start + 1:end].lower()
+        except (IndexError, ValueError):
+            continue
+
+
+def _iter_processes_windows():
+    """Toolhelp32 (wmic a disparu des Windows récents)."""
     import ctypes
     from ctypes import wintypes
 
@@ -856,8 +977,13 @@ def _child_pids(pid):
 
 
 # Programmes de chaque navigateur (noms de menu de cookies de yt-dlp)
-_BROWSER_EXES = {"chrome": ("chrome.exe",), "edge": ("msedge.exe",), "brave": ("brave.exe",),
-                 "opera": ("opera.exe",), "firefox": ("firefox.exe",)}
+if IS_WINDOWS:
+    _BROWSER_EXES = {"chrome": ("chrome.exe",), "edge": ("msedge.exe",), "brave": ("brave.exe",),
+                     "opera": ("opera.exe",), "firefox": ("firefox.exe",)}
+else:
+    _BROWSER_EXES = {"chrome": ("chrome", "google-chrome"), "edge": ("msedge", "microsoft-edge"),
+                     "brave": ("brave", "brave-browser"), "opera": ("opera",),
+                     "firefox": ("firefox", "firefox-esr", "firefox-bin")}
 
 
 def browser_process_count(browser):
@@ -1169,7 +1295,7 @@ class UpdateWindow(tk.Toplevel):
             try:
                 r = subprocess.run([YTDLP, "--version"],
                                    capture_output=True, text=True, encoding="utf-8",
-                                   creationflags=subprocess.CREATE_NO_WINDOW)
+                                   **NO_WINDOW)
                 ver = r.stdout.strip() or t("upd.ver_unknown")
             except Exception:
                 ver = t("upd.ver_error")
@@ -1189,7 +1315,7 @@ class UpdateWindow(tk.Toplevel):
                     [YTDLP, "-U"],
                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                     text=True, encoding="utf-8", errors="replace",
-                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    **NO_WINDOW,
                 )
                 for line in proc.stdout:
                     line = line.rstrip()
@@ -1248,7 +1374,7 @@ class UpdateWindow(tk.Toplevel):
             try:
                 r = subprocess.run([YTDLP, "--version"],
                                    capture_output=True, text=True, encoding="utf-8",
-                                   creationflags=subprocess.CREATE_NO_WINDOW)
+                                   **NO_WINDOW)
                 ver = r.stdout.strip()
                 self.after(0, lambda v=ver: self._log(t("upd.log_diag_version_ok", v=v), "#4ec94e"))
             except Exception as e:
@@ -1261,7 +1387,7 @@ class UpdateWindow(tk.Toplevel):
                 h = subprocess.run([YTDLP, "--help"],
                                    capture_output=True, text=True, encoding="utf-8",
                                    errors="replace",
-                                   creationflags=subprocess.CREATE_NO_WINDOW)
+                                   **NO_WINDOW)
                 help_text = h.stdout + h.stderr
             except Exception as e:
                 self.after(0, lambda e=e: self._log(t("upd.log_diag_help_fail", error=e), "#f66"))
@@ -1372,15 +1498,7 @@ class DownloadQueueWindow(tk.Toplevel):
             self._resume_process(self._process.pid)
             self._paused = False
         if self._process:
-            try:
-                subprocess.run(
-                    ["taskkill", "/F", "/T", "/PID", str(self._process.pid)],
-                    creationflags=subprocess.CREATE_NO_WINDOW, timeout=5)
-            except Exception:
-                try:
-                    self._process.terminate()
-                except Exception:
-                    pass
+            kill_process_tree(self._process)
         files = list(self._current_dl_files) if was_running else []
         self._current_dl_files = []
         since = getattr(self, "_dl_started", None)
@@ -1524,40 +1642,10 @@ class DownloadQueueWindow(tk.Toplevel):
         threading.Thread(target=_wait_and_destroy, daemon=True).start()
 
     def _suspend_process(self, pid):
-        try:
-            import ctypes
-            kernel32 = ctypes.windll.kernel32
-            ntdll = ctypes.windll.ntdll
-            child_pids = _child_pids(pid)
-            for cpid in child_pids:
-                h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
-                if h:
-                    ntdll.NtSuspendProcess(h)
-                    kernel32.CloseHandle(h)
-            h = kernel32.OpenProcess(0x1F0FFF, False, pid)
-            if h:
-                ntdll.NtSuspendProcess(h)
-                kernel32.CloseHandle(h)
-        except Exception:
-            pass
+        suspend_process_tree(pid)
 
     def _resume_process(self, pid):
-        try:
-            import ctypes
-            kernel32 = ctypes.windll.kernel32
-            ntdll = ctypes.windll.ntdll
-            h = kernel32.OpenProcess(0x1F0FFF, False, pid)
-            if h:
-                ntdll.NtResumeProcess(h)
-                kernel32.CloseHandle(h)
-            child_pids = _child_pids(pid)
-            for cpid in child_pids:
-                h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
-                if h:
-                    ntdll.NtResumeProcess(h)
-                    kernel32.CloseHandle(h)
-        except Exception:
-            pass
+        resume_process_tree(pid)
 
     def start(self):
         threading.Thread(target=self._run_guarded, daemon=True).start()
@@ -1597,7 +1685,7 @@ class DownloadQueueWindow(tk.Toplevel):
             self._process = subprocess.Popen(
                 run_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 text=True, encoding="utf-8", errors="replace",
-                creationflags=subprocess.CREATE_NO_WINDOW,
+                **PROCESS_GROUP,
             )
             for line in self._process.stdout:
                 if self._skip_flag.is_set() or self._stop_flag.is_set():
@@ -1694,7 +1782,7 @@ class DownloadQueueWindow(tk.Toplevel):
                      "--simulate", "--no-warnings", "--no-playlist"]
                     + cookie_args + ["--", vid_url],
                     capture_output=True, text=True, encoding="utf-8", errors="replace",
-                    creationflags=subprocess.CREATE_NO_WINDOW, timeout=20,
+                    **NO_WINDOW, timeout=20,
                 )
                 ok = r.returncode == 0 and not self._format_not_available(
                     r.stdout.splitlines() + r.stderr.splitlines()
@@ -2584,7 +2672,7 @@ def _local_duration(path):
     try:
         r = subprocess.run([exe, "-v", "error", "-show_entries", "format=duration",
                             "-of", "csv=p=0", path], capture_output=True, text=True,
-                           timeout=20, creationflags=subprocess.CREATE_NO_WINDOW)
+                           timeout=20, **NO_WINDOW)
         return float(r.stdout.strip())
     except (OSError, ValueError, subprocess.SubprocessError):
         return None
@@ -2597,7 +2685,7 @@ def _search_video(title, local_dur):
         r = subprocess.run([YTDLP, "--flat-playlist", "-j", "--no-warnings", "--",
                             f"ytsearch5:{title}"],
                            capture_output=True, text=True, encoding="utf-8", errors="replace",
-                           timeout=60, creationflags=subprocess.CREATE_NO_WINDOW)
+                           timeout=60, **NO_WINDOW)
     except (OSError, subprocess.SubprocessError):
         return None, "none"
     cands = []
@@ -2831,7 +2919,7 @@ class CookieFrame(ttk.LabelFrame):
                 r = subprocess.run(
                     [YTDLP, "--cookies-from-browser", browser, "--simulate", "--no-playlist", "--quiet",
                      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
-                    capture_output=True, timeout=20, creationflags=subprocess.CREATE_NO_WINDOW)
+                    capture_output=True, timeout=20, **NO_WINDOW)
                 ok = r.returncode == 0
                 if not ok:
                     text = (r.stderr or b"").decode("utf-8", "replace").strip()
@@ -3529,7 +3617,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
             result = subprocess.run(
                 [YTDLP, "--flat-playlist", "-j", "--no-warnings"] + list_cookie_args + ["--", url],
                 capture_output=True, text=True, encoding="utf-8", errors="replace",
-                creationflags=subprocess.CREATE_NO_WINDOW,
+                **NO_WINDOW,
                 timeout=120,
             )
             lines = [l for l in result.stdout.splitlines() if l.strip()]
@@ -3595,7 +3683,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                 r = subprocess.run(
                     [YTDLP, "-j", "--no-warnings", "--no-playlist"] + cookie_args + ["--", vid_url],
                     capture_output=True, text=True, encoding="utf-8", errors="replace",
-                    creationflags=subprocess.CREATE_NO_WINDOW, timeout=45,
+                    **NO_WINDOW, timeout=45,
                 )
                 rc = r.returncode
                 if rc != 0:
@@ -3659,7 +3747,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                     r2 = subprocess.run(
                         [YTDLP, "-F", "--no-warnings", "--no-playlist"] + cookie_args + ["--", vid_url],
                         capture_output=True, text=True, encoding="utf-8", errors="replace",
-                        creationflags=subprocess.CREATE_NO_WINDOW, timeout=30,
+                        **NO_WINDOW, timeout=30,
                     )
                     for line in r2.stdout.splitlines():
                         if line.startswith("["):
@@ -4238,7 +4326,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
         def _open_local(fn):
             try:
-                os.startfile(os.path.join(outdir, fn))
+                open_path(os.path.join(outdir, fn))
             except OSError as e:
                 var_info.set(str(e))
 
@@ -4460,7 +4548,7 @@ def _redact(text, private=()):
 def _ytdlp_version():
     try:
         r = subprocess.run([YTDLP, "--version"], capture_output=True, text=True, timeout=8,
-                           creationflags=subprocess.CREATE_NO_WINDOW)
+                           **NO_WINDOW)
         return r.stdout.strip() or "unknown"
     except Exception:
         return "not found"
@@ -6023,7 +6111,7 @@ class YtDlpGui(tk.Tk):
             [YTDLP, "-J", "--flat-playlist", "--no-warnings"] + cookie_args + ["--", url],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             text=True, encoding="utf-8", errors="replace",
-            creationflags=subprocess.CREATE_NO_WINDOW, cwd=os.path.dirname(YTDLP))
+            **NO_WINDOW, cwd=os.path.dirname(YTDLP))
         summary = None
         if result.returncode == 0:
             try:
@@ -6073,7 +6161,7 @@ class YtDlpGui(tk.Tk):
                     [YTDLP, "-j", "--no-playlist"] + cookie_args + ["--", url],
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                     text=True, encoding="utf-8", errors="replace",
-                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    **NO_WINDOW,
                     cwd=os.path.dirname(YTDLP),
                 )
                 if result.returncode != 0:
@@ -6114,7 +6202,7 @@ class YtDlpGui(tk.Tk):
                             [YTDLP, "-F", "--no-playlist"] + cookie_args + ["--", url],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             text=True, encoding="utf-8", errors="replace",
-                            creationflags=subprocess.CREATE_NO_WINDOW,
+                            **NO_WINDOW,
                             cwd=os.path.dirname(YTDLP),
                         )
                         audio_langs.update(format_table_languages(r2.stdout))
@@ -6173,7 +6261,7 @@ class YtDlpGui(tk.Tk):
                     [YTDLP, "-F", "--no-playlist"] + cookie_args + ["--", url],
                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                     text=True, encoding="utf-8", errors="replace",
-                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    **NO_WINDOW,
                     cwd=os.path.dirname(YTDLP),
                 )
                 for line in proc2.stdout:
@@ -6221,7 +6309,7 @@ class YtDlpGui(tk.Tk):
                     run_args,
                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                     text=True, encoding="utf-8", errors="replace",
-                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    **PROCESS_GROUP,
                     cwd=os.path.dirname(YTDLP),
                 )
                 for line in self._process.stdout:
@@ -6360,15 +6448,7 @@ class YtDlpGui(tk.Tk):
             return False
         if self._paused:
             self._resume_process(proc.pid)
-        try:
-            subprocess.run(
-                ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
-                creationflags=subprocess.CREATE_NO_WINDOW, timeout=5)
-        except Exception:
-            try:
-                proc.terminate()
-            except Exception:
-                pass
+        kill_process_tree(proc)
         return True
 
     def _confirm_stop_scope(self):
@@ -6477,7 +6557,7 @@ class YtDlpGui(tk.Tk):
                 [YTDLP, "--get-title", "--no-playlist"] + cookie_args + ["--", url],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
                 text=True, encoding="utf-8", errors="replace",
-                creationflags=subprocess.CREATE_NO_WINDOW,
+                **NO_WINDOW,
                 cwd=os.path.dirname(YTDLP), timeout=30,
             )
             title = r.stdout.strip().splitlines()[0] if r.returncode == 0 and r.stdout.strip() else ""
@@ -6773,42 +6853,10 @@ class YtDlpGui(tk.Tk):
             self.var_status.set(t("app.status_resumed"))
 
     def _suspend_process(self, pid):
-        try:
-            import ctypes
-            kernel32 = ctypes.windll.kernel32
-            ntdll = ctypes.windll.ntdll
-            # Suspendre les processus enfants (ex. ffmpeg, aria2c) puis le parent
-            child_pids = _child_pids(pid)
-            for cpid in child_pids:
-                h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
-                if h:
-                    ntdll.NtSuspendProcess(h)
-                    kernel32.CloseHandle(h)
-            h = kernel32.OpenProcess(0x1F0FFF, False, pid)
-            if h:
-                ntdll.NtSuspendProcess(h)
-                kernel32.CloseHandle(h)
-        except Exception:
-            pass
+        suspend_process_tree(pid)
 
     def _resume_process(self, pid):
-        try:
-            import ctypes
-            kernel32 = ctypes.windll.kernel32
-            ntdll = ctypes.windll.ntdll
-            # Reprendre le parent en premier, puis les enfants
-            h = kernel32.OpenProcess(0x1F0FFF, False, pid)
-            if h:
-                ntdll.NtResumeProcess(h)
-                kernel32.CloseHandle(h)
-            child_pids = _child_pids(pid)
-            for cpid in child_pids:
-                h = kernel32.OpenProcess(0x1F0FFF, False, cpid)
-                if h:
-                    ntdll.NtResumeProcess(h)
-                    kernel32.CloseHandle(h)
-        except Exception:
-            pass
+        resume_process_tree(pid)
 
     # ──────────────────────────────────────────────
     #  Persistance

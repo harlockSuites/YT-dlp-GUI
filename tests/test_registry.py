@@ -170,19 +170,17 @@ class OutputTemplateTests(TempDirCase):
 
 
 class ProcessTreeTests(unittest.TestCase):
-    @unittest.skipUnless(os.name == "nt", "Windows uniquement")
     def test_child_pids(self):
         import subprocess
         import time
-        p = subprocess.Popen(["cmd", "/c", "ping -n 6 127.0.0.1 >nul"],
-                             creationflags=subprocess.CREATE_NO_WINDOW)
+        p = subprocess.Popen(["cmd", "/c", "ping -n 6 127.0.0.1 >nul"], **m.PROCESS_GROUP) if os.name == "nt" else \
+            subprocess.Popen(["sh", "-c", "sleep 6; true"], **m.PROCESS_GROUP)   # sh reste le parent de sleep
         try:
             time.sleep(1.0)
             self.assertTrue(m._child_pids(p.pid))
             self.assertEqual(m._child_pids(99999999), [])
         finally:
-            subprocess.run(["taskkill", "/F", "/T", "/PID", str(p.pid)],
-                           creationflags=subprocess.CREATE_NO_WINDOW)
+            m.kill_process_tree(p)
             p.wait()
 
 

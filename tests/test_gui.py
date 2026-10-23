@@ -53,7 +53,7 @@ class MainWindowTests(GuiCase):
     def test_output_dir_with_percent_is_escaped(self):
         self.app.var_outdir.set(r"C:\Temp\100% test")
         args = self.app._build_args()
-        self.assertEqual(_opt(args, "-o"), r"C:\Temp\100%% test\%(title)s.%(ext)s")
+        self.assertEqual(_opt(args, "-o"), os.path.join(r"C:\Temp\100%% test", "%(title)s.%(ext)s"))
 
     def test_cookies_argument_follows_browser(self):
         self.app.var_browser.set("firefox")
