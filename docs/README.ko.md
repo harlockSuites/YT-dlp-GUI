@@ -41,7 +41,7 @@
 - **우리의 테스트 결과**(Windows 11, 2026년 10월, 각 브라우저에서 YouTube 계정에 로그인한 상태): **Firefox**는 브라우저가 열려 있든 닫혀 있든 작동합니다. **Opera**는 **브라우저를 닫았을 때만** 작동합니다. 실행 중에는 쿠키 데이터베이스를 잠가 yt-dlp에 'Could not copy Chrome cookie database'가 표시됩니다. **Chrome, Edge, Brave**는 닫아도 실패합니다. yt-dlp가 항상 읽을 수는 없는 방식으로 쿠키를 암호화하기 때문입니다. 이러한 제한은 브라우저와 yt-dlp에서 비롯되며 이 소프트웨어의 문제가 아니고, 업데이트에 따라 달라질 수 있습니다.
 - 브라우저가 **종료 시 쿠키를 삭제**하도록 설정되어 있거나(또는 비공개 모드로 탐색하는 경우) 디스크에 읽을 쿠키가 남지 않습니다. Chrome, Edge, Brave, Firefox 어느 것을 쓰든 yt-dlp는 아무것도 가져올 수 없습니다. Chrome, Edge, Brave에서는 이것이 함정입니다. 브라우저를 종료해야 하는데, 종료하면 쿠키가 지워지기 때문입니다. 이 옵션을 끄거나 youtube.com과 google.com의 쿠키를 유지하세요.
 - **표시등**이 상태를 보여 줍니다: 비활성 또는 실패는 빨간색, 미테스트 또는 진행 중은 주황색, 쿠키가 로드되면 초록색. ↻ 버튼은 테스트를 실행하고, 툴팁이 상태나 오류를 설명합니다.
-- **Linux(미리보기 버전)**: Firefox, Chromium, Chrome, Brave, Edge, Opera, Vivaldi를 선택할 수 있습니다. Chromium 계열 브라우저는 쿠키를 데스크톱 키링(GNOME Keyring, KWallet)으로 보호하므로 키링이 잠금 해제되어 있어야 하고, 그래픽 세션이 열려 있어야 합니다. 지금까지 확인한 것은 Firefox 프로필 읽기뿐이며, **Firefox를 권장합니다**.
+- **Linux(미리보기 버전)**: 기본으로 이 시스템에서 가장 많이 쓰는 Firefox, Google Chrome, Chromium, Brave, Vivaldi를 선택할 수 있습니다. 옵션 메뉴의 '쿠키용 브라우저' 창에서 최대 11개 브라우저(Opera, Microsoft Edge, LibreWolf, Waterfox, Floorp, Zen Browser 포함)를 선택할 수 있습니다. Chromium 계열 브라우저는 쿠키를 데스크톱 키링(GNOME Keyring, KWallet)으로 보호하므로 키링이 잠금 해제되어 있어야 하고, 그래픽 세션이 열려 있어야 합니다. YouTube에 로그인한 상태로 확인한 것은 Firefox 쿠키 읽기뿐이며(비공개 동영상 포함), **Firefox를 권장합니다**.
 
 ### 설치 도우미, 종속성, yt-dlp 업데이트
 

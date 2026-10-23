@@ -86,16 +86,16 @@ class NotesTests(unittest.TestCase):
         self.assertEqual(rt.release_notes(SAMPLE, "9.9.9"), "")
 
     def test_current_changelog_has_notes_for_current_version(self):
-        notes = rt.release_notes(_read(os.path.join(ROOT, "CHANGELOG-linux.md")), m.__version__)
-        self.assertTrue(notes.strip())
-        self.assertIn("Première version Linux", notes)
+        text = _read(os.path.join(ROOT, "CHANGELOG-linux.md"))
+        self.assertTrue(rt.release_notes(text, m.__version__).strip())
+        self.assertIn("Première version Linux", rt.release_notes(text, "0.1.0"), "la 0.1.0 publiée reste décrite")
 
     def test_cli_writes_notes_file_from_the_chosen_changelog(self):
         d = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         out = os.path.join(d, "sub", "notes.md")
         self.assertEqual(rt.main(["notes", "--changelog", "CHANGELOG-linux.md", "--out", out]), 0)
-        self.assertIn("Première version Linux", _read(out))
+        self.assertIn("Navigateurs pour les cookies", _read(out))   # notes de la version en cours (0.1.1)
 
     def test_the_windows_changelog_is_left_alone_and_has_no_linux_release(self):
         """Windows est figé : son journal ne décrit que Windows et ne contient pas la version Linux."""

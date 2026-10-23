@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "{browser} vẫn đang chạy ({n} tiến trình), có thể ở nền dù cửa sổ đã đóng: chính nó đang khóa cơ sở dữ liệu cookie. Hãy tắt nó bằng trình giám sát hệ thống (hoặc lệnh pkill trong terminal) rồi thử lại. Firefox, được khuyến nghị, không có giới hạn này.",
   "cookie.hint_decrypt_linux": "Không thể giải mã cookie của {browser}: trên Linux chúng được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring hoặc KWallet) và chùm khóa này phải được mở khóa. Hãy dùng phiên đồ họa bình thường hoặc Firefox (khuyến nghị).",
   "cookie.note_keyring": "Cookie của trình duyệt này được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring, KWallet): phải được mở khóa, tức là phải có phiên đồ họa đang mở. Nên dùng Firefox.",
-  "upd.replace_title_dialog_linux": "Chọn tệp yt-dlp mới"
+  "upd.replace_title_dialog_linux": "Chọn tệp yt-dlp mới",
+  "browsers.linux_explain": "Đánh dấu các trình duyệt sẽ được đưa vào danh sách cookie. Mặc định: Firefox, Google Chrome, Chromium, Brave và Vivaldi, những trình duyệt được dùng nhiều nhất trên Linux. yt-dlp đọc trực tiếp bảy trình duyệt đầu; LibreWolf, Waterfox, Floorp và Zen Browser là bản phái sinh của Firefox, được đọc qua thư mục hồ sơ (đường dẫn chưa được kiểm chứng). Trình duyệt họ Chromium cần chùm khóa của máy tính đã mở khóa; nên dùng Firefox.",
+  "browsers.linux_reset": "Khôi phục năm trình duyệt mặc định",
+  "browsers.linux_found": "✔ có trên máy tính này"
 }

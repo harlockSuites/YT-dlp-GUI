@@ -70,14 +70,11 @@ class DirectInstallTests(unittest.TestCase):
 
 
 class LinuxBrowsersTests(unittest.TestCase):
-    def test_every_browser_is_offered_on_linux(self):
-        with mock.patch.object(m, "IS_WINDOWS", False):
-            self.assertEqual(m.visible_browsers(False), ["firefox", "chromium", "chrome", "brave", "edge", "opera",
-                                                         "vivaldi"])
-            self.assertEqual(m.visible_browsers(True), m.visible_browsers(False), "rien n'est masqué")
+    """La liste des navigateurs Linux (cinq par défaut, choix de l'utilisateur) est testée dans test_linux_browsers.py ;
+    ici, ce qui doit rester vrai pour Windows et pour un réglage ancien."""
 
     def test_a_saved_browser_outside_the_list_is_kept(self):
-        with mock.patch.object(m, "IS_WINDOWS", False):
+        with mock.patch.object(m, "IS_WINDOWS", False), mock.patch.object(m, "load_config", return_value={}):
             self.assertIn("whale", m.visible_browsers(False, current="whale"))
             self.assertNotIn(m.BROWSER_OFF, m.visible_browsers(False, current=m.BROWSER_OFF))
 
@@ -86,14 +83,9 @@ class LinuxBrowsersTests(unittest.TestCase):
             self.assertEqual(m.visible_browsers(False), ["firefox", "opera"])
             self.assertEqual(m.visible_browsers(True), ["firefox", "opera", "chrome", "edge", "brave"])
 
-    def test_every_listed_browser_is_a_yt_dlp_name(self):
-        """Noms acceptés par --cookies-from-browser (liste de yt_dlp/cookies.py)."""
-        self.assertTrue(set(m._LINUX_BROWSERS) <= {"brave", "chrome", "chromium", "edge", "opera", "vivaldi",
-                                                   "whale", "firefox", "safari"})
-
     def test_process_names_exist_for_every_linux_browser(self):
         if not m.IS_WINDOWS:
-            for browser in m._LINUX_BROWSERS:
+            for browser in m.LINUX_BROWSER_KEYS:
                 self.assertIn(browser, m._BROWSER_EXES)
 
 
@@ -289,7 +281,7 @@ class KeyringNoteTests(unittest.TestCase):
     def test_chromium_family_gets_the_keyring_note_and_firefox_none(self):
         frame = self.app._cookie_frame
         with mock.patch.object(m, "IS_WINDOWS", False):
-            for browser in ("chromium", "chrome", "brave", "edge", "opera", "vivaldi"):
+            for browser in m._LINUX_KEYRING_BROWSERS:
                 self.app.var_browser.set(browser)
                 self.assertEqual(frame.note.cget("text"), m.t("cookie.note_keyring"), browser)
             for browser in ("firefox", m.BROWSER_OFF):

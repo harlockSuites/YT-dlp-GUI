@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "{browser} sigue en ejecución ({n} procesos), quizá en segundo plano aunque su ventana esté cerrada: es él quien mantiene bloqueada su base de cookies. Ciérrelo con el monitor del sistema (o con el comando pkill en un terminal) y vuelva a intentarlo. Firefox, recomendado, no tiene este límite.",
   "cookie.hint_decrypt_linux": "No se pueden descifrar las cookies de {browser}: en Linux están protegidas por el llavero del escritorio (GNOME Keyring o KWallet), que debe estar desbloqueado. Use una sesión gráfica normal, o use Firefox (recomendado).",
   "cookie.note_keyring": "Las cookies de este navegador están protegidas por el llavero del escritorio (GNOME Keyring, KWallet): debe estar desbloqueado, es decir, con una sesión gráfica abierta. Se recomienda Firefox.",
-  "upd.replace_title_dialog_linux": "Elegir el nuevo archivo yt-dlp"
+  "upd.replace_title_dialog_linux": "Elegir el nuevo archivo yt-dlp",
+  "browsers.linux_explain": "Marque los navegadores que se ofrecerán en las listas de cookies. Por defecto: Firefox, Google Chrome, Chromium, Brave y Vivaldi, los más usados en Linux. yt-dlp lee directamente los siete primeros; LibreWolf, Waterfox, Floorp y Zen Browser son derivados de Firefox que se leen por su carpeta de perfil (ruta aún sin verificar). Los navegadores de la familia Chromium necesitan el llavero del escritorio desbloqueado; se recomienda Firefox.",
+  "browsers.linux_reset": "Restablecer los cinco por defecto",
+  "browsers.linux_found": "✔ encontrado en este equipo"
 }

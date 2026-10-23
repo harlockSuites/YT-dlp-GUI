@@ -41,7 +41,7 @@
 - **我们的测试结果**（Windows 11，2026 年 10 月，每个浏览器均已登录 YouTube 账号）：**Firefox** 无论浏览器打开还是关闭都能用。**Opera** **只有在浏览器关闭时**才能用：打开时它会锁定 Cookie 数据库，此时 yt-dlp 会显示“Could not copy Chrome cookie database”。**Chrome、Edge 和 Brave** 即使关闭也会失败：它们对 Cookie 的加密方式 yt-dlp 并不总能读取。这些限制来自浏览器和 yt-dlp，而非本软件，并可能随它们的更新而改变。
 - 如果浏览器设置为**关闭时删除 Cookie**（或使用无痕模式），磁盘上就没有可读取的 Cookie：无论使用 Chrome、Edge、Brave 还是 Firefox，yt-dlp 都无法获取。对于 Chrome、Edge 和 Brave，这是个陷阱：必须先关闭浏览器，而关闭又会清除 Cookie。请关闭该选项，或保留 youtube.com 和 google.com 的 Cookie。
 - **指示灯**显示状态：禁用或失败为红色，未测试或进行中为橙色，Cookie 已加载为绿色。↻ 按钮运行测试，提示文字会说明状态或错误。
-- **在 Linux 上（预览版）**：可选 Firefox、Chromium、Chrome、Brave、Edge、Opera 和 Vivaldi。Chromium 系浏览器用桌面密钥环（GNOME Keyring、KWallet）保护 Cookie：密钥环必须处于解锁状态，也就是说需要已打开的图形会话。目前只试过读取 Firefox 配置文件；**推荐使用 Firefox**。
+- **在 Linux 上（预览版）**：默认提供 Firefox、Google Chrome、Chromium、Brave 和 Vivaldi，它们是该系统上最常用的；在选项菜单的“用于 Cookie 的浏览器”窗口中最多可勾选 11 个浏览器（还有 Opera、Microsoft Edge、LibreWolf、Waterfox、Floorp 和 Zen Browser）。Chromium 系浏览器用桌面密钥环（GNOME Keyring、KWallet）保护 Cookie：密钥环必须处于解锁状态，也就是说需要已打开的图形会话。目前只用已登录的 YouTube 账号试过读取 Firefox 的 Cookie（包括私享视频）；**推荐使用 Firefox**。
 
 ### 安装向导、依赖项与 yt-dlp 更新
 

@@ -19,7 +19,7 @@ import signal
 import webbrowser
 from urllib.parse import quote
 
-__version__ = "0.1.0"   # version Linux (étiquette Linux-v0.1.0) ; la version Windows 0.1.7 est figée sur la branche main
+__version__ = "0.1.1"   # version Linux (étiquette Linux-v0.1.1) ; la version Windows 0.1.7 est figée sur la branche main
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 # ══════════════════════════════════════════════════════════════════
@@ -1041,7 +1041,9 @@ else:
                      "brave": ("brave", "brave-browser"), "opera": ("opera",),
                      "firefox": ("firefox", "firefox-esr", "firefox-bin"),
                      "chromium": ("chromium", "chromium-browse"),   # le nom d'un processus est coupé à 15 lettres
-                     "vivaldi": ("vivaldi", "vivaldi-bin")}
+                     "vivaldi": ("vivaldi", "vivaldi-bin"),
+                     "librewolf": ("librewolf",), "waterfox": ("waterfox", "waterfox-bin"), "floorp": ("floorp",),
+                     "zen": ("zen", "zen-bin")}
 
 
 def browser_process_count(browser):
@@ -1868,7 +1870,7 @@ class DownloadQueueWindow(tk.Toplevel):
 
         src = self._inspector if self._inspector is not None else self
         browser = src.var_g_browser.get() if hasattr(src, "var_g_browser") else BROWSER_OFF
-        cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
+        cookie_args = ["--cookies-from-browser", cookie_browser_arg(browser)] if browser != BROWSER_OFF else []
 
         def probe_one(lang):
             try:
@@ -2175,6 +2177,40 @@ class BrowserOptionsWindow(tk.Toplevel):
     def _toggle(self):
         update_config("show_blocked_browsers", bool(self.var.get()))
         refresh_browser_combos()
+
+
+class LinuxBrowsersWindow(tk.Toplevel):
+    """Linux : l'utilisateur coche les navigateurs à proposer dans les listes de cookies (les cinq les plus utilisés
+    au départ). Un ✔ signale ceux dont le dossier de profil existe sur cet ordinateur."""
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title(t("browsers.title"))
+        self.resizable(False, False)
+        self.transient(parent)
+        frm = ttk.Frame(self, padding=14)
+        frm.pack(fill="both", expand=True)
+        ttk.Label(frm, text=t("browsers.linux_explain"), wraplength=460, justify="left",
+                  foreground="#555555").pack(anchor="w", pady=(0, 10))
+        chosen = set(selected_linux_browsers())
+        self._vars = {}
+        for key, label, _ytdlp, _dirs in LINUX_BROWSER_CATALOG:
+            self._vars[key] = tk.BooleanVar(value=key in chosen)
+            found = "      " + t("browsers.linux_found") if linux_browser_found(key) else ""
+            ttk.Checkbutton(frm, text=label + found, variable=self._vars[key], command=self._save).pack(anchor="w", pady=1)
+        btns = ttk.Frame(frm)
+        btns.pack(fill="x", pady=(12, 0))
+        ttk.Button(btns, text=t("browsers.linux_reset"), command=self._reset).pack(side="left", ipadx=8)
+        ttk.Button(btns, text=t("browsers.close"), command=self.destroy).pack(side="right", ipadx=8)
+
+    def _save(self):
+        update_config("linux_browsers", [k for k in LINUX_BROWSER_KEYS if self._vars[k].get()])
+        refresh_browser_combos()
+
+    def _reset(self):
+        for key, var in self._vars.items():
+            var.set(key in LINUX_DEFAULT_BROWSERS)
+        self._save()
 
 
 class MultiCheckSelect(ttk.Frame):
@@ -2850,11 +2886,12 @@ def show_blocked_browsers():
 
 def visible_browsers(show_blocked, current=""):
     """Navigateurs proposés dans les listes. Le navigateur déjà choisi reste toujours dans la liste, pour qu'un
-    réglage existant ne disparaisse pas sans que l'utilisateur l'ait changé. Sous Linux, yt-dlp lit tous les
-    navigateurs (Chromium et dérivés via le trousseau de clés du bureau) : aucun n'est masqué."""
+    réglage existant ne disparaisse pas sans que l'utilisateur l'ait changé. Sous Linux, ce sont ceux que l'utilisateur
+    a cochés dans la fenêtre « Navigateurs pour les cookies » (les cinq les plus utilisés au départ)."""
     if not IS_WINDOWS:
-        extra = [current] if current and current != BROWSER_OFF and current not in _LINUX_BROWSERS else []
-        return list(_LINUX_BROWSERS) + extra
+        chosen = selected_linux_browsers()
+        extra = [current] if current and current != BROWSER_OFF and current not in chosen else []
+        return chosen + extra
     return ["firefox", "opera"] + [b for b in _COOKIE_ENCRYPTED_BROWSERS if show_blocked or b == current]
 
 
@@ -2909,7 +2946,7 @@ def _browser_combo(parent, var):
 def _cookie_hint(text, browser=""):
     """Explication claire d'une erreur de lecture des cookies (sinon chaîne vide)."""
     low = (text or "").lower()
-    name = (browser or "").capitalize()
+    name = browser_label(browser)
     if "database is locked" in low or ("could not copy" in low and "cookie" in low):
         running = browser_process_count(browser)
         if running:
@@ -2936,10 +2973,76 @@ def _cookie_hint(text, browser=""):
 # yt-dlp ne lit pas toujours, même fermés ; Opera n'est lisible que fermé ; Firefox toujours.
 _COOKIE_ENCRYPTED_BROWSERS = ("chrome", "edge", "brave")
 _COOKIE_CLOSED_BROWSERS = ("opera",)
-# Linux : Firefox d'abord, puis les navigateurs Chromium, dont les cookies sont protégés par le trousseau de clés
-# du bureau (GNOME Keyring, KWallet) : il doit être déverrouillé, donc une session graphique ouverte.
-_LINUX_BROWSERS = ("firefox", "chromium", "chrome", "brave", "edge", "opera", "vivaldi")
-_LINUX_KEYRING_BROWSERS = _LINUX_BROWSERS[1:]
+# Linux : navigateurs que le logiciel sait proposer. Clé (valeur enregistrée dans les réglages et affichée dans les
+# listes), nom affiché, nom du navigateur pour yt-dlp, dossiers de profil. « {cfg} » = $XDG_CONFIG_HOME (ou ~/.config).
+# yt-dlp lit directement les 7 premiers (par son nom) ; LibreWolf, Waterfox, Floorp et Zen sont des dérivés de
+# Firefox, lus par leur dossier de profil (« firefox:/chemin »). Les navigateurs de la famille Chromium protègent leurs
+# cookies avec le trousseau de clés du bureau (GNOME Keyring, KWallet) : il doit être déverrouillé, donc une session
+# graphique ouverte.
+LINUX_BROWSER_CATALOG = (
+    ("firefox", "Firefox", "firefox", (
+        "{cfg}/mozilla/firefox", "~/.mozilla/firefox", "~/.var/app/org.mozilla.firefox/config/mozilla/firefox",
+        "~/.var/app/org.mozilla.firefox/.mozilla/firefox", "~/snap/firefox/common/.mozilla/firefox")),
+    ("chrome", "Google Chrome", "chrome", ("{cfg}/google-chrome",)),
+    ("chromium", "Chromium", "chromium", ("{cfg}/chromium",)),
+    ("brave", "Brave", "brave", ("{cfg}/BraveSoftware/Brave-Browser",)),
+    ("vivaldi", "Vivaldi", "vivaldi", ("{cfg}/vivaldi",)),
+    ("opera", "Opera", "opera", ("{cfg}/opera",)),
+    ("edge", "Microsoft Edge", "edge", ("{cfg}/microsoft-edge",)),
+    ("librewolf", "LibreWolf", "firefox", ("~/.librewolf", "~/.var/app/io.gitlab.librewolf-community/.librewolf")),
+    ("waterfox", "Waterfox", "firefox", ("~/.waterfox", "~/.var/app/net.waterfox.waterfox/.waterfox")),
+    ("floorp", "Floorp", "firefox", ("~/.floorp", "~/.var/app/one.ablaze.floorp/.floorp")),
+    ("zen", "Zen Browser", "firefox", ("~/.zen", "~/.var/app/app.zen_browser.zen/.zen")),
+)
+LINUX_BROWSER_KEYS = tuple(entry[0] for entry in LINUX_BROWSER_CATALOG)
+LINUX_DEFAULT_BROWSERS = ("firefox", "chrome", "chromium", "brave", "vivaldi")   # les plus utilisés sous Linux
+_LINUX_KEYRING_BROWSERS = tuple(k for k, _label, ytdlp, _dirs in LINUX_BROWSER_CATALOG
+                                if ytdlp != "firefox")   # famille Chromium
+
+
+def _linux_browser_entry(key):
+    return next((e for e in LINUX_BROWSER_CATALOG if e[0] == key), None)
+
+
+def linux_browser_dirs(key, env=None):
+    """Dossiers de profil possibles d'un navigateur (avec leur ~ et leur {cfg} résolus), du plus courant au moins courant."""
+    env = os.environ if env is None else env
+    xdg = env.get("XDG_CONFIG_HOME") or ""
+    cfg = xdg if os.path.isabs(xdg) else os.path.join(os.path.expanduser("~"), ".config")
+    entry = _linux_browser_entry(key)
+    return [os.path.normpath(os.path.expanduser(d.replace("{cfg}", cfg))) for d in (entry[3] if entry else ())]
+
+
+def linux_browser_found(key, env=None):
+    """Le navigateur a-t-il un dossier de profil sur cet ordinateur (donc est-il installé et a-t-il déjà servi) ?"""
+    return any(os.path.isdir(d) for d in linux_browser_dirs(key, env))
+
+
+def selected_linux_browsers(cfg=None):
+    """Navigateurs proposés dans les listes (Linux) : le choix de l'utilisateur (réglage « linux_browsers »), dans l'ordre
+    du catalogue, sinon les cinq par défaut. Un réglage illisible ou vide de sens retombe sur les cinq par défaut."""
+    cfg = load_config() if cfg is None else cfg
+    chosen = cfg.get("linux_browsers")
+    if not isinstance(chosen, list):
+        return list(LINUX_DEFAULT_BROWSERS)
+    return [k for k in LINUX_BROWSER_KEYS if k in chosen]
+
+
+def cookie_browser_arg(browser, env=None):
+    """Valeur à donner à « --cookies-from-browser » pour ce navigateur. Windows et les navigateurs que yt-dlp connaît
+    par leur nom : le nom tel quel. Un dérivé de Firefox sous Linux : « firefox:<dossier du profil> » (le premier
+    dossier existant, sinon le plus courant : yt-dlp expliquera alors qu'il ne trouve pas la base de cookies)."""
+    entry = None if IS_WINDOWS else _linux_browser_entry(browser)
+    if entry is None or entry[2] == browser:
+        return browser
+    dirs = linux_browser_dirs(browser, env)
+    return f"{entry[2]}:{next((d for d in dirs if os.path.isdir(d)), dirs[0])}"
+
+
+def browser_label(browser):
+    """Nom lisible d'un navigateur pour les messages (« Zen Browser », « Google Chrome »…)."""
+    entry = None if IS_WINDOWS else _linux_browser_entry(browser)
+    return entry[1] if entry else (browser or "").capitalize()
 _COOKIE_COLORS = {"off": "#e74c3c", "untested": "#f5a623", "testing": "#f5a623",
                   "ok": "#4ec94e", "fail": "#e74c3c"}
 
@@ -3023,7 +3126,7 @@ class CookieFrame(ttk.LabelFrame):
             detail = ""
             try:
                 r = subprocess.run(
-                    [YTDLP, "--cookies-from-browser", browser, "--simulate", "--no-playlist", "--quiet",
+                    [YTDLP, "--cookies-from-browser", cookie_browser_arg(browser), "--simulate", "--no-playlist", "--quiet",
                      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
                     capture_output=True, timeout=20, **NO_WINDOW)
                 ok = r.returncode == 0
@@ -3720,7 +3823,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         # Étape 1 : liste plate. Les cookies du navigateur choisi servent dès cette étape : sans eux, une vidéo privée
         # qui appartient au compte connecté n'a pas de titre et serait ignorée comme « masquée ».
         browser = self.var_g_browser.get()
-        list_cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
+        list_cookie_args = ["--cookies-from-browser", cookie_browser_arg(browser)] if browser != BROWSER_OFF else []
         try:
             result = subprocess.run(
                 [YTDLP, "--flat-playlist", "-j", "--no-warnings"] + list_cookie_args + ["--", url],
@@ -3783,7 +3886,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
             # Cookies optionnels pour accéder aux pistes doublées
             browser = self.var_g_browser.get()
-            cookie_args = ["--cookies-from-browser", browser] \
+            cookie_args = ["--cookies-from-browser", cookie_browser_arg(browser)] \
                           if browser != BROWSER_OFF else []
 
             # Appel yt-dlp -j avec le client par défaut (yt-dlp choisit ios/tv_embedded)
@@ -4145,7 +4248,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                      "--sleep-interval", "3", "--max-sleep-interval", "8"]
             browser = self.var_g_browser.get()
             if browser != BROWSER_OFF:
-                args += ["--cookies-from-browser", browser]
+                args += ["--cookies-from-browser", cookie_browser_arg(browser)]
             out = self.var_g_outdir.get().strip()
             if row.get("_out_template"):
                 args += ["-o", row["_out_template"]]
@@ -4332,7 +4435,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                  "--no-playlist"]
         browser = self.var_g_browser.get()
         if browser != BROWSER_OFF:
-            args += ["--cookies-from-browser", browser]
+            args += ["--cookies-from-browser", cookie_browser_arg(browser)]
 
         # Blocs de script de la bibliothèque globale
         # Les blocs "_alang_" sont des pistes audio — traitement séparé ci-dessous
@@ -5869,8 +5972,8 @@ class YtDlpGui(tk.Tk):
                              command=self._toggle_auto_update)
         menu.add_command(label=t("toolbar.menu_deps"),   command=self._open_deps)
         menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
-        if IS_WINDOWS:   # ailleurs, tous les navigateurs sont proposés : rien à masquer
-            menu.add_command(label=t("toolbar.menu_browsers"), command=lambda: BrowserOptionsWindow(self))
+        menu.add_command(label=t("toolbar.menu_browsers"),
+                         command=lambda: (BrowserOptionsWindow if IS_WINDOWS else LinuxBrowsersWindow)(self))
         menu.add_separator()
         menu.add_command(label="🌐  Langue / Language…", command=self._open_lang_dialog)
         menu.tk_popup(self.winfo_pointerx(), self.winfo_pointery())
@@ -6273,7 +6376,7 @@ class YtDlpGui(tk.Tk):
         # Cookies
         browser = self.var_browser.get()
         if browser and browser != BROWSER_OFF:
-            args += ["--cookies-from-browser", browser]
+            args += ["--cookies-from-browser", cookie_browser_arg(browser)]
 
         out = self.var_outdir.get().strip()
         if out:
@@ -6380,7 +6483,7 @@ class YtDlpGui(tk.Tk):
         self._show_inspect_box(t("inspect.box_running"), "gray", url)
 
         browser = self.var_browser.get()
-        cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
+        cookie_args = ["--cookies-from-browser", cookie_browser_arg(browser)] if browser != BROWSER_OFF else []
 
         def run():
             try:
@@ -6781,7 +6884,7 @@ class YtDlpGui(tk.Tk):
         entry = self._queue[idx]
         url = entry.get("url", "")
         browser = self.var_browser.get()
-        cookie_args = ["--cookies-from-browser", browser] if browser != BROWSER_OFF else []
+        cookie_args = ["--cookies-from-browser", cookie_browser_arg(browser)] if browser != BROWSER_OFF else []
         try:
             r = subprocess.run(
                 [YTDLP, "--get-title", "--no-playlist"] + cookie_args + ["--", url],

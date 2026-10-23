@@ -41,7 +41,7 @@
 - **私たちのテスト結果**（Windows 11、2026 年 10 月、各ブラウザで YouTube アカウントにログイン済み）：**Firefox** はブラウザが開いていても閉じていても動作します。**Opera** は**ブラウザを閉じているときだけ**動作します。起動中は Cookie データベースをロックし、yt-dlp に「Could not copy Chrome cookie database」と表示されます。**Chrome、Edge、Brave** は閉じていても失敗します。yt-dlp が常には読み取れない方式で Cookie を暗号化しているためです。これらの制限はブラウザと yt-dlp に由来し、このソフトウェアのものではなく、更新で変わる可能性があります。
 - ブラウザが**終了時に Cookie を削除**する設定の場合（またはプライベートモードで閲覧している場合）、ディスク上に読み取れる Cookie は残りません。Chrome、Edge、Brave、Firefox のいずれでも yt-dlp は何も取得できません。Chrome、Edge、Brave ではこれが落とし穴になります。ブラウザを終了する必要があり、終了すると Cookie が消えるためです。この設定を無効にするか、youtube.com と google.com の Cookie を保持してください。
 - **ランプ**で状態を表示：無効または失敗は赤、未テストまたは実行中はオレンジ、Cookie 読み込み済みは緑。↻ ボタンでテストを実行し、ツールチップが状態やエラーを説明します。
-- **Linux（プレビュー版）**：Firefox、Chromium、Chrome、Brave、Edge、Opera、Vivaldi を選べます。Chromium 系ブラウザーは Cookie をデスクトップのキーリング（GNOME Keyring、KWallet）で保護するため、ロックを解除しておく必要があり、グラフィカルセッションを開いておいてください。動作を確認したのは Firefox プロファイルの読み取りだけです。**Firefox を推奨します**。
+- **Linux（プレビュー版）**：初期設定では、このシステムで最もよく使われる Firefox、Google Chrome、Chromium、Brave、Vivaldi を選べます。オプションメニューの「Cookie 用ブラウザー」ウィンドウで、最大 11 個のブラウザー（Opera、Microsoft Edge、LibreWolf、Waterfox、Floorp、Zen Browser も）にチェックを入れられます。Chromium 系ブラウザーは Cookie をデスクトップのキーリング（GNOME Keyring、KWallet）で保護するため、ロックを解除しておく必要があり、グラフィカルセッションを開いておいてください。YouTube にログインした状態で動作を確認したのは Firefox の Cookie の読み取りだけです（非公開動画を含む）。**Firefox を推奨します**。
 
 ### セットアップアシスタント、依存関係、yt-dlp の更新
 

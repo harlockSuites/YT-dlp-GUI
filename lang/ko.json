@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "{browser}이(가) 아직 실행 중입니다({n}개 프로세스). 창을 닫았더라도 백그라운드에서 실행 중일 수 있으며, 쿠키 데이터베이스를 잠그고 있는 것이 바로 이 프로세스입니다. 시스템 모니터(또는 터미널의 pkill 명령)로 종료한 뒤 다시 시도하세요. 권장하는 Firefox에는 이런 제한이 없습니다.",
   "cookie.hint_decrypt_linux": "{browser}의 쿠키를 해독할 수 없습니다. Linux에서는 쿠키가 데스크톱 키링(GNOME Keyring 또는 KWallet)으로 보호되며, 키링이 잠금 해제되어 있어야 합니다. 일반 그래픽 세션을 사용하거나 Firefox를 사용하세요(권장).",
   "cookie.note_keyring": "이 브라우저의 쿠키는 데스크톱 키링(GNOME Keyring, KWallet)으로 보호됩니다. 키링이 잠금 해제되어 있어야 하므로 그래픽 세션이 열려 있어야 합니다. Firefox를 권장합니다.",
-  "upd.replace_title_dialog_linux": "새 yt-dlp 파일 선택"
+  "upd.replace_title_dialog_linux": "새 yt-dlp 파일 선택",
+  "browsers.linux_explain": "쿠키 목록에 표시할 브라우저를 선택하세요. 기본값은 Linux에서 가장 많이 쓰는 Firefox, Google Chrome, Chromium, Brave, Vivaldi입니다. yt-dlp는 처음 7개를 직접 읽고, LibreWolf, Waterfox, Floorp, Zen Browser는 Firefox 파생 브라우저로 프로필 폴더를 통해 읽습니다(경로는 아직 검증되지 않음). Chromium 계열 브라우저는 데스크톱 키링이 잠금 해제되어 있어야 하며, Firefox를 권장합니다.",
+  "browsers.linux_reset": "기본 5개로 되돌리기",
+  "browsers.linux_found": "✔ 이 컴퓨터에서 찾음"
 }

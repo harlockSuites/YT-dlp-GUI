@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "O {browser} ainda está em execução ({n} processos), talvez em segundo plano mesmo com a janela fechada: é ele que mantém bloqueada a sua base de cookies. Encerre-o com o monitor do sistema (ou com o comando pkill em um terminal) e tente novamente. O Firefox, recomendado, não tem esse limite.",
   "cookie.hint_decrypt_linux": "Não foi possível descriptografar os cookies do {browser}: no Linux eles são protegidos pelo chaveiro da área de trabalho (GNOME Keyring ou KWallet), que precisa estar desbloqueado. Use uma sessão gráfica normal ou o Firefox (recomendado).",
   "cookie.note_keyring": "Os cookies deste navegador são protegidos pelo chaveiro da área de trabalho (GNOME Keyring, KWallet): ele precisa estar desbloqueado, ou seja, com uma sessão gráfica aberta. Recomendamos o Firefox.",
-  "upd.replace_title_dialog_linux": "Escolher o novo arquivo yt-dlp"
+  "upd.replace_title_dialog_linux": "Escolher o novo arquivo yt-dlp",
+  "browsers.linux_explain": "Marque os navegadores a oferecer nas listas de cookies. Por padrão: Firefox, Google Chrome, Chromium, Brave e Vivaldi, os mais usados no Linux. O yt-dlp lê diretamente os sete primeiros; LibreWolf, Waterfox, Floorp e Zen Browser são derivados do Firefox, lidos pela pasta do perfil (caminho ainda não verificado). Os navegadores da família Chromium precisam do chaveiro da área de trabalho desbloqueado; recomendamos o Firefox.",
+  "browsers.linux_reset": "Restaurar os cinco padrão",
+  "browsers.linux_found": "✔ encontrado neste computador"
 }

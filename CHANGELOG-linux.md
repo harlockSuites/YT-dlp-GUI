@@ -4,6 +4,20 @@ Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes son
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
+## [0.1.1] — non publiée
+
+### Ajouté
+- **Navigateurs pour les cookies, au choix** : par défaut, les listes proposent les cinq navigateurs les plus utilisés sous Linux (Firefox, Google Chrome, Chromium, Brave, Vivaldi). La fenêtre « Navigateurs pour les cookies » du menu des options propose 11 navigateurs (Opera, Microsoft Edge, LibreWolf, Waterfox, Floorp et Zen Browser en plus) : l'utilisateur coche ceux dont il a besoin ; un ✔ marque ceux dont le dossier de profil existe sur l'ordinateur ; « Rétablir les cinq par défaut » revient au départ. Le choix est enregistré (réglage `linux_browsers`) et le navigateur déjà sélectionné reste toujours dans la liste.
+- LibreWolf, Waterfox, Floorp et Zen Browser, dérivés de Firefox, sont lus par le dossier de leur profil (`--cookies-from-browser firefox:/chemin`, y compris les installations Flatpak). Leurs dossiers n'ont pas encore été vérifiés sur une machine qui les a installés.
+- 3 clés de traduction (fenêtre de choix) dans les 15 langues, à faire relire ; puce « Cookies » des 15 README mise à jour.
+
+### Modifié
+- Sous Linux, les listes ne proposent plus d'office sept navigateurs (dont Edge, Opera) : ce sont les cinq par défaut, ou le choix de l'utilisateur. Windows n'est pas concerné.
+- Les messages d'aide sur les cookies nomment le navigateur proprement (« Zen Browser », « Google Chrome »).
+
+### Vérifié
+- Lecture des cookies de Firefox avec un compte YouTube connecté, dans la VM : vidéo privée téléchargée par le téléchargeur individuel et par l'Inspecteur de playlist ; playlist de trois vidéos dont une privée. Les autres navigateurs n'ont pas encore été essayés avec un compte connecté.
+
 ## [0.1.0] — 2026-10-23
 
 ### Ajouté

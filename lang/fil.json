@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "Tumatakbo pa ang {browser} ({n} proseso), posibleng nasa background kahit sarado ang window nito: ito ang nagla-lock sa database nito ng cookie. Tapusin ito gamit ang system monitor (o ang command na pkill sa terminal), saka subukan muli. Ang Firefox, na inirerekomenda, ay walang ganitong limitasyon.",
   "cookie.hint_decrypt_linux": "Hindi ma-decrypt ang mga cookie ng {browser}: sa Linux, pinoprotektahan ang mga ito ng key ring ng desktop (GNOME Keyring o KWallet), na dapat naka-unlock. Gumamit ng normal na graphical session, o gamitin ang Firefox (inirerekomenda).",
   "cookie.note_keyring": "Pinoprotektahan ng key ring ng desktop (GNOME Keyring, KWallet) ang mga cookie ng browser na ito: dapat itong naka-unlock, kaya dapat bukas ang isang graphical session. Inirerekomenda ang Firefox.",
-  "upd.replace_title_dialog_linux": "Piliin ang bagong yt-dlp file"
+  "upd.replace_title_dialog_linux": "Piliin ang bagong yt-dlp file",
+  "browsers.linux_explain": "Lagyan ng tsek ang mga browser na iaalok sa mga listahan ng cookie. Default: Firefox, Google Chrome, Chromium, Brave at Vivaldi, ang pinakaginagamit sa Linux. Direktang binabasa ng yt-dlp ang unang pito; ang LibreWolf, Waterfox, Floorp at Zen Browser ay mga hango sa Firefox na binabasa sa pamamagitan ng folder ng profile (hindi pa napapatunayan ang path). Kailangang naka-unlock ang key ring ng desktop para sa mga browser sa pamilyang Chromium; inirerekomenda ang Firefox.",
+  "browsers.linux_reset": "Ibalik ang limang default",
+  "browsers.linux_found": "✔ nakita sa computer na ito"
 }

@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "{browser} nadal działa ({n} procesów), być może w tle mimo zamkniętego okna: to on blokuje swoją bazę ciasteczek. Zakończ go w monitorze systemu (lub poleceniem pkill w terminalu) i spróbuj ponownie. Firefox, zalecany, nie ma tego ograniczenia.",
   "cookie.hint_decrypt_linux": "Nie można odszyfrować ciasteczek przeglądarki {browser}: w systemie Linux chroni je pęk kluczy pulpitu (GNOME Keyring lub KWallet), który musi być odblokowany. Użyj zwykłej sesji graficznej albo Firefoksa (zalecany).",
   "cookie.note_keyring": "Ciasteczka tej przeglądarki chroni pęk kluczy pulpitu (GNOME Keyring, KWallet): musi być odblokowany, czyli sesja graficzna musi być otwarta. Zalecamy Firefoksa.",
-  "upd.replace_title_dialog_linux": "Wybierz nowy plik yt-dlp"
+  "upd.replace_title_dialog_linux": "Wybierz nowy plik yt-dlp",
+  "browsers.linux_explain": "Zaznacz przeglądarki, które mają być w listach ciasteczek. Domyślnie: Firefox, Google Chrome, Chromium, Brave i Vivaldi, najczęściej używane w Linuksie. yt-dlp odczytuje bezpośrednio pierwsze siedem; LibreWolf, Waterfox, Floorp i Zen Browser to pochodne Firefoksa odczytywane przez folder profilu (ścieżka jeszcze niesprawdzona). Przeglądarki z rodziny Chromium wymagają odblokowanego pęku kluczy pulpitu; zalecany jest Firefox.",
+  "browsers.linux_reset": "Przywróć pięć domyślnych",
+  "browsers.linux_found": "✔ znaleziono na tym komputerze"
 }

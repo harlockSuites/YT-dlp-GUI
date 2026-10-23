@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "{browser} je još pokrenut ({n} procesa), možda u pozadini iako je prozor zatvoren: on drži zaključanu bazu kolačića. Prekinite ga u sistemskom monitoru (ili komandom pkill u terminalu), pa pokušajte ponovo. Firefox, koji se preporučuje, nema to ograničenje.",
   "cookie.hint_decrypt_linux": "Nije moguće dešifrovati kolačiće pregledača {browser}: na Linuxu ih štiti priveznik ključeva radne površine (GNOME Keyring ili KWallet), koji mora biti otključan. Koristite običnu grafičku sesiju ili Firefox (preporučuje se).",
   "cookie.note_keyring": "Kolačiće ovog pregledača štiti priveznik ključeva radne površine (GNOME Keyring, KWallet): mora biti otključan, odnosno grafička sesija mora biti otvorena. Preporučuje se Firefox.",
-  "upd.replace_title_dialog_linux": "Izaberite novu datoteku yt-dlp"
+  "upd.replace_title_dialog_linux": "Izaberite novu datoteku yt-dlp",
+  "browsers.linux_explain": "Označite pregledače koji će se nuditi u listama kolačića. Podrazumevano: Firefox, Google Chrome, Chromium, Brave i Vivaldi, najčešće korišćeni na Linuxu. yt-dlp direktno čita prvih sedam; LibreWolf, Waterfox, Floorp i Zen Browser su derivati Firefoxa koji se čitaju preko foldera profila (putanja još nije proverena). Pregledači iz porodice Chromium zahtevaju otključan priveznik ključeva radne površine; preporučuje se Firefox.",
+  "browsers.linux_reset": "Vrati pet podrazumevanih",
+  "browsers.linux_found": "✔ pronađeno na ovom računaru"
 }

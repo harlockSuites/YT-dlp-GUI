@@ -522,5 +522,8 @@
   "cookie.hint_locked_running_linux": "{browser} всё ещё запущен (процессов: {n}), возможно, в фоне, хотя окно закрыто: именно он блокирует свою базу cookie. Завершите его в системном мониторе (или командой pkill в терминале) и повторите попытку. У Firefox, который рекомендуется, такого ограничения нет.",
   "cookie.hint_decrypt_linux": "Не удалось расшифровать cookie браузера {browser}: в Linux они защищены связкой ключей рабочего стола (GNOME Keyring или KWallet), которая должна быть разблокирована. Используйте обычный графический сеанс или Firefox (рекомендуется).",
   "cookie.note_keyring": "Cookie этого браузера защищены связкой ключей рабочего стола (GNOME Keyring, KWallet): она должна быть разблокирована, то есть графический сеанс должен быть открыт. Рекомендуется Firefox.",
-  "upd.replace_title_dialog_linux": "Выберите новый файл yt-dlp"
+  "upd.replace_title_dialog_linux": "Выберите новый файл yt-dlp",
+  "browsers.linux_explain": "Отметьте браузеры, которые будут предлагаться в списках cookie. По умолчанию: Firefox, Google Chrome, Chromium, Brave и Vivaldi — самые используемые в Linux. yt-dlp напрямую читает первые семь; LibreWolf, Waterfox, Floorp и Zen Browser — производные Firefox, они читаются через папку профиля (путь ещё не проверен). Браузерам семейства Chromium нужна разблокированная связка ключей рабочего стола; рекомендуется Firefox.",
+  "browsers.linux_reset": "Вернуть пять по умолчанию",
+  "browsers.linux_found": "✔ найден на этом компьютере"
 }
