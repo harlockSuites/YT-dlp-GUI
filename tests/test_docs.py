@@ -111,10 +111,49 @@ class DocsTests(unittest.TestCase):
                 self.assertIn(lang["toolbar.menu_auto_update_check"], text)
                 self.assertIn(lang["toolbar.menu_check_update"], text)
 
-    def test_french_and_english_announce_the_linux_version(self):
-        docs = _all_docs()
-        self.assertIn("version Linux sera publiée à moyen terme", _read(docs["fr"]))
-        self.assertIn("Linux version will be released in the medium term", _read(docs["en"]))
+    def test_every_language_announces_the_linux_preview_in_the_banner(self):
+        for code, path in _all_docs().items():
+            lines = _read(path).splitlines()
+            banner = next(l for l in lines if l.startswith("> **"))
+            with self.subTest(lang=code):
+                self.assertRegex(banner, r"Linux|Linuks")   # le polonais décline le mot
+        self.assertNotIn("sera publiée à moyen terme", _read(_all_docs()["fr"]))
+        self.assertNotIn("will be released in the medium term", _read(_all_docs()["en"]))
+
+    def test_installation_lists_the_linux_files_in_every_language(self):
+        for code, path in _all_docs().items():
+            lines = _read(path).splitlines()
+            heads = [i for i, l in enumerate(lines) if l.startswith("## ")]
+            section = "\n".join(lines[heads[1]:heads[2]])
+            with self.subTest(lang=code):
+                for needle in ("yt-dlp-gui-X.Y.Z-x86_64.AppImage", "chmod +x", "libfuse2", "--appimage-extract-and-run",
+                               "yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz", "tar xzf", "~/.local/share/yt-dlp-GUI",
+                               "SHA256SUMS-linux.txt", "sha256sum -c SHA256SUMS-linux.txt --ignore-missing", "glibc 2.35"):
+                    self.assertIn(needle, section)
+                self.assertEqual(sum(1 for l in section.splitlines() if l.startswith("- **Linux")), 3)
+
+    def test_prerequisites_quick_start_and_dependencies_mention_linux(self):
+        for code, path in _all_docs().items():
+            lines = _read(path).splitlines()
+            heads = [i for i, l in enumerate(lines) if l.startswith("## ")]
+            prereq = "\n".join(lines[heads[3]:heads[4]])
+            quick = "\n".join(lines[heads[4]:heads[5]])
+            with self.subTest(lang=code):
+                self.assertIn("Linux", prereq)
+                self.assertIn("python3-tk", prereq)
+                self.assertIn("python3 yt-dlp-gui.pyw", quick)
+                text = "\n".join(lines)
+                for needle in ("zypper", "AppImage", "Chromium", "Vivaldi", "GNOME Keyring"):
+                    self.assertIn(needle, text)
+
+    def test_bug_report_bullet_no_longer_says_windows_only(self):
+        for code, path in _all_docs().items():
+            lines = _read(path).splitlines()
+            heads2 = [i for i, l in enumerate(lines) if l.startswith("## ")]
+            bug = max(i for i, l in enumerate(lines) if l.startswith("### ") and i < heads2[1])
+            first = next(l for l in lines[bug:] if l.startswith("- "))
+            with self.subTest(lang=code):
+                self.assertNotIn("Windows", first)
 
     def test_key_facts_present_in_every_language(self):
         for code, path in _all_docs().items():

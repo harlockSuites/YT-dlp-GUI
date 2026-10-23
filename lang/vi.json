@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "Không nhận ra trình quản lý gói: hãy dùng trang chính thức của từng công cụ.",
   "cookie.hint_locked_running_linux": "{browser} vẫn đang chạy ({n} tiến trình), có thể ở nền dù cửa sổ đã đóng: chính nó đang khóa cơ sở dữ liệu cookie. Hãy tắt nó bằng trình giám sát hệ thống (hoặc lệnh pkill trong terminal) rồi thử lại. Firefox, được khuyến nghị, không có giới hạn này.",
   "cookie.hint_decrypt_linux": "Không thể giải mã cookie của {browser}: trên Linux chúng được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring hoặc KWallet) và chùm khóa này phải được mở khóa. Hãy dùng phiên đồ họa bình thường hoặc Firefox (khuyến nghị).",
-  "cookie.note_keyring": "Cookie của trình duyệt này được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring, KWallet): phải được mở khóa, tức là phải có phiên đồ họa đang mở. Nên dùng Firefox."
+  "cookie.note_keyring": "Cookie của trình duyệt này được bảo vệ bởi chùm khóa của máy tính (GNOME Keyring, KWallet): phải được mở khóa, tức là phải có phiên đồ họa đang mở. Nên dùng Firefox.",
+  "upd.replace_title_dialog_linux": "Chọn tệp yt-dlp mới"
 }

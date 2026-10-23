@@ -4,7 +4,7 @@
 
 Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da ga učini dostupnim svima i da u potpunosti iskoristi njegove mogućnosti.
 
-> **Projekat je u razvoju.** Neke funkcije mogu se menjati, biti nepotpune ili sadržati greške.
+> **Projekat je u razvoju.** Neke funkcije mogu se menjati, biti nepotpune ili sadržati greške. Dostupno za Windows; nudi se i **probna verzija za Linux**, manje isprobana.
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 - **Rezultati naših testova** (Windows 11, oktobar 2026, YouTube nalog prijavljen u svakom pregledaču): **Firefox** radi, bilo da je pregledač otvoren ili zatvoren. **Opera** radi **samo sa zatvorenim pregledačem**: dok je otvorena zaključava bazu kolačića, a yt-dlp tada prikazuje „Could not copy Chrome cookie database”. **Chrome, Edge i Brave** ne rade ni kada su zatvoreni: šifruju kolačiće na način koji yt-dlp ne može uvek da pročita. Ova ograničenja potiču od pregledača i yt-dlp-a, a ne od programa, i mogu se promeniti njihovim ažuriranjima.
 - Ako je pregledač podešen da **briše kolačiće pri zatvaranju** (ili koristite privatni režim), na disku ne ostaje nijedan kolačić: yt-dlp ne može ništa da povrati, ni sa Chrome-om, Edge-om, Brave-om ni Firefox-om. Kod Chrome-a, Edge-a i Brave-a to je zamka: pregledač treba zatvoriti, a to briše kolačiće. Isključite tu opciju ili sačuvajte kolačiće sajtova youtube.com i google.com.
 - **Signalna lampica** pokazuje stanje: crvena ako je isključeno ili neuspešno, narandžasta ako nije testirano ili je u toku, zelena ako su kolačići učitani. Dugme ↻ pokreće test, a opis prikazuje stanje ili grešku.
+- **Na Linuxu (probna verzija)**: nude se Firefox, Chromium, Chrome, Brave, Edge, Opera i Vivaldi. Pregledači iz porodice Chromium štite kolačiće priveznikom ključeva radne površine (GNOME Keyring, KWallet): mora biti otključan, odnosno grafička sesija mora biti otvorena. Isprobano je samo čitanje Firefox profila; **preporučuje se Firefox**.
 
 ### Pomoćnik za instalaciju, zavisnosti i ažuriranja yt-dlp-a
 
 - **Pomoćnik za instalaciju**: pri prvom pokretanju predlaže preuzimanje yt-dlp-a i ffmpeg-a iz njihovih zvaničnih GitHub repozitorijuma. SHA-256 kontrolna suma se proverava i nisu potrebna administratorska prava.
-- **Zavisnosti**: poseban prozor proverava ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno i može da ih instalira preko Chocolatey-ja. Samo su ffmpeg i ffprobe neophodni; deno se preporučuje (dodatne audio trake); AtomicParsley, MKVToolNix i aria2 su opcioni: program radi i bez njih.
+- **Zavisnosti**: poseban prozor proverava ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 i deno i može da ih instalira preko Chocolatey-ja. Samo su ffmpeg i ffprobe neophodni; deno se preporučuje (dodatne audio trake); AtomicParsley, MKVToolNix i aria2 su opcioni: program radi i bez njih. Na Linuxu pomoćnik preuzima ffmpeg, ffprobe i deno (SHA-256 zbir se proverava, bez administratorskih prava); za AtomicParsley, MKVToolNix i aria2 prozor prikazuje komandu menadžera paketa (apt, dnf, pacman ili zypper) koju treba kopirati u terminal.
 - **Ažuriranje i dijagnostika**: ažurira yt-dlp (`yt-dlp -U`) ili menja njegov izvršni fajl, prikazuje verziju i proverava opcije koje interfejs koristi.
-- **Ažuriranje programa**: dnevna provera (može se isključiti) diskretnom trakom javlja da postoji nova verzija; poseban prozor prikazuje novosti i otvara preuzimanje koje odgovara vašoj instalaciji (instalater ili prenosiva verzija). Ništa se ne instalira automatski. Prekidač u meniju opcija („Proveri ažuriranja pri pokretanju”) uključuje ili isključuje automatsku proveru, a „Potraži ažuriranje programa…” je pokreće na zahtev.
+- **Ažuriranje programa**: dnevna provera (može se isključiti) diskretnom trakom javlja da postoji nova verzija; poseban prozor prikazuje novosti i otvara preuzimanje koje odgovara vašoj instalaciji (instalater ili prenosiva verzija). Ništa se ne instalira automatski. Prekidač u meniju opcija („Proveri ažuriranja pri pokretanju”) uključuje ili isključuje automatsku proveru, a „Potraži ažuriranje programa…” je pokreće na zahtev. Na Linuxu je to AppImage ili arhiva `.tar.gz` koja odgovara vašoj arhitekturi.
 
 ### Interfejs i jezici
 
@@ -56,13 +57,16 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 
 ### Prijavi grešku
 
-- Dugme „Prijavi grešku” priprema tehnički izveštaj: verzije programa, Pythona, Windowsa i yt-dlp-a, bezopasna podešavanja i poslednje linije dnevnika. Vaše fascikle, korisničko ime i e-adrese su sakriveni. Za slanje izveštaja na GitHub potreban je besplatan GitHub nalog.
+- Dugme „Prijavi grešku” priprema tehnički izveštaj: verzije programa, Pythona, sistema i yt-dlp-a, bezopasna podešavanja i poslednje linije dnevnika. Vaše fascikle, korisničko ime i e-adrese su sakriveni. Za slanje izveštaja na GitHub potreban je besplatan GitHub nalog.
 - Ništa se ne šalje automatski: pregledate i menjate izveštaj, pa otvarate unapred popunjenu stranicu GitHub prijave (ili kopirate izveštaj).
 
 ## Instalacija
 
 - **Instalater (preporučeno)**: preuzmite `yt-dlp-gui-setup-X.Y.Z.exe` sa [stranice izdanja](https://github.com/harlockSuites/YT-dlp-GUI/releases) i pokrenite ga. Windows 10 ili 11 (64-bitni), bez administratorskih prava; Python nije potreban.
 - **Prenosiva verzija**: preuzmite `yt-dlp-gui-portable-X.Y.Z.zip`, raspakujte ga gde želite i pokrenite `yt-dlp-gui.exe`; podešavanja ostaju u toj fascikli.
+- **Linux, AppImage (probna verzija)**: preuzmite `yt-dlp-gui-X.Y.Z-x86_64.AppImage` sa [stranice izdanja](https://github.com/harlockSuites/YT-dlp-GUI/releases), učinite ga izvršnim (`chmod +x`) i pokrenite. Potreban je `libfuse2` (paket `libfuse2` ili `fuse-libs`); bez njega pokrenite sa `--appimage-extract-and-run`.
+- **Linux, arhiva (probna verzija)**: preuzmite `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`, raspakujte (`tar xzf`) i pokrenite `./yt-dlp-gui/yt-dlp-gui`. Podešavanja i preuzeti alati nalaze se u `~/.local/share/yt-dlp-GUI`; za deinstalaciju obrišite taj folder i datoteku ili folder programa.
+- **Linux, zahtevi i provera**: 64-bitni Linux (x86_64) iz distribucije iz 2022. ili novije (glibc 2.35 ili novija). Da biste proverili datoteku, preuzmite i `SHA256SUMS-linux.txt` i pokrenite u istom folderu: `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`.
 - **Iz izvornog koda**: pogledajte odeljke „Zahtevi” i „Brzi početak” ispod.
 - **Deinstalacija**: Windows Podešavanja › Aplikacije › Instalirane aplikacije › yt-dlp GUI ili prečica „Deinstaliraj” u meniju Start. Program nudi da obriše i svoje podatke (podešavanja, red čekanja, preuzeti yt-dlp i ffmpeg); vaši video snimci se nikada ne brišu. Pošto je instalacija vezana za svaki Windows nalog, program se pojavljuje samo na listi naloga koji ga je instalirao. Kod prenosive verzije dovoljno je obrisati njen folder. Alati instalirani zasebno preko Chocolatey-ja (ffmpeg, Deno…) se ne uklanjaju.
 - **Antivirusna analiza (VirusTotal)**: verzija 0.1.7 analizirana je 21. oktobra 2026. [Instalaciju](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) označava 4 od 69 mehanizama (Arctic Wolf, Microsoft, SecureAge, Skyhigh) opštim heurističkim detekcijama; [pokretač prenosive verzije](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) označavaju 5 od 70 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya), a [prenosivu ZIP arhivu](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) 1 od 66 (Zillya, na samoj arhivi). Verovatno su to lažne uzbune zbog nepotpisanog, kompresovanog programa. Rezultati važe samo za ovu verziju. Ako sumnjate, proverite SHA-256 zbir.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## Zahtevi
 
-- Windows
-- [Python 3](https://www.python.org/) sa Tkinterom (uključen u standardnu instalaciju)
-- `yt-dlp.exe` i, po mogućstvu, [ffmpeg](https://ffmpeg.org/): pomoćnik za instalaciju ih preuzima pri prvom pokretanju
+- Windows 10 ili 11, odnosno 64-bitni Linux (probna verzija)
+- [Python 3](https://www.python.org/) sa Tkinterom (uključen u standardnu instalaciju) (na Linuxu: paket `python3-tk`)
+- `yt-dlp.exe` i, po mogućstvu, [ffmpeg](https://ffmpeg.org/): pomoćnik za instalaciju ih preuzima pri prvom pokretanju (na Linuxu: `yt-dlp`, bez `.exe`)
 
 ## Brzi početak
 
 1. Preuzmite ili klonirajte ovaj repozitorijum i uđite u njegovu fasciklu.
-2. Pokrenite `yt-dlp-gui.bat` (ili `pythonw yt-dlp-gui.pyw`).
+2. Pokrenite `yt-dlp-gui.bat` (ili `pythonw yt-dlp-gui.pyw`). Na Linuxu: `python3 yt-dlp-gui.pyw`.
 3. Pri prvom pokretanju pustite pomoćnika da instalira yt-dlp i ffmpeg; ostaje dostupan u meniju opcija.
 4. Nalepite URL, izaberite opcije, pa preuzmite, dodajte u red ili otvorite inspektor za plejlistu.
 

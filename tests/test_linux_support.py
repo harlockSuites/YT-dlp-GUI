@@ -206,6 +206,61 @@ class LinuxWindowsTests(unittest.TestCase):
         self.assertEqual(win._cmd_var.get(), m.t("deps.linux_no_manager"))
         self.assertEqual(str(win._btn_copy.cget("state")), "disabled")
 
+    def test_windows_explorer_warning_is_shown_only_on_windows(self):
+        app = self.app
+        app._secondary_sel.set_options([("alang_fr", "FR")])
+        app._secondary_sel.set_selected(["alang_fr"])
+        app.var_embed_thumb.set(True)
+        try:
+            for windows in (True, False):
+                with mock.patch.object(m, "IS_WINDOWS", windows):
+                    app._update_cmd()
+                self.assertEqual(bool(app._lbl_mkv_warn_main.winfo_manager()), windows, windows)
+        finally:
+            app.var_embed_thumb.set(False)
+            app._secondary_sel.set_selected([])
+            app._update_cmd()
+
+    def _update_window(self):
+        with mock.patch.object(m.UpdateWindow, "_show_version"), mock.patch.object(m.tk.Toplevel, "grab_set",
+                                                                                  lambda self: None):
+            win = m.UpdateWindow(self.app)
+        win.withdraw()
+        self.addCleanup(lambda: win.winfo_exists() and win.destroy())
+        return win
+
+    def test_replace_dialog_asks_for_exe_files_on_windows_and_any_file_elsewhere(self):
+        win = self._update_window()
+        for windows in (True, False):
+            with mock.patch.object(m, "IS_WINDOWS", windows), \
+                    mock.patch.object(m.filedialog, "askopenfilename", return_value="") as ask, \
+                    mock.patch.object(win, "_show_version"):
+                win._replace_exe()
+            kw = ask.call_args.kwargs
+            if windows:
+                self.assertEqual(kw["title"], m.t("upd.replace_title_dialog"))
+                self.assertIn(("*.exe"), [pattern for _label, pattern in kw["filetypes"]])
+            else:
+                self.assertEqual(kw["title"], m.t("upd.replace_title_dialog_linux"))
+                self.assertNotIn(".exe", kw["title"])
+                self.assertEqual([pattern for _label, pattern in kw["filetypes"]], ["*"])
+
+    @unittest.skipIf(m.os.name == "nt", "droits d'exécution POSIX")
+    def test_replaced_yt_dlp_becomes_executable_on_linux(self):
+        import tempfile
+        d = tempfile.mkdtemp()
+        self.addCleanup(m.shutil.rmtree, d, ignore_errors=True)
+        src, target = m.os.path.join(d, "yt-dlp_linux"), m.os.path.join(d, "yt-dlp")
+        with open(src, "wb") as f:
+            f.write(b"#!/bin/sh\n")
+        m.os.chmod(src, 0o644)
+        win = self._update_window()
+        with mock.patch.object(m, "IS_WINDOWS", False), mock.patch.object(m, "YTDLP", target), \
+                mock.patch.object(m.filedialog, "askopenfilename", return_value=src), \
+                mock.patch.object(win, "_show_version"):
+            win._replace_exe()
+        self.assertEqual(m.os.stat(target).st_mode & 0o777, 0o755)
+
     def test_wizard_marks_unavailable_downloads(self):
         with mock.patch.object(m, "dep_installed", return_value=False), \
                 mock.patch.object(m, "FFMPEG_URL", None), mock.patch.object(m, "DENO_URL", None), \

@@ -4,7 +4,7 @@
 
 [yt-dlp](https://github.com/yt-dlp/yt-dlp) のグラフィカルインターフェースです。誰でも使いやすく、その機能を最大限に活かせるように作られています。
 
-> **開発中のプロジェクトです。** 一部の機能は変更されたり、未完成だったり、不具合を含んだりする場合があります。
+> **開発中のプロジェクトです。** 一部の機能は変更されたり、未完成だったり、不具合を含んだりする場合があります。Windows 版を提供しており、**Linux 向けプレビュー版**も提供していますが、検証は十分ではありません。
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@
 - **私たちのテスト結果**（Windows 11、2026 年 10 月、各ブラウザで YouTube アカウントにログイン済み）：**Firefox** はブラウザが開いていても閉じていても動作します。**Opera** は**ブラウザを閉じているときだけ**動作します。起動中は Cookie データベースをロックし、yt-dlp に「Could not copy Chrome cookie database」と表示されます。**Chrome、Edge、Brave** は閉じていても失敗します。yt-dlp が常には読み取れない方式で Cookie を暗号化しているためです。これらの制限はブラウザと yt-dlp に由来し、このソフトウェアのものではなく、更新で変わる可能性があります。
 - ブラウザが**終了時に Cookie を削除**する設定の場合（またはプライベートモードで閲覧している場合）、ディスク上に読み取れる Cookie は残りません。Chrome、Edge、Brave、Firefox のいずれでも yt-dlp は何も取得できません。Chrome、Edge、Brave ではこれが落とし穴になります。ブラウザを終了する必要があり、終了すると Cookie が消えるためです。この設定を無効にするか、youtube.com と google.com の Cookie を保持してください。
 - **ランプ**で状態を表示：無効または失敗は赤、未テストまたは実行中はオレンジ、Cookie 読み込み済みは緑。↻ ボタンでテストを実行し、ツールチップが状態やエラーを説明します。
+- **Linux（プレビュー版）**：Firefox、Chromium、Chrome、Brave、Edge、Opera、Vivaldi を選べます。Chromium 系ブラウザーは Cookie をデスクトップのキーリング（GNOME Keyring、KWallet）で保護するため、ロックを解除しておく必要があり、グラフィカルセッションを開いておいてください。動作を確認したのは Firefox プロファイルの読み取りだけです。**Firefox を推奨します**。
 
 ### セットアップアシスタント、依存関係、yt-dlp の更新
 
 - **セットアップアシスタント**：初回起動時に、公式 GitHub リポジトリから yt-dlp と ffmpeg をダウンロードするよう提案します。SHA-256 チェックサムが検証され、管理者権限は不要です。
-- **依存関係**：専用ウィンドウで ffmpeg、ffprobe、AtomicParsley、MKVToolNix、aria2、deno を確認し、Chocolatey でインストールできます。必須なのは ffmpeg と ffprobe だけです。deno は推奨（副音声トラック用）、AtomicParsley、MKVToolNix、aria2 は任意で、なくても動作します。
+- **依存関係**：専用ウィンドウで ffmpeg、ffprobe、AtomicParsley、MKVToolNix、aria2、deno を確認し、Chocolatey でインストールできます。必須なのは ffmpeg と ffprobe だけです。deno は推奨（副音声トラック用）、AtomicParsley、MKVToolNix、aria2 は任意で、なくても動作します。Linux では、アシスタントが ffmpeg、ffprobe、deno をダウンロードします（SHA-256 を検証、管理者権限は不要）。AtomicParsley、MKVToolNix、aria2 については、パッケージマネージャー（apt、dnf、pacman、zypper）のコマンドがウィンドウに表示されるので、ターミナルにコピーして実行します。
 - **更新と診断**：yt-dlp を更新（`yt-dlp -U`）または実行ファイルを置き換え、バージョンを表示し、GUI が使うオプションを確認します。
-- **ソフトウェアの更新**：1 日 1 回の確認（無効化可能）で、新しいバージョンを控えめなバナーでお知らせします。専用ウィンドウで新機能を確認でき、お使いのインストール形態（インストーラーまたはポータブル版）に合ったダウンロードを開きます。自動的にインストールされることはありません。オプションメニューのスイッチ（「起動時に更新を確認」）で自動確認の有効・無効を切り替えられ、「ソフトウェアの更新を確認…」でいつでも手動で確認できます。
+- **ソフトウェアの更新**：1 日 1 回の確認（無効化可能）で、新しいバージョンを控えめなバナーでお知らせします。専用ウィンドウで新機能を確認でき、お使いのインストール形態（インストーラーまたはポータブル版）に合ったダウンロードを開きます。自動的にインストールされることはありません。オプションメニューのスイッチ（「起動時に更新を確認」）で自動確認の有効・無効を切り替えられ、「ソフトウェアの更新を確認…」でいつでも手動で確認できます。Linux では、お使いのアーキテクチャに合った AppImage または `.tar.gz` アーカイブです。
 
 ### インターフェースと言語
 
@@ -56,13 +57,16 @@
 
 ### 不具合を報告
 
-- 「不具合を報告」ボタンは技術レポートを作成します：ソフトウェア、Python、Windows、yt-dlp のバージョン、問題のない設定、ログの最後の数行。フォルダ、ユーザー名、メールアドレスは伏せ字になります。GitHub でレポートを送信するには、無料の GitHub アカウントが必要です。
+- 「不具合を報告」ボタンは技術レポートを作成します：ソフトウェア、Python、OS、yt-dlp のバージョン、問題のない設定、ログの最後の数行。フォルダ、ユーザー名、メールアドレスは伏せ字になります。GitHub でレポートを送信するには、無料の GitHub アカウントが必要です。
 - 自動送信は一切されません：レポートを確認・編集してから、入力済みの GitHub イシューページを開きます（またはレポートをコピーします）。
 
 ## インストール
 
 - **インストーラー（推奨）**：[リリースページ](https://github.com/harlockSuites/YT-dlp-GUI/releases)から `yt-dlp-gui-setup-X.Y.Z.exe` をダウンロードして実行します。Windows 10 または 11（64 ビット）に対応し、管理者権限は不要です。Python も必要ありません。
 - **ポータブル版**：`yt-dlp-gui-portable-X.Y.Z.zip` をダウンロードし、好きな場所に展開して `yt-dlp-gui.exe` を実行します。設定はそのフォルダ内に保存されます。
+- **Linux、AppImage（プレビュー版）**：[リリースページ](https://github.com/harlockSuites/YT-dlp-GUI/releases)から `yt-dlp-gui-X.Y.Z-x86_64.AppImage` をダウンロードし、実行権限を付けて（`chmod +x`）実行します。`libfuse2`（パッケージ `libfuse2` または `fuse-libs`）が必要です。ない場合は `--appimage-extract-and-run` を付けて実行してください。
+- **Linux、アーカイブ（プレビュー版）**：`yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz` をダウンロードして展開し（`tar xzf`）、`./yt-dlp-gui/yt-dlp-gui` を実行します。設定とダウンロードしたツールは `~/.local/share/yt-dlp-GUI` にあります。アンインストールするには、このフォルダーとソフトウェアのファイルまたはフォルダーを削除してください。
+- **Linux、動作環境と検証**：64 ビット Linux（x86_64）で、2022 年以降のディストリビューション（glibc 2.35 以上）が対象です。ファイルを検証するには `SHA256SUMS-linux.txt` も一緒にダウンロードし、同じフォルダーで次を実行します：`sha256sum -c SHA256SUMS-linux.txt --ignore-missing`。
 - **ソースから**：下の「必要条件」と「クイックスタート」を参照してください。
 - **アンインストール**：Windows の設定 › アプリ › インストールされているアプリ › yt-dlp GUI、またはスタートメニューの「アンインストール」ショートカット。ソフトウェアは自身のデータ（設定、キュー、ダウンロードした yt-dlp と ffmpeg）も削除するか尋ねます。動画は決して削除されません。インストールは Windows アカウントごとのため、インストールしたアカウントの一覧にのみ表示されます。ポータブル版はフォルダーを削除するだけです。Chocolatey で別途インストールしたツール（ffmpeg、Deno など）は削除されません。
 - **ウイルス対策の検査結果（VirusTotal）**：バージョン 0.1.7 は 2026 年 10 月 21 日に検査されました。[インストーラー](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)は 69 エンジン中 4 つ（Arctic Wolf、Microsoft、SecureAge、Skyhigh）が汎用のヒューリスティック検出として検出しています。[ポータブル版のランチャー](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)は 70 中 5 つ（Arctic Wolf、CrowdStrike Falcon、Microsoft、SecureAge、Zillya）、[ポータブル版の ZIP アーカイブ](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)は 66 中 1 つ（Zillya、アーカイブ自体に対する検出）が検出しています。圧縮された未署名のプログラムによる誤検出の可能性が高いです。この結果はこのバージョンのみに該当します。不安な場合は SHA-256 を確認してください。
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## 必要条件
 
-- Windows
-- Tkinter を含む [Python 3](https://www.python.org/)（標準インストールに含まれます）
-- `yt-dlp.exe`、できれば [ffmpeg](https://ffmpeg.org/) も：セットアップアシスタントが初回起動時にダウンロードします
+- Windows 10 または 11、あるいは 64 ビット Linux（プレビュー版）
+- Tkinter を含む [Python 3](https://www.python.org/)（標準インストールに含まれます）（Linux ではパッケージ `python3-tk`）
+- `yt-dlp.exe`、できれば [ffmpeg](https://ffmpeg.org/) も：セットアップアシスタントが初回起動時にダウンロードします（Linux では `.exe` なしの `yt-dlp`）
 
 ## クイックスタート
 
 1. このリポジトリをダウンロードまたはクローンし、そのフォルダに移動します。
-2. `yt-dlp-gui.bat`（または `pythonw yt-dlp-gui.pyw`）を実行します。
+2. `yt-dlp-gui.bat`（または `pythonw yt-dlp-gui.pyw`）を実行します。Linux では `python3 yt-dlp-gui.pyw` を実行します。
 3. 初回起動時は、アシスタントに yt-dlp と ffmpeg をインストールさせます。アシスタントはオプションメニューからいつでも開けます。
 4. URL を貼り付け、オプションを選び、ダウンロードするか、キューに追加するか、プレイリスト用にインスペクターを開きます。
 

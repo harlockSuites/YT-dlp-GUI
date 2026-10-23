@@ -4,7 +4,7 @@
 
 Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được thiết kế để ai cũng dùng được mà vẫn khai thác trọn vẹn khả năng của nó.
 
-> **Dự án đang được phát triển.** Một số tính năng có thể thay đổi, chưa hoàn chỉnh hoặc còn lỗi.
+> **Dự án đang được phát triển.** Một số tính năng có thể thay đổi, chưa hoàn chỉnh hoặc còn lỗi. Có cho Windows; đồng thời cung cấp **bản xem trước cho Linux**, được kiểm thử ít hơn.
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 - **Kết quả thử nghiệm của chúng tôi** (Windows 11, tháng 10 năm 2026, đã đăng nhập tài khoản YouTube trên từng trình duyệt): **Firefox** hoạt động, dù trình duyệt đang mở hay đã đóng. **Opera** chỉ hoạt động **khi trình duyệt đã đóng**: nó khóa cơ sở dữ liệu cookie khi đang mở và yt-dlp sẽ hiện «Could not copy Chrome cookie database». **Chrome, Edge và Brave** thất bại ngay cả khi đã đóng: chúng mã hóa cookie theo cách yt-dlp không phải lúc nào cũng đọc được. Những giới hạn này đến từ trình duyệt và yt-dlp chứ không phải từ phần mềm, và có thể thay đổi khi chúng cập nhật.
 - Nếu trình duyệt được đặt để **xóa cookie khi đóng** (hoặc bạn duyệt ở chế độ riêng tư), sẽ không còn cookie nào trên ổ đĩa để đọc: yt-dlp không thể lấy gì, dù dùng Chrome, Edge, Brave hay Firefox. Với Chrome, Edge và Brave, đây là cái bẫy: phải đóng trình duyệt, và việc đó xóa cookie. Hãy tắt tùy chọn này hoặc giữ lại cookie của youtube.com và google.com.
 - Một **đèn báo** cho biết trạng thái: đỏ nếu tắt hoặc lỗi, cam nếu chưa kiểm tra hoặc đang chạy, xanh nếu cookie đã được tải. Nút ↻ chạy kiểm tra và chú giải giải thích trạng thái hoặc lỗi.
+- **Trên Linux (bản xem trước)**: có Firefox, Chromium, Chrome, Brave, Edge, Opera và Vivaldi. Các trình duyệt họ Chromium bảo vệ cookie bằng chùm khóa của máy tính (GNOME Keyring, KWallet): phải được mở khóa, tức là phải có phiên đồ họa đang mở. Chỉ mới thử đọc một hồ sơ Firefox; **nên dùng Firefox**.
 
 ### Trình hướng dẫn cài đặt, phụ thuộc và cập nhật yt-dlp
 
 - **Trình hướng dẫn cài đặt**: ở lần chạy đầu tiên, nó đề nghị tải yt-dlp và ffmpeg từ kho GitHub chính thức. Tổng kiểm SHA-256 được xác minh và không cần quyền quản trị.
-- **Phụ thuộc**: cửa sổ riêng kiểm tra ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 và deno, và có thể cài chúng bằng Chocolatey. Chỉ ffmpeg và ffprobe là bắt buộc; deno được khuyến nghị (track âm thanh phụ); AtomicParsley, MKVToolNix và aria2 là tùy chọn: phần mềm vẫn chạy khi thiếu chúng.
+- **Phụ thuộc**: cửa sổ riêng kiểm tra ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 và deno, và có thể cài chúng bằng Chocolatey. Chỉ ffmpeg và ffprobe là bắt buộc; deno được khuyến nghị (track âm thanh phụ); AtomicParsley, MKVToolNix và aria2 là tùy chọn: phần mềm vẫn chạy khi thiếu chúng. Trên Linux, trình hướng dẫn tải ffmpeg, ffprobe và deno (đã kiểm tra tổng SHA-256, không cần quyền quản trị); với AtomicParsley, MKVToolNix và aria2, cửa sổ hiển thị lệnh của trình quản lý gói (apt, dnf, pacman hoặc zypper) để sao chép vào terminal.
 - **Cập nhật và chẩn đoán**: cập nhật yt-dlp (`yt-dlp -U`) hoặc thay tệp thực thi của nó, hiển thị phiên bản và kiểm tra các tùy chọn mà giao diện sử dụng.
-- **Cập nhật phần mềm**: kiểm tra hằng ngày (có thể tắt) báo có phiên bản mới bằng một dải thông báo kín đáo; cửa sổ riêng cho biết có gì mới và mở bản tải phù hợp với cách bạn cài đặt (trình cài đặt hoặc bản di động). Không có gì được cài tự động. Một công tắc trong menu tùy chọn («Kiểm tra cập nhật khi khởi động») bật hoặc tắt việc kiểm tra tự động, còn «Kiểm tra bản cập nhật phần mềm…» chạy kiểm tra theo yêu cầu.
+- **Cập nhật phần mềm**: kiểm tra hằng ngày (có thể tắt) báo có phiên bản mới bằng một dải thông báo kín đáo; cửa sổ riêng cho biết có gì mới và mở bản tải phù hợp với cách bạn cài đặt (trình cài đặt hoặc bản di động). Không có gì được cài tự động. Một công tắc trong menu tùy chọn («Kiểm tra cập nhật khi khởi động») bật hoặc tắt việc kiểm tra tự động, còn «Kiểm tra bản cập nhật phần mềm…» chạy kiểm tra theo yêu cầu. Trên Linux, đó là AppImage hoặc tệp nén `.tar.gz` phù hợp với kiến trúc của bạn.
 
 ### Giao diện và ngôn ngữ
 
@@ -56,13 +57,16 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 ### Báo lỗi
 
-- Nút «Báo lỗi» chuẩn bị một báo cáo kỹ thuật: phiên bản phần mềm, Python, Windows và yt-dlp, các cài đặt vô hại và những dòng nhật ký cuối. Thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Gửi báo cáo trên GitHub cần có tài khoản GitHub miễn phí.
+- Nút «Báo lỗi» chuẩn bị một báo cáo kỹ thuật: phiên bản phần mềm, Python, hệ điều hành và yt-dlp, các cài đặt vô hại và những dòng nhật ký cuối. Thư mục, tên người dùng và địa chỉ e-mail của bạn được che đi. Gửi báo cáo trên GitHub cần có tài khoản GitHub miễn phí.
 - Không có gì được gửi tự động: bạn xem lại và chỉnh sửa báo cáo, rồi mở trang phiếu GitHub đã điền sẵn (hoặc sao chép báo cáo).
 
 ## Cài đặt
 
 - **Trình cài đặt (khuyến nghị)**: tải `yt-dlp-gui-setup-X.Y.Z.exe` từ [trang các bản phát hành](https://github.com/harlockSuites/YT-dlp-GUI/releases) rồi chạy. Windows 10 hoặc 11 (64 bit), không cần quyền quản trị; không cần Python.
 - **Bản di động**: tải `yt-dlp-gui-portable-X.Y.Z.zip`, giải nén ở bất cứ đâu rồi chạy `yt-dlp-gui.exe`; cài đặt nằm trong thư mục đó.
+- **Linux, AppImage (bản xem trước)**: tải `yt-dlp-gui-X.Y.Z-x86_64.AppImage` từ [trang các bản phát hành](https://github.com/harlockSuites/YT-dlp-GUI/releases), cấp quyền thực thi (`chmod +x`) rồi chạy. Cần `libfuse2` (gói `libfuse2` hoặc `fuse-libs`); nếu không có, hãy chạy với `--appimage-extract-and-run`.
+- **Linux, tệp nén (bản xem trước)**: tải `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`, giải nén (`tar xzf`) rồi chạy `./yt-dlp-gui/yt-dlp-gui`. Cài đặt và các công cụ đã tải nằm trong `~/.local/share/yt-dlp-GUI`; để gỡ cài đặt, hãy xóa thư mục đó cùng tệp hoặc thư mục của phần mềm.
+- **Linux, yêu cầu và kiểm tra**: Linux 64 bit (x86_64) của bản phân phối từ năm 2022 trở lên (glibc 2.35 trở lên). Để kiểm tra một tệp, hãy tải thêm `SHA256SUMS-linux.txt` và chạy trong cùng thư mục: `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`.
 - **Từ mã nguồn**: xem các mục «Yêu cầu» và «Bắt đầu nhanh» bên dưới.
 - **Gỡ cài đặt**: Cài đặt Windows › Ứng dụng › Ứng dụng đã cài đặt › yt-dlp GUI, hoặc lối tắt «Gỡ cài đặt» trong menu Start. Phần mềm đề nghị xóa luôn dữ liệu của nó (cài đặt, hàng đợi, yt-dlp và ffmpeg đã tải); video của bạn không bao giờ bị xóa. Vì việc cài đặt gắn với từng tài khoản Windows, phần mềm chỉ xuất hiện trong danh sách của tài khoản đã cài đặt. Với bản portable, chỉ cần xóa thư mục của nó. Các công cụ cài riêng bằng Chocolatey (ffmpeg, Deno…) không bị gỡ.
 - **Phân tích diệt virus (VirusTotal)**: phiên bản 0.1.7 được phân tích ngày 21 tháng 10 năm 2026. [Trình cài đặt](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) bị 4 trên 69 công cụ gắn cờ (Arctic Wolf, Microsoft, SecureAge, Skyhigh) bằng các phát hiện heuristic chung; [trình khởi chạy của bản portable](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) bị 5 trên 70 công cụ gắn cờ (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya) và [tệp ZIP portable](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) bị 1 trên 66 (Zillya, trên chính tệp lưu trữ). Nhiều khả năng là báo động giả do chương trình được nén và chưa ký số. Kết quả này chỉ áp dụng cho phiên bản này. Nếu còn nghi ngờ, hãy kiểm tra tổng SHA-256.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## Yêu cầu
 
-- Windows
-- [Python 3](https://www.python.org/) có Tkinter (đã gồm trong bản cài chuẩn)
-- `yt-dlp.exe` và nên có [ffmpeg](https://ffmpeg.org/): trình hướng dẫn cài đặt tải chúng ở lần chạy đầu tiên
+- Windows 10 hoặc 11, hoặc Linux 64 bit (bản xem trước)
+- [Python 3](https://www.python.org/) có Tkinter (đã gồm trong bản cài chuẩn) (trên Linux: gói `python3-tk`)
+- `yt-dlp.exe` và nên có [ffmpeg](https://ffmpeg.org/): trình hướng dẫn cài đặt tải chúng ở lần chạy đầu tiên (trên Linux: `yt-dlp`, không có `.exe`)
 
 ## Bắt đầu nhanh
 
 1. Tải hoặc sao chép kho mã này và vào thư mục của nó.
-2. Chạy `yt-dlp-gui.bat` (hoặc `pythonw yt-dlp-gui.pyw`).
+2. Chạy `yt-dlp-gui.bat` (hoặc `pythonw yt-dlp-gui.pyw`). Trên Linux: `python3 yt-dlp-gui.pyw`.
 3. Ở lần chạy đầu tiên, hãy để trình hướng dẫn cài yt-dlp và ffmpeg; nó vẫn có trong menu tùy chọn.
 4. Dán một URL, chọn tùy chọn, rồi tải xuống, thêm vào hàng đợi hoặc mở trình kiểm tra cho một danh sách phát.
 

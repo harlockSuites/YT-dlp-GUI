@@ -4,7 +4,7 @@
 
 [yt-dlp](https://github.com/yt-dlp/yt-dlp) 的图形界面，旨在让每个人都能轻松使用，同时充分发挥它的能力。
 
-> **项目仍在开发中。** 部分功能可能会变化、尚不完整或存在错误。
+> **项目仍在开发中。** 部分功能可能会变化、尚不完整或存在错误。已提供 Windows 版；同时提供 **Linux 预览版**，测试较少。
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@
 - **我们的测试结果**（Windows 11，2026 年 10 月，每个浏览器均已登录 YouTube 账号）：**Firefox** 无论浏览器打开还是关闭都能用。**Opera** **只有在浏览器关闭时**才能用：打开时它会锁定 Cookie 数据库，此时 yt-dlp 会显示“Could not copy Chrome cookie database”。**Chrome、Edge 和 Brave** 即使关闭也会失败：它们对 Cookie 的加密方式 yt-dlp 并不总能读取。这些限制来自浏览器和 yt-dlp，而非本软件，并可能随它们的更新而改变。
 - 如果浏览器设置为**关闭时删除 Cookie**（或使用无痕模式），磁盘上就没有可读取的 Cookie：无论使用 Chrome、Edge、Brave 还是 Firefox，yt-dlp 都无法获取。对于 Chrome、Edge 和 Brave，这是个陷阱：必须先关闭浏览器，而关闭又会清除 Cookie。请关闭该选项，或保留 youtube.com 和 google.com 的 Cookie。
 - **指示灯**显示状态：禁用或失败为红色，未测试或进行中为橙色，Cookie 已加载为绿色。↻ 按钮运行测试，提示文字会说明状态或错误。
+- **在 Linux 上（预览版）**：可选 Firefox、Chromium、Chrome、Brave、Edge、Opera 和 Vivaldi。Chromium 系浏览器用桌面密钥环（GNOME Keyring、KWallet）保护 Cookie：密钥环必须处于解锁状态，也就是说需要已打开的图形会话。目前只试过读取 Firefox 配置文件；**推荐使用 Firefox**。
 
 ### 安装向导、依赖项与 yt-dlp 更新
 
 - **安装向导**：首次启动时，建议从官方 GitHub 仓库下载 yt-dlp 和 ffmpeg。会校验 SHA-256 校验和，且无需管理员权限。
-- **依赖项**：专用窗口检查 ffmpeg、ffprobe、AtomicParsley、MKVToolNix、aria2 和 deno，并可通过 Chocolatey 安装它们。只有 ffmpeg 和 ffprobe 是必需的；deno 建议安装（辅助音轨）；AtomicParsley、MKVToolNix 和 aria2 是可选的：没有它们软件也能运行。
+- **依赖项**：专用窗口检查 ffmpeg、ffprobe、AtomicParsley、MKVToolNix、aria2 和 deno，并可通过 Chocolatey 安装它们。只有 ffmpeg 和 ffprobe 是必需的；deno 建议安装（辅助音轨）；AtomicParsley、MKVToolNix 和 aria2 是可选的：没有它们软件也能运行。在 Linux 上，安装向导会下载 ffmpeg、ffprobe 和 deno（校验 SHA-256，无需管理员权限）；对于 AtomicParsley、MKVToolNix 和 aria2，窗口会显示包管理器（apt、dnf、pacman 或 zypper）的命令，可复制到终端中执行。
 - **更新与诊断**：更新 yt-dlp（`yt-dlp -U`）或替换其可执行文件，显示版本并检查界面所使用的选项。
-- **软件更新**：每天检查一次（可关闭），以不显眼的横幅提示新版本；专用窗口会显示更新内容，并打开与您的安装方式（安装程序或便携版）对应的下载。不会自动安装任何内容。选项菜单中的开关（“启动时检查更新”）可开启或关闭自动检查，“检查软件更新…”则可随时手动检查。
+- **软件更新**：每天检查一次（可关闭），以不显眼的横幅提示新版本；专用窗口会显示更新内容，并打开与您的安装方式（安装程序或便携版）对应的下载。不会自动安装任何内容。选项菜单中的开关（“启动时检查更新”）可开启或关闭自动检查，“检查软件更新…”则可随时手动检查。在 Linux 上，则是与您的架构对应的 AppImage 或 `.tar.gz` 压缩包。
 
 ### 界面与语言
 
@@ -56,13 +57,16 @@
 
 ### 报告错误
 
-- “报告错误”按钮会准备一份技术报告：软件、Python、Windows 和 yt-dlp 的版本、无害的设置以及日志的最后几行。您的文件夹、用户名和电子邮件地址会被隐藏。在 GitHub 上提交报告需要一个免费的 GitHub 账号。
+- “报告错误”按钮会准备一份技术报告：软件、Python、操作系统和 yt-dlp 的版本、无害的设置以及日志的最后几行。您的文件夹、用户名和电子邮件地址会被隐藏。在 GitHub 上提交报告需要一个免费的 GitHub 账号。
 - 不会自动发送任何内容：您先查看并编辑报告，然后打开已预先填写的 GitHub 问题页面（或复制报告）。
 
 ## 安装
 
 - **安装程序（推荐）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-setup-X.Y.Z.exe` 并运行。适用于 Windows 10 或 11（64 位），无需管理员权限，也无需 Python。
 - **便携版**：下载 `yt-dlp-gui-portable-X.Y.Z.zip`，解压到任意位置并运行 `yt-dlp-gui.exe`；设置保存在该文件夹中。
+- **Linux，AppImage（预览版）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-X.Y.Z-x86_64.AppImage`，赋予可执行权限（`chmod +x`）后运行。需要 `libfuse2`（软件包 `libfuse2` 或 `fuse-libs`）；没有时请加上 `--appimage-extract-and-run` 运行。
+- **Linux，压缩包（预览版）**：下载 `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`，解压（`tar xzf`）后运行 `./yt-dlp-gui/yt-dlp-gui`。设置和已下载的工具位于 `~/.local/share/yt-dlp-GUI`；卸载时，请删除该文件夹以及软件的文件或文件夹。
+- **Linux，系统要求与校验**：64 位 Linux（x86_64），发行版为 2022 年或更新（glibc 2.35 或更高）。要校验文件，请同时下载 `SHA256SUMS-linux.txt`，并在同一文件夹中运行：`sha256sum -c SHA256SUMS-linux.txt --ignore-missing`。
 - **从源代码运行**：请参阅下方的“系统要求”和“快速开始”。
 - **卸载**：Windows 设置 › 应用 › 已安装的应用 › yt-dlp GUI，或开始菜单中的“卸载”快捷方式。软件会询问是否一并删除其数据（设置、队列、已下载的 yt-dlp 和 ffmpeg）；您的视频绝不会被删除。由于安装属于各个 Windows 账户，软件只出现在安装它的账户的列表中。便携版只需删除其文件夹。通过 Chocolatey 单独安装的工具（ffmpeg、Deno 等）不会被移除。
 - **杀毒软件检测（VirusTotal）**：0.1.7 版本已于 2026 年 10 月 21 日检测。[安装程序](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)被 69 个引擎中的 4 个标记（Arctic Wolf、Microsoft、SecureAge、Skyhigh），均为通用启发式检测；[便携版的启动程序](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)被 70 个中的 5 个标记（Arctic Wolf、CrowdStrike Falcon、Microsoft、SecureAge、Zillya），[便携版 ZIP 压缩包](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)被 66 个中的 1 个标记（Zillya，针对压缩包本身）。很可能是因程序经过压缩且未签名而产生的误报。这些结果仅适用于该版本。如有疑虑，请核对 SHA-256 校验值。
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## 系统要求
 
-- Windows
-- 带 Tkinter 的 [Python 3](https://www.python.org/)（标准安装已包含）
-- `yt-dlp.exe`，建议同时安装 [ffmpeg](https://ffmpeg.org/)：安装向导会在首次启动时下载它们
+- Windows 10 或 11，或 64 位 Linux（预览版）
+- 带 Tkinter 的 [Python 3](https://www.python.org/)（标准安装已包含）（Linux 上：软件包 `python3-tk`）
+- `yt-dlp.exe`，建议同时安装 [ffmpeg](https://ffmpeg.org/)：安装向导会在首次启动时下载它们（Linux 上为 `yt-dlp`，没有 `.exe`）
 
 ## 快速开始
 
 1. 下载或克隆此仓库并进入其文件夹。
-2. 运行 `yt-dlp-gui.bat`（或 `pythonw yt-dlp-gui.pyw`）。
+2. 运行 `yt-dlp-gui.bat`（或 `pythonw yt-dlp-gui.pyw`）。在 Linux 上：`python3 yt-dlp-gui.pyw`。
 3. 首次启动时，让向导安装 yt-dlp 和 ffmpeg；之后仍可在选项菜单中打开它。
 4. 粘贴 URL，选择选项，然后下载、加入队列，或为播放列表打开检查器。
 

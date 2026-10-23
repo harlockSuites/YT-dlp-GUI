@@ -4,7 +4,7 @@
 
 Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na idinisenyo para maging abot-kamay ng lahat habang lubos na ginagamit ang mga kakayahan nito.
 
-> **Ginagawa pa ang proyekto.** Maaaring magbago, hindi pa kumpleto o may mga bug ang ilang feature.
+> **Ginagawa pa ang proyekto.** Maaaring magbago, hindi pa kumpleto o may mga bug ang ilang feature. Available para sa Windows; may iniaalok ding **preview para sa Linux**, na mas kaunti ang nasubukan.
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 - **Mga resulta ng aming mga pagsubok** (Windows 11, Oktubre 2026, naka-sign in ang YouTube account sa bawat browser): gumagana ang **Firefox**, bukas man o sarado ang browser. Gumagana ang **Opera** **kapag sarado lang ang browser**: ni-lo-lock nito ang cookie database habang bukas, at ipapakita ng yt-dlp ang "Could not copy Chrome cookie database". Pumapalya ang **Chrome, Edge at Brave** kahit sarado: ine-encrypt nila ang mga cookie sa paraang hindi laging nababasa ng yt-dlp. Ang mga limitasyong ito ay mula sa mga browser at yt-dlp, hindi sa software na ito, at maaaring magbago sa mga update nila.
 - Kung naka-set ang browser na **burahin ang mga cookie kapag isinara** (o nagba-browse ka sa private mode), walang matitirang cookie sa disk na mababasa: wala nang makukuha ang yt-dlp, gamit man ang Chrome, Edge, Brave o Firefox. Sa Chrome, Edge at Brave, isa itong bitag: kailangang isara ang browser, at buburahin nito ang mga cookie. I-off ang opsyong iyon, o panatilihin ang mga cookie ng youtube.com at google.com.
 - Ipinapakita ng isang **ilaw na indikasyon** ang kalagayan: pula kung naka-disable o nabigo, kahel kung hindi pa nasusubok o isinasagawa, berde kung na-load ang mga cookie. Nagpapatakbo ng pagsubok ang button na ↻ at ipinaliliwanag ng tooltip ang kalagayan o error.
+- **Sa Linux (preview)**: iniaalok ang Firefox, Chromium, Chrome, Brave, Edge, Opera at Vivaldi. Pinoprotektahan ng mga browser na kabilang sa pamilyang Chromium ang kanilang mga cookie gamit ang key ring ng desktop (GNOME Keyring, KWallet): dapat itong naka-unlock, kaya dapat bukas ang isang graphical session. Pagbasa lang ng isang Firefox profile ang nasubukan; **inirerekomenda ang Firefox**.
 
 ### Katulong sa pag-install, mga dependency at mga update ng yt-dlp
 
 - **Katulong sa pag-install**: sa unang pagbukas, iminumungkahi nitong i-download ang yt-dlp at ffmpeg mula sa kanilang opisyal na GitHub repository. Bine-verify ang SHA-256 checksum at hindi kailangan ng administrator rights.
-- **Mga dependency**: sinusuri ng nakalaang window ang ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 at deno, at maaari silang i-install gamit ang Chocolatey. Ang ffmpeg at ffprobe lamang ang kailangang-kailangan; inirerekomenda ang deno (mga pangalawang audio track); opsyonal ang AtomicParsley, MKVToolNix at aria2: gumagana ang software kahit wala ang mga ito.
+- **Mga dependency**: sinusuri ng nakalaang window ang ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 at deno, at maaari silang i-install gamit ang Chocolatey. Ang ffmpeg at ffprobe lamang ang kailangang-kailangan; inirerekomenda ang deno (mga pangalawang audio track); opsyonal ang AtomicParsley, MKVToolNix at aria2: gumagana ang software kahit wala ang mga ito. Sa Linux, dina-download ng katulong ang ffmpeg, ffprobe at deno (bine-verify ang SHA-256 checksum, walang karapatan ng administrator); para sa AtomicParsley, MKVToolNix at aria2, ipinapakita ng window ang command ng iyong package manager (apt, dnf, pacman o zypper) na kokopyahin sa terminal.
 - **Update at diagnostic**: ina-update ang yt-dlp (`yt-dlp -U`) o pinapalitan ang executable nito, ipinapakita ang bersyon at sinusuri ang mga opsyong ginagamit ng interface.
-- **Update ng software**: ang araw-araw na pagsusuri (maaaring i-off) ay nagsasaad ng bagong bersyon gamit ang isang banayad na banner; ipinapakita ng nakalaang window ang mga bago at binubuksan ang download na tugma sa iyong pag-install (installer o portable na bersyon). Walang awtomatikong ini-install. Ino-on o ino-off ng switch sa menu ng mga opsyon ("Suriin ang mga update sa pagsisimula") ang awtomatikong pagsusuri, at pinapatakbo ito kapag hiniling ng "Maghanap ng update ng software…".
+- **Update ng software**: ang araw-araw na pagsusuri (maaaring i-off) ay nagsasaad ng bagong bersyon gamit ang isang banayad na banner; ipinapakita ng nakalaang window ang mga bago at binubuksan ang download na tugma sa iyong pag-install (installer o portable na bersyon). Walang awtomatikong ini-install. Ino-on o ino-off ng switch sa menu ng mga opsyon ("Suriin ang mga update sa pagsisimula") ang awtomatikong pagsusuri, at pinapatakbo ito kapag hiniling ng "Maghanap ng update ng software…". Sa Linux, ito ang AppImage o ang `.tar.gz` archive na tugma sa iyong architecture.
 
 ### Interface at mga wika
 
@@ -56,13 +57,16 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 
 ### Mag-ulat ng bug
 
-- Naghahanda ang button na "Mag-ulat ng bug" ng teknikal na ulat: mga bersyon ng software, Python, Windows at yt-dlp, mga hindi mapanganib na setting at ang mga huling linya ng log. Nakatago ang iyong mga folder, pangalan ng user at mga e-mail address. Kailangan ng libreng GitHub account para maipadala ang ulat sa GitHub.
+- Naghahanda ang button na "Mag-ulat ng bug" ng teknikal na ulat: mga bersyon ng software, Python, operating system at yt-dlp, mga hindi mapanganib na setting at ang mga huling linya ng log. Nakatago ang iyong mga folder, pangalan ng user at mga e-mail address. Kailangan ng libreng GitHub account para maipadala ang ulat sa GitHub.
 - Walang awtomatikong ipinapadala: sinusuri at ine-edit mo ang ulat, saka magbubukas ng paunang-punong GitHub issue page (o kokopyahin ang ulat).
 
 ## Pag-install
 
 - **Installer (inirerekomenda)**: i-download ang `yt-dlp-gui-setup-X.Y.Z.exe` mula sa [pahina ng mga release](https://github.com/harlockSuites/YT-dlp-GUI/releases) at patakbuhin ito. Windows 10 o 11 (64-bit), walang kailangang administrator rights; hindi kailangan ang Python.
 - **Portable na bersyon**: i-download ang `yt-dlp-gui-portable-X.Y.Z.zip`, i-extract kahit saan at patakbuhin ang `yt-dlp-gui.exe`; nananatili ang mga setting sa folder na iyon.
+- **Linux, AppImage (preview)**: i-download ang `yt-dlp-gui-X.Y.Z-x86_64.AppImage` mula sa [pahina ng mga release](https://github.com/harlockSuites/YT-dlp-GUI/releases), gawin itong executable (`chmod +x`) at patakbuhin. Kailangan nito ang `libfuse2` (package na `libfuse2` o `fuse-libs`); kung wala, patakbuhin ito gamit ang `--appimage-extract-and-run`.
+- **Linux, archive (preview)**: i-download ang `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`, i-extract (`tar xzf`) at patakbuhin ang `./yt-dlp-gui/yt-dlp-gui`. Ang mga setting at na-download na tool ay nasa `~/.local/share/yt-dlp-GUI`; para i-uninstall, burahin ang folder na iyon at ang file o folder ng software.
+- **Linux, mga kinakailangan at pag-verify**: 64-bit na Linux (x86_64) mula sa distribution na 2022 o mas bago (glibc 2.35 o mas mataas). Para i-verify ang isang file, i-download din ang `SHA256SUMS-linux.txt` at patakbuhin sa parehong folder: `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`.
 - **Mula sa source code**: tingnan ang mga seksyong "Mga kinakailangan" at "Mabilis na simula" sa ibaba.
 - **Pag-uninstall**: Windows Settings › Apps › Installed apps › yt-dlp GUI, o ang shortcut na "Uninstall" sa Start menu. Iniaalok ng software na burahin din ang sarili nitong data (settings, pila, na-download na yt-dlp at ffmpeg); hindi kailanman binubura ang iyong mga video. Dahil sa bawat Windows account ang installation, lalabas lang ang software sa listahan ng account na nag-install nito. Sa portable na bersyon, burahin lang ang folder nito. Hindi inaalis ang mga tool na hiwalay na na-install gamit ang Chocolatey (ffmpeg, Deno…).
 - **Pagsusuri ng antivirus (VirusTotal)**: sinuri ang bersyon 0.1.7 noong 21 Oktubre 2026. Ang [installer](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) ay namarkahan ng 4 sa 69 na engine (Arctic Wolf, Microsoft, SecureAge, Skyhigh) sa pamamagitan ng pangkalahatang heuristic na pagtuklas; ang [launcher ng portable na bersyon](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) ay namarkahan ng 5 sa 70 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya) at ang [portable na ZIP archive](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) ng 1 sa 66 (Zillya, sa mismong archive). Malamang na maling alarma ang mga ito dahil sa naka-compress at hindi pirmadong programa. Para lang sa bersyong ito ang mga resultang ito. Kung may alinlangan, suriin ang SHA-256 na kabuuan.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## Mga kinakailangan
 
-- Windows
-- [Python 3](https://www.python.org/) na may Tkinter (kasama sa karaniwang pag-install)
-- `yt-dlp.exe` at mas mainam ang [ffmpeg](https://ffmpeg.org/): dina-download ang mga ito ng katulong sa pag-install sa unang pagbukas
+- Windows 10 o 11, o 64-bit na Linux (preview)
+- [Python 3](https://www.python.org/) na may Tkinter (kasama sa karaniwang pag-install) (sa Linux: ang package na `python3-tk`)
+- `yt-dlp.exe` at mas mainam ang [ffmpeg](https://ffmpeg.org/): dina-download ang mga ito ng katulong sa pag-install sa unang pagbukas (sa Linux: `yt-dlp`, walang `.exe`)
 
 ## Mabilis na simula
 
 1. I-download o i-clone ang repository na ito at pumunta sa folder nito.
-2. Patakbuhin ang `yt-dlp-gui.bat` (o `pythonw yt-dlp-gui.pyw`).
+2. Patakbuhin ang `yt-dlp-gui.bat` (o `pythonw yt-dlp-gui.pyw`). Sa Linux: `python3 yt-dlp-gui.pyw`.
 3. Sa unang pagbukas, hayaang i-install ng katulong ang yt-dlp at ffmpeg; nananatili itong available sa menu ng mga opsyon.
 4. Mag-paste ng URL, piliin ang mga opsyon, saka mag-download, magdagdag sa pila o buksan ang inspector para sa isang playlist.
 

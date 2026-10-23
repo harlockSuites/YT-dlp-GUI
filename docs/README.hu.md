@@ -4,7 +4,7 @@
 
 Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely mindenki számára elérhetővé teszi, miközben teljes mértékben kihasználja a képességeit.
 
-> **Fejlesztés alatt álló projekt.** Egyes funkciók változhatnak, hiányosak lehetnek vagy hibákat tartalmazhatnak.
+> **Fejlesztés alatt álló projekt.** Egyes funkciók változhatnak, hiányosak lehetnek vagy hibákat tartalmazhatnak. Windowson érhető el; **Linuxra előzetes verzió** is elérhető, kevésbé kipróbálva.
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 - **Tesztjeink eredményei** (Windows 11, 2026. október, minden böngészőben bejelentkezett YouTube-fiókkal): a **Firefox** működik, nyitott és zárt böngészővel is. Az **Opera** **csak zárt böngészővel** működik: nyitva zárolja a sütiadatbázisát, és a yt-dlp ilyenkor a „Could not copy Chrome cookie database” üzenetet jeleníti meg. A **Chrome, az Edge és a Brave** zárt állapotban is hibázik: úgy titkosítják a sütiket, hogy a yt-dlp nem mindig tudja beolvasni őket. Ezek a korlátok a böngészőktől és a yt-dlp-től származnak, nem a programtól, és a frissítéseikkel változhatnak.
 - Ha a böngésző úgy van beállítva, hogy **bezáráskor törli a sütiket** (vagy privát módban böngészik), nem marad olvasható süti a lemezen: a yt-dlp semmit sem tud kinyerni, sem Chrome-mal, Edge-dzsel, Brave-vel, sem Firefoxszal. Chrome, Edge és Brave esetén ez csapda: be kell zárni a böngészőt, ami törli a sütiket. Kapcsolja ki ezt a beállítást, vagy tartsa meg a youtube.com és a google.com sütijeit.
 - Egy **jelzőfény** mutatja az állapotot: piros, ha ki van kapcsolva vagy hibás, narancs, ha nincs tesztelve vagy folyamatban van, zöld, ha a sütik betöltődtek. A ↻ gomb tesztet indít, a buborékszöveg pedig elmagyarázza az állapotot vagy a hibát.
+- **Linuxon (előzetes verzió)**: a Firefox, a Chromium, a Chrome, a Brave, az Edge, az Opera és a Vivaldi választható. A Chromium-családba tartozó böngészők az asztali kulcstartóval (GNOME Keyring, KWallet) védik a sütiket: feloldottnak kell lennie, vagyis grafikus munkamenetnek kell nyitva lennie. Csak egy Firefox-profil olvasását próbáltuk ki; **a Firefox ajánlott**.
 
 ### Telepítő varázsló, függőségek és a yt-dlp frissítései
 
 - **Telepítő varázsló**: az első indításkor felajánlja a yt-dlp és az ffmpeg letöltését a hivatalos GitHub-tárolókból. Az SHA-256 ellenőrzőösszeg ellenőrzésre kerül, és nincs szükség rendszergazdai jogosultságra.
-- **Függőségek**: a külön ablak ellenőrzi az ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 és deno meglétét, és Chocolatey segítségével telepítheti őket. Csak az ffmpeg és az ffprobe nélkülözhetetlen; a deno ajánlott (másodlagos hangsávok); az AtomicParsley, az MKVToolNix és az aria2 választható: a program nélkülük is működik.
+- **Függőségek**: a külön ablak ellenőrzi az ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 és deno meglétét, és Chocolatey segítségével telepítheti őket. Csak az ffmpeg és az ffprobe nélkülözhetetlen; a deno ajánlott (másodlagos hangsávok); az AtomicParsley, az MKVToolNix és az aria2 választható: a program nélkülük is működik. Linuxon a varázsló letölti az ffmpeg, az ffprobe és a deno eszközt (ellenőrzött SHA-256 összeg, rendszergazdai jogok nélkül); az AtomicParsley, az MKVToolNix és az aria2 esetén az ablak a csomagkezelő (apt, dnf, pacman vagy zypper) parancsát mutatja, amelyet terminálba kell másolni.
 - **Frissítés és diagnosztika**: frissíti a yt-dlp-t (`yt-dlp -U`) vagy lecseréli a futtatható fájlját, megmutatja a verzióját, és ellenőrzi a felület által használt kapcsolókat.
-- **Programfrissítés**: a naponta végzett (kikapcsolható) ellenőrzés egy diszkrét sávval jelzi az új verziót; a külön ablak megmutatja az újdonságokat, és megnyitja a telepítésének megfelelő letöltést (telepítő vagy hordozható változat). Semmi nem települ automatikusan. A beállítások menü kapcsolója („Frissítések keresése indításkor”) be- vagy kikapcsolja az automatikus ellenőrzést, a „Programfrissítés keresése…” pedig kérésre lefuttatja.
+- **Programfrissítés**: a naponta végzett (kikapcsolható) ellenőrzés egy diszkrét sávval jelzi az új verziót; a külön ablak megmutatja az újdonságokat, és megnyitja a telepítésének megfelelő letöltést (telepítő vagy hordozható változat). Semmi nem települ automatikusan. A beállítások menü kapcsolója („Frissítések keresése indításkor”) be- vagy kikapcsolja az automatikus ellenőrzést, a „Programfrissítés keresése…” pedig kérésre lefuttatja. Linuxon ez az architektúrájának megfelelő AppImage vagy `.tar.gz` archívum.
 
 ### Felület és nyelvek
 
@@ -56,13 +57,16 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 ### Hiba jelentése
 
-- A „Hiba jelentése” gomb műszaki jelentést készít: a program, a Python, a Windows és a yt-dlp verziója, ártalmatlan beállítások és a napló utolsó sorai. A mappái, a felhasználóneve és az e-mail-címei el vannak takarva. A jelentés GitHubon való elküldéséhez ingyenes GitHub-fiók szükséges.
+- A „Hiba jelentése” gomb műszaki jelentést készít: a program, a Python, az operációs rendszer és a yt-dlp verziója, ártalmatlan beállítások és a napló utolsó sorai. A mappái, a felhasználóneve és az e-mail-címei el vannak takarva. A jelentés GitHubon való elküldéséhez ingyenes GitHub-fiók szükséges.
 - Semmi nem megy el automatikusan: Ön átnézi és szerkeszti a jelentést, majd megnyit egy előre kitöltött GitHub-hibajegyoldalt (vagy kimásolja a jelentést).
 
 ## Telepítés
 
 - **Telepítő (ajánlott)**: töltse le a `yt-dlp-gui-setup-X.Y.Z.exe` fájlt a [kiadások oldaláról](https://github.com/harlockSuites/YT-dlp-GUI/releases), és futtassa. Windows 10 vagy 11 (64 bites), rendszergazdai jogosultság nélkül; Python nem szükséges.
 - **Hordozható változat**: töltse le a `yt-dlp-gui-portable-X.Y.Z.zip` fájlt, csomagolja ki bárhová, és futtassa a `yt-dlp-gui.exe` fájlt; a beállítások ebben a mappában maradnak.
+- **Linux, AppImage (előzetes verzió)**: töltse le a `yt-dlp-gui-X.Y.Z-x86_64.AppImage` fájlt a [kiadások oldaláról](https://github.com/harlockSuites/YT-dlp-GUI/releases), tegye futtathatóvá (`chmod +x`), és indítsa el. Szüksége van a `libfuse2` csomagra (`libfuse2` vagy `fuse-libs`); nélküle indítsa a `--appimage-extract-and-run` kapcsolóval.
+- **Linux, archívum (előzetes verzió)**: töltse le a `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz` fájlt, csomagolja ki (`tar xzf`), és futtassa a `./yt-dlp-gui/yt-dlp-gui` parancsot. A beállítások és a letöltött eszközök a `~/.local/share/yt-dlp-GUI` mappában vannak; eltávolításhoz törölje ezt a mappát és a program fájlját vagy mappáját.
+- **Linux, követelmények és ellenőrzés**: 64 bites Linux (x86_64), 2022-es vagy újabb disztribúció (glibc 2.35 vagy újabb). Egy fájl ellenőrzéséhez töltse le a `SHA256SUMS-linux.txt` fájlt is, és ugyanabban a mappában futtassa: `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`.
 - **Forráskódból**: lásd lentebb a „Követelmények” és a „Gyors kezdés” részt.
 - **Eltávolítás**: Windows Beállítások › Alkalmazások › Telepített alkalmazások › yt-dlp GUI, vagy a Start menü „Eltávolítás” parancsikonja. A program felajánlja az adatai (beállítások, várólista, letöltött yt-dlp és ffmpeg) törlését is; a videóid soha nem törlődnek. Mivel a telepítés Windows-fiókonként külön van, a program csak azon fiók listájában jelenik meg, amelyik telepítette. A hordozható változatnál elég a mappáját törölni. A Chocolatey-vel külön telepített eszközök (ffmpeg, Deno…) nem törlődnek.
 - **Víruskeresős elemzés (VirusTotal)**: a 0.1.7-es verziót 2026. október 21-én elemezték. A [telepítőt](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) a 69 motorból 4 (Arctic Wolf, Microsoft, SecureAge, Skyhigh) jelöli általános heurisztikus észleléssel; a [hordozható verzió indítóját](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) a 70-ből 5 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya), a [hordozható ZIP-archívumot](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) pedig a 66-ból 1 (Zillya, magán az archívumon) jelöli. Valószínűleg téves riasztások, mert a program tömörített és nincs aláírva. Ezek az eredmények csak erre a verzióra érvényesek. Ha bizonytalan, ellenőrizze az SHA-256 összeget.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## Követelmények
 
-- Windows
-- [Python 3](https://www.python.org/) Tkinterrel (a szabványos telepítés része)
-- `yt-dlp.exe` és lehetőleg az [ffmpeg](https://ffmpeg.org/): a telepítő varázsló az első indításkor letölti őket
+- Windows 10 vagy 11, illetve 64 bites Linux (előzetes verzió)
+- [Python 3](https://www.python.org/) Tkinterrel (a szabványos telepítés része) (Linuxon: a `python3-tk` csomag)
+- `yt-dlp.exe` és lehetőleg az [ffmpeg](https://ffmpeg.org/): a telepítő varázsló az első indításkor letölti őket (Linuxon: `yt-dlp`, `.exe` nélkül)
 
 ## Gyors kezdés
 
 1. Töltse le vagy klónozza ezt a tárolót, és lépjen a mappájába.
-2. Indítsa el a `yt-dlp-gui.bat` fájlt (vagy a `pythonw yt-dlp-gui.pyw` parancsot).
+2. Indítsa el a `yt-dlp-gui.bat` fájlt (vagy a `pythonw yt-dlp-gui.pyw` parancsot). Linuxon: `python3 yt-dlp-gui.pyw`.
 3. Az első indításkor hagyja, hogy a varázsló telepítse a yt-dlp-t és az ffmpeg-et; a beállítások menüből később is elérhető.
 4. Illesszen be egy URL-t, válassza ki a beállításokat, majd töltsön le, adja hozzá a sorhoz, vagy nyissa meg a vizsgálót egy lejátszási listához.
 

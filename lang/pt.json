@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "Gerenciador de pacotes não reconhecido: use o site oficial de cada ferramenta.",
   "cookie.hint_locked_running_linux": "O {browser} ainda está em execução ({n} processos), talvez em segundo plano mesmo com a janela fechada: é ele que mantém bloqueada a sua base de cookies. Encerre-o com o monitor do sistema (ou com o comando pkill em um terminal) e tente novamente. O Firefox, recomendado, não tem esse limite.",
   "cookie.hint_decrypt_linux": "Não foi possível descriptografar os cookies do {browser}: no Linux eles são protegidos pelo chaveiro da área de trabalho (GNOME Keyring ou KWallet), que precisa estar desbloqueado. Use uma sessão gráfica normal ou o Firefox (recomendado).",
-  "cookie.note_keyring": "Os cookies deste navegador são protegidos pelo chaveiro da área de trabalho (GNOME Keyring, KWallet): ele precisa estar desbloqueado, ou seja, com uma sessão gráfica aberta. Recomendamos o Firefox."
+  "cookie.note_keyring": "Os cookies deste navegador são protegidos pelo chaveiro da área de trabalho (GNOME Keyring, KWallet): ele precisa estar desbloqueado, ou seja, com uma sessão gráfica aberta. Recomendamos o Firefox.",
+  "upd.replace_title_dialog_linux": "Escolher o novo arquivo yt-dlp"
 }

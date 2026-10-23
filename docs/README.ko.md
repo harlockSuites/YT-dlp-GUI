@@ -4,7 +4,7 @@
 
 [yt-dlp](https://github.com/yt-dlp/yt-dlp)를 위한 그래픽 인터페이스로, 누구나 쉽게 사용하면서 그 기능을 최대한 활용할 수 있도록 만들었습니다.
 
-> **개발 중인 프로젝트입니다.** 일부 기능은 변경되거나 불완전하거나 버그가 있을 수 있습니다.
+> **개발 중인 프로젝트입니다.** 일부 기능은 변경되거나 불완전하거나 버그가 있을 수 있습니다. Windows용으로 제공되며, 검증이 덜 된 **Linux용 미리보기 버전**도 함께 제공합니다.
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@
 - **우리의 테스트 결과**(Windows 11, 2026년 10월, 각 브라우저에서 YouTube 계정에 로그인한 상태): **Firefox**는 브라우저가 열려 있든 닫혀 있든 작동합니다. **Opera**는 **브라우저를 닫았을 때만** 작동합니다. 실행 중에는 쿠키 데이터베이스를 잠가 yt-dlp에 'Could not copy Chrome cookie database'가 표시됩니다. **Chrome, Edge, Brave**는 닫아도 실패합니다. yt-dlp가 항상 읽을 수는 없는 방식으로 쿠키를 암호화하기 때문입니다. 이러한 제한은 브라우저와 yt-dlp에서 비롯되며 이 소프트웨어의 문제가 아니고, 업데이트에 따라 달라질 수 있습니다.
 - 브라우저가 **종료 시 쿠키를 삭제**하도록 설정되어 있거나(또는 비공개 모드로 탐색하는 경우) 디스크에 읽을 쿠키가 남지 않습니다. Chrome, Edge, Brave, Firefox 어느 것을 쓰든 yt-dlp는 아무것도 가져올 수 없습니다. Chrome, Edge, Brave에서는 이것이 함정입니다. 브라우저를 종료해야 하는데, 종료하면 쿠키가 지워지기 때문입니다. 이 옵션을 끄거나 youtube.com과 google.com의 쿠키를 유지하세요.
 - **표시등**이 상태를 보여 줍니다: 비활성 또는 실패는 빨간색, 미테스트 또는 진행 중은 주황색, 쿠키가 로드되면 초록색. ↻ 버튼은 테스트를 실행하고, 툴팁이 상태나 오류를 설명합니다.
+- **Linux(미리보기 버전)**: Firefox, Chromium, Chrome, Brave, Edge, Opera, Vivaldi를 선택할 수 있습니다. Chromium 계열 브라우저는 쿠키를 데스크톱 키링(GNOME Keyring, KWallet)으로 보호하므로 키링이 잠금 해제되어 있어야 하고, 그래픽 세션이 열려 있어야 합니다. 지금까지 확인한 것은 Firefox 프로필 읽기뿐이며, **Firefox를 권장합니다**.
 
 ### 설치 도우미, 종속성, yt-dlp 업데이트
 
 - **설치 도우미**: 처음 실행할 때 공식 GitHub 저장소에서 yt-dlp와 ffmpeg를 내려받도록 제안합니다. SHA-256 체크섬을 검증하며 관리자 권한이 필요하지 않습니다.
-- **종속성**: 전용 창에서 ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2, deno를 확인하고 Chocolatey로 설치할 수 있습니다. ffmpeg와 ffprobe만 필수입니다. deno는 권장(보조 오디오 트랙용), AtomicParsley, MKVToolNix, aria2는 선택 사항이며 없어도 동작합니다.
+- **종속성**: 전용 창에서 ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2, deno를 확인하고 Chocolatey로 설치할 수 있습니다. ffmpeg와 ffprobe만 필수입니다. deno는 권장(보조 오디오 트랙용), AtomicParsley, MKVToolNix, aria2는 선택 사항이며 없어도 동작합니다. Linux에서는 설치 도우미가 ffmpeg, ffprobe, deno를 내려받습니다(SHA-256 검증, 관리자 권한 불필요). AtomicParsley, MKVToolNix, aria2는 창에 패키지 관리자(apt, dnf, pacman, zypper)의 명령이 표시되며, 터미널에 복사해 실행하면 됩니다.
 - **업데이트와 진단**: yt-dlp를 업데이트(`yt-dlp -U`)하거나 실행 파일을 교체하고, 버전을 표시하며, GUI가 사용하는 옵션을 확인합니다.
-- **소프트웨어 업데이트**: 하루에 한 번 확인하며(끌 수 있음) 새 버전이 있으면 눈에 띄지 않는 배너로 알립니다. 전용 창에서 새로운 기능을 보여 주고 설치 방식(설치 프로그램 또는 휴대용 버전)에 맞는 다운로드를 엽니다. 자동으로 설치되는 것은 없습니다. 옵션 메뉴의 스위치('시작할 때 업데이트 확인')로 자동 확인을 켜거나 끌 수 있고, '소프트웨어 업데이트 확인…'로 원할 때 직접 확인할 수 있습니다.
+- **소프트웨어 업데이트**: 하루에 한 번 확인하며(끌 수 있음) 새 버전이 있으면 눈에 띄지 않는 배너로 알립니다. 전용 창에서 새로운 기능을 보여 주고 설치 방식(설치 프로그램 또는 휴대용 버전)에 맞는 다운로드를 엽니다. 자동으로 설치되는 것은 없습니다. 옵션 메뉴의 스위치('시작할 때 업데이트 확인')로 자동 확인을 켜거나 끌 수 있고, '소프트웨어 업데이트 확인…'로 원할 때 직접 확인할 수 있습니다. Linux에서는 사용 중인 아키텍처에 맞는 AppImage 또는 `.tar.gz` 압축 파일입니다.
 
 ### 인터페이스와 언어
 
@@ -56,13 +57,16 @@
 
 ### 버그 신고
 
-- '버그 신고' 버튼은 기술 보고서를 준비합니다: 소프트웨어, Python, Windows, yt-dlp의 버전, 무해한 설정, 로그의 마지막 줄. 폴더, 사용자 이름, 이메일 주소는 가려집니다. GitHub에 보고서를 보내려면 무료 GitHub 계정이 필요합니다.
+- '버그 신고' 버튼은 기술 보고서를 준비합니다: 소프트웨어, Python, 운영체제, yt-dlp의 버전, 무해한 설정, 로그의 마지막 줄. 폴더, 사용자 이름, 이메일 주소는 가려집니다. GitHub에 보고서를 보내려면 무료 GitHub 계정이 필요합니다.
 - 자동으로 전송되는 것은 없습니다: 보고서를 검토하고 편집한 뒤 미리 채워진 GitHub 이슈 페이지를 열거나 보고서를 복사합니다.
 
 ## 설치
 
 - **설치 프로그램(권장)**: [릴리스 페이지](https://github.com/harlockSuites/YT-dlp-GUI/releases)에서 `yt-dlp-gui-setup-X.Y.Z.exe`를 내려받아 실행하세요. Windows 10 또는 11(64비트)에서 관리자 권한 없이 설치되며 Python은 필요하지 않습니다.
 - **휴대용 버전**: `yt-dlp-gui-portable-X.Y.Z.zip`을 내려받아 원하는 곳에 압축을 풀고 `yt-dlp-gui.exe`를 실행하세요. 설정은 그 폴더에 저장됩니다.
+- **Linux, AppImage(미리보기 버전)**: [릴리스 페이지](https://github.com/harlockSuites/YT-dlp-GUI/releases)에서 `yt-dlp-gui-X.Y.Z-x86_64.AppImage`를 내려받아 실행 권한을 주고(`chmod +x`) 실행하세요. `libfuse2`(패키지 `libfuse2` 또는 `fuse-libs`)가 필요하며, 없으면 `--appimage-extract-and-run` 옵션으로 실행하세요.
+- **Linux, 압축 파일(미리보기 버전)**: `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`를 내려받아 압축을 풀고(`tar xzf`) `./yt-dlp-gui/yt-dlp-gui`를 실행하세요. 설정과 내려받은 도구는 `~/.local/share/yt-dlp-GUI`에 있으며, 삭제하려면 이 폴더와 프로그램 파일 또는 폴더를 지우세요.
+- **Linux, 요구 사항과 검증**: 2022년 이후 배포판의 64비트 Linux(x86_64)(glibc 2.35 이상). 파일을 검증하려면 `SHA256SUMS-linux.txt`도 함께 내려받아 같은 폴더에서 `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`을 실행하세요.
 - **소스에서 실행**: 아래의 '요구 사항'과 '빠른 시작'을 참고하세요.
 - **제거**: Windows 설정 › 앱 › 설치된 앱 › yt-dlp GUI, 또는 시작 메뉴의 '제거' 바로 가기. 소프트웨어가 자체 데이터(설정, 대기열, 내려받은 yt-dlp와 ffmpeg)도 삭제할지 묻습니다. 동영상은 절대 삭제되지 않습니다. 설치는 Windows 계정별로 이루어지므로, 소프트웨어는 설치한 계정의 목록에만 나타납니다. 포터블 버전은 폴더만 삭제하면 됩니다. Chocolatey로 따로 설치한 도구(ffmpeg, Deno 등)는 제거되지 않습니다.
 - **백신 분석(VirusTotal)**: 0.1.7 버전은 2026년 10월 21일에 분석되었습니다. [설치 프로그램](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)은 69개 엔진 중 4개(Arctic Wolf, Microsoft, SecureAge, Skyhigh)에서 일반적인 휴리스틱 탐지로 표시되었고, [포터블 버전의 실행 파일](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)은 70개 중 5개(Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya), [포터블 ZIP 아카이브](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)는 66개 중 1개(Zillya, 아카이브 자체에 대한 탐지)에서 표시되었습니다. 압축되고 서명되지 않은 프로그램 때문에 생긴 오탐일 가능성이 높습니다. 이 결과는 이 버전에만 해당합니다. 걱정되면 SHA-256 합계를 확인하세요.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## 요구 사항
 
-- Windows
-- Tkinter가 포함된 [Python 3](https://www.python.org/) (표준 설치에 포함)
-- `yt-dlp.exe`와 가급적 [ffmpeg](https://ffmpeg.org/): 설치 도우미가 처음 실행할 때 내려받습니다
+- Windows 10 또는 11, 또는 64비트 Linux(미리보기 버전)
+- Tkinter가 포함된 [Python 3](https://www.python.org/) (표준 설치에 포함) (Linux에서는 `python3-tk` 패키지)
+- `yt-dlp.exe`와 가급적 [ffmpeg](https://ffmpeg.org/): 설치 도우미가 처음 실행할 때 내려받습니다 (Linux에서는 `.exe` 없는 `yt-dlp`)
 
 ## 빠른 시작
 
 1. 이 저장소를 내려받거나 복제하고 해당 폴더로 이동합니다.
-2. `yt-dlp-gui.bat`(또는 `pythonw yt-dlp-gui.pyw`)를 실행합니다.
+2. `yt-dlp-gui.bat`(또는 `pythonw yt-dlp-gui.pyw`)를 실행합니다. Linux에서는 `python3 yt-dlp-gui.pyw`를 실행합니다.
 3. 처음 실행할 때 도우미가 yt-dlp와 ffmpeg를 설치하도록 하세요. 도우미는 옵션 메뉴에서 계속 열 수 있습니다.
 4. URL을 붙여 넣고 옵션을 선택한 다음, 다운로드하거나 대기열에 추가하거나 재생목록용 검사기를 엽니다.
 

@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "A csomagkezelő nem ismerhető fel: használja az egyes eszközök hivatalos oldalát.",
   "cookie.hint_locked_running_linux": "A(z) {browser} még fut ({n} folyamat), talán a háttérben, bár az ablaka be van zárva: ő tartja zárolva a sütiadatbázist. Állítsa le a rendszerfigyelővel (vagy a pkill paranccsal egy terminálban), majd próbálja újra. A Firefoxnak, amely ajánlott, nincs ilyen korlátja.",
   "cookie.hint_decrypt_linux": "A(z) {browser} sütijei nem fejthetők vissza: Linuxon az asztali kulcstartó (GNOME Keyring vagy KWallet) védi őket, amelynek feloldva kell lennie. Használjon normál grafikus munkamenetet, vagy a Firefoxot (ajánlott).",
-  "cookie.note_keyring": "Ennek a böngészőnek a sütijeit az asztali kulcstartó (GNOME Keyring, KWallet) védi: feloldottnak kell lennie, vagyis grafikus munkamenetnek kell nyitva lennie. A Firefox ajánlott."
+  "cookie.note_keyring": "Ennek a böngészőnek a sütijeit az asztali kulcstartó (GNOME Keyring, KWallet) védi: feloldottnak kell lennie, vagyis grafikus munkamenetnek kell nyitva lennie. A Firefox ajánlott.",
+  "upd.replace_title_dialog_linux": "Válassza ki az új yt-dlp fájlt"
 }

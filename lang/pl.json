@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "Nie rozpoznano menedżera pakietów: użyj oficjalnej strony każdego narzędzia.",
   "cookie.hint_locked_running_linux": "{browser} nadal działa ({n} procesów), być może w tle mimo zamkniętego okna: to on blokuje swoją bazę ciasteczek. Zakończ go w monitorze systemu (lub poleceniem pkill w terminalu) i spróbuj ponownie. Firefox, zalecany, nie ma tego ograniczenia.",
   "cookie.hint_decrypt_linux": "Nie można odszyfrować ciasteczek przeglądarki {browser}: w systemie Linux chroni je pęk kluczy pulpitu (GNOME Keyring lub KWallet), który musi być odblokowany. Użyj zwykłej sesji graficznej albo Firefoksa (zalecany).",
-  "cookie.note_keyring": "Ciasteczka tej przeglądarki chroni pęk kluczy pulpitu (GNOME Keyring, KWallet): musi być odblokowany, czyli sesja graficzna musi być otwarta. Zalecamy Firefoksa."
+  "cookie.note_keyring": "Ciasteczka tej przeglądarki chroni pęk kluczy pulpitu (GNOME Keyring, KWallet): musi być odblokowany, czyli sesja graficzna musi być otwarta. Zalecamy Firefoksa.",
+  "upd.replace_title_dialog_linux": "Wybierz nowy plik yt-dlp"
 }

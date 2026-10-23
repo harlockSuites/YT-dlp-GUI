@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "Gestor de paquetes no reconocido: use el sitio oficial de cada herramienta.",
   "cookie.hint_locked_running_linux": "{browser} sigue en ejecución ({n} procesos), quizá en segundo plano aunque su ventana esté cerrada: es él quien mantiene bloqueada su base de cookies. Ciérrelo con el monitor del sistema (o con el comando pkill en un terminal) y vuelva a intentarlo. Firefox, recomendado, no tiene este límite.",
   "cookie.hint_decrypt_linux": "No se pueden descifrar las cookies de {browser}: en Linux están protegidas por el llavero del escritorio (GNOME Keyring o KWallet), que debe estar desbloqueado. Use una sesión gráfica normal, o use Firefox (recomendado).",
-  "cookie.note_keyring": "Las cookies de este navegador están protegidas por el llavero del escritorio (GNOME Keyring, KWallet): debe estar desbloqueado, es decir, con una sesión gráfica abierta. Se recomienda Firefox."
+  "cookie.note_keyring": "Las cookies de este navegador están protegidas por el llavero del escritorio (GNOME Keyring, KWallet): debe estar desbloqueado, es decir, con una sesión gráfica abierta. Se recomienda Firefox.",
+  "upd.replace_title_dialog_linux": "Elegir el nuevo archivo yt-dlp"
 }

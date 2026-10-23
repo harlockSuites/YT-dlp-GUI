@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "Hindi makilala ang package manager: gamitin ang opisyal na site ng bawat tool.",
   "cookie.hint_locked_running_linux": "Tumatakbo pa ang {browser} ({n} proseso), posibleng nasa background kahit sarado ang window nito: ito ang nagla-lock sa database nito ng cookie. Tapusin ito gamit ang system monitor (o ang command na pkill sa terminal), saka subukan muli. Ang Firefox, na inirerekomenda, ay walang ganitong limitasyon.",
   "cookie.hint_decrypt_linux": "Hindi ma-decrypt ang mga cookie ng {browser}: sa Linux, pinoprotektahan ang mga ito ng key ring ng desktop (GNOME Keyring o KWallet), na dapat naka-unlock. Gumamit ng normal na graphical session, o gamitin ang Firefox (inirerekomenda).",
-  "cookie.note_keyring": "Pinoprotektahan ng key ring ng desktop (GNOME Keyring, KWallet) ang mga cookie ng browser na ito: dapat itong naka-unlock, kaya dapat bukas ang isang graphical session. Inirerekomenda ang Firefox."
+  "cookie.note_keyring": "Pinoprotektahan ng key ring ng desktop (GNOME Keyring, KWallet) ang mga cookie ng browser na ito: dapat itong naka-unlock, kaya dapat bukas ang isang graphical session. Inirerekomenda ang Firefox.",
+  "upd.replace_title_dialog_linux": "Piliin ang bagong yt-dlp file"
 }

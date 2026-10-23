@@ -4,7 +4,7 @@
 
 Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pour rendre son utilisation accessible à tous tout en exploitant pleinement ses capacités.
 
-> **Projet en cours de développement.** Certaines fonctionnalités peuvent changer, être incomplètes ou contenir des bogues. Le logiciel est pour l'instant disponible sous Windows ; **une version Linux sera publiée à moyen terme.**
+> **Projet en cours de développement.** Certaines fonctionnalités peuvent changer, être incomplètes ou contenir des bogues. Le logiciel est disponible sous Windows ; **une préversion pour Linux** est aussi proposée, moins éprouvée.
 
 ![yt-dlp GUI](docs/img/main.fr.png)
 
@@ -41,13 +41,14 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 - **Résultats de nos essais** (Windows 11, octobre 2026, compte YouTube connecté dans chaque navigateur) : **Firefox** fonctionne, navigateur ouvert ou fermé. **Opera** ne fonctionne que **navigateur fermé** : il verrouille sa base de cookies tant qu'il est ouvert, et yt-dlp affiche alors « Could not copy Chrome cookie database ». **Chrome, Edge et Brave** échouent même fermés : ils chiffrent leurs cookies d'une façon que yt-dlp ne sait pas toujours lire. Ces limites viennent des navigateurs et de yt-dlp, pas du logiciel, et peuvent évoluer avec leurs mises à jour.
 - Si votre navigateur est réglé pour **supprimer les cookies à la fermeture** (ou si vous naviguez en mode privé), il ne reste aucun cookie à lire sur le disque : yt-dlp ne peut rien récupérer, que ce soit avec Chrome, Edge, Brave ou Firefox. Avec Chrome, Edge et Brave, c'est un piège : il faut fermer le navigateur, ce qui efface alors les cookies. Désactivez cette option, ou conservez les cookies de youtube.com et google.com.
 - Un **voyant** indique l'état : rouge si désactivé ou en échec, orange si non testé ou en cours, vert si les cookies sont chargés. Le bouton ↻ lance un test et l'infobulle explique l'état ou l'erreur.
+- **Sous Linux (préversion)** : Firefox, Chromium, Chrome, Brave, Edge, Opera et Vivaldi sont proposés. Les navigateurs de la famille Chromium protègent leurs cookies avec le trousseau de clés du bureau (GNOME Keyring, KWallet) : il doit être déverrouillé, donc une session graphique ouverte. Seule la lecture d'un profil Firefox a été essayée ; **Firefox est recommandé**.
 
 ### Assistant d'installation, dépendances et mises à jour de yt-dlp
 
 - **Assistant d'installation** : au premier lancement, il propose de télécharger yt-dlp et ffmpeg depuis leurs dépôts officiels GitHub. La somme de contrôle SHA-256 est vérifiée et aucun droit administrateur n'est requis.
-- **Dépendances** : la fenêtre dédiée vérifie ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 et deno, et peut les installer avec Chocolatey. Seuls ffmpeg et ffprobe sont indispensables ; deno est recommandé (pistes audio secondaires) ; AtomicParsley, MKVToolNix et aria2 sont facultatifs : le logiciel fonctionne sans eux.
+- **Dépendances** : la fenêtre dédiée vérifie ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 et deno, et peut les installer avec Chocolatey. Seuls ffmpeg et ffprobe sont indispensables ; deno est recommandé (pistes audio secondaires) ; AtomicParsley, MKVToolNix et aria2 sont facultatifs : le logiciel fonctionne sans eux. Sous Linux, l'assistant télécharge ffmpeg, ffprobe et deno (somme SHA-256 vérifiée, sans droits administrateur) ; pour AtomicParsley, MKVToolNix et aria2, la fenêtre affiche la commande de votre gestionnaire de paquets (apt, dnf, pacman ou zypper) à copier dans un terminal.
 - **Mise à jour et diagnostic** : met à jour yt-dlp (`yt-dlp -U`) ou remplace son exécutable, affiche sa version et vérifie les options utilisées par le GUI.
-- **Mise à jour du logiciel** : une vérification quotidienne (désactivable) signale une nouvelle version par un discret bandeau ; la fenêtre dédiée affiche les nouveautés et ouvre le téléchargement correspondant à votre installation (installateur ou version portable). Rien n'est installé automatiquement. Un interrupteur du menu des options (« Vérifier les mises à jour au démarrage ») active ou désactive la vérification automatique, et « Rechercher une mise à jour du logiciel… » la lance à la demande.
+- **Mise à jour du logiciel** : une vérification quotidienne (désactivable) signale une nouvelle version par un discret bandeau ; la fenêtre dédiée affiche les nouveautés et ouvre le téléchargement correspondant à votre installation (installateur ou version portable). Rien n'est installé automatiquement. Un interrupteur du menu des options (« Vérifier les mises à jour au démarrage ») active ou désactive la vérification automatique, et « Rechercher une mise à jour du logiciel… » la lance à la demande. Sous Linux, c'est l'AppImage ou l'archive `.tar.gz` correspondant à votre architecture.
 
 ### Interface et langues
 
@@ -56,13 +57,16 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 
 ### Signaler un bogue
 
-- Le bouton « Signaler un bogue » prépare un rapport technique : versions du logiciel, de Python, de Windows et de yt-dlp, réglages sans danger et dernières lignes du journal. Vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués. Envoyer le rapport sur GitHub demande un compte GitHub gratuit.
+- Le bouton « Signaler un bogue » prépare un rapport technique : versions du logiciel, de Python, du système et de yt-dlp, réglages sans danger et dernières lignes du journal. Vos dossiers, votre nom d'utilisateur et vos adresses e-mail sont masqués. Envoyer le rapport sur GitHub demande un compte GitHub gratuit.
 - Rien n'est envoyé automatiquement : vous relisez et modifiez le rapport, puis vous ouvrez une page de ticket GitHub déjà remplie (ou vous copiez le rapport).
 
 ## Installation
 
 - **Installateur (recommandé)** : téléchargez `yt-dlp-gui-setup-X.Y.Z.exe` depuis la page des [versions publiées](https://github.com/harlockSuites/YT-dlp-GUI/releases) et lancez-le. Windows 10 ou 11 (64 bits), sans droits administrateur ; Python n'est pas nécessaire.
 - **Version portable** : téléchargez `yt-dlp-gui-portable-X.Y.Z.zip`, décompressez-le où vous voulez et lancez `yt-dlp-gui.exe` ; les réglages restent dans ce dossier.
+- **Linux, AppImage (préversion)** : téléchargez `yt-dlp-gui-X.Y.Z-x86_64.AppImage` depuis la page des [versions publiées](https://github.com/harlockSuites/YT-dlp-GUI/releases), rendez-le exécutable (`chmod +x`) et lancez-le. Il demande `libfuse2` (paquet `libfuse2` ou `fuse-libs`) ; sans lui, lancez-le avec `--appimage-extract-and-run`.
+- **Linux, archive (préversion)** : téléchargez `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`, extrayez-la (`tar xzf`) puis lancez `./yt-dlp-gui/yt-dlp-gui`. Les réglages et les outils téléchargés sont dans `~/.local/share/yt-dlp-GUI` ; pour désinstaller, supprimez ce dossier et le fichier ou le dossier du logiciel.
+- **Linux, configuration requise et vérification** : Linux 64 bits (x86_64) d'une distribution de 2022 ou plus récente (glibc 2.35 ou plus). Pour vérifier un fichier, téléchargez aussi `SHA256SUMS-linux.txt` et lancez, dans le même dossier : `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`.
 - **Depuis les sources** : voir les sections « Prérequis » et « Démarrage rapide » ci-dessous.
 - **Désinstallation** : Paramètres Windows › Applications › Applications installées › yt-dlp GUI, ou le raccourci « Désinstaller » du menu Démarrer. Le logiciel propose de supprimer aussi ses données (réglages, file d'attente, yt-dlp et ffmpeg téléchargés) ; vos vidéos ne sont jamais supprimées. L'installation étant propre à chaque compte Windows, le logiciel n'apparaît que dans la liste du compte qui l'a installé. Pour la version portable, supprimez simplement son dossier. Les outils installés à part avec Chocolatey (ffmpeg, Deno…) ne sont pas retirés.
 - **Analyse antivirus (VirusTotal)** : la version 0.1.7 a été analysée le 21 octobre 2026. L'[installateur](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) est signalé par 4 moteurs sur 69 (Arctic Wolf, Microsoft, SecureAge, Skyhigh) avec des détections heuristiques génériques ; le [lanceur de la version portable](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) l'est par 5 sur 70 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya) et l'[archive ZIP portable](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) par 1 sur 66 (Zillya, sur l'archive elle-même). Ce sont probablement des faux positifs dus à un programme compressé et non signé. Ces résultats ne valent que pour cette version. En cas de doute, vérifiez la somme SHA-256.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## Prérequis
 
-- Windows
-- [Python 3](https://www.python.org/) avec Tkinter (inclus dans l'installation standard)
-- `yt-dlp.exe` et, de préférence, [ffmpeg](https://ffmpeg.org/) : l'assistant d'installation les télécharge au premier lancement
+- Windows 10 ou 11, ou Linux 64 bits (préversion)
+- [Python 3](https://www.python.org/) avec Tkinter (inclus dans l'installation standard) (sous Linux : paquet `python3-tk`)
+- `yt-dlp.exe` et, de préférence, [ffmpeg](https://ffmpeg.org/) : l'assistant d'installation les télécharge au premier lancement (sous Linux : `yt-dlp`, sans `.exe`)
 
 ## Démarrage rapide
 
 1. Téléchargez ou clonez ce dépôt et placez-vous dans son dossier.
-2. Lancez `yt-dlp-gui.bat` (ou `pythonw yt-dlp-gui.pyw`).
+2. Lancez `yt-dlp-gui.bat` (ou `pythonw yt-dlp-gui.pyw`). Sous Linux : `python3 yt-dlp-gui.pyw`.
 3. Au premier lancement, laissez l'assistant installer yt-dlp et ffmpeg ; il reste accessible dans le menu des options.
 4. Collez une URL, choisissez vos options, puis téléchargez, ajoutez à la file ou ouvrez l'inspecteur pour une playlist.
 

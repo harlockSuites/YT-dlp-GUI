@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "パッケージマネージャーを認識できません。各ツールの公式サイトをご利用ください。",
   "cookie.hint_locked_running_linux": "{browser} はまだ実行中です（{n} プロセス）。ウィンドウを閉じていてもバックグラウンドで動いている可能性があり、Cookie データベースをロックしているのはそのプロセスです。システムモニターで（またはターミナルで pkill コマンドを使って）終了してから、もう一度お試しください。推奨の Firefox にはこの制限がありません。",
   "cookie.hint_decrypt_linux": "{browser} の Cookie を復号できません。Linux では Cookie はデスクトップのキーリング（GNOME Keyring または KWallet）で保護されており、キーリングのロックを解除しておく必要があります。通常のグラフィカルセッションを使うか、Firefox をお使いください（推奨）。",
-  "cookie.note_keyring": "このブラウザーの Cookie はデスクトップのキーリング（GNOME Keyring、KWallet）で保護されています。ロックを解除しておく必要があるため、グラフィカルセッションを開いておいてください。Firefox を推奨します。"
+  "cookie.note_keyring": "このブラウザーの Cookie はデスクトップのキーリング（GNOME Keyring、KWallet）で保護されています。ロックを解除しておく必要があるため、グラフィカルセッションを開いておいてください。Firefox を推奨します。",
+  "upd.replace_title_dialog_linux": "新しい yt-dlp ファイルを選択"
 }

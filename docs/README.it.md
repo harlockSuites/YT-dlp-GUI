@@ -4,7 +4,7 @@
 
 Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per renderlo accessibile a tutti sfruttandone al massimo le potenzialità.
 
-> **Progetto in sviluppo.** Alcune funzioni potrebbero cambiare, essere incomplete o contenere errori.
+> **Progetto in sviluppo.** Alcune funzioni potrebbero cambiare, essere incomplete o contenere errori. Disponibile per Windows; è offerta anche **un'anteprima per Linux**, meno collaudata.
 
 ![yt-dlp GUI](img/main.en.png)
 
@@ -41,13 +41,14 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 - **Risultati dei nostri test** (Windows 11, ottobre 2026, account YouTube connesso in ogni browser): **Firefox** funziona, con il browser aperto o chiuso. **Opera** funziona **solo a browser chiuso**: blocca il database dei cookie finché è aperto e yt-dlp mostra allora «Could not copy Chrome cookie database». **Chrome, Edge e Brave** falliscono anche da chiusi: cifrano i cookie in un modo che yt-dlp non sempre riesce a leggere. Questi limiti dipendono dai browser e da yt-dlp, non dal programma, e possono cambiare con i loro aggiornamenti.
 - Se il browser è impostato per **eliminare i cookie alla chiusura** (o navighi in modalità privata), sul disco non resta alcun cookie: yt-dlp non può recuperare nulla, né con Chrome, Edge, Brave né con Firefox. Con Chrome, Edge e Brave è una trappola: il browser va chiuso, e questo cancella i cookie. Disattiva l'opzione o conserva i cookie di youtube.com e google.com.
 - Una **spia** indica lo stato: rossa se disattivato o in errore, arancione se non testato o in corso, verde se i cookie sono caricati. Il pulsante ↻ avvia un test e il suggerimento spiega lo stato o l'errore.
+- **Su Linux (anteprima)**: sono proposti Firefox, Chromium, Chrome, Brave, Edge, Opera e Vivaldi. I browser della famiglia Chromium proteggono i cookie con il portachiavi del desktop (GNOME Keyring, KWallet): deve essere sbloccato, quindi serve una sessione grafica aperta. È stata provata solo la lettura di un profilo Firefox; **si consiglia Firefox**.
 
 ### Assistente di installazione, dipendenze e aggiornamenti di yt-dlp
 
 - **Assistente di installazione**: al primo avvio propone di scaricare yt-dlp e ffmpeg dai loro repository ufficiali su GitHub. La somma SHA-256 viene verificata e non servono diritti di amministratore.
-- **Dipendenze**: la finestra dedicata controlla ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 e deno e può installarli con Chocolatey. Solo ffmpeg e ffprobe sono indispensabili; deno è consigliato (tracce audio secondarie); AtomicParsley, MKVToolNix e aria2 sono facoltativi: il programma funziona anche senza.
+- **Dipendenze**: la finestra dedicata controlla ffmpeg, ffprobe, AtomicParsley, MKVToolNix, aria2 e deno e può installarli con Chocolatey. Solo ffmpeg e ffprobe sono indispensabili; deno è consigliato (tracce audio secondarie); AtomicParsley, MKVToolNix e aria2 sono facoltativi: il programma funziona anche senza. Su Linux, l'assistente scarica ffmpeg, ffprobe e deno (somma SHA-256 verificata, senza diritti di amministratore); per AtomicParsley, MKVToolNix e aria2, la finestra mostra il comando del gestore di pacchetti (apt, dnf, pacman o zypper) da copiare in un terminale.
 - **Aggiornamento e diagnostica**: aggiorna yt-dlp (`yt-dlp -U`) o ne sostituisce l'eseguibile, mostra la versione e verifica le opzioni usate dall'interfaccia.
-- **Aggiornamento del programma**: un controllo giornaliero (disattivabile) segnala una nuova versione con un banner discreto; la finestra dedicata mostra le novità e apre il download corrispondente alla tua installazione (installatore o versione portatile). Nulla viene installato automaticamente. Un interruttore nel menu delle opzioni («Verifica gli aggiornamenti all'avvio») attiva o disattiva il controllo automatico, e «Cerca un aggiornamento del programma…» lo avvia su richiesta.
+- **Aggiornamento del programma**: un controllo giornaliero (disattivabile) segnala una nuova versione con un banner discreto; la finestra dedicata mostra le novità e apre il download corrispondente alla tua installazione (installatore o versione portatile). Nulla viene installato automaticamente. Un interruttore nel menu delle opzioni («Verifica gli aggiornamenti all'avvio») attiva o disattiva il controllo automatico, e «Cerca un aggiornamento del programma…» lo avvia su richiesta. Su Linux, si tratta dell'AppImage o dell'archivio `.tar.gz` adatto alla tua architettura.
 
 ### Interfaccia e lingue
 
@@ -56,13 +57,16 @@ Interfaccia grafica per [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensata per 
 
 ### Segnala un bug
 
-- Il pulsante «Segnala un bug» prepara un rapporto tecnico: versioni del programma, di Python, di Windows e di yt-dlp, impostazioni innocue e ultime righe del registro. Le tue cartelle, il nome utente e gli indirizzi e-mail vengono oscurati. Per inviare il rapporto su GitHub serve un account GitHub gratuito.
+- Il pulsante «Segnala un bug» prepara un rapporto tecnico: versioni del programma, di Python, del sistema e di yt-dlp, impostazioni innocue e ultime righe del registro. Le tue cartelle, il nome utente e gli indirizzi e-mail vengono oscurati. Per inviare il rapporto su GitHub serve un account GitHub gratuito.
 - Nulla viene inviato automaticamente: rivedi e modifichi il rapporto, poi apri una pagina di segnalazione GitHub già compilata (o copi il rapporto).
 
 ## Installazione
 
 - **Installatore (consigliato)**: scarica `yt-dlp-gui-setup-X.Y.Z.exe` dalla [pagina delle versioni](https://github.com/harlockSuites/YT-dlp-GUI/releases) e avvialo. Windows 10 o 11 (64 bit), senza diritti di amministratore; Python non è necessario.
 - **Versione portatile**: scarica `yt-dlp-gui-portable-X.Y.Z.zip`, estrailo dove vuoi e avvia `yt-dlp-gui.exe`; le impostazioni restano in quella cartella.
+- **Linux, AppImage (anteprima)**: scarica `yt-dlp-gui-X.Y.Z-x86_64.AppImage` dalla [pagina delle versioni](https://github.com/harlockSuites/YT-dlp-GUI/releases), rendilo eseguibile (`chmod +x`) e avvialo. Richiede `libfuse2` (pacchetto `libfuse2` o `fuse-libs`); senza, avvialo con `--appimage-extract-and-run`.
+- **Linux, archivio (anteprima)**: scarica `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`, estrailo (`tar xzf`) e avvia `./yt-dlp-gui/yt-dlp-gui`. Le impostazioni e gli strumenti scaricati sono in `~/.local/share/yt-dlp-GUI`; per disinstallare, elimina quella cartella e il file o la cartella del programma.
+- **Linux, requisiti e verifica**: Linux a 64 bit (x86_64) di una distribuzione del 2022 o più recente (glibc 2.35 o superiore). Per verificare un file, scarica anche `SHA256SUMS-linux.txt` e lancia, nella stessa cartella: `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`.
 - **Dal codice sorgente**: vedi le sezioni «Requisiti» e «Avvio rapido» qui sotto.
 - **Disinstallazione**: Impostazioni di Windows › App › App installate › yt-dlp GUI, oppure il collegamento «Disinstalla» nel menu Start. Il programma propone di eliminare anche i suoi dati (impostazioni, coda, yt-dlp e ffmpeg scaricati); i tuoi video non vengono mai eliminati. Poiché l'installazione è propria di ogni account Windows, il programma compare solo nell'elenco dell'account che lo ha installato. Per la versione portatile basta eliminare la sua cartella. Gli strumenti installati a parte con Chocolatey (ffmpeg, Deno…) non vengono rimossi.
 - **Analisi antivirus (VirusTotal)**: la versione 0.1.7 è stata analizzata il 21 ottobre 2026. L'[installatore](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c) è segnalato da 4 motori su 69 (Arctic Wolf, Microsoft, SecureAge, Skyhigh) con rilevamenti euristici generici; l'[avviatore della versione portatile](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a) lo è da 5 su 70 (Arctic Wolf, CrowdStrike Falcon, Microsoft, SecureAge, Zillya) e l'[archivio ZIP portatile](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706) da 1 su 66 (Zillya, sull'archivio stesso). Probabilmente sono falsi positivi dovuti a un programma compresso e non firmato. Questi risultati valgono solo per questa versione. In caso di dubbio, verifica la somma SHA-256.
@@ -91,14 +95,14 @@ Get-Content .\SHA256SUMS.txt | ForEach-Object { $h, $n = $_ -split '\s+\*?', 2; 
 
 ## Requisiti
 
-- Windows
-- [Python 3](https://www.python.org/) con Tkinter (incluso nell'installazione standard)
-- `yt-dlp.exe` e, preferibilmente, [ffmpeg](https://ffmpeg.org/): l'assistente di installazione li scarica al primo avvio
+- Windows 10 o 11, oppure Linux a 64 bit (anteprima)
+- [Python 3](https://www.python.org/) con Tkinter (incluso nell'installazione standard) (su Linux: il pacchetto `python3-tk`)
+- `yt-dlp.exe` e, preferibilmente, [ffmpeg](https://ffmpeg.org/): l'assistente di installazione li scarica al primo avvio (su Linux: `yt-dlp`, senza `.exe`)
 
 ## Avvio rapido
 
 1. Scarica o clona questo repository e vai nella sua cartella.
-2. Avvia `yt-dlp-gui.bat` (oppure `pythonw yt-dlp-gui.pyw`).
+2. Avvia `yt-dlp-gui.bat` (oppure `pythonw yt-dlp-gui.pyw`). Su Linux: `python3 yt-dlp-gui.pyw`.
 3. Al primo avvio lascia che l'assistente installi yt-dlp e ffmpeg; resta disponibile nel menu delle opzioni.
 4. Incolla un URL, scegli le opzioni, poi scarica, aggiungi alla coda o apri l'ispettore per una playlist.
 

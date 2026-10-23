@@ -1425,11 +1425,13 @@ class UpdateWindow(tk.Toplevel):
 
     # ── Remplacement manuel ──────────────────────────────────────
     def _replace_exe(self):
-        src = filedialog.askopenfilename(
-            title=t("upd.replace_title_dialog"),
-            filetypes=[(t("upd.replace_filetypes_exe"), "*.exe"), (t("upd.replace_filetypes_all"), "*.*")],
-            parent=self,
-        )
+        if IS_WINDOWS:
+            title = t("upd.replace_title_dialog")
+            filetypes = [(t("upd.replace_filetypes_exe"), "*.exe"), (t("upd.replace_filetypes_all"), "*.*")]
+        else:   # pas d'extension .exe : tous les fichiers
+            title = t("upd.replace_title_dialog_linux")
+            filetypes = [(t("upd.replace_filetypes_all"), "*")]
+        src = filedialog.askopenfilename(title=title, filetypes=filetypes, parent=self)
         if not src:
             return
         try:
@@ -1440,6 +1442,8 @@ class UpdateWindow(tk.Toplevel):
                 _sh.copy2(YTDLP, backup)
                 self._log(t("upd.log_backup", path=backup), "#888")
             _sh.copy2(src, YTDLP)
+            if not IS_WINDOWS:
+                os.chmod(YTDLP, 0o755)   # un fichier téléchargé n'est pas exécutable
             self._log(t("upd.log_replace_ok", src=src), "#4ec94e")
             self._log(t("upd.log_replace_check"), "#dcdcaa")
         except Exception as e:
@@ -3675,7 +3679,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         has_secondary = bool(g_secondary) or any(
             row["secondary_widget"].get_selected() for row in self._rows)
         embed_thumb = self.var_g_embed_thumb.get()
-        if has_secondary and embed_thumb:
+        if IS_WINDOWS and has_secondary and embed_thumb:   # l'avertissement parle de l'Explorateur Windows
             self._lbl_mkv_warn.grid()
         else:
             self._lbl_mkv_warn.grid_remove()
@@ -6265,7 +6269,7 @@ class YtDlpGui(tk.Tk):
         self.var_cmd.set(display)
         has_secondary = bool(self._secondary_sel.get_selected())
         embed_thumb = self.var_embed_thumb.get()
-        if has_secondary and embed_thumb:
+        if IS_WINDOWS and has_secondary and embed_thumb:   # l'avertissement parle de l'Explorateur Windows
             self._lbl_mkv_warn_main.grid()
         else:
             self._lbl_mkv_warn_main.grid_remove()

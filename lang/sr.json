@@ -521,5 +521,6 @@
   "deps.linux_no_manager": "Menadžer paketa nije prepoznat: koristite zvaničnu stranicu svakog alata.",
   "cookie.hint_locked_running_linux": "{browser} je još pokrenut ({n} procesa), možda u pozadini iako je prozor zatvoren: on drži zaključanu bazu kolačića. Prekinite ga u sistemskom monitoru (ili komandom pkill u terminalu), pa pokušajte ponovo. Firefox, koji se preporučuje, nema to ograničenje.",
   "cookie.hint_decrypt_linux": "Nije moguće dešifrovati kolačiće pregledača {browser}: na Linuxu ih štiti priveznik ključeva radne površine (GNOME Keyring ili KWallet), koji mora biti otključan. Koristite običnu grafičku sesiju ili Firefox (preporučuje se).",
-  "cookie.note_keyring": "Kolačiće ovog pregledača štiti priveznik ključeva radne površine (GNOME Keyring, KWallet): mora biti otključan, odnosno grafička sesija mora biti otvorena. Preporučuje se Firefox."
+  "cookie.note_keyring": "Kolačiće ovog pregledača štiti priveznik ključeva radne površine (GNOME Keyring, KWallet): mora biti otključan, odnosno grafička sesija mora biti otvorena. Preporučuje se Firefox.",
+  "upd.replace_title_dialog_linux": "Izaberite novu datoteku yt-dlp"
 }
