@@ -1,76 +1,25 @@
-# Publication d'une version.
+# Publication d'une version LINUX (préversion GitHub). La version Windows (étiquettes v*) est figée à la 0.1.7 et se
+# publie avec le workflow de la branche main : celui-ci ne la construit pas et ne réagit qu'aux étiquettes « Linux-v* ».
 #
-# Pour publier : 1) augmenter __version__ dans yt-dlp-gui.pyw ; 2) dater la section de cette version
-# dans CHANGELOG.md ; 3) commiter et pousser ; 4) créer et pousser l'étiquette correspondante :
-#     git tag v0.1.0 && git push origin v0.1.0
-# Le workflow lance les tests, construit l'installateur et la version portable, calcule les sommes
-# SHA-256 puis crée la release GitHub avec les notes tirées du CHANGELOG.
+# Pour publier : 1) vérifier __version__ dans yt-dlp-gui.pyw ; 2) dater la section de cette version dans
+# CHANGELOG-linux.md ; 3) commiter et pousser la branche Linux ; 4) créer et pousser l'étiquette correspondante :
+#     git tag Linux-v0.1.0 && git push origin Linux-v0.1.0
+# Le workflow lance les tests, construit l'AppImage et l'archive .tar.gz, calcule les sommes SHA-256 puis crée la
+# release GitHub **en préversion** (jamais « dernière version » : la recherche de mise à jour du logiciel Windows
+# interroge la dernière version et ne doit pas y trouver une étiquette Linux) avec les notes de CHANGELOG-linux.md.
 # Lancé à la main (« Run workflow »), il construit seulement les fichiers sans publier.
-name: Release
+name: Release Linux
 
 on:
   push:
-    tags: ["v*"]
+    tags: ["Linux-v*"]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.12"
-
-      - name: Vérifier que l'étiquette correspond à la version du code
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: python -X utf8 packaging/release_tools.py check-tag "${{ github.ref_name }}"
-
-      - name: Installer les outils de construction
-        run: python -m pip install -r packaging/requirements-build.txt
-
-      - name: Tests
-        run: python -X utf8 -m unittest discover -s tests -t .
-
-      - name: Installer Inno Setup
-        run: choco install innosetup -y --no-progress
-
-      - name: Construire l'exécutable, la version portable et l'installateur
-        run: python -X utf8 packaging/build.py
-
-      - name: Notes de version et sommes de contrôle
-        run: |
-          python -X utf8 packaging/release_tools.py notes --out dist/release-notes.md
-          python -X utf8 packaging/release_tools.py checksums --dir dist --out dist/SHA256SUMS.txt
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: yt-dlp-gui-windows
-          path: |
-            dist/yt-dlp-gui-setup-*.exe
-            dist/yt-dlp-gui-portable-*.zip
-            dist/SHA256SUMS.txt
-          if-no-files-found: error
-
-      - name: Publier la release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v3
-        with:
-          body_path: dist/release-notes.md
-          fail_on_unmatched_files: true
-          files: |
-            dist/yt-dlp-gui-setup-*.exe
-            dist/yt-dlp-gui-portable-*.zip
-            dist/SHA256SUMS.txt
-
-  # Paquets Linux (x86_64) : AppImage et archive .tar.gz, ajoutés à la même release une fois celle de Windows créée.
-  # Construits sur Ubuntu 22.04 (glibc 2.35) : ils s'exécutent sur les distributions de 2022 et plus récentes.
   build-linux:
-    needs: build
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v7
@@ -80,8 +29,8 @@ jobs:
           python-version: "3.12"
 
       - name: Vérifier que l'étiquette correspond à la version du code
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: python3 -X utf8 packaging/release_tools.py check-tag "${{ github.ref_name }}"
+        if: startsWith(github.ref, 'refs/tags/Linux-v')
+        run: python3 -X utf8 packaging/release_tools.py check-tag "${{ github.ref_name }}" --prefix Linux-v
 
       - name: Installer Tk, un écran virtuel et les outils de construction
         run: |
@@ -101,8 +50,10 @@ jobs:
       - name: Construire l'archive et l'AppImage
         run: python3 -X utf8 packaging/build_linux.py
 
-      - name: Sommes de contrôle
-        run: python3 -X utf8 packaging/release_tools.py checksums --platform linux --dir dist --out dist/SHA256SUMS-linux.txt
+      - name: Notes de version et sommes de contrôle
+        run: |
+          python3 -X utf8 packaging/release_tools.py notes --changelog CHANGELOG-linux.md --out dist/release-notes.md
+          python3 -X utf8 packaging/release_tools.py checksums --platform linux --dir dist --out dist/SHA256SUMS-linux.txt
 
       - uses: actions/upload-artifact@v7
         with:
@@ -113,10 +64,14 @@ jobs:
             dist/SHA256SUMS-linux.txt
           if-no-files-found: error
 
-      - name: Ajouter les fichiers Linux à la release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Publier la préversion Linux
+        if: startsWith(github.ref, 'refs/tags/Linux-v')
         uses: softprops/action-gh-release@v3
         with:
+          name: yt-dlp GUI ${{ github.ref_name }} (préversion)
+          body_path: dist/release-notes.md
+          prerelease: true
+          make_latest: "false"
           fail_on_unmatched_files: true
           files: |
             dist/yt-dlp-gui-*-x86_64.AppImage

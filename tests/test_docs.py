@@ -128,7 +128,8 @@ class DocsTests(unittest.TestCase):
             with self.subTest(lang=code):
                 for needle in ("yt-dlp-gui-X.Y.Z-x86_64.AppImage", "chmod +x", "libfuse2", "--appimage-extract-and-run",
                                "yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz", "tar xzf", "~/.local/share/yt-dlp-GUI",
-                               "SHA256SUMS-linux.txt", "sha256sum -c SHA256SUMS-linux.txt --ignore-missing", "glibc 2.35"):
+                               "SHA256SUMS-linux.txt", "sha256sum -c SHA256SUMS-linux.txt --ignore-missing", "glibc 2.35",
+                               "Linux-v", "Pre-release"):   # où trouver les fichiers : releases « Linux-v… » en préversion
                     self.assertIn(needle, section)
                 self.assertEqual(sum(1 for l in section.splitlines() if l.startswith("- **Linux")), 3)
 

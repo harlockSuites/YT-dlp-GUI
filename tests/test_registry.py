@@ -188,8 +188,9 @@ class VersionTests(unittest.TestCase):
     def test_version_is_semver_and_in_changelog(self):
         from tests._loader import ROOT
         self.assertRegex(m.__version__, r"^\d+\.\d+\.\d+$")
-        changelog = _text(os.path.join(ROOT, "CHANGELOG.md"))
-        self.assertIn(f"[{m.__version__}]", changelog)
+        # branche Linux : la version du logiciel est celle de la version Linux, décrite dans CHANGELOG-linux.md
+        changelog = _text(os.path.join(ROOT, "CHANGELOG-linux.md"))
+        self.assertIn(f"## [{m.__version__}]", changelog)
 
 
 if __name__ == "__main__":

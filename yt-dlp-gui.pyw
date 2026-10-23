@@ -19,7 +19,7 @@ import signal
 import webbrowser
 from urllib.parse import quote
 
-__version__ = "0.1.7"
+__version__ = "0.1.0"   # version Linux (étiquette Linux-v0.1.0) ; la version Windows 0.1.7 est figée sur la branche main
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 # ══════════════════════════════════════════════════════════════════
@@ -5087,7 +5087,11 @@ class SetupWizardWindow(tk.Toplevel):
 # ══════════════════════════════════════════════════════════════════
 #  Notification de mise à jour du logiciel (dernière release GitHub)
 # ══════════════════════════════════════════════════════════════════
-RELEASES_API_URL = "https://api.github.com/repos/harlockSuites/YT-dlp-GUI/releases/latest"
+RELEASES_API_URL = "https://api.github.com/repos/harlockSuites/YT-dlp-GUI/releases/latest"   # Windows : la dernière
+# Linux : les versions Linux sont des préversions GitHub (étiquette « Linux-vX.Y.Z ») : « latest » les ignore et reste
+# la version Windows, que cette liste ne doit jamais proposer. On liste donc les releases et on filtre l'étiquette.
+RELEASES_LIST_URL = "https://api.github.com/repos/harlockSuites/YT-dlp-GUI/releases?per_page=30"
+LINUX_TAG_PREFIX = "Linux-v"
 UPDATE_CHECK_INTERVAL = 24 * 3600
 def linux_arch_name(machine=None):
     """Nom d'architecture des fichiers Linux de la release (« x86_64 » ou « aarch64 »), ou None si le projet
@@ -5175,11 +5179,30 @@ def pick_asset(info, kind):
     return next((a for a in info["assets"] if fnmatch.fnmatch(a["name"], pattern)), None)
 
 
+def select_linux_release(releases):
+    """La plus récente des releases dont l'étiquette est exactement « Linux-vX.Y.Z » (préversions comprises, brouillons
+    exclus), ou None. Les étiquettes de la version Windows (« vX.Y.Z ») ne sont jamais retenues."""
+    best = None
+    for rel in releases if isinstance(releases, list) else []:
+        if not isinstance(rel, dict) or rel.get("draft"):
+            continue
+        tag = rel.get("tag_name") or ""
+        rest = tag[len(LINUX_TAG_PREFIX):] if tag.startswith(LINUX_TAG_PREFIX) else ""
+        if not re.fullmatch(r"\d+\.\d+\.\d+", rest):
+            continue
+        version = _parse_version(rest)
+        if best is None or version > best[0]:
+            best = (version, rel)
+    return best[1] if best else None
+
+
 def fetch_latest_release(opener=_open_url):
-    """Dernière release publiée sur GitHub, ou UpdateError. Seuls les liens github.com sont conservés."""
+    """Dernière release publiée sur GitHub (sous Linux : la dernière « Linux-vX.Y.Z »), ou UpdateError. Seuls les
+    liens github.com sont conservés."""
     import urllib.error
     try:
-        with opener(RELEASES_API_URL, 15, {"Accept": "application/vnd.github+json"}) as r:
+        with opener(RELEASES_API_URL if IS_WINDOWS else RELEASES_LIST_URL, 15,
+                    {"Accept": "application/vnd.github+json"}) as r:
             data = json.loads(r.read().decode("utf-8", "replace"))
     except urllib.error.HTTPError as e:
         e.close()
@@ -5188,7 +5211,13 @@ def fetch_latest_release(opener=_open_url):
         raise UpdateError(f"HTTP {e.code}")
     except (urllib.error.URLError, OSError, ValueError) as e:
         raise UpdateError(describe_network_error(e) or str(getattr(e, "reason", e)))
-    version = (data.get("tag_name") or "").lstrip("v")
+    if IS_WINDOWS:
+        version = (data.get("tag_name") or "").lstrip("v")
+    else:
+        data = select_linux_release(data)
+        if data is None:
+            raise UpdateError(t("app_update.error_not_found"), not_found=True)
+        version = data["tag_name"][len(LINUX_TAG_PREFIX):]
     if _parse_version(version) is None:
         raise UpdateError(t("app_update.error_bad_release"))
     page = data.get("html_url") or ""

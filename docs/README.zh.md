@@ -66,7 +66,7 @@
 - **便携版**：下载 `yt-dlp-gui-portable-X.Y.Z.zip`，解压到任意位置并运行 `yt-dlp-gui.exe`；设置保存在该文件夹中。
 - **Linux，AppImage（预览版）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-X.Y.Z-x86_64.AppImage`，赋予可执行权限（`chmod +x`）后运行。需要 `libfuse2`（软件包 `libfuse2` 或 `fuse-libs`）；没有时请加上 `--appimage-extract-and-run` 运行。
 - **Linux，压缩包（预览版）**：下载 `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`，解压（`tar xzf`）后运行 `./yt-dlp-gui/yt-dlp-gui`。设置和已下载的工具位于 `~/.local/share/yt-dlp-GUI`；卸载时，请删除该文件夹以及软件的文件或文件夹。
-- **Linux，系统要求与校验**：64 位 Linux（x86_64），发行版为 2022 年或更新（glibc 2.35 或更高）。要校验文件，请同时下载 `SHA256SUMS-linux.txt`，并在同一文件夹中运行：`sha256sum -c SHA256SUMS-linux.txt --ignore-missing`。
+- **Linux，系统要求与校验**：64 位 Linux（x86_64），发行版为 2022 年或更新（glibc 2.35 或更高）。要校验文件，请同时下载 `SHA256SUMS-linux.txt`，并在同一文件夹中运行：`sha256sum -c SHA256SUMS-linux.txt --ignore-missing`。Linux 文件单独发布，位于标签以“Linux-v”开头的版本中（在 GitHub 上标为“Pre-release”）；页面默认显示的版本是 Windows 版。
 - **从源代码运行**：请参阅下方的“系统要求”和“快速开始”。
 - **卸载**：Windows 设置 › 应用 › 已安装的应用 › yt-dlp GUI，或开始菜单中的“卸载”快捷方式。软件会询问是否一并删除其数据（设置、队列、已下载的 yt-dlp 和 ffmpeg）；您的视频绝不会被删除。由于安装属于各个 Windows 账户，软件只出现在安装它的账户的列表中。便携版只需删除其文件夹。通过 Chocolatey 单独安装的工具（ffmpeg、Deno 等）不会被移除。
 - **杀毒软件检测（VirusTotal）**：0.1.7 版本已于 2026 年 10 月 21 日检测。[安装程序](https://www.virustotal.com/gui/file/7177f2dc75c3b5309b2d6b96a2104d578dbaf67a0c8ed28af286aa37159df91c)被 69 个引擎中的 4 个标记（Arctic Wolf、Microsoft、SecureAge、Skyhigh），均为通用启发式检测；[便携版的启动程序](https://www.virustotal.com/gui/file/6889bde864b341a948dc23c01e29eba3c63315145705eb0d5bb24a4964b0735a)被 70 个中的 5 个标记（Arctic Wolf、CrowdStrike Falcon、Microsoft、SecureAge、Zillya），[便携版 ZIP 压缩包](https://www.virustotal.com/gui/file/7fd0a4bb101ca4b4c513ff42e0782cc2371304c643bf03cb3ccd8e9abdb43706)被 66 个中的 1 个标记（Zillya，针对压缩包本身）。很可能是因程序经过压缩且未签名而产生的误报。这些结果仅适用于该版本。如有疑虑，请核对 SHA-256 校验值。

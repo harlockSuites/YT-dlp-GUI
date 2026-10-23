@@ -58,9 +58,10 @@ class FakeGitHub(unittest.TestCase):
     def serve(self, payload, status=200):
         _Handler.status = status
         _Handler.payload = json.dumps(payload).encode() if not isinstance(payload, bytes) else payload
-        patcher = mock.patch.object(m, "RELEASES_API_URL", self.url)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        for name in ("RELEASES_API_URL", "RELEASES_LIST_URL"):   # « dernière release » (Windows) et liste (Linux)
+            patcher = mock.patch.object(m, name, self.url)
+            patcher.start()
+            self.addCleanup(patcher.stop)
 
 
 class VersionTests(unittest.TestCase):
@@ -103,6 +104,7 @@ class VersionTests(unittest.TestCase):
         self.assertTrue(m.should_check_updates({"update_last_check": now - 90000}, now))
 
 
+@mock.patch.object(m, "IS_WINDOWS", True)   # ces tests décrivent la recherche de la version Windows (dernière release)
 class FetchTests(FakeGitHub):
     def test_new_release_is_reported_with_safe_assets_only(self):
         self.serve(_release("v9.0.0"))
@@ -139,7 +141,8 @@ class FetchTests(FakeGitHub):
             m.check_for_update()
 
     def test_network_failure_is_an_update_error(self):
-        with mock.patch.object(m, "RELEASES_API_URL", "http://127.0.0.1:9/latest"):
+        with mock.patch.object(m, "RELEASES_API_URL", "http://127.0.0.1:9/latest"), \
+                mock.patch.object(m, "RELEASES_LIST_URL", "http://127.0.0.1:9/list"):
             with self.assertRaises(m.UpdateError):
                 m.check_for_update()
 
@@ -154,6 +157,93 @@ class FetchTests(FakeGitHub):
         self.assertTrue(m.pick_asset(info, "installer")["name"].endswith(".exe"))
         self.assertTrue(m.pick_asset(info, "portable")["name"].endswith(".zip"))
         self.assertIsNone(m.pick_asset(info, "source"))
+
+
+def _linux_release(tag="Linux-v0.2.0", **over):
+    version = tag.split("-v", 1)[-1]
+    base = "https://github.com/harlockSuites/YT-dlp-GUI/releases/download/" + tag + "/"
+    data = {
+        "tag_name": tag, "name": f"yt-dlp GUI {tag} (préversion)", "body": "### Ajouté\n- Une nouveauté Linux",
+        "draft": False, "prerelease": True,
+        "html_url": f"https://github.com/harlockSuites/YT-dlp-GUI/releases/tag/{tag}",
+        "assets": [
+            {"name": f"yt-dlp-gui-{version}-x86_64.AppImage", "size": 11, "browser_download_url": base + "a.AppImage"},
+            {"name": f"yt-dlp-gui-linux-{version}-x86_64.tar.gz", "size": 12, "browser_download_url": base + "a.tar.gz"},
+            {"name": "SHA256SUMS-linux.txt", "size": 1, "browser_download_url": base + "SHA256SUMS-linux.txt"},
+            {"name": "evil.AppImage", "size": 1, "browser_download_url": "https://evil.example.com/evil.AppImage"},
+        ],
+    }
+    data.update(over)
+    return data
+
+
+WINDOWS_LATEST = _release("v0.1.7", prerelease=False, draft=False)
+
+
+@mock.patch.object(m, "IS_WINDOWS", False)
+class LinuxFetchTests(FakeGitHub):
+    """La version Linux est une préversion d'étiquette « Linux-vX.Y.Z » : la recherche liste les releases et filtre."""
+
+    def test_the_newest_linux_tag_wins_and_windows_tags_are_never_offered(self):
+        self.serve([WINDOWS_LATEST, _release("v9.9.9"), _linux_release("Linux-v0.1.0"),
+                    _linux_release("Linux-v0.10.0"), _linux_release("Linux-v0.2.0")])
+        info = m.check_for_update(current="0.1.0")
+        self.assertEqual((info["version"], info["tag"]), ("0.10.0", "Linux-v0.10.0"))   # 0.10 > 0.2 : comparaison numérique
+
+    def test_drafts_and_malformed_tags_are_ignored(self):
+        self.serve([_linux_release("Linux-v5.0.0", draft=True), _linux_release("Linux-v1.x"),
+                    _linux_release("Linux-vv2.0.0"), _linux_release("linux-v3.0.0"), _linux_release("Linux-v4.0.0-rc1"),
+                    _linux_release("Linux-v0.3.0")])
+        self.assertEqual(m.check_for_update(current="0.1.0")["version"], "0.3.0")
+
+    def test_no_linux_release_yet_is_a_not_found_error(self):
+        self.serve([WINDOWS_LATEST, _release("v0.1.6", prerelease=False)])
+        with self.assertRaises(m.UpdateError) as cm:
+            m.check_for_update()
+        self.assertTrue(cm.exception.not_found)
+        self.serve([])
+        with self.assertRaises(m.UpdateError):
+            m.check_for_update()
+
+    def test_up_to_date_and_garbage(self):
+        self.serve([_linux_release("Linux-v0.1.0")])
+        self.assertIsNone(m.check_for_update(current="0.1.0"))
+        self.assertIsNone(m.check_for_update(current="0.2.0"))
+        self.serve({"message": "pas une liste"})
+        with self.assertRaises(m.UpdateError):
+            m.check_for_update()
+
+    def test_assets_are_the_linux_files_from_github_only(self):
+        self.serve([_linux_release("Linux-v0.2.0")])
+        info = m.check_for_update(current="0.1.0")
+        self.assertEqual(sorted(a["name"] for a in info["assets"]),
+                         ["SHA256SUMS-linux.txt", "yt-dlp-gui-0.2.0-x86_64.AppImage",
+                          "yt-dlp-gui-linux-0.2.0-x86_64.tar.gz"])
+        with mock.patch.object(m, "_ASSET_PATTERNS", m.release_asset_patterns(False, "x86_64")):
+            self.assertTrue(m.pick_asset(info, "appimage")["name"].endswith(".AppImage"))
+            self.assertTrue(m.pick_asset(info, "portable")["name"].endswith(".tar.gz"))
+
+    def test_the_pure_selection(self):
+        self.assertIsNone(m.select_linux_release(None))
+        self.assertIsNone(m.select_linux_release([{"tag_name": "v1.0.0"}, "x", 3]))
+        self.assertEqual(m.select_linux_release([{"tag_name": "Linux-v1.0.0"}, {"tag_name": "Linux-v1.0.1"}])["tag_name"],
+                         "Linux-v1.0.1")
+
+    def test_the_list_url_is_the_one_used_and_windows_uses_latest(self):
+        asked = []
+
+        def opener(url, timeout=0, headers=None):
+            asked.append(url)
+            import io
+            payload = json.dumps([_linux_release("Linux-v0.2.0")] if not m.IS_WINDOWS else _release("v9.0.0")).encode()
+            return io.BytesIO(payload)   # sert de gestionnaire de contexte, comme la réponse réelle
+        m.fetch_latest_release(opener)
+        with mock.patch.object(m, "IS_WINDOWS", True):
+            m.fetch_latest_release(opener)
+        self.assertEqual(asked, [m.RELEASES_LIST_URL, m.RELEASES_API_URL])
+        self.assertTrue(m.RELEASES_API_URL.endswith("/releases/latest"))
+        self.assertIn("/releases?per_page=", m.RELEASES_LIST_URL)
+        self.assertEqual(m.LINUX_TAG_PREFIX, "Linux-v")
 
 
 @unittest.skipUnless(tk_available(), "pas d'affichage Tk disponible")

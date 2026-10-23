@@ -69,7 +69,7 @@ def build_app():
            SCRIPT]
     print("->", " ".join(cmd))
     subprocess.run(cmd, check=True, cwd=ROOT)
-    for extra in ("LICENSE", "README.md", "CHANGELOG.md"):
+    for extra in ("LICENSE", "README.md", "CHANGELOG-linux.md"):
         shutil.copy2(os.path.join(ROOT, extra), os.path.join(APP_DIST, extra))
     if not os.path.isfile(os.path.join(APP_DIST, "yt-dlp-gui")):
         raise SystemExit("yt-dlp-gui absent après la construction")

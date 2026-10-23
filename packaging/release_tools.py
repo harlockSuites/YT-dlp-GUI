@@ -24,9 +24,10 @@ def read_version(root=ROOT):
     return m.group(1)
 
 
-def tag_matches_version(tag, version):
-    """L'étiquette de publication doit être exactement « v » + __version__."""
-    return tag == f"v{version}"
+def tag_matches_version(tag, version, prefix="v"):
+    """L'étiquette de publication doit être exactement le préfixe (« v » pour Windows, « Linux-v » pour Linux)
+    suivi de __version__."""
+    return tag == f"{prefix}{version}"
 
 
 def release_notes(changelog_text, version):
@@ -68,8 +69,10 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("check-tag")
     p.add_argument("tag")
+    p.add_argument("--prefix", default="v", help="préfixe de l'étiquette (« Linux-v » pour la version Linux)")
     p = sub.add_parser("notes")
     p.add_argument("--out", required=True)
+    p.add_argument("--changelog", default="CHANGELOG.md", help="journal des modifications à lire (dans le dépôt)")
     p = sub.add_parser("checksums")
     p.add_argument("--dir", default=os.path.join(ROOT, "dist"))
     p.add_argument("--out", required=True)
@@ -78,13 +81,13 @@ def main(argv=None):
 
     version = read_version()
     if args.cmd == "check-tag":
-        if not tag_matches_version(args.tag, version):
-            print(f"Étiquette « {args.tag} » différente de la version du code (v{version}) : "
+        if not tag_matches_version(args.tag, version, args.prefix):
+            print(f"Étiquette « {args.tag} » différente de la version du code ({args.prefix}{version}) : "
                   f"corrigez __version__ ou l'étiquette.", file=sys.stderr)
             return 1
         print(f"Étiquette {args.tag} : OK")
     elif args.cmd == "notes":
-        with open(os.path.join(ROOT, "CHANGELOG.md"), encoding="utf-8") as f:
+        with open(os.path.join(ROOT, args.changelog), encoding="utf-8") as f:
             notes = release_notes(f.read(), version)
         if not notes.strip():
             notes = f"yt-dlp GUI {version}\n"

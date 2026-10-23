@@ -54,6 +54,17 @@ class TagTests(unittest.TestCase):
         self.assertEqual(rt.main(["check-tag", f"v{m.__version__}"]), 0)
         self.assertEqual(rt.main(["check-tag", "v99.0.0"]), 1)
 
+    def test_linux_tags_use_their_own_prefix(self):
+        self.assertTrue(rt.tag_matches_version("Linux-v1.2.3", "1.2.3", "Linux-v"))
+        for bad in ("v1.2.3", "Linux-1.2.3", "linux-v1.2.3", "Linux-v1.2.4", "Linux-v1.2.3-rc1", "Linux-vv1.2.3"):
+            self.assertFalse(rt.tag_matches_version(bad, "1.2.3", "Linux-v"), bad)
+        self.assertFalse(rt.tag_matches_version("Linux-v1.2.3", "1.2.3"), "préfixe Windows par défaut")
+
+    def test_cli_check_tag_with_the_linux_prefix(self):
+        self.assertEqual(rt.main(["check-tag", f"Linux-v{m.__version__}", "--prefix", "Linux-v"]), 0)
+        self.assertEqual(rt.main(["check-tag", f"v{m.__version__}", "--prefix", "Linux-v"]), 1)
+        self.assertEqual(rt.main(["check-tag", "Linux-v99.0.0", "--prefix", "Linux-v"]), 1)
+
     def test_version_read_matches_application(self):
         self.assertEqual(rt.read_version(), m.__version__)
 
@@ -75,15 +86,24 @@ class NotesTests(unittest.TestCase):
         self.assertEqual(rt.release_notes(SAMPLE, "9.9.9"), "")
 
     def test_current_changelog_has_notes_for_current_version(self):
-        notes = rt.release_notes(_read(os.path.join(ROOT, "CHANGELOG.md")), m.__version__)
+        notes = rt.release_notes(_read(os.path.join(ROOT, "CHANGELOG-linux.md")), m.__version__)
         self.assertTrue(notes.strip())
+        self.assertIn("Première version Linux", notes)
 
-    def test_cli_writes_notes_file(self):
+    def test_cli_writes_notes_file_from_the_chosen_changelog(self):
         d = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         out = os.path.join(d, "sub", "notes.md")
-        self.assertEqual(rt.main(["notes", "--out", out]), 0)
-        self.assertTrue(_read(out).strip())
+        self.assertEqual(rt.main(["notes", "--changelog", "CHANGELOG-linux.md", "--out", out]), 0)
+        self.assertIn("Première version Linux", _read(out))
+
+    def test_the_windows_changelog_is_left_alone_and_has_no_linux_release(self):
+        """Windows est figé : son journal ne décrit que Windows et ne contient pas la version Linux."""
+        windows = _read(os.path.join(ROOT, "CHANGELOG.md"))
+        self.assertNotIn("Première version Linux", windows)
+        self.assertNotIn("Linux-v", windows)
+        self.assertIn("## [0.1.7] — 2026-10-21", windows)
+        self.assertIn("[CHANGELOG.md]", _read(os.path.join(ROOT, "CHANGELOG-linux.md")))
 
 
 class ChecksumTests(unittest.TestCase):
@@ -117,28 +137,32 @@ class WorkflowTests(unittest.TestCase):
     def setUpClass(cls):
         cls.text = _read(os.path.join(ROOT, ".github", "workflows", "release.yml"))
 
-    def test_triggers_on_version_tags_and_can_be_run_by_hand(self):
-        self.assertIn('tags: ["v*"]', self.text)
+    """Workflow de la branche Linux : il ne réagit qu'aux étiquettes « Linux-v* » (celui de Windows est sur main)."""
+
+    def test_triggers_on_linux_tags_and_can_be_run_by_hand(self):
+        self.assertIn('tags: ["Linux-v*"]', self.text)
         self.assertIn("workflow_dispatch:", self.text)
         self.assertIn("contents: write", self.text)
 
-    def test_publishes_only_for_tags(self):
-        self.assertRegex(self.text, r"Publier la release\s+if: startsWith\(github\.ref, 'refs/tags/v'\)")
+    def test_publishes_only_for_linux_tags(self):
+        self.assertRegex(self.text, r"Publier la préversion Linux\s+if: startsWith\(github\.ref, 'refs/tags/Linux-v'\)")
 
     def test_published_files_match_the_checksum_patterns(self):
+        import fnmatch
         listed = set(re.findall(r"^\s+dist/(\S+)$", self.text, re.M))
-        for pattern in rt.ARTIFACT_PATTERNS:
-            self.assertIn(pattern, listed)
-        self.assertIn("SHA256SUMS.txt", listed)
+        self.assertIn("SHA256SUMS-linux.txt", listed)
+        for name in ("yt-dlp-gui-0.1.0-x86_64.AppImage", "yt-dlp-gui-linux-0.1.0-x86_64.tar.gz"):
+            self.assertTrue(any(fnmatch.fnmatch(name, g) for g in listed), name)
+            self.assertTrue(any(fnmatch.fnmatch(name, p) for p in rt.LINUX_ARTIFACT_PATTERNS), name)
 
     def test_referenced_scripts_and_requirements_exist(self):
-        for rel in re.findall(r"python (?:-X utf8 )?(packaging/\S+\.py)", self.text):
+        for rel in re.findall(r"python3? (?:-X utf8 )?(packaging/\S+\.py)", self.text):
             self.assertTrue(os.path.isfile(os.path.join(ROOT, rel)), rel)
         req = _read(os.path.join(ROOT, "packaging", "requirements-build.txt"))
         self.assertRegex(req, r"^pyinstaller==\d+\.\d+\.\d+$")
 
     def test_tests_run_before_building(self):
-        self.assertLess(self.text.index("unittest discover"), self.text.index("packaging/build.py"))
+        self.assertLess(self.text.index("unittest discover"), self.text.index("packaging/build_linux.py"))
 
 
 if __name__ == "__main__":

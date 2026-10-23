@@ -238,19 +238,36 @@ class WorkflowTests(unittest.TestCase):
         self.assertRegex(text, r"tests-linux:\n\s+runs-on: ubuntu-22\.04")
         self.assertIn("xvfb-run -a python3", text)
 
-    def test_linux_release_job_is_separate_and_pins_appimagetool(self):
+    def test_release_workflow_builds_only_linux_and_reacts_only_to_linux_tags(self):
         text = _read(".github", "workflows", "release.yml")
-        windows, linux = text.split("  # Paquets Linux")
-        self.assertIn("needs: build", linux)
-        self.assertIn("runs-on: ubuntu-22.04", linux)
-        self.assertRegex(linux, r"appimagetool/releases/download/1\.9\.1/")
-        self.assertRegex(linux, r"[0-9a-f]{64}  appimagetool")
-        self.assertIn("sha256sum -c -", linux)
-        self.assertIn("packaging/build_linux.py", linux)
-        self.assertIn("--platform linux", linux)
-        for name in ("AppImage", "tar.gz", "SHA256SUMS-linux.txt"):
-            self.assertIn(name, linux)
-            self.assertNotIn(name, windows, "le travail Windows ne change pas")
+        self.assertIn('tags: ["Linux-v*"]', text)
+        self.assertNotIn('"v*"', text, "les étiquettes Windows (v*) relèvent du workflow de la branche main")
+        self.assertNotIn("windows-latest", text)
+        self.assertNotIn("choco", text)
+        self.assertEqual(text.count("    runs-on:"), 1, "un seul job, sous Ubuntu")
+        self.assertIn("runs-on: ubuntu-22.04", text)
+        self.assertIn("packaging/build_linux.py", text)
+        self.assertIn("--platform linux", text)
+
+    def test_the_linux_release_is_a_prerelease_never_marked_latest(self):
+        """Le logiciel Windows 0.1.7 interroge « releases/latest » : une release Linux normale la détournerait."""
+        text = _read(".github", "workflows", "release.yml")
+        self.assertRegex(text, r"prerelease: true")
+        self.assertRegex(text, r'make_latest: "false"')
+        self.assertIn("startsWith(github.ref, 'refs/tags/Linux-v')", text)
+        self.assertEqual(text.count("softprops/action-gh-release"), 1)
+
+    def test_the_tag_is_checked_against_the_version_with_the_linux_prefix_and_notes_come_from_the_linux_changelog(self):
+        text = _read(".github", "workflows", "release.yml")
+        self.assertIn('check-tag "${{ github.ref_name }}" --prefix Linux-v', text)
+        self.assertIn("--changelog CHANGELOG-linux.md", text)
+        self.assertNotIn("CHANGELOG.md", text.replace("CHANGELOG-linux.md", ""))
+
+    def test_linux_release_pins_appimagetool(self):
+        text = _read(".github", "workflows", "release.yml")
+        self.assertRegex(text, r"appimagetool/releases/download/1\.9\.1/")
+        self.assertRegex(text, r"[0-9a-f]{64}  appimagetool")
+        self.assertIn("sha256sum -c -", text)
 
     def test_the_pinned_checksum_has_a_sha256_shape_and_the_tool_is_not_unpinned(self):
         text = _read(".github", "workflows", "release.yml")
