@@ -4,7 +4,7 @@ Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes son
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [0.1.0] — non publiée
+## [0.1.0] — 2026-10-23
 
 ### Ajouté
 - **Première version Linux (préversion)**, portée du comportement de la version Windows 0.1.7 (essayée sous Debian 12, Python 3.11, Tk 8.6, puis sous un écran virtuel Xvfb ; aucun essai sur un bureau réel ni avec un compte YouTube).
