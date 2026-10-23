@@ -32,6 +32,30 @@ class WheelTests(unittest.TestCase):
             widget.event_generate("<MouseWheel>", delta=delta)
             self._settle(5)
 
+    def _button(self, widget, number):
+        # X11 n'envoie pas <MouseWheel> : la molette est le bouton 4 (vers le haut) ou 5 (vers le bas)
+        with mock.patch.object(self.app, "winfo_containing", return_value=widget):
+            widget.event_generate(f"<Button-{number}>")
+            self._settle(5)
+
+    def test_x11_buttons_4_and_5_scroll_the_page(self):
+        self.cv.yview_moveto(0.0)
+        self._settle(3)
+        self._button(self.app._frm_url, 5)
+        down = self.cv.yview()[0]
+        self.assertGreater(down, 0.0)
+        self._button(self.app._frm_url, 4)
+        self.assertLess(self.cv.yview()[0], down)
+
+    def test_x11_combobox_scrolls_the_page_without_changing_its_value(self):
+        combo = self.app._primary_combo
+        value = combo.get()
+        self.cv.yview_moveto(0.0)
+        self._settle(3)
+        for number in (5, 4, 5):
+            self._button(combo, number)
+        self.assertEqual(combo.get(), value)
+
     def test_wheel_scrolls_the_page_over_labels_frames_and_buttons(self):
         for name in ("_lbl_dep_warn", "_frm_url", "btn_dl", "_cookie_frame"):
             self.cv.yview_moveto(0.0)

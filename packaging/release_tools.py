@@ -13,6 +13,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARTIFACT_PATTERNS = ("yt-dlp-gui-setup-*.exe", "yt-dlp-gui-portable-*.zip")
+LINUX_ARTIFACT_PATTERNS = ("yt-dlp-gui-*-*.AppImage", "yt-dlp-gui-linux-*.tar.gz")
 
 
 def read_version(root=ROOT):
@@ -38,9 +39,9 @@ def release_notes(changelog_text, version):
     return "\n".join(lines[start + 1:end]).strip() + "\n"
 
 
-def artifact_files(folder):
+def artifact_files(folder, patterns=ARTIFACT_PATTERNS):
     names = sorted(os.listdir(folder))
-    return [n for n in names if any(fnmatch.fnmatch(n, p) for p in ARTIFACT_PATTERNS)]
+    return [n for n in names if any(fnmatch.fnmatch(n, p) for p in patterns)]
 
 
 def sha256_of(path):
@@ -51,9 +52,9 @@ def sha256_of(path):
     return h.hexdigest()
 
 
-def write_checksums(folder, out_path):
+def write_checksums(folder, out_path, patterns=ARTIFACT_PATTERNS):
     """Écrit « hash  nom » (format sha256sum) pour chaque fichier publié."""
-    names = artifact_files(folder)
+    names = artifact_files(folder, patterns)
     if not names:
         raise SystemExit(f"aucun fichier à publier dans {folder}")
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
@@ -72,6 +73,7 @@ def main(argv=None):
     p = sub.add_parser("checksums")
     p.add_argument("--dir", default=os.path.join(ROOT, "dist"))
     p.add_argument("--out", required=True)
+    p.add_argument("--platform", choices=("windows", "linux"), default="windows")
     args = ap.parse_args(argv)
 
     version = read_version()
@@ -91,7 +93,8 @@ def main(argv=None):
             f.write(notes)
         print(f"Notes de la version {version} : {args.out}")
     elif args.cmd == "checksums":
-        names = write_checksums(args.dir, args.out)
+        names = write_checksums(args.dir, args.out,
+                                LINUX_ARTIFACT_PATTERNS if args.platform == "linux" else ARTIFACT_PATTERNS)
         print("Sommes SHA-256 :", ", ".join(names))
     return 0
 

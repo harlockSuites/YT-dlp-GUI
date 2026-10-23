@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, Linux]
   pull_request:
 
 jobs:
@@ -15,3 +15,15 @@ jobs:
           python-version: "3.12"
       - name: Tests unitaires et d'interface
         run: python -X utf8 -m unittest discover -s tests -t . -v
+
+  tests-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Installer Tk et un écran virtuel
+        run: sudo apt-get update && sudo apt-get install -y tk8.6 xvfb
+      - name: Tests unitaires et d'interface (Xvfb)
+        run: xvfb-run -a python3 -X utf8 -m unittest discover -s tests -t . -v

@@ -108,6 +108,22 @@ def open_path(path):
                          stderr=subprocess.DEVNULL, start_new_session=True)
 
 
+# Polices de l'interface. Windows : Segoe UI et Consolas. Ailleurs ces polices n'existent pas et Tk en prendrait une
+# autre au hasard : use_system_fonts() choisit la police système de Tk (interface et chasse fixe) quand la
+# fenêtre existe, avant que le moindre contrôle ne soit créé.
+UI_FONT = "Segoe UI"
+MONO_FONT = "Consolas"
+
+
+def use_system_fonts():
+    global UI_FONT, MONO_FONT
+    if IS_WINDOWS:
+        return
+    import tkinter.font as tkfont
+    UI_FONT = tkfont.nametofont("TkDefaultFont").actual("family")
+    MONO_FONT = tkfont.nametofont("TkFixedFont").actual("family")
+
+
 def _resolve_dirs(frozen, executable, script_dir, meipass, env, windows=None):
     """Retourne (RESOURCE_DIR, DATA_DIR).
     - RESOURCE_DIR : fichiers du programme en lecture seule (traductions, images, icône).
@@ -148,6 +164,7 @@ CUSTOM_BLOCKS_FILE = os.path.join(DATA_DIR, "custom-blocks.json")
 LOCAL_BIN          = os.path.join(DATA_DIR, "bin")   # ffmpeg/ffprobe installés par l'assistant
 COMMAND_DIR        = os.path.join(DATA_DIR, "cmd")   # fichiers de configuration éphémères de yt-dlp
 ICON_FILE          = os.path.join(RESOURCE_DIR, "yt-dlp-gui.ico")
+ICON_PNG           = os.path.join(RESOURCE_DIR, "assets", "yt-dlp-gui.png")   # icône des fenêtres hors Windows
 ASSETS_DIR         = os.path.join(RESOURCE_DIR, "assets")
 DONATE_URL         = "https://ko-fi.com/harlocksuites"
 if LOCAL_BIN not in os.environ.get("PATH", "").split(os.pathsep):
@@ -453,9 +470,12 @@ def install_wheel_scrolling(root):
         return "break"
 
     root.bind_all("<MouseWheel>", lambda e: scroll(e, e.delta), add="+")
-    root.bind_all("<Button-4>", lambda e: scroll(e, 120), add="+")      # X11 (version Linux à venir)
+    root.bind_all("<Button-4>", lambda e: scroll(e, 120), add="+")      # X11 : la molette est le bouton 4 / 5
     root.bind_all("<Button-5>", lambda e: scroll(e, -120), add="+")
     root.bind_class("TCombobox", "<MouseWheel>", lambda e: scroll(e, e.delta) or "break")
+    # X11 : sans ces deux liaisons, Tk change la valeur de la liste au passage de la molette
+    root.bind_class("TCombobox", "<Button-4>", lambda e: scroll(e, 120) or "break")
+    root.bind_class("TCombobox", "<Button-5>", lambda e: scroll(e, -120) or "break")
 
 
 _UNAVAILABLE_TITLES = ("[Private video]", "[Deleted video]")
@@ -1069,7 +1089,7 @@ class DepsWindow(tk.Toplevel):
         ttk.Label(
             self,
             text=t("deps.header"),
-            font=("Segoe UI", 10, "bold"),
+            font=(UI_FONT, 10, "bold"),
         ).pack(anchor="w", **pad)
         ttk.Label(self, text=t("deps.optional_note"), wraplength=560, justify="left",
                   foreground="#2e7d32").pack(anchor="w", padx=12, pady=(0, 6))
@@ -1104,7 +1124,7 @@ class DepsWindow(tk.Toplevel):
         headers =[t("deps.col_tool"), t("deps.col_status"), t("deps.col_role"), t("deps.col_action")]
         widths   = [14,       16,       54,      14]
         for col, (h, w) in enumerate(zip(headers, widths)):
-            ttk.Label(frm_table, text=h, font=("Segoe UI", 9, "bold"),
+            ttk.Label(frm_table, text=h, font=(UI_FONT, 9, "bold"),
                       width=w, anchor="w").grid(row=0, column=col, padx=4, pady=(0, 4))
 
         self._rows = []
@@ -1112,7 +1132,7 @@ class DepsWindow(tk.Toplevel):
             row = i + 1
             req_tag = " *" if dep["required"] else ""
             lbl_name = ttk.Label(frm_table, text=dep["name"] + req_tag,
-                                 font=("Consolas", 9), width=14, anchor="w")
+                                 font=(MONO_FONT, 9), width=14, anchor="w")
             lbl_name.grid(row=row, column=0, padx=4, pady=2, sticky="w")
 
             lbl_status = ttk.Label(frm_table, text="…", width=16, anchor="w")
@@ -1136,7 +1156,7 @@ class DepsWindow(tk.Toplevel):
 
             self._rows.append({"dep": dep, "lbl_status": lbl_status, "btn": btn})
 
-        ttk.Label(self, text=t("deps.footnote" if IS_WINDOWS else "deps.footnote_linux"), font=("Segoe UI", 8),
+        ttk.Label(self, text=t("deps.footnote" if IS_WINDOWS else "deps.footnote_linux"), font=(UI_FONT, 8),
                   foreground="#666", wraplength=560, justify="left").pack(anchor="w", padx=12)
 
         # Boutons du bas
@@ -1159,7 +1179,7 @@ class DepsWindow(tk.Toplevel):
         frm_log.pack(fill="both", expand=True, padx=12, pady=(0, 12))
 
         self.log = tk.Text(frm_log, height=8, width=70,
-                           font=("Consolas", 9), state="disabled",
+                           font=(MONO_FONT, 9), state="disabled",
                            bg="#1e1e1e", fg="#d4d4d4")
         sb = ttk.Scrollbar(frm_log, command=self.log.yview)
         self.log.configure(yscrollcommand=sb.set)
@@ -1171,7 +1191,7 @@ class DepsWindow(tk.Toplevel):
         self._cmd_frame = ttk.LabelFrame(self, text=t("deps.linux_command_label"), padding=6)
         self._cmd_var = tk.StringVar()
         ttk.Entry(self._cmd_frame, textvariable=self._cmd_var, state="readonly",
-                  font=("Consolas", 9)).pack(side="left", fill="x", expand=True)
+                  font=(MONO_FONT, 9)).pack(side="left", fill="x", expand=True)
         self._btn_copy = ttk.Button(self._cmd_frame, text=t("deps.btn_copy_command"), command=self._copy_command)
         self._btn_copy.pack(side="left", padx=(6, 0))
 
@@ -1298,7 +1318,7 @@ class UpdateWindow(tk.Toplevel):
         frm_ver.pack(fill="x", **pad)
         self.var_ver = tk.StringVar(value=t("upd.version_reading"))
         ttk.Label(frm_ver, textvariable=self.var_ver,
-                  font=("Consolas", 10)).pack(anchor="w")
+                  font=(MONO_FONT, 10)).pack(anchor="w")
 
         # ── Mise à jour ──────────────────────────────────────────
         frm_upd = ttk.LabelFrame(self, text=t("upd.update_frame"), padding=8)
@@ -1332,7 +1352,7 @@ class UpdateWindow(tk.Toplevel):
         frm_log = ttk.LabelFrame(self, text=t("upd.log_frame"), padding=6)
         frm_log.pack(fill="both", expand=True, padx=12, pady=(0, 6))
 
-        self.log = tk.Text(frm_log, height=12, font=("Consolas", 9),
+        self.log = tk.Text(frm_log, height=12, font=(MONO_FONT, 9),
                            state="disabled", bg="#1e1e1e", fg="#d4d4d4",
                            wrap="word")
         sb = ttk.Scrollbar(frm_log, command=self.log.yview)
@@ -1518,7 +1538,7 @@ class DownloadQueueWindow(tk.Toplevel):
     def _build(self):
         self.var_status = tk.StringVar(value=t("dlq.status_starting"))
         ttk.Label(self, textvariable=self.var_status, anchor="w",
-                  font=("Segoe UI", 9)).pack(fill="x", padx=8, pady=(8, 2))
+                  font=(UI_FONT, 9)).pack(fill="x", padx=8, pady=(8, 2))
 
         self.var_progress = tk.DoubleVar(value=0)
         ttk.Progressbar(self, variable=self.var_progress, maximum=100,
@@ -1527,7 +1547,7 @@ class DownloadQueueWindow(tk.Toplevel):
         frm_log = ttk.LabelFrame(self, text=t("dlq.log_frame_label"), padding=6)
         frm_log.pack(fill="both", expand=True, padx=8, pady=(0, 4))
 
-        self.log = tk.Text(frm_log, wrap="word", font=("Consolas", 9),
+        self.log = tk.Text(frm_log, wrap="word", font=(MONO_FONT, 9),
                            state="disabled", bg="#1e1e1e", fg="#d4d4d4")
         sb = ttk.Scrollbar(frm_log, command=self.log.yview)
         self.log.configure(yscrollcommand=sb.set)
@@ -2083,7 +2103,7 @@ class DownloadReportWindow(tk.Toplevel):
         ttk.Label(frm_sum,
                   text=t("report.summary", total=total, n_ok=n_ok, n_adj=n_adj, n_err=n_err)
                        + (t("report.summary_skipped", n=n_skip) if n_skip else ""),
-                  font=("Segoe UI", 10, "bold")).pack(side="left")
+                  font=(UI_FONT, 10, "bold")).pack(side="left")
 
         # ── Liste scrollable ────────────────────────────────────────
         frm_cv = ttk.Frame(self, padding=(8, 0, 8, 0))
@@ -2111,16 +2131,16 @@ class DownloadReportWindow(tk.Toplevel):
 
             tk.Label(frm_row, text=self._STATUS_LABEL[lbl_status],
                      fg=color, bg=bg, width=12, anchor="w",
-                     font=("Consolas", 9, "bold")).grid(row=0, column=0, padx=(8, 4), pady=4, sticky="w")
+                     font=(MONO_FONT, 9, "bold")).grid(row=0, column=0, padx=(8, 4), pady=4, sticky="w")
 
             title_text = r["title"][:72] + "…" if len(r["title"]) > 72 else r["title"]
             tk.Label(frm_row, text=title_text, fg="#d4d4d4", bg=bg,
-                     anchor="w", font=("Segoe UI", 9)).grid(row=0, column=1, sticky="ew", pady=4)
+                     anchor="w", font=(UI_FONT, 9)).grid(row=0, column=1, sticky="ew", pady=4)
 
             if r["dropped"]:
                 detail = t("report.tracks_ignored", liste=", ".join(r["dropped"]))
                 tk.Label(frm_row, text=detail, fg="#888", bg=bg,
-                         anchor="w", font=("Segoe UI", 8, "italic")).grid(
+                         anchor="w", font=(UI_FONT, 8, "italic")).grid(
                     row=1, column=1, columnspan=2, sticky="w", padx=(0, 8), pady=(0, 4))
 
         # ── Bouton fermer ───────────────────────────────────────────
@@ -2492,7 +2512,7 @@ class MultiCheckSelect(ttk.Frame):
             var_args = tk.StringVar(value=prefill["args"] if prefill else "")
             ttk.Entry(frm_f, textvariable=var_args).grid(row=2, column=1, sticky="ew", pady=4)
             ttk.Label(frm_f, text=t("blocks.editor_args_hint"),
-                      foreground="#888", font=("Segoe UI", 8)
+                      foreground="#888", font=(UI_FONT, 8)
                       ).grid(row=3, column=1, sticky="w")
 
             def _save():
@@ -2566,7 +2586,7 @@ class MultiCheckSelect(ttk.Frame):
 
         lbl_legend = ttk.Label(frm_btns,
                                text=t("blocks.legend"),
-                               foreground="#888", font=("Segoe UI", 8))
+                               foreground="#888", font=(UI_FONT, 8))
         lbl_legend.pack(side="right", padx=4)
 
 
@@ -2804,7 +2824,7 @@ class _Tip:
         tw.wm_overrideredirect(True)
         tw.wm_geometry(f"+{self._w.winfo_rootx() + 12}+{self._w.winfo_rooty() + self._w.winfo_height() + 4}")
         tk.Label(tw, text=txt, bg="#ffffe0", fg="#000000", relief="solid",
-                 borderwidth=1, font=("Segoe UI", 9), padx=4, pady=2).pack()
+                 borderwidth=1, font=(UI_FONT, 9), padx=4, pady=2).pack()
 
     def _hide(self, _e=None):
         if self._tw:
@@ -2929,7 +2949,7 @@ class CookieFrame(ttk.LabelFrame):
         self.state = "off"
         self.detail = ""
         _browser_combo(self, var).grid(row=0, column=0, sticky="w")
-        self.dot = tk.Label(self, text="●", fg=_COOKIE_COLORS["off"], font=("Segoe UI", 13), cursor="hand2")
+        self.dot = tk.Label(self, text="●", fg=_COOKIE_COLORS["off"], font=(UI_FONT, 13), cursor="hand2")
         self.dot.grid(row=0, column=1, padx=(6, 0))
         self.dot.bind("<Button-1>", lambda _e: self.check())
         self.button = ttk.Button(self, text="↻", width=2, command=self.check)
@@ -2937,10 +2957,10 @@ class CookieFrame(ttk.LabelFrame):
         _Tip(self.button, lambda: t("insp.cookie_tip_refresh"))
         _Tip(self.dot, self._tip_text)
         self.warn = tk.Label(self, text=t(warn_key), justify="left", anchor="w",
-                             fg="#e74c3c", font=("Segoe UI", 8), wraplength=warn_wrap)
+                             fg="#e74c3c", font=(UI_FONT, 8), wraplength=warn_wrap)
         self.warn.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
         self.note = tk.Label(self, text="", justify="left", anchor="w",
-                             fg="#f5a623", font=("Segoe UI", 8), wraplength=warn_wrap)
+                             fg="#f5a623", font=(UI_FONT, 8), wraplength=warn_wrap)
         self.note.grid(row=2, column=0, columnspan=3, sticky="w", pady=(4, 0))
         var.trace_add("write", lambda *_: self.refresh())
         self.refresh()
@@ -3188,7 +3208,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._log_win = win
         frm = ttk.Frame(win, padding=6)
         frm.pack(fill="both", expand=True)
-        txt = tk.Text(frm, font=("Consolas", 9), bg="#1e1e1e", fg="#d4d4d4",
+        txt = tk.Text(frm, font=(MONO_FONT, 9), bg="#1e1e1e", fg="#d4d4d4",
                       wrap="word", relief="flat", state="disabled")
         vsb = ttk.Scrollbar(frm, orient="vertical", command=txt.yview)
         txt.configure(yscrollcommand=vsb.set)
@@ -3222,7 +3242,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         ttk.Label(frm_top, text=t("insp.label_url")).pack(side="left", padx=(0, 6))
         self.var_url = tk.StringVar()
         ttk.Entry(frm_top, textvariable=self.var_url,
-                  font=("Segoe UI", 10)).pack(side="left", fill="x", expand=True, padx=(0, 6))
+                  font=(UI_FONT, 10)).pack(side="left", fill="x", expand=True, padx=(0, 6))
         ttk.Button(frm_top, text=t("insp.btn_paste"),
                    command=lambda: self.var_url.set(self.clipboard_get())).pack(side="left", padx=(0, 4))
         self.btn_analyze = ttk.Button(frm_top, text=t("insp.btn_analyze"),
@@ -3249,7 +3269,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self.btn_dl.pack(side="right", ipadx=10, ipady=4)
         self.var_status = tk.StringVar(value=t("insp.status_initial"))
         ttk.Label(self, textvariable=self.var_status, anchor="w",
-                  font=("Segoe UI", 9)).pack(side="bottom", fill="x", padx=8, pady=(4, 0))
+                  font=(UI_FONT, 9)).pack(side="bottom", fill="x", padx=8, pady=(4, 0))
 
         # ── Page défilante verticalement (règles + légende + tableau) ──
         frm_page = ttk.Frame(self)
@@ -3402,7 +3422,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._g_blocks.grid(row=0, column=1, sticky="w")
         self._lbl_mkv_warn = ttk.Label(
             g, text=t("insp.mkv_warn"),
-            foreground="#e67e22", font=("Segoe UI", 8), wraplength=360)
+            foreground="#e67e22", font=(UI_FONT, 8), wraplength=360)
         self._lbl_mkv_warn.grid(row=0, column=2, sticky="w", padx=(10, 0))
         self._lbl_mkv_warn.grid_remove()
         frm_g.add(g)
@@ -3424,7 +3444,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                         (self._BG_WARN,  t("insp.legend_secondary_missing")),
                         (self._BG_OK_EVEN, t("insp.legend_ok"))]:
             tk.Label(frm_legend, text=f"  {txt}  ", bg=bg, fg="#d4d4d4",
-                     font=("Segoe UI", 8), relief="flat").pack(side="left", padx=(0, 6))
+                     font=(UI_FONT, 8), relief="flat").pack(side="left", padx=(0, 6))
 
         # ── Tableau : en-tête + zone défilante (verticale ET horizontale) ──
         frm_table = ttk.Frame(page)
@@ -3440,7 +3460,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
                         (t("insp.grid_col_subs"), 16), (t("insp.grid_col_primary"), 16),
                         (t("insp.grid_col_secondary"), 22), (t("insp.grid_col_subs_override"), 20)]:
             tk.Label(frm_head, text=text, bg="#333", fg="#aaa",
-                     font=("Segoe UI", 8, "bold"),
+                     font=(UI_FONT, 8, "bold"),
                      width=w, anchor="w").pack(side="left", padx=3, pady=3)
 
         self._canvas = tk.Canvas(frm_table, bg="#252525", highlightthickness=0, height=240)
@@ -3472,12 +3492,14 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._canvas.bind("<Configure>", _fit_table)
         self._canvas.bind("<Shift-MouseWheel>",
                           lambda e: self._canvas.xview_scroll(-1 * (e.delta // 120), "units"))
+        self._canvas.bind("<Shift-Button-4>", lambda e: self._canvas.xview_scroll(-1, "units"))   # X11
+        self._canvas.bind("<Shift-Button-5>", lambda e: self._canvas.xview_scroll(1, "units"))
 
         # ── Panneau de log (caché par défaut) ─────────────────────
         self._log_frame = ttk.LabelFrame(self, text=" Journal de debug ", padding=4)
         # Pas de pack() ici — _toggle_log le gère
         self._log_text = tk.Text(self._log_frame, height=6, state="disabled",
-                                 font=("Consolas", 8), bg="#1e1e1e", fg="#d4d4d4",
+                                 font=(MONO_FONT, 8), bg="#1e1e1e", fg="#d4d4d4",
                                  wrap="word", relief="flat")
         log_vsb = ttk.Scrollbar(self._log_frame, orient="vertical",
                                 command=self._log_text.yview)
@@ -3508,7 +3530,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
         lb_frame = ttk.Frame(pop)
         lb_frame.pack(fill="both", expand=True, padx=8, pady=(0, 4))
-        lb = tk.Listbox(lb_frame, font=("Segoe UI", 9), activestyle="dotbox",
+        lb = tk.Listbox(lb_frame, font=(UI_FONT, 9), activestyle="dotbox",
                         selectmode="single", bg="#252525", fg="#d4d4d4",
                         selectbackground="#264f78", highlightthickness=0)
         vsb = ttk.Scrollbar(lb_frame, command=lb.yview)
@@ -4018,18 +4040,18 @@ class PlaylistInspectorWindow(tk.Toplevel):
 
         # Numéro
         tk.Label(frm, text=str(idx), width=3, anchor="e", bg=bg,
-                 fg="#888", font=("Consolas", 9)).pack(side="left", padx=3)
+                 fg="#888", font=(MONO_FONT, 9)).pack(side="left", padx=3)
 
         # Titre (tronqué)
         title = vid["title"]
         disp = (title[:38] + "…") if len(title) > 38 else title
         tk.Label(frm, text=disp, width=38, anchor="w", bg=bg,
-                 fg="#d4d4d4", font=("Segoe UI", 9)).pack(side="left", padx=4)
+                 fg="#d4d4d4", font=(UI_FONT, 9)).pack(side="left", padx=4)
 
         # Audio dispo (résumé)
         audio_str = " ".join(l.upper() for l in vid["audio_langs"][:8]) or "?"
         tk.Label(frm, text=audio_str, width=20, anchor="w", bg=bg,
-                 fg="#9cdcfe", font=("Consolas", 8)).pack(side="left", padx=2)
+                 fg="#9cdcfe", font=(MONO_FONT, 8)).pack(side="left", padx=2)
 
         # ST dispo (résumé)
         _ao = set(vid.get("auto_only_subs", []))
@@ -4038,7 +4060,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
             for l in vid["sub_langs"][:8]
         ) or "—"
         tk.Label(frm, text=sub_str, width=16, anchor="w", bg=bg,
-                 fg="#ce9178", font=("Consolas", 8)).pack(side="left", padx=2)
+                 fg="#ce9178", font=(MONO_FONT, 8)).pack(side="left", padx=2)
 
         # ── Override : langue principale ──
         var_primary = tk.StringVar(value=self._g_opt_row_default)
@@ -4686,7 +4708,7 @@ class BugReportWindow(tk.Toplevel):
         self.var_summary = tk.StringVar()
         ttk.Entry(frm, textvariable=self.var_summary).pack(fill="x")
         ttk.Label(frm, text=t("bug.label_description")).pack(anchor="w", pady=(10, 2))
-        self.txt_desc = tk.Text(frm, height=6, wrap="word", font=("Segoe UI", 10))
+        self.txt_desc = tk.Text(frm, height=6, wrap="word", font=(UI_FONT, 10))
         self.txt_desc.pack(fill="x")
 
         ttk.Label(frm, text=t("bug.label_report")).pack(anchor="w", pady=(10, 2))
@@ -4698,7 +4720,7 @@ class BugReportWindow(tk.Toplevel):
         frm_rep = ttk.Frame(frm)
         frm_rep.pack(fill="both", expand=True)
         sb = ttk.Scrollbar(frm_rep, orient="vertical")
-        self.txt_report = tk.Text(frm_rep, wrap="word", font=("Consolas", 9), yscrollcommand=sb.set)
+        self.txt_report = tk.Text(frm_rep, wrap="word", font=(MONO_FONT, 9), yscrollcommand=sb.set)
         sb.configure(command=self.txt_report.yview)
         sb.pack(side="right", fill="y")
         self.txt_report.pack(side="left", fill="both", expand=True)
@@ -4980,7 +5002,7 @@ class SetupWizardWindow(tk.Toplevel):
         ttk.Progressbar(frm, variable=self.var_progress, maximum=100).pack(fill="x", pady=(10, 2))
         self.var_info = tk.StringVar()
         ttk.Label(frm, textvariable=self.var_info, foreground="gray").pack(anchor="w")
-        self.txt = tk.Text(frm, height=7, width=64, font=("Consolas", 9), state="disabled",
+        self.txt = tk.Text(frm, height=7, width=64, font=(MONO_FONT, 9), state="disabled",
                            bg="#1e1e1e", fg="#d4d4d4")
         self.txt.pack(fill="x", pady=(6, 0))
 
@@ -5063,7 +5085,25 @@ class SetupWizardWindow(tk.Toplevel):
 # ══════════════════════════════════════════════════════════════════
 RELEASES_API_URL = "https://api.github.com/repos/harlockSuites/YT-dlp-GUI/releases/latest"
 UPDATE_CHECK_INTERVAL = 24 * 3600
-_ASSET_PATTERNS = {"installer": "yt-dlp-gui-setup-*.exe", "portable": "yt-dlp-gui-portable-*.zip"}
+def linux_arch_name(machine=None):
+    """Nom d'architecture des fichiers Linux de la release (« x86_64 » ou « aarch64 »), ou None si le projet
+    n'en publie pas pour cette architecture."""
+    machine = (machine if machine is not None else platform.machine()).lower()
+    return {"x86_64": "x86_64", "amd64": "x86_64", "aarch64": "aarch64", "arm64": "aarch64"}.get(machine)
+
+
+def release_asset_patterns(windows, machine=None):
+    """Motifs des fichiers à proposer selon le type d'installation. Windows : installateur et version portable ;
+    Linux : AppImage et archive .tar.gz, pour l'architecture de cette machine."""
+    if windows:
+        return {"installer": "yt-dlp-gui-setup-*.exe", "portable": "yt-dlp-gui-portable-*.zip"}
+    arch = linux_arch_name(machine)
+    if not arch:
+        return {}
+    return {"appimage": f"yt-dlp-gui-*-{arch}.AppImage", "portable": f"yt-dlp-gui-linux-*-{arch}.tar.gz"}
+
+
+_ASSET_PATTERNS = release_asset_patterns(IS_WINDOWS)
 
 
 def describe_network_error(exc):
@@ -5106,11 +5146,15 @@ def _is_github_url(url):
                                     or host.endswith(".githubusercontent.com"))
 
 
-def _install_kind(frozen=None, executable=None):
-    """« source », « portable » ou « installer » : détermine quel fichier proposer."""
+def _install_kind(frozen=None, executable=None, env=None):
+    """« source », « portable », « installer » (Windows) ou « appimage » (Linux) : détermine quel fichier proposer."""
     frozen = getattr(sys, "frozen", False) if frozen is None else frozen
     if not frozen:
         return "source"
+    if not IS_WINDOWS and (os.environ if env is None else env).get("APPIMAGE"):
+        return "appimage"   # lancé depuis un AppImage : le chemin de l'exécutable est dans son montage temporaire
+    if not IS_WINDOWS:
+        return "portable"   # archive .tar.gz extraite : il n'y a pas d'installateur sous Linux
     exe_dir = os.path.dirname(os.path.abspath(executable or sys.executable))
     return "portable" if os.path.isfile(os.path.join(exe_dir, "portable.flag")) else "installer"
 
@@ -5172,7 +5216,7 @@ class AppUpdateWindow(tk.Toplevel):
         frm.pack(fill="both", expand=True)
         ttk.Label(frm, text=t("app_update.current", version=__version__)).pack(anchor="w")
         self.var_status = tk.StringVar(value=t("app_update.checking"))
-        self.lbl_status = ttk.Label(frm, textvariable=self.var_status, font=("Segoe UI", 10, "bold"))
+        self.lbl_status = ttk.Label(frm, textvariable=self.var_status, font=(UI_FONT, 10, "bold"))
         self.lbl_status.pack(anchor="w", pady=(6, 4))
         self.lbl_hint = ttk.Label(frm, text="", foreground="gray", wraplength=520, justify="left")
         self.lbl_hint.pack(anchor="w")
@@ -5181,7 +5225,7 @@ class AppUpdateWindow(tk.Toplevel):
         frm_notes = ttk.LabelFrame(frm, text=t("app_update.notes"), padding=6)
         frm_notes.pack(fill="both", expand=True, pady=(8, 6))
         sb = ttk.Scrollbar(frm_notes, orient="vertical")
-        self.txt = tk.Text(frm_notes, wrap="word", height=8, state="disabled", font=("Segoe UI", 9),
+        self.txt = tk.Text(frm_notes, wrap="word", height=8, state="disabled", font=(UI_FONT, 9),
                            yscrollcommand=sb.set)
         sb.configure(command=self.txt.yview)
         sb.pack(side="right", fill="y")
@@ -5293,7 +5337,7 @@ class DonateWindow(tk.Toplevel):
             ttk.Label(frm_head, image=img).pack(side="left", padx=(0, 12) if name == "logo.png" else 0)
 
         ttk.Label(self, text=t("donate.text"), justify="left", wraplength=500,
-                  font=("Segoe UI", 10)).pack(padx=24, pady=(10, 14), anchor="w")
+                  font=(UI_FONT, 10)).pack(padx=24, pady=(10, 14), anchor="w")
 
         ttk.Button(self, text=t("donate.btn_kofi"),
                    command=lambda: __import__("webbrowser").open(DONATE_URL)
@@ -5305,9 +5349,15 @@ class YtDlpGui(tk.Tk):
     AUTO_UPDATE_CHECK = True   # vérifie en arrière-plan la présence d'une nouvelle version
 
     def __init__(self):
-        super().__init__()
+        # Hors Windows, la classe de fenêtre (WM_CLASS) relie la fenêtre à son lanceur « yt-dlp-gui.desktop »
+        super().__init__(**({} if IS_WINDOWS else {"className": "yt-dlp-gui"}))
+        use_system_fonts()
         try:
-            self.iconbitmap(default=ICON_FILE)   # icône de toutes les fenêtres
+            if IS_WINDOWS:
+                self.iconbitmap(default=ICON_FILE)   # icône de toutes les fenêtres
+            else:
+                self._icon = tk.PhotoImage(file=ICON_PNG)   # référence gardée : sinon Tk libère l'image
+                self.iconphoto(True, self._icon)
         except tk.TclError:
             pass
         self.title(f"{t('app.window_title')}  v{__version__}")
@@ -5414,14 +5464,14 @@ class YtDlpGui(tk.Tk):
         self.var_dep_warn = tk.StringVar()
         self._lbl_dep_warn = ttk.Label(
             frm_toolbar, textvariable=self.var_dep_warn,
-            foreground="#e67e22", font=("Segoe UI", 9)
+            foreground="#e67e22", font=(UI_FONT, 9)
         )
         self._lbl_dep_warn.pack(side="left")
         self._update_info = None
         self._frm_toolbar = frm_toolbar
         self._frm_update = ttk.Frame(page)   # ligne affichée sous la barre d'outils quand une version est disponible
         self._lbl_update = tk.Label(self._frm_update, text="", fg="#2980b9", cursor="hand2",
-                                    font=("Segoe UI", 9, "underline"), justify="left", wraplength=700)
+                                    font=(UI_FONT, 9, "underline"), justify="left", wraplength=700)
         self._lbl_update.pack(anchor="w")
         self._lbl_update.bind("<Button-1>", lambda _e: self._open_app_update())
 
@@ -5446,7 +5496,7 @@ class YtDlpGui(tk.Tk):
         self._frm_url = frm_url
 
         self.var_url = tk.StringVar()
-        ent_url = ttk.Entry(frm_url, textvariable=self.var_url, font=("Segoe UI", 10))
+        ent_url = ttk.Entry(frm_url, textvariable=self.var_url, font=(UI_FONT, 10))
         ent_url.pack(side="left", fill="x", expand=True, padx=(0, 6))
         ttk.Button(frm_url, text=t("url.btn_paste"), command=self._paste_url).pack(side="left")
         ttk.Button(frm_url, text=t("url.btn_inspect"), command=self._inspect).pack(side="left", padx=(4, 0))
@@ -5456,7 +5506,7 @@ class YtDlpGui(tk.Tk):
         # Résultat de l'analyse (titre, durée, chaîne, langues), sous le champ URL ; masqué si l'URL change
         self._inspect_box_url = None
         self._lbl_inspect = tk.Label(page, text="", justify="left", anchor="w", wraplength=760,
-                                     font=("Segoe UI", 9))
+                                     font=(UI_FONT, 9))
         self.var_url.trace_add("write", lambda *_: self._on_url_changed_for_box())
 
         # ── Dossier de destination ──────────────────
@@ -5464,7 +5514,7 @@ class YtDlpGui(tk.Tk):
         frm_out.pack(fill="x", **pad)
 
         self.var_outdir = tk.StringVar(value=os.path.expanduser("~/Downloads"))
-        ent_out = ttk.Entry(frm_out, textvariable=self.var_outdir, font=("Segoe UI", 10))
+        ent_out = ttk.Entry(frm_out, textvariable=self.var_outdir, font=(UI_FONT, 10))
         ent_out.pack(side="left", fill="x", expand=True, padx=(0, 6))
         ttk.Button(frm_out, text=t("opts.outdir_browse"), command=self._browse_dir).pack(side="left")
 
@@ -5580,7 +5630,7 @@ class YtDlpGui(tk.Tk):
         self._blocks_sel.grid(row=0, column=1, sticky="w")
         self._lbl_mkv_warn_main = ttk.Label(
             g, text=t("opts.mkv_warn"),
-            foreground="#e67e22", font=("Segoe UI", 8), wraplength=420)
+            foreground="#e67e22", font=(UI_FONT, 8), wraplength=420)
         self._lbl_mkv_warn_main.grid(row=0, column=2, sticky="w", padx=(10, 0))
         self._lbl_mkv_warn_main.grid_remove()
         frm_opts.add(g)
@@ -5595,7 +5645,7 @@ class YtDlpGui(tk.Tk):
         frm_cmd.pack(fill="x", **pad)
 
         self.var_cmd = tk.StringVar()
-        ttk.Entry(frm_cmd, textvariable=self.var_cmd, font=("Consolas", 9),
+        ttk.Entry(frm_cmd, textvariable=self.var_cmd, font=(MONO_FONT, 9),
                   state="readonly").pack(fill="x")
 
         for _v in (self.var_url, self.var_outdir):
@@ -5719,7 +5769,7 @@ class YtDlpGui(tk.Tk):
         self.var_progress = tk.DoubleVar(value=0)
         self.var_status = tk.StringVar(value=t("app.status_ready"))
         ttk.Label(self, textvariable=self.var_status, anchor="w",
-                  font=("Segoe UI", 9)).pack(side="bottom", fill="x", padx=10)
+                  font=(UI_FONT, 9)).pack(side="bottom", fill="x", padx=10)
         ttk.Progressbar(self, variable=self.var_progress,
                         maximum=100, mode="determinate").pack(
             side="bottom", fill="x", padx=10, pady=(0, 4))
@@ -5731,7 +5781,7 @@ class YtDlpGui(tk.Tk):
         self._frm_log = frm_log
 
         self.log_text = tk.Text(frm_log, wrap="word", height=10,
-                                font=("Consolas", 9), state="disabled",
+                                font=(MONO_FONT, 9), state="disabled",
                                 bg="#1e1e1e", fg="#d4d4d4",
                                 insertbackground="white")
         sb = ttk.Scrollbar(frm_log, command=self.log_text.yview)
@@ -5817,7 +5867,7 @@ class YtDlpGui(tk.Tk):
         dlg.grab_set()
         dlg.transient(self)
 
-        tk.Label(dlg, text="Langue / Language", font=("Segoe UI", 11, "bold")).pack(pady=(14, 6), padx=20)
+        tk.Label(dlg, text="Langue / Language", font=(UI_FONT, 11, "bold")).pack(pady=(14, 6), padx=20)
 
         var_lang = tk.StringVar(value=_CURRENT_LANG)
         frm_list = tk.Frame(dlg)
@@ -5863,7 +5913,7 @@ class YtDlpGui(tk.Tk):
         dlg.grab_set()
         dlg.transient(self)
 
-        tk.Label(dlg, text=new_name, font=("Segoe UI", 12, "bold")).pack(pady=(14, 2), padx=24)
+        tk.Label(dlg, text=new_name, font=(UI_FONT, 12, "bold")).pack(pady=(14, 2), padx=24)
         tk.Label(dlg, text=_nt("lang.dialog_body"), wraplength=320).pack(pady=(2, 10), padx=24)
 
         def _schedule():
@@ -7089,7 +7139,7 @@ if __name__ == "__main__":
     app.log_text.tag_configure("info", foreground="#dcdcaa")
 
     try:
-        ttk.Style().theme_use("vista")
+        ttk.Style().theme_use("vista" if IS_WINDOWS else "clam")
     except Exception:
         pass
 

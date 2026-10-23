@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=yt-dlp GUI
+GenericName=Video downloader
+Comment=Graphical interface for yt-dlp
+Exec=yt-dlp-gui
+Icon=yt-dlp-gui
+Terminal=false
+Categories=AudioVideo;Video;
+Keywords=youtube;download;video;audio;yt-dlp;
+StartupWMClass=yt-dlp-gui

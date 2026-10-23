@@ -66,3 +66,59 @@ jobs:
             dist/yt-dlp-gui-setup-*.exe
             dist/yt-dlp-gui-portable-*.zip
             dist/SHA256SUMS.txt
+
+  # Paquets Linux (x86_64) : AppImage et archive .tar.gz, ajoutés à la même release une fois celle de Windows créée.
+  # Construits sur Ubuntu 22.04 (glibc 2.35) : ils s'exécutent sur les distributions de 2022 et plus récentes.
+  build-linux:
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Vérifier que l'étiquette correspond à la version du code
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: python3 -X utf8 packaging/release_tools.py check-tag "${{ github.ref_name }}"
+
+      - name: Installer Tk, un écran virtuel et les outils de construction
+        run: |
+          sudo apt-get update && sudo apt-get install -y tk8.6 xvfb
+          python3 -m pip install -r packaging/requirements-build.txt
+
+      - name: Tests
+        run: xvfb-run -a python3 -X utf8 -m unittest discover -s tests -t .
+
+      - name: Installer appimagetool (version et somme de contrôle fixées)
+        run: |
+          curl -fsSL -o appimagetool https://github.com/AppImage/appimagetool/releases/download/1.9.1/appimagetool-x86_64.AppImage
+          echo "ed4ce84f0d9caff66f50bcca6ff6f35aae54ce8135408b3fa33abfc3cb384eb0  appimagetool" | sha256sum -c -
+          chmod +x appimagetool
+          echo "APPIMAGETOOL=$PWD/appimagetool" >> "$GITHUB_ENV"
+
+      - name: Construire l'archive et l'AppImage
+        run: python3 -X utf8 packaging/build_linux.py
+
+      - name: Sommes de contrôle
+        run: python3 -X utf8 packaging/release_tools.py checksums --platform linux --dir dist --out dist/SHA256SUMS-linux.txt
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: yt-dlp-gui-linux
+          path: |
+            dist/yt-dlp-gui-*-x86_64.AppImage
+            dist/yt-dlp-gui-linux-*-x86_64.tar.gz
+            dist/SHA256SUMS-linux.txt
+          if-no-files-found: error
+
+      - name: Ajouter les fichiers Linux à la release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v3
+        with:
+          fail_on_unmatched_files: true
+          files: |
+            dist/yt-dlp-gui-*-x86_64.AppImage
+            dist/yt-dlp-gui-linux-*-x86_64.tar.gz
+            dist/SHA256SUMS-linux.txt

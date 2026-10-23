@@ -1,0 +1,3 @@
+# Fichiers exécutés sous Linux : toujours des fins de ligne LF (un CR casserait « #!/bin/sh »)
+packaging/linux/AppRun text eol=lf
+packaging/linux/*.desktop text eol=lf

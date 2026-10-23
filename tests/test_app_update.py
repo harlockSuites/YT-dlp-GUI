@@ -84,6 +84,7 @@ class VersionTests(unittest.TestCase):
                     "https://notgithub.com/x", "", None, "javascript:alert(1)"):
             self.assertFalse(m._is_github_url(bad), bad)
 
+    @mock.patch.object(m, "IS_WINDOWS", True)
     def test_install_kind(self):
         self.assertEqual(m._install_kind(frozen=False), "source")
         import tempfile
@@ -146,6 +147,7 @@ class FetchTests(FakeGitHub):
         self.serve(_release("v9.0.0", html_url="https://evil.example.com/x"))
         self.assertEqual(m.check_for_update(current="0.1.0")["url"], m.REPO_URL + "/releases")
 
+    @mock.patch.object(m, "_ASSET_PATTERNS", m.release_asset_patterns(True))
     def test_asset_choice_depends_on_install_kind(self):
         self.serve(_release("v9.0.0"))
         info = m.check_for_update(current="0.1.0")
@@ -263,6 +265,7 @@ class UiTests(unittest.TestCase):
         self.assertIn("Notes de test", win.txt.get("1.0", "end"))
         self.assertEqual(str(win.btn_page.cget("state")), "normal")
         with mock.patch.object(m.webbrowser, "open") as opened, \
+                mock.patch.object(m, "_ASSET_PATTERNS", m.release_asset_patterns(True)), \
                 mock.patch.object(m, "_install_kind", return_value="installer"):
             win._open_page()
             win._download()
