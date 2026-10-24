@@ -4,7 +4,7 @@ Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes son
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [0.1.2] — non publiée
+## [0.1.2] — 2026-10-24
 
 ### Ajouté
 - **Installer dans le menu** (menu des options, Linux seulement ; AppImage et archive `.tar.gz`) : une fenêtre copie le programme dans `~/.local/share/yt-dlp-GUI/app`, ajoute le lanceur (`~/.local/share/applications/yt-dlp-gui.desktop`) et l'icône (`~/.local/share/icons/hicolor/256x256/apps/`) au menu des applications et, au choix, un raccourci sur le Bureau (marqué « de confiance » pour GNOME quand `gio` existe). Sans droits administrateur. Le même écran propose « Mettre à jour » (recopie la version qui tourne) et « Désinstaller » ; la désinstallation ne retire que ce que l'installation a créé (un lanceur sans notre marque `X-YtDlpGui-Installer` n'est jamais supprimé) et garde les réglages et les outils téléchargés (`~/.local/share/yt-dlp-GUI`). Depuis les sources ou depuis le paquet `.deb`, la fenêtre l'explique au lieu de proposer l'installation. 16 clés de traduction dans les 15 langues, à faire relire.
