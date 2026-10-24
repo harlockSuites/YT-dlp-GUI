@@ -5212,6 +5212,20 @@ class QueueExpandedWindow(tk.Toplevel):
         self.btn_retry = ttk.Button(frm_act, text=t("queue.btn_retry_errors"), command=app._queue_retry_errors)
         self.btn_retry.pack(side="right", padx=(0, 6))
 
+        # Plage « De X à Y » : sélectionne les lignes (pour les supprimer ou les télécharger) et peut les lancer
+        frm_rng = ttk.Frame(self, padding=(10, 2, 10, 2))
+        frm_rng.pack(side="bottom", fill="x")
+        ttk.Label(frm_rng, text=t("queue.label_from")).pack(side="left", padx=(0, 2))
+        self.spin_from = ttk.Spinbox(frm_rng, from_=1, to=999, width=4, command=self._select_range)
+        self.spin_from.bind("<KeyRelease>", self._select_range)
+        self.spin_from.pack(side="left")
+        ttk.Label(frm_rng, text=t("queue.label_to")).pack(side="left", padx=(4, 2))
+        self.spin_to = ttk.Spinbox(frm_rng, from_=1, to=999, width=4, command=self._select_range)
+        self.spin_to.bind("<KeyRelease>", self._select_range)
+        self.spin_to.pack(side="left")
+        self.btn_range = ttk.Button(frm_rng, text=t("queue.btn_run_range"), command=self._run_range)
+        self.btn_range.pack(side="left", padx=(6, 0))
+
         self.frm_tv = ttk.Frame(self, padding=(10, 0, 10, 4))
         self.frm_tv.pack(fill="both", expand=True)
         cols = ("num", "status", "url", "title", "summary")
@@ -5254,6 +5268,9 @@ class QueueExpandedWindow(tk.Toplevel):
         try:
             self._shown = fill_queue_tree(self.tv, self.app._queue, self._shown, url_max=90)
             self.lbl_count.configure(text=queue_count_text(self.app._queue))
+            n = max(len(self.app._queue), 1)
+            self.spin_from.configure(to=n)
+            self.spin_to.configure(to=n)
         except tk.TclError:
             return
         self._on_select()
@@ -5272,6 +5289,28 @@ class QueueExpandedWindow(tk.Toplevel):
         self.btn_dl.configure(state="normal" if idle and self.tv.selection() else "disabled")
         self.btn_all.configure(state="normal" if idle else "disabled")
         self.btn_retry.configure(state="normal" if idle else "disabled")
+        self.btn_range.configure(state="normal" if idle else "disabled")
+
+    def _range(self):
+        """(première, dernière) lues dans les deux champs, ou None si elles ne forment pas un nombre."""
+        try:
+            return int(self.spin_from.get()), int(self.spin_to.get())
+        except ValueError:
+            return None
+
+    def _select_range(self, _event=None):
+        bounds = self._range()
+        count = len(self.app._queue)
+        if bounds is None or bounds[0] < 1 or bounds[1] < bounds[0] or bounds[0] > count:
+            return
+        rows = [str(i) for i in range(bounds[0] - 1, min(bounds[1], count))]
+        self.tv.selection_set(rows)
+        self.tv.see(rows[0])
+
+    def _run_range(self):
+        bounds = self._range()
+        if bounds is not None:
+            self.app._queue_run_range_values(bounds[0], bounds[1], parent=self)
 
     def _select_all(self):
         self.tv.selection_set(self.tv.get_children())
@@ -7049,16 +7088,20 @@ class YtDlpGui(tk.Tk):
         self._queue_run(sel[0], end_idx=sel[0])
     def _queue_run_range(self):
         try:
-            a = int(self._spin_from.get()) - 1
-            b = int(self._spin_to.get()) - 1
+            first = int(self._spin_from.get())
+            last = int(self._spin_to.get())
         except ValueError:
             return
+        self._queue_run_range_values(first, last)
+
+    def _queue_run_range_values(self, first, last, parent=None):
+        """Lance les vidéos de la position « first » à « last » (comptées à partir de 1)."""
+        a, b = first - 1, last - 1
         if a < 0 or b < a or a >= len(self._queue):
             messagebox.showwarning(t("queue.warn_bad_range_title"),
-                                   t("queue.warn_bad_range_msg"), parent=self)
+                                   t("queue.warn_bad_range_msg"), parent=parent or self)
             return
-        b = min(b, len(self._queue) - 1)
-        self._queue_run(a, end_idx=b)
+        self._queue_run(a, end_idx=min(b, len(self._queue) - 1))
 
     def _cleanup_partial_files(self):
         """Supprime les fichiers partiels du téléchargement interrompu."""

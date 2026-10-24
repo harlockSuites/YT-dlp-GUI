@@ -274,6 +274,50 @@ class ExpandedViewTests(unittest.TestCase):
         self.view.set_running(False)
         self.assertEqual(str(self.view.btn_stop.cget("state")), "disabled")
 
+    def test_range_fields_select_the_rows(self):
+        self.view.spin_from.set("2")
+        self.view.spin_to.set("3")
+        self.view._select_range()
+        self.view.update()
+        self.assertEqual(self.view._indices(), [1, 2])
+        self.assertEqual(self.view.btn_dl.cget("text"), m.t("qwin.btn_download_n", n=2))
+
+    def test_range_outside_the_queue_selects_nothing(self):
+        self.view.spin_from.set("9")
+        self.view.spin_to.set("12")
+        self.view._select_range()
+        self.assertEqual(self.view._indices(), [])
+
+    def test_run_range_goes_through_the_main_window(self):
+        self.view.spin_from.set("2")
+        self.view.spin_to.set("4")
+        with mock.patch.object(self.app, "_queue_run") as run:
+            self.view._run_range()
+        run.assert_called_once_with(1, end_idx=3)
+
+    def test_a_bad_range_warns_instead_of_running(self):
+        self.view.spin_from.set("4")
+        self.view.spin_to.set("2")
+        with mock.patch.object(m.messagebox, "showwarning") as warn, mock.patch.object(self.app, "_queue_run") as run:
+            self.view._run_range()
+        warn.assert_called_once()
+        run.assert_not_called()
+
+    def test_empty_range_fields_do_nothing(self):
+        self.view.spin_from.set("")
+        self.view.spin_to.set("")
+        with mock.patch.object(self.app, "_queue_run") as run:
+            self.view._run_range()
+        run.assert_not_called()
+
+    def test_range_button_is_locked_while_the_queue_runs(self):
+        self.app._queue_running = True
+        self.view.set_running(True)
+        self.assertEqual(str(self.view.btn_range.cget("state")), "disabled")
+        self.app._queue_running = False
+        self.view.set_running(False)
+        self.assertEqual(str(self.view.btn_range.cget("state")), "normal")
+
     def test_pause_button_follows_the_pause_state(self):
         self.view.set_paused(True)
         self.assertEqual(self.view.btn_pause.cget("text"), m.t("dl.btn_resume"))
