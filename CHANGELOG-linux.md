@@ -4,7 +4,7 @@ Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes son
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [0.1.1] — non publiée
+## [0.1.1] — 2026-10-24
 
 ### Ajouté
 - **Navigateurs pour les cookies, au choix** : par défaut, les listes proposent les cinq navigateurs les plus utilisés sous Linux (Firefox, Google Chrome, Chromium, Brave, Vivaldi). La fenêtre « Navigateurs pour les cookies » du menu des options propose 11 navigateurs (Opera, Microsoft Edge, LibreWolf, Waterfox, Floorp et Zen Browser en plus) : l'utilisateur coche ceux dont il a besoin ; un ✔ marque ceux dont le dossier de profil existe sur l'ordinateur ; « Rétablir les cinq par défaut » revient au départ. Le choix est enregistré (réglage `linux_browsers`) et le navigateur déjà sélectionné reste toujours dans la liste.
