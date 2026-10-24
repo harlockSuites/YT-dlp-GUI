@@ -20,15 +20,16 @@
 
 ## 1. Kalagayan ng preview
 
-Ginagaya ng bersyon para sa Linux ang kilos ng bersyon para sa Windows na 0.1.7 (naka-freeze at ginagamit na modelo). Inilalathala ito bilang **GitHub pre-release** na may mga tag na `Linux-vX.Y.Z`: hindi ito kailanman ipinapakita bilang "pinakabagong release" ng repository.
+Ginagaya ng bersyon para sa Linux ang kilos ng bersyon para sa Windows na 0.1.7 (naka-freeze at ginagamit na batayan). Inilalathala ito bilang **GitHub pre-release** na may mga tag na `Linux-vX.Y.Z`: hindi ito kailanman ipinapakita bilang "pinakabagong release" ng repository.
 
 **Ang mga nasubukan na** (Debian 12 virtual machine, GNOME desktop, Python 3.11, totoong YouTube account na naka-sign in sa bawat browser, Oktubre 2026):
 
 - **Mga cookie ng Firefox, Waterfox, Floorp at Zen Browser**: nababasa kahit bukas o sarado ang browser.
-- **Mga cookie ng Google Chrome, Chromium, Brave, Vivaldi, Opera at Microsoft Edge**: nababasa kapag **sarado** ang browser, matapos buksan nang minsan ang bawat browser at mag-sign in sa YouTube dito (tingnan ang [seksyon 5](#s5)). Parehong nagtagumpay ang single download at ang Playlist Inspector.
+- **Mga cookie ng Google Chrome, Chromium, Brave, Vivaldi, Opera at Microsoft Edge**: nababasa kapag **sarado** ang browser, matapos buksan nang isang beses ang bawat browser at mag-sign in sa YouTube dito (tingnan ang [seksyon 5](#s5)). Parehong nagtagumpay ang single download at ang Playlist Inspector.
 - **LibreWolf**: nababasa lang habang bukas ito at naka-sign in (bilang default, binubura nito ang mga cookie nito kapag isinara).
 - **Pribadong video** gamit ang mga cookie ng Firefox, at isang playlist ng tatlong video na may isang pribado.
-- **Mga package**: ang AppImage at ang `.tar.gz` archive ay binubuo ng CI sa Ubuntu 22.04; ang `.deb` ay binuo, ini-install, pinatakbo at inalis sa Debian 12; sinubukan ang "I-install sa menu" gamit ang totoong AppImage sa isang disposable na home folder.
+- **Mga package**: ang AppImage at ang `.tar.gz` archive ay binubuo ng CI sa Ubuntu 22.04; ang `.deb` ay binuo, na-install, pinatakbo at inalis sa Debian 12; ang AppImage, ang archive at ang `.deb` ay pawang pinatakbo sa virtual machine, at ang "I-install sa menu" / "I-uninstall" ay sinubukan gamit ang mouse sa AppImage (naidagdag ang icon, saka inalis sa menu at sa Desktop).
+- **Wika at font**: Korean na pinili sa makinang walang Korean font; iniaalok ng window na "Font needed" ang font, dina-download at bine-verify ito, nagre-restart ang software at nababasa na ang teksto.
 
 **Ang hindi pa nasusubukan**:
 
@@ -36,7 +37,7 @@ Ginagaya ng bersyon para sa Linux ang kilos ng bersyon para sa Windows na 0.1.7 
 - mga browser na naka-install bilang Flatpak o Snap (maliban sa layout ng LibreWolf sa Flatpak, na naobserbahan);
 - Vivaldi, Opera o Edge na **walang** naka-install na Chrome o Chromium (tingnan ang [seksyon 5](#s5));
 - ang aarch64 architecture (sinusuportahan ito ng software, pero x86_64 lang ang binubuong package);
-- ang window na "I-install sa menu" na ginamitan ng mouse sa totoong desktop (sinusubok ito sa pamamagitan ng programa);
+- totoong Linux computer, sa labas ng virtual machine (totoong desktop at hardware);
 - ang mga salin: kailangan pa silang suriin ng mga katutubong nagsasalita.
 
 <a id="s2"></a>
@@ -66,7 +67,7 @@ I-download din ang `SHA256SUMS-linux.txt` sa parehong folder, pagkatapos:
 sha256sum -c SHA256SUMS-linux.txt --ignore-missing
 ```
 
-Dapat magpakita ng `OK` ang bawat file na naroon. Pinatutunayan nito na kapareho ng inilathala ang file mo, hindi na ligtas ito: pampubliko ang source code at ang awtomatikong build.
+Dapat magpakita ng `OK` ang bawat file na naroon. Pinatutunayan nito na kapareho ng inilathala ang file mo, ngunit hindi nito pinatutunayang ligtas ito: pampubliko ang source code at ang awtomatikong build.
 
 ### 2.2 AppImage
 
@@ -98,6 +99,8 @@ Hindi "ini-install" ang AppImage: hindi ito lumalabas sa software manager. Para 
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Para makita ang AppImage sa menu ng mga application kasama ang icon nito, gamitin ang **function na "I-install sa menu…" sa loob mismo ng software** (seksyon 2.3): walang command na kailangang i-type.
+
 ### 2.3 I-install sa menu (walang administrator)
 
 Ang AppImage na pinatakbo sa pamamagitan ng double click ay hindi nag-iiwan ng icon sa menu ng mga application. Sa software: menu ng mga opsyon › **"I-install sa menu…"**. Ang window na ito ay:
@@ -107,7 +110,7 @@ Ang AppImage na pinatakbo sa pamamagitan ng double click ay hindi nag-iiwan ng i
 - nagdaragdag, kung may tsek ang kahon, ng shortcut sa Desktop (minamarkahang "pinagkakatiwalaan" para sa GNOME kapag mayroong tool na `gio`);
 - pagkatapos ay nag-aalok ng "I-update" (kinokopya ulit ang bersyong tumatakbo) at "I-uninstall".
 
-Ang "I-uninstall" ay inaalis lang ang ginawa ng pag-install at **pinananatili ang mga setting mo** at ang mga na-download na tool. Ang launcher na walang sarili naming panloob na marka (`X-YtDlpGui-Installer=1`) ay hindi kailanman binubura.
+Inaalis lang ng "I-uninstall" ang ginawa ng pag-install at **pinananatili ang mga setting mo** at ang mga na-download na tool. Ang launcher na walang sarili naming panloob na marka (`X-YtDlpGui-Installer=1`) ay hindi kailanman binubura.
 
 Mga limitasyon: available ang window mula sa AppImage at sa archive. Mula sa source code, itinuturo ka nito sa AppImage; mula sa `.deb` package, ipinapaliwanag nitong nasa menu na ang software.
 
@@ -118,6 +121,8 @@ Para alisin ang lahat nang mano-mano:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Kung naka-install na ang `.deb` package, huwag gamitin ang function na ito: nasa menu na ang software at lilitaw ang pangalawang entry na "yt-dlp GUI" (alisin muna ang `.deb` gamit ang `sudo apt remove yt-dlp-gui` kung mas gusto mo ang paraang ito).
 
 ### 2.4 `.deb` package
 
@@ -179,7 +184,7 @@ Ang pang-araw-araw na pagsusuri (na maaaring patayin sa menu ng mga opsyon) ay n
 
 - **AppImage o archive na naka-install sa menu**: i-download ang bagong AppImage, patakbuhin ito, pagkatapos ay "I-install sa menu… › I-update";
 - **`.deb`**: `sudo apt install ./new-file.deb`;
-- **archive na hindi naka-install**: i-extract ang bagong archive sa halip ng luma.
+- **archive na hindi naka-install**: i-extract ang bagong archive bilang kapalit ng luma.
 
 ### 2.8 Pag-alis ng lahat, pati ang data
 
@@ -232,7 +237,7 @@ Ipinapakita ng **indicator** sa tabi ng listahan ang kalagayan: pula (naka-disab
 | Ang nakikita mo | Posibleng dahilan | Ano ang gagawin |
 |---|---|---|
 | "Extracted 0 cookies" at pagkatapos ay "Sign in to confirm you're not a bot" | walang cookie na iniingatan ang browser sa disk (binubura ito ng LibreWolf kapag isinara bilang default; profile na hindi pa kailanman na-sign in; private mode) | panatilihin itong bukas at naka-sign in sa YouTube, o patayin ang pagbura ng cookie kapag isinara sa mga setting nito sa privacy |
-| "Item does not exist!" sa Chrome, Chromium, Brave, Vivaldi, Opera o Edge | hindi nakita ng yt-dlp ang susi ng browser sa key ring ng desktop | buksan nang minsan ang browser, mag-sign in sa YouTube, isara ito, ulitin ang pagsubok; kung hindi pa rin, [seksyon 5](#s5) |
+| "Item does not exist!" sa Chrome, Chromium, Brave, Vivaldi, Opera o Edge | hindi nakita ng yt-dlp ang susi ng browser sa key ring ng desktop | buksan nang isang beses ang browser, mag-sign in sa YouTube, isara ito, ulitin ang pagsubok; kung hindi pa rin, [seksyon 5](#s5) |
 | "Could not copy Chrome cookie database" o "database is locked" | ni-lo-lock ng browser ang database nito habang tumatakbo | isara ito, pagkatapos ay ulitin ang pagsubok |
 | "Failed to decrypt" | mga cookie na na-encrypt gamit ang susing hindi nakuha ng yt-dlp | [seksyon 5](#s5) |
 
@@ -274,7 +279,7 @@ Ine-encrypt ng mga browser na kabilang sa pamilyang Chromium (Chrome, Chromium, 
 
 Dalawang kapaki-pakinabang na katotohanan:
 
-- **Umiiral lang ang susi pagkatapos mabuksan nang minsan ang browser.** Sa virtual machine namin, nawala ang error na "Item does not exist!" nang mabuksan nang minsan ang bawat browser at makapag-sign in dito sa YouTube. Hindi natiyak nang may katiyakan ang eksaktong dahilan ng unang pagkabigo: umiiral ang key ring, ito ang default at naka-unlock.
+- **Umiiral lang ang susi pagkatapos mabuksan nang isang beses ang browser.** Sa virtual machine namin, nawala ang error na "Item does not exist!" nang mabuksan nang isang beses ang bawat browser at makapag-sign in dito sa YouTube. Hindi tiyak na natukoy ang eksaktong dahilan ng unang pagkabigo: umiiral ang key ring, ito ang default at naka-unlock.
 - **Kung aling key ring ang ginagamit ng yt-dlp** ay nakadepende sa natukoy na desktop (ang mga variable na `XDG_CURRENT_DESKTOP` at `DESKTOP_SESSION`), ayon sa code ng yt-dlp (Oktubre 2026):
 
 | Natukoy na desktop | Key ring na ginagamit ng yt-dlp |
@@ -283,7 +288,7 @@ Dalawang kapaki-pakinabang na katotohanan:
 | KDE 4, 5, 6 | KWallet (`KWALLET`, `KWALLET5`, `KWALLET6`) |
 | LXQt, KDE 3, desktop na hindi nakilala (mga window manager lang: sway, i3…) | wala: plain text (`BASICTEXT`) |
 
-Sa huling kaso, mga cookie na `v10` lang ang binabasa ng yt-dlp: kung iniimbak ng browser mo ang susi nito sa GNOME Keyring, hindi made-decrypt ang mga cookie nitong `v11`. Kailangan mo noon na pilitin ang key ring mula sa terminal (seksyon 5.6); hindi pa nag-aalok ng setting na ito ang software.
+Sa huling kaso, mga cookie na `v10` lang ang binabasa ng yt-dlp: kung iniimbak ng browser mo ang susi nito sa GNOME Keyring, hindi made-decrypt ang mga cookie nitong `v11`. Kapag ganoon, kailangan mong pilitin ang key ring mula sa terminal (seksyon 5.6); hindi pa nag-aalok ng setting na ito ang software.
 
 Ang mga item na hinahanap sa key ring ay tinatawag na "*pangalan* Safe Storage". Ayon sa code ng yt-dlp, ito ay **"Chrome Safe Storage"** para sa Chrome at Vivaldi, **"Chromium Safe Storage"** para sa Chromium, Opera at Edge, **"Brave Safe Storage"** para sa Brave. Sa virtual machine namin, naka-install at nabuksan din ang Chrome at Chromium: hindi namin alam kung gagana ang Vivaldi, Opera o Edge nang mag-isa.
 
@@ -323,7 +328,7 @@ Magbibigay ang sagot ng mga path na nagtatapos sa numero (`…/login/1`, `…/lo
 for i in 1 2 3 4 5 6; do gdbus call --session --dest org.freedesktop.secrets --object-path /org/freedesktop/secrets/collection/login/$i --method org.freedesktop.DBus.Properties.Get org.freedesktop.Secret.Item Label; done
 ```
 
-Dapat makita mo, halimbawa, ang `Chromium Safe Storage`, `Chrome Safe Storage` o `Brave Safe Storage`. Hindi nakakasama ang mga walang lamang pangalan. Kung wala ang pangalan ng browser mo: buksan ito nang minsan, mag-sign in sa YouTube, isara ito, pagkatapos ay patakbuhin ulit ang command na ito.
+Dapat makita mo, halimbawa, ang `Chromium Safe Storage`, `Chrome Safe Storage` o `Brave Safe Storage`. Hindi nakakasama ang mga walang lamang pangalan. Kung wala ang pangalan ng browser mo: buksan ito nang isang beses, mag-sign in sa YouTube, isara ito, pagkatapos ay patakbuhin ulit ang command na ito.
 
 ### 5.4 Gumawa o mag-unlock ng key ring gamit ang Seahorse
 
@@ -368,7 +373,7 @@ chromium --enable-logging=stderr --v=1 2>&1 | grep key_storage_
 
 ### 5.7 Walang key ring: `--password-store=basic` (advanced, hindi nasubukan)
 
-Tumatanggap ang Chromium ng `--password-store=basic`: iniimbak nito noon ang susi nito nang hindi naka-encrypt (isang nakapirming susi na kilala ng lahat) at ine-encrypt ang mga bago nitong cookie bilang `v10`, na binabasa ng yt-dlp nang walang key ring (`chromium+basictext`). **Mas hindi ito ligtas**: maaaring i-decrypt ng anumang programang nakakabasa ng mga file mo ang mga cookie na ito. Gamitin lang ito kung nauunawaan mo ang kapalit na ito; malamang na hindi na-re-encode ang mga cookie na naka-save na: mag-sign in ulit.
+Tumatanggap ang Chromium ng `--password-store=basic`: sa ganitong kaso, iniimbak nito ang susi nito nang hindi naka-encrypt (isang nakapirming susi na kilala ng lahat) at ine-encrypt ang mga bago nitong cookie bilang `v10`, na binabasa ng yt-dlp nang walang key ring (`chromium+basictext`). **Mas hindi ito ligtas**: maaaring i-decrypt ng anumang programang nakakabasa ng mga file mo ang mga cookie na ito. Gamitin lang ito kung nauunawaan mo ang kapalit na ito; malamang na hindi na-re-encode ang mga cookie na naka-save na: mag-sign in ulit.
 
 ### 5.8 Huling paraan
 
@@ -410,7 +415,7 @@ Ang data folder ay `$XDG_DATA_HOME/yt-dlp-GUI` (bilang default, `~/.local/share/
 | Hindi gumagana ang drag and drop sa pagitan ng host at ng virtual machine | tampok ito ng VirtualBox (Guest Additions), hindi ng software |
 | Mali ang laki ng interface | sinusunod ng software ang mga font ng system (Tk); subukan ang ibang laki ng font ng system |
 | Nabibigo ang update ng yt-dlp | gamitin ang "I-update at Diagnostics" sa menu ng mga opsyon; kung hindi, i-download ang `yt-dlp_linux` at piliin ito sa window ng pagpapalit (gagawing executable ang napiling file) |
-| Mga parisukat sa halip na teksto (Korean, Chinese, Japanese…) | walang font sa system na naglalaman ng mga karakter na ito; sa Debian at Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), pagkatapos ay isara at buksan ulit ang software; sa ibang distribution, i-install ang package na "Noto Sans CJK" ng distribution ; kaya ring i-download mismo ng software ang font (Korean, Japanese, Chinese) kapag pinili mo ang wika, nang walang karapatan ng administrator |
+| Mga parisukat sa halip na teksto (Korean, Chinese, Japanese…) | walang font sa system na naglalaman ng mga karakter na ito; sa Debian at Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), pagkatapos ay isara at buksan ulit ang software; sa ibang distribution, i-install ang package na "Noto Sans CJK" ng distribution; kaya ring i-download mismo ng software ang font (Korean, Japanese, Chinese) kapag pinili mo ang wika, nang walang karapatan ng administrator |
 
 <a id="s8"></a>
 

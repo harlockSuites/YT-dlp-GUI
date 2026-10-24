@@ -28,7 +28,8 @@ The Linux version reproduces the behaviour of the Windows version 0.1.7 (frozen,
 - **Cookies of Google Chrome, Chromium, Brave, Vivaldi, Opera and Microsoft Edge**: read with the browser **closed**, after starting each browser once and signing in to YouTube in it (see [section 5](#s5)). Single download and Playlist Inspector both succeeded.
 - **LibreWolf**: read only while it is open and signed in (it deletes its cookies when it closes by default).
 - **Private video** with Firefox's cookies, and a playlist of three videos with one private.
-- **Packages**: the AppImage and the `.tar.gz` archive are built by the CI on Ubuntu 22.04; the `.deb` was built, installed, started and removed on Debian 12; "Install in the menu" was tried with the real AppImage in a disposable home folder.
+- **Packages**: the AppImage and the `.tar.gz` archive are built by the CI on Ubuntu 22.04; the `.deb` was built, installed, started and removed on Debian 12; the AppImage, the archive and the `.deb` were all started in the virtual machine, and "Install in the menu" / "Uninstall" were tried with the mouse using the AppImage (icon added to, then removed from, the menu and the Desktop).
+- **Language and font**: Korean chosen on a machine without a Korean font; the "Font needed" window offers the font, it is downloaded and checked, the software restarts and the text is readable.
 
 **What has not been tried yet**:
 
@@ -36,7 +37,7 @@ The Linux version reproduces the behaviour of the Windows version 0.1.7 (frozen,
 - browsers installed as Flatpak or Snap (except the LibreWolf Flatpak layout, which was observed);
 - Vivaldi, Opera or Edge **without** Chrome or Chromium installed (see [section 5](#s5));
 - the aarch64 architecture (the software supports it, but packages are only built for x86_64);
-- the "Install in the menu" window driven with the mouse on a real desktop (it is tested programmatically);
+- a real Linux computer, outside a virtual machine (real desktop and hardware);
 - the translations: they still need review by native speakers.
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ The AppImage is not "installed": it does not show up in the software manager. To
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+To find the AppImage in the applications menu, with its icon, use the **"Install in the menu…" function inside the software** (section 2.3): there is no command to type.
+
 ### 2.3 Install in the menu (no administrator)
 
 An AppImage started with a double click leaves no icon in the applications menu. In the software: options menu › **"Install in the menu…"**. The window:
@@ -118,6 +121,8 @@ To remove everything by hand:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+If the `.deb` package is already installed, do not use this function: the software is already in the menu and a second "yt-dlp GUI" entry would appear (remove the `.deb` first with `sudo apt remove yt-dlp-gui` if you prefer this method).
 
 ### 2.4 `.deb` package
 
@@ -410,7 +415,7 @@ The data folder is `$XDG_DATA_HOME/yt-dlp-GUI` (by default `~/.local/share/yt-dl
 | Drag and drop between the host and a virtual machine does not work | that is a VirtualBox feature (Guest Additions), not the software's |
 | The interface is badly sized | the software follows the system fonts (Tk); try another system font size |
 | The yt-dlp update fails | use "Update & Diagnostics" in the options menu; otherwise download `yt-dlp_linux` and pick it in the replacement window (the chosen file is made executable) |
-| Squares instead of text (Korean, Chinese, Japanese…) | no font on the system contains these characters; on Debian and Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), then close and reopen the software; elsewhere, install your distribution's "Noto Sans CJK" package ; the software can also download the font itself (Korean, Japanese, Chinese) when you choose the language, without administrator rights |
+| Squares instead of text (Korean, Chinese, Japanese…) | no font on the system contains these characters; on Debian and Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), then close and reopen the software; elsewhere, install your distribution's "Noto Sans CJK" package; the software can also download the font itself (Korean, Japanese, Chinese) when you choose the language, without administrator rights |
 
 <a id="s8"></a>
 

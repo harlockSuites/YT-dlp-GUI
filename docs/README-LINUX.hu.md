@@ -28,7 +28,8 @@ A linuxos változat a Windows 0.1.7 változat (befagyasztott, mintaként szolgá
 - **A Google Chrome, a Chromium, a Brave, a Vivaldi, az Opera és a Microsoft Edge sütijei**: **zárt** böngészővel olvashatók, miután mindegyik böngészőt egyszer elindítottuk, és bejelentkeztünk benne a YouTube-ra (lásd az [5. szakaszt](#s5)). Az egyedi letöltés és a lejátszási lista-vizsgáló is működött.
 - **LibreWolf**: csak akkor olvashatók ki, amíg nyitva van és be van jelentkezve (alapértelmezés szerint bezáráskor törli a sütiket).
 - **Privát videó** a Firefox sütijeivel, valamint egy háromvideós lejátszási lista, amelyben az egyik privát.
-- **Csomagok**: az AppImage-et és a `.tar.gz` archívumot a CI építi Ubuntu 22.04-en; a `.deb` csomagot Debian 12-n építettük, telepítettük, elindítottuk és eltávolítottuk; a „Telepítés a menübe” funkciót a valódi AppImage-dzsel próbáltuk ki, eldobható saját mappában.
+- **Csomagok**: az AppImage-et és a `.tar.gz` archívumot a CI építi Ubuntu 22.04-en; a `.deb` csomagot Debian 12-n építettük, telepítettük, elindítottuk és eltávolítottuk; az AppImage-et, az archívumot és a `.deb` csomagot a virtuális gépben elindítottuk, a „Telepítés a menübe” / „Eltávolítás” funkciót pedig egérrel próbáltuk ki az AppImage-dzsel (az ikon felkerült, majd lekerült a menüből és az Asztalról).
+- **Nyelv és betűtípus**: koreai nyelv kiválasztva koreai betűtípus nélküli gépen; a „Font needed” ablak felajánlja a betűtípust, letöltődik és ellenőrződik, a program újraindul, és a szöveg olvasható.
 
 **Amit még nem próbáltunk ki**:
 
@@ -36,7 +37,7 @@ A linuxos változat a Windows 0.1.7 változat (befagyasztott, mintaként szolgá
 - Flatpakként vagy Snapként telepített böngészőket (kivéve a LibreWolf Flatpak-elrendezését, amelyet megfigyeltünk);
 - a Vivaldit, az Operát vagy az Edge-et **Chrome vagy Chromium telepítése nélkül** (lásd az [5. szakaszt](#s5));
 - az aarch64 architektúrát (a program támogatja, de a csomagok csak x86_64-re készülnek);
-- a „Telepítés a menübe” ablak egérrel való kezelését valódi asztalon (programból tesztelve van);
+- valódi Linuxos számítógépet, virtuális gépen kívül (valódi asztalt és hardvert);
 - a fordításokat: még anyanyelvi beszélőknek kell átnézniük őket.
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ Az AppImage nincs „telepítve”: nem jelenik meg a szoftverkezelőben. Az elt
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Hogy az AppImage megjelenjen az alkalmazásmenüben az ikonjával, használd a **programban lévő „Telepítés a menübe…” funkciót** (2.3. szakasz): nincs begépelendő parancs.
+
 ### 2.3 Telepítés a menübe (rendszergazda nélkül)
 
 A dupla kattintással indított AppImage nem hagy ikont az alkalmazásmenüben. A programban: a beállítások menü › **„Telepítés a menübe…”**. Az ablak:
@@ -118,6 +121,8 @@ Mindent kézzel eltávolítani:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Ha a `.deb` csomag már telepítve van, ne használd ezt a funkciót: a program már benne van a menüben, és egy második „yt-dlp GUI” bejegyzés jelenne meg (előbb távolítsd el a `.deb` csomagot a `sudo apt remove yt-dlp-gui` paranccsal, ha ezt a módszert választod).
 
 ### 2.4 `.deb` csomag
 
@@ -410,7 +415,7 @@ Az adatmappa a `$XDG_DATA_HOME/yt-dlp-GUI` (alapértelmezés szerint `~/.local/s
 | A húzd-és-ejtsd nem működik a gazdagép és egy virtuális gép között | ez a VirtualBox (Guest Additions) funkciója, nem a programé |
 | A felület mérete rossz | a program a rendszer betűtípusait követi (Tk); próbálj másik rendszerbetűméretet |
 | A yt-dlp frissítése nem sikerül | használd a „Frissítés és diagnosztika” pontot a beállítások menüben; különben töltsd le a `yt-dlp_linux` fájlt, és válaszd ki a csere ablakban (a kiválasztott fájl futtathatóvá válik) |
-| Négyzetek a szöveg helyén (koreai, kínai, japán…) | a rendszer egyik betűtípusa sem tartalmazza ezeket a karaktereket; Debianon és Ubuntun: `sudo apt install fonts-noto-cjk` (~90 MB), majd zárd be és nyisd meg újra a programot; máshol a disztribúció „Noto Sans CJK” csomagját telepítsd ; a program a nyelv kiválasztásakor maga is le tudja tölteni a betűtípust (koreai, japán, kínai), rendszergazdai jog nélkül |
+| Négyzetek a szöveg helyén (koreai, kínai, japán…) | a rendszer egyik betűtípusa sem tartalmazza ezeket a karaktereket; Debianon és Ubuntun: `sudo apt install fonts-noto-cjk` (~90 MB), majd zárd be és nyisd meg újra a programot; máshol a disztribúció „Noto Sans CJK” csomagját telepítsd; a program a nyelv kiválasztásakor maga is le tudja tölteni a betűtípust (koreai, japán, kínai), rendszergazdai jog nélkül |
 
 <a id="s8"></a>
 

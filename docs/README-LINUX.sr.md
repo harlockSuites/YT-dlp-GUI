@@ -28,7 +28,8 @@ Linux verzija reprodukuje ponašanje Windows verzije 0.1.7 (zamrznute, koja slu�
 - **Kolačići Google Chromea, Chromiuma, Bravea, Vivaldija, Opere i Microsoft Edgea**: pročitani sa **zatvorenim** pregledačem, nakon što je svaki pregledač jednom pokrenut i u njemu je izvršena prijava na YouTube (vidi [odeljak 5](#s5)). Pojedinačno preuzimanje i Inspektor plejlista su uspeli.
 - **LibreWolf**: čitaju se samo dok je otvoren i prijavljen (podrazumevano briše kolačiće pri zatvaranju).
 - **Privatni video** sa kolačićima Firefoxa, i plejlista od tri videa od kojih je jedan privatan.
-- **Paketi**: AppImage i arhivu `.tar.gz` gradi CI na Ubuntu 22.04; `.deb` je napravljen, instaliran, pokrenut i uklonjen na Debianu 12; „Instaliraj u meni” je isproban sa pravim AppImage-om u privremenom kućnom folderu.
+- **Paketi**: AppImage i arhivu `.tar.gz` gradi CI na Ubuntu 22.04; `.deb` je napravljen, instaliran, pokrenut i uklonjen na Debianu 12; AppImage, arhiva i `.deb` pokrenuti su u virtuelnoj mašini, a „Instaliraj u meni” / „Deinstaliraj” isprobani su mišem sa AppImage-om (ikona je dodata, pa uklonjena iz menija i sa radne površine).
+- **Jezik i font**: korejski izabran na mašini bez korejskog fonta; prozor „Font needed” nudi font, preuzima se i proverava, program se ponovo pokreće i tekst je čitljiv.
 
 **Šta još nije isprobano**:
 
@@ -36,7 +37,7 @@ Linux verzija reprodukuje ponašanje Windows verzije 0.1.7 (zamrznute, koja slu�
 - pregledači instalirani kao Flatpak ili Snap (osim rasporeda LibreWolfa u Flatpaku, koji je uočen);
 - Vivaldi, Opera ili Edge **bez** instaliranog Chromea ili Chromiuma (vidi [odeljak 5](#s5));
 - arhitektura aarch64 (program je podržava, ali se paketi grade samo za x86_64);
-- prozor „Instaliraj u meni” korišćen mišem na pravoj radnoj površini (testira se programski);
+- pravi računar sa Linuxom, van virtuelne mašine (prava radna površina i hardver);
 - prevodi: još ih treba da pregledaju izvorni govornici.
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ AppImage nije „instaliran”: ne pojavljuje se u upravniku softvera. Da biste 
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Da biste AppImage našli u meniju aplikacija, sa ikonom, koristite funkciju **„Instaliraj u meni…” u samom programu** (odeljak 2.3): nema komande koju treba ukucati.
+
 ### 2.3 Instaliraj u meni (bez administratora)
 
 AppImage pokrenut dvostrukim klikom ne ostavlja ikonu u meniju aplikacija. U programu: meni opcija › **„Instaliraj u meni…”**. Prozor:
@@ -118,6 +121,8 @@ Da sve uklonite ručno:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Ako je paket `.deb` već instaliran, ne koristite ovu funkciju: program je već u meniju i pojavila bi se druga stavka „yt-dlp GUI” (prvo uklonite `.deb` komandom `sudo apt remove yt-dlp-gui` ako više volite ovaj način).
 
 ### 2.4 Paket `.deb`
 
@@ -410,7 +415,7 @@ Folder sa podacima je `$XDG_DATA_HOME/yt-dlp-GUI` (podrazumevano `~/.local/share
 | Prevlačenje između domaćina i virtuelne mašine ne radi | to je funkcija VirtualBoxa (Guest Additions), a ne programa |
 | Interfejs je pogrešne veličine | program prati sistemske fontove (Tk); probajte drugu veličinu sistemskog fonta |
 | Ažuriranje programa yt-dlp ne uspeva | koristite „Ažuriranje i dijagnostika” u meniju opcija; inače preuzmite `yt-dlp_linux` i izaberite ga u prozoru za zamenu (izabrani fajl postaje izvršni) |
-| Kvadratići umesto teksta (korejski, kineski, japanski…) | nijedan sistemski font ne sadrži ove znakove; na Debianu i Ubuntuu: `sudo apt install fonts-noto-cjk` (~90 MB), pa zatvorite i ponovo otvorite program; na drugim distribucijama instalirajte paket „Noto Sans CJK” te distribucije ; program može i sam da preuzme font (korejski, japanski, kineski) kada izaberete jezik, bez administratorskih prava |
+| Kvadratići umesto teksta (korejski, kineski, japanski…) | nijedan sistemski font ne sadrži ove znakove; na Debianu i Ubuntuu: `sudo apt install fonts-noto-cjk` (~90 MB), pa zatvorite i ponovo otvorite program; na drugim distribucijama instalirajte paket „Noto Sans CJK” te distribucije; program može i sam da preuzme font (korejski, japanski, kineski) kada izaberete jezik, bez administratorskih prava |
 
 <a id="s8"></a>
 

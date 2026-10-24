@@ -20,7 +20,7 @@
 
 ## 1. 预览版的状态
 
-Linux 版本复现 Windows 版本 0.1.7（已冻结，用作模型）的行为。它以 **GitHub 预发布版（pre-release）** 的形式发布，标签为 `Linux-vX.Y.Z`：从不被当作仓库的“最新发布版”。
+Linux 版本复现 Windows 版本 0.1.7（已冻结，用作参照）的行为。它以 **GitHub 预发布版（pre-release）** 的形式发布，标签为 `Linux-vX.Y.Z`：从不被当作仓库的“最新发布版”。
 
 **已经试过的内容**（Debian 12 虚拟机，GNOME 桌面，Python 3.11，每个浏览器中都登录了真实的 YouTube 账号，2026 年 10 月）：
 
@@ -28,7 +28,8 @@ Linux 版本复现 Windows 版本 0.1.7（已冻结，用作模型）的行为�
 - **Google Chrome、Chromium、Brave、Vivaldi、Opera 和 Microsoft Edge 的 Cookie**：在浏览器**关闭**时读取，前提是每个浏览器都已启动过一次并在其中登录了 YouTube（见[第 5 节](#s5)）。单个下载和播放列表检查器均成功。
 - **LibreWolf**：只有在它打开并已登录时才能读取（默认情况下它会在关闭时删除 Cookie）。
 - 使用 Firefox 的 Cookie 下载**私享视频**，以及包含三个视频（其中一个为私享）的播放列表。
-- **软件包**：AppImage 和 `.tar.gz` 压缩包由 CI 在 Ubuntu 22.04 上构建；`.deb` 已在 Debian 12 上构建、安装、启动并卸载；“安装到菜单”已用真实的 AppImage 在一次性的主目录中试过。
+- **软件包**：AppImage 和 `.tar.gz` 压缩包由 CI 在 Ubuntu 22.04 上构建；`.deb` 已在 Debian 12 上构建、安装、启动并卸载；AppImage、压缩包和 `.deb` 都已在虚拟机中启动，并且“安装到菜单”/“卸载”已用 AppImage 通过鼠标试过（图标先加入、再从菜单和桌面移除）。
+- **语言与字体**：在没有韩文字体的机器上选择韩文；“Font needed”窗口提供字体，下载并校验后，软件重新启动，文字清晰可读。
 
 **尚未试过的内容**：
 
@@ -36,7 +37,7 @@ Linux 版本复现 Windows 版本 0.1.7（已冻结，用作模型）的行为�
 - 以 Flatpak 或 Snap 方式安装的浏览器（Flatpak 版 LibreWolf 的目录布局除外，已观察过）；
 - **未安装** Chrome 或 Chromium 时的 Vivaldi、Opera 或 Edge（见[第 5 节](#s5)）；
 - aarch64 架构（软件支持，但软件包只为 x86_64 构建）；
-- 在真实桌面上用鼠标操作“安装到菜单”窗口（目前通过程序测试）；
+- 真实的 Linux 电脑，而非虚拟机（真实的桌面和硬件）；
 - 翻译：仍需由母语者审校。
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ AppImage 并不“安装”：它不会出现在软件管理器中。要移除�
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+要在应用程序菜单中找到带图标的 AppImage，请使用**软件内部的“安装到菜单…”功能**（2.3 节）：无需输入任何命令。
+
 ### 2.3 安装到菜单（无需管理员）
 
 双击启动的 AppImage 不会在应用程序菜单中留下图标。在软件中：选项菜单 › **“安装到菜单…”**。该窗口：
@@ -118,6 +121,8 @@ rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+如果已经安装了 `.deb` 软件包，请不要使用此功能：软件已在菜单中，会出现第二个“yt-dlp GUI”条目（如果您更喜欢这种方式，请先用 `sudo apt remove yt-dlp-gui` 移除 `.deb`）。
 
 ### 2.4 `.deb` 软件包
 
@@ -344,7 +349,7 @@ seahorse
 
 - **没有默认密钥环**：创建一个（“+”按钮或 文件 › 新建 › 密码密钥环 菜单），命名为“Login”，然后右键单击它 › “设为默认”。具体的菜单文字因 Seahorse 版本而异。
 - **密钥环已锁定**：双击或右键单击 › “解锁”，然后输入它的密码（请您自己输入，软件从不索取）。
-- **自动登录**：受密码保护的密钥环无法自行打开，如果您在会话开始时不输入任何密码；它会一直保持锁定，直到您解锁它（或者直到您为会话和密钥环使用同一个密码）。
+- **自动登录**：如果您在会话开始时不输入任何密码，受密码保护的密钥环就无法自行打开；它会一直保持锁定，直到您解锁它（或者直到您为会话和密钥环使用同一个密码）。
 
 然后**启动浏览器，登录 YouTube，关闭它**，再运行测试（第 4 节）。
 
@@ -395,7 +400,7 @@ cp -a ~/.local/share/keyrings ~/keyrings-backup
 | `bin/` | ffmpeg、ffprobe、deno |
 | `cmd/` | yt-dlp 的临时配置文件 |
 | `app/` | “安装到菜单”制作的程序副本 |
-| `~/.local/share/fonts/yt-dlp-GUI/` （在数据文件夹之外） | 为韩文、日文或中文下载的 Noto 字体；移除方法：`rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
+| `~/.local/share/fonts/yt-dlp-GUI/`（在数据文件夹之外） | 为韩文、日文或中文下载的 Noto 字体；移除方法：`rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 

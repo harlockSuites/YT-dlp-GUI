@@ -28,7 +28,8 @@ Phiên bản Linux tái hiện hành vi của phiên bản Windows 0.1.7 (đã �
 - **Cookie của Google Chrome, Chromium, Brave, Vivaldi, Opera và Microsoft Edge**: đọc được khi trình duyệt **đã đóng**, sau khi mở từng trình duyệt một lần và đăng nhập YouTube trong đó (xem [mục 5](#s5)). Tải xuống đơn lẻ và Trình kiểm tra danh sách phát đều thành công.
 - **LibreWolf**: chỉ đọc được khi nó đang mở và đã đăng nhập (theo mặc định nó xóa cookie khi đóng).
 - **Video riêng tư** với cookie của Firefox, và một danh sách phát ba video trong đó có một video riêng tư.
-- **Gói**: AppImage và tệp nén `.tar.gz` do CI dựng trên Ubuntu 22.04; gói `.deb` đã được dựng, cài, chạy và gỡ trên Debian 12; «Cài vào menu» đã được thử với AppImage thật trong một thư mục cá nhân dùng một lần.
+- **Gói**: AppImage và tệp nén `.tar.gz` do CI dựng trên Ubuntu 22.04; gói `.deb` đã được dựng, cài, chạy và gỡ trên Debian 12; AppImage, tệp nén và `.deb` đều đã được chạy trong máy ảo, và «Cài vào menu» / «Gỡ cài đặt» đã được thử bằng chuột với AppImage (biểu tượng được thêm rồi gỡ khỏi menu và Màn hình nền).
+- **Ngôn ngữ và phông chữ**: chọn tiếng Hàn trên máy không có phông chữ Hàn; cửa sổ «Font needed» đề nghị phông chữ, nó được tải và kiểm tra, phần mềm khởi động lại và chữ đọc được.
 
 **Những gì chưa thử**:
 
@@ -36,7 +37,7 @@ Phiên bản Linux tái hiện hành vi của phiên bản Windows 0.1.7 (đã �
 - trình duyệt cài dưới dạng Flatpak hoặc Snap (trừ cách bố trí của LibreWolf trong Flatpak, đã được quan sát);
 - Vivaldi, Opera hoặc Edge **khi không có** Chrome và Chromium được cài (xem [mục 5](#s5));
 - kiến trúc aarch64 (phần mềm có hỗ trợ, nhưng các gói chỉ được dựng cho x86_64);
-- cửa sổ «Cài vào menu» được thao tác bằng chuột trên màn hình nền thật (nó được kiểm thử bằng chương trình);
+- một máy tính Linux thật, ngoài máy ảo (màn hình nền và phần cứng thật);
 - các bản dịch: vẫn cần người bản ngữ kiểm tra.
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ AppImage không được «cài đặt»: nó không hiện trong trình quản 
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Để thấy AppImage trong menu ứng dụng cùng biểu tượng, hãy dùng chức năng **«Cài vào menu…» ngay trong phần mềm** (mục 2.3): không có lệnh nào phải gõ.
+
 ### 2.3 Cài vào menu (không cần quyền quản trị)
 
 AppImage mở bằng cách nhấp đúp không để lại biểu tượng nào trong menu ứng dụng. Trong phần mềm: menu tùy chọn › **«Cài vào menu…»**. Cửa sổ này:
@@ -109,7 +112,7 @@ AppImage mở bằng cách nhấp đúp không để lại biểu tượng nào 
 
 «Gỡ cài đặt» chỉ gỡ những gì quá trình cài đặt đã tạo và **giữ lại cài đặt của bạn** cùng các công cụ đã tải. Một trình khởi chạy không có dấu nội bộ của chúng tôi (`X-YtDlpGui-Installer=1`) sẽ không bao giờ bị xóa.
 
-Giới hạn: cửa sổ này có từ AppImage và tệp nén. Từ mã nguồn, nó hướng bạn sang AppImage; từ gói `.deb`, nó giải thích rằng phần mềm đã có trong menu.
+Giới hạn: cửa sổ này dùng được từ AppImage và tệp nén. Từ mã nguồn, nó hướng bạn sang AppImage; từ gói `.deb`, nó giải thích rằng phần mềm đã có trong menu.
 
 Nếu lối tắt trên Màn hình nền hiện cảnh báo: nhấp chuột phải vào biểu tượng › «Cho phép khởi chạy». Một số màn hình nền (GNOME theo mặc định) không hiện biểu tượng trên Màn hình nền: trình khởi chạy trong menu luôn hoạt động.
 
@@ -118,6 +121,8 @@ Nếu lối tắt trên Màn hình nền hiện cảnh báo: nhấp chuột ph�
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Nếu gói `.deb` đã được cài, đừng dùng chức năng này: phần mềm đã có trong menu và sẽ xuất hiện mục «yt-dlp GUI» thứ hai (hãy gỡ `.deb` trước bằng `sudo apt remove yt-dlp-gui` nếu bạn thích cách này).
 
 ### 2.4 Gói `.deb`
 
@@ -410,7 +415,7 @@ Thư mục dữ liệu là `$XDG_DATA_HOME/yt-dlp-GUI` (theo mặc định `~/.l
 | Kéo và thả giữa máy chủ và máy ảo không hoạt động | đó là tính năng của VirtualBox (Guest Additions), không phải của phần mềm |
 | Giao diện có kích thước sai | phần mềm theo phông chữ của hệ thống (Tk); hãy thử cỡ phông chữ hệ thống khác |
 | Cập nhật yt-dlp thất bại | dùng «Cập nhật & Chẩn đoán» trong menu tùy chọn; nếu không, tải `yt-dlp_linux` và chọn nó trong cửa sổ thay thế (tệp được chọn sẽ được cấp quyền thực thi) |
-| Hiện ô vuông thay cho chữ (tiếng Hàn, Trung, Nhật…) | hệ thống không có phông chữ nào chứa các ký tự này; trên Debian và Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), rồi đóng và mở lại phần mềm; trên bản phân phối khác, cài gói «Noto Sans CJK» của bản phân phối đó ; phần mềm cũng có thể tự tải phông chữ (tiếng Hàn, Nhật, Trung) khi bạn chọn ngôn ngữ, không cần quyền quản trị |
+| Hiện ô vuông thay cho chữ (tiếng Hàn, Trung, Nhật…) | hệ thống không có phông chữ nào chứa các ký tự này; trên Debian và Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), rồi đóng và mở lại phần mềm; trên bản phân phối khác, cài gói «Noto Sans CJK» của bản phân phối đó; phần mềm cũng có thể tự tải phông chữ (tiếng Hàn, Nhật, Trung) khi bạn chọn ngôn ngữ, không cần quyền quản trị |
 
 <a id="s8"></a>
 

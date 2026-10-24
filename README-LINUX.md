@@ -28,7 +28,8 @@ La version Linux reprend le comportement de la version Windows 0.1.7 (figée, qu
 - **Cookies de Google Chrome, Chromium, Brave, Vivaldi, Opera et Microsoft Edge** : lus navigateur **fermé**, après avoir lancé chaque navigateur une fois et s'y être connecté à YouTube (voir [la section 5](#s5)). Téléchargement individuel et Inspecteur de playlist réussis.
 - **LibreWolf** : lu seulement quand il est ouvert et connecté (il supprime ses cookies à sa fermeture par défaut).
 - **Vidéo privée** avec les cookies de Firefox, et playlist de trois vidéos dont une privée.
-- **Paquets** : l'AppImage et l'archive `.tar.gz` sont construites par la CI sur Ubuntu 22.04 ; le `.deb` a été construit, installé, lancé et retiré sous Debian 12 ; « Installer dans le menu » a été essayé avec la vraie AppImage dans un dossier personnel jetable.
+- **Paquets** : l'AppImage et l'archive `.tar.gz` sont construites par la CI sur Ubuntu 22.04 ; le `.deb` a été construit, installé, lancé et retiré sous Debian 12 ; l'AppImage, l'archive et le `.deb` ont été lancés dans la machine virtuelle, et « Installer dans le menu » / « Désinstaller » ont été essayés à la souris avec l'AppImage (icône ajoutée, puis retirée du menu et du Bureau).
+- **Langue et police** : coréen choisi sur une machine sans police coréenne ; la fenêtre « Font needed » propose la police, elle est téléchargée et vérifiée, le logiciel redémarre et le texte est lisible.
 
 **Ce qui n'a pas encore été essayé** :
 
@@ -36,7 +37,7 @@ La version Linux reprend le comportement de la version Windows 0.1.7 (figée, qu
 - les navigateurs en Flatpak ou Snap (sauf l'agencement de LibreWolf en Flatpak, relevé) ;
 - Vivaldi, Opera ou Edge **sans** Chrome ni Chromium installés (voir [la section 5](#s5)) ;
 - l'architecture aarch64 (le logiciel la prévoit, mais les paquets ne sont construits que pour x86_64) ;
-- la fenêtre « Installer dans le menu » manipulée à la souris sur un vrai bureau (elle est testée par programme) ;
+- un poste Linux réel, hors machine virtuelle (bureau et matériel réels) ;
 - les traductions : elles sont à faire relire par des locuteurs natifs.
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ L'AppImage n'est pas « installée » : elle n'apparaît pas dans le gestionnair
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Pour retrouver l'AppImage dans le menu des applications, avec son icône, utilisez la fonction **« Installer dans le menu… » du logiciel** (section 2.3) : il n'y a pas de commande à taper.
+
 ### 2.3 Installer dans le menu (sans administrateur)
 
 Une AppImage lancée par double-clic ne laisse pas d'icône dans le menu des applications. Dans le logiciel : menu des options › **« Installer dans le menu… »**. La fenêtre :
@@ -118,6 +121,8 @@ Pour tout retirer à la main :
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Si le paquet `.deb` est déjà installé, n'utilisez pas cette fonction : le logiciel est déjà dans le menu et une seconde entrée « yt-dlp GUI » apparaîtrait (retirez d'abord le `.deb` avec `sudo apt remove yt-dlp-gui` si vous préférez cette méthode).
 
 ### 2.4 Paquet `.deb`
 

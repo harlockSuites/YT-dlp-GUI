@@ -217,6 +217,16 @@ class LinuxReadmeTests(unittest.TestCase):
                 self.assertEqual(section.count("rm -rf ~/.local/share/fonts/yt-dlp-GUI"), 1)
                 self.assertTrue(m.linux_fonts_dir({}).replace("\\", "/").endswith("/.local/share/fonts/yt-dlp-GUI"))
 
+    def test_the_install_in_the_menu_function_is_pointed_to_from_the_appimage_and_kept_off_the_deb(self):
+        for code, path in _existing().items():
+            text = _read(path)
+            appimage = re.search(r"\n### 2\.2 .*?(?=\n### 2\.3 )", text, re.S).group(0)
+            menu = re.search(r"\n### 2\.3 .*?(?=\n### 2\.4 )", text, re.S).group(0)
+            with self.subTest(lang=code):
+                self.assertIn("2.3", appimage.split("```")[-1], "dernier paragraphe de 2.2 : renvoi vers 2.3")
+                self.assertEqual(menu.count("sudo apt remove yt-dlp-gui"), 1, "2.3 : ne pas l'utiliser si le .deb est installé")
+                self.assertIn("Font needed", text.split('<a id="s2"></a>')[0], "section 1 : essai de la police")
+
     def test_all_fifteen_readmes_point_to_the_guide_of_their_own_language(self):
         for code, path in ALL_READMES.items():
             with self.subTest(lang=code):

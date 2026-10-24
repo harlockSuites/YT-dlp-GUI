@@ -2,7 +2,7 @@
 
 [Français](../README-LINUX.md) · [English](README-LINUX.en.md) · [Español](README-LINUX.es.md) · [Português](README-LINUX.pt.md) · [Italiano](README-LINUX.it.md) · [Polski](README-LINUX.pl.md) · [Magyar](README-LINUX.hu.md) · [Srpski](README-LINUX.sr.md) · [Русский](README-LINUX.ru.md) · [Tiếng Việt](README-LINUX.vi.md) · [中文](README-LINUX.zh.md) · [हिन्दी](README-LINUX.hi.md) · [日本語](README-LINUX.ja.md) · [한국어](README-LINUX.ko.md) · [Filipino](README-LINUX.fil.md)
 
-> **Wersja zapoznawcza.** Ten dokument uzupełnia [główny README](README.pl.md): to ten sam program, ale tutaj omawiamy tylko to, co jest specyficzne dla Linuksa (instalacja, pliki cookie i pęki kluczy, pliki, rozwiązywanie problemów). Nowości w każdej wersji znajdują się w [CHANGELOG-linux.md](../CHANGELOG-linux.md). Tłumaczenia nadal wymagają sprawdzenia przez rodzimych użytkowników języka; w razie wątpliwości obowiązują teksty francuski i angielski.
+> **Wersja zapoznawcza.** Ten dokument uzupełnia [główny README](README.pl.md): to ten sam program, ale tutaj omawiamy tylko to, co jest specyficzne dla Linuksa (instalacja, pliki cookie i pęki kluczy, pliki, rozwiązywanie problemów). Nowości w każdej wersji znajdują się w [CHANGELOG-linux.md](../CHANGELOG-linux.md). Tłumaczenia nadal wymagają sprawdzenia przez rodzimych użytkowników języka; w razie wątpliwości obowiązują wersje francuska i angielska.
 
 ## Spis treści
 
@@ -28,7 +28,8 @@ Wersja dla Linuksa odtwarza zachowanie wersji dla Windows 0.1.7 (zamrożonej, s�
 - **Pliki cookie Google Chrome, Chromium, Brave, Vivaldi, Opery i Microsoft Edge**: odczytane przy **zamkniętej** przeglądarce, po jednorazowym uruchomieniu każdej z nich i zalogowaniu się w niej do YouTube (zob. [sekcja 5](#s5)). Pojedyncze pobieranie i Inspektor playlist zadziałały.
 - **LibreWolf**: odczyt tylko wtedy, gdy jest otwarty i zalogowany (domyślnie usuwa swoje cookie przy zamknięciu).
 - **Film prywatny** z plikami cookie Firefoksa oraz playlista z trzema filmami, z których jeden jest prywatny.
-- **Pakiety**: AppImage i archiwum `.tar.gz` buduje CI na Ubuntu 22.04; pakiet `.deb` został zbudowany, zainstalowany, uruchomiony i usunięty w Debianie 12; „Zainstaluj w menu” wypróbowano z prawdziwym AppImage w jednorazowym katalogu domowym.
+- **Pakiety**: AppImage i archiwum `.tar.gz` buduje CI na Ubuntu 22.04; pakiet `.deb` został zbudowany, zainstalowany, uruchomiony i usunięty w Debianie 12; AppImage, archiwum i `.deb` uruchomiono w maszynie wirtualnej, a „Zainstaluj w menu” / „Odinstaluj” wypróbowano myszą z AppImage (ikona dodana, a potem usunięta z menu i z Pulpitu).
+- **Język i czcionka**: koreański wybrany na maszynie bez koreańskiej czcionki; okno „Font needed” proponuje czcionkę, jest ona pobierana i sprawdzana, program uruchamia się ponownie i tekst jest czytelny.
 
 **Czego jeszcze nie wypróbowano**:
 
@@ -36,7 +37,7 @@ Wersja dla Linuksa odtwarza zachowanie wersji dla Windows 0.1.7 (zamrożonej, s�
 - przeglądarek zainstalowanych jako Flatpak lub Snap (poza układem LibreWolfa we Flatpaku, który zaobserwowano);
 - Vivaldi, Opery lub Edge **bez** zainstalowanego Chrome ani Chromium (zob. [sekcja 5](#s5));
 - architektury aarch64 (program ją przewiduje, ale pakiety są budowane tylko dla x86_64);
-- okna „Zainstaluj w menu” obsługiwanego myszą na prawdziwym pulpicie (jest testowane programowo);
+- prawdziwego komputera z Linuksem, poza maszyną wirtualną (prawdziwego pulpitu i sprzętu);
 - tłumaczeń: nadal wymagają sprawdzenia przez rodzimych użytkowników języka.
 
 <a id="s2"></a>
@@ -54,7 +55,7 @@ Wersja dla Linuksa odtwarza zachowanie wersji dla Windows 0.1.7 (zamrożonej, s�
 
 Wymagania: 64-bitowy Linux (x86_64) z dystrybucji z 2022 roku lub nowszej (glibc 2.35 lub nowsza), ponieważ pakiety są budowane na Ubuntu 22.04.
 
-**Jeśli dopiero zaczynasz z Linuksem**: tylko pakiet `.deb` jest instalowany „naprawdę” i pojawia się w menedżerze oprogramowania. AppImage i archiwum to zwykłe pliki lub foldery, przechowywane tam, gdzie chcesz: aby je usunąć, kasujesz je jak każdy inny plik (sekcje 2.2 i 2.5). Ich ustawienia są przechowywane osobno, w `~/.local/share/yt-dlp-GUI` (sekcja 6), i przetrwają to usunięcie.
+**Jeśli dopiero zaczynasz z Linuksem**: tylko pakiet `.deb` jest instalowany „naprawdę” i pojawia się w menedżerze oprogramowania. AppImage i archiwum to zwykłe pliki lub foldery, przechowywane tam, gdzie chcesz: aby je usunąć, wystarczy skasować je jak każdy inny plik (sekcje 2.2 i 2.5). Ich ustawienia są przechowywane osobno, w `~/.local/share/yt-dlp-GUI` (sekcja 6), i przetrwają to usunięcie.
 
 Pliki są na [stronie wydań](https://github.com/harlockSuites/YT-dlp-GUI/releases): szukaj znaczników `Linux-v…` oznaczonych „Pre-release”.
 
@@ -98,6 +99,8 @@ AppImage nie jest „instalowany”: nie pojawia się w menedżerze oprogramowan
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Aby znaleźć AppImage w menu aplikacji, wraz z ikoną, użyj funkcji **„Zainstaluj w menu…” wbudowanej w program** (sekcja 2.3): nie trzeba wpisywać żadnego polecenia.
+
 ### 2.3 Zainstaluj w menu (bez administratora)
 
 AppImage uruchomiony dwukliknięciem nie zostawia ikony w menu aplikacji. W programie: menu opcji › **„Zainstaluj w menu…”**. To okno:
@@ -118,6 +121,8 @@ Aby usunąć wszystko ręcznie:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Jeśli pakiet `.deb` jest już zainstalowany, nie używaj tej funkcji: program jest już w menu i pojawiłaby się druga pozycja „yt-dlp GUI” (najpierw usuń `.deb` poleceniem `sudo apt remove yt-dlp-gui`, jeśli wolisz tę metodę).
 
 ### 2.4 Pakiet `.deb`
 
@@ -410,7 +415,7 @@ Folder danych to `$XDG_DATA_HOME/yt-dlp-GUI` (domyślnie `~/.local/share/yt-dlp-
 | Przeciąganie i upuszczanie między hostem a maszyną wirtualną nie działa | to funkcja VirtualBoxa (Guest Additions), nie programu |
 | Interfejs ma zły rozmiar | program używa czcionek systemowych (Tk); spróbuj innego rozmiaru czcionki systemowej |
 | Aktualizacja yt-dlp się nie powiodła | użyj „Aktualizacja i diagnostyka” w menu opcji; w przeciwnym razie pobierz `yt-dlp_linux` i wskaż go w oknie zamiany (wybrany plik zostanie uczyniony wykonywalnym) |
-| Kwadraty zamiast tekstu (koreański, chiński, japoński…) | żadna czcionka systemowa nie zawiera tych znaków; w Debianie i Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), potem zamknąć i ponownie otworzyć program; w innych dystrybucjach zainstalować pakiet „Noto Sans CJK” dystrybucji ; program może też sam pobrać czcionkę (koreański, japoński, chiński) po wybraniu języka, bez uprawnień administratora |
+| Kwadraty zamiast tekstu (koreański, chiński, japoński…) | żadna czcionka systemowa nie zawiera tych znaków; w Debianie i Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), potem zamknąć i ponownie otworzyć program; w innych dystrybucjach zainstalować pakiet „Noto Sans CJK” dystrybucji; program może też sam pobrać czcionkę (koreański, japoński, chiński) po wybraniu języka, bez uprawnień administratora |
 
 <a id="s8"></a>
 

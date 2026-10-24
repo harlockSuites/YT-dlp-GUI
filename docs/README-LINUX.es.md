@@ -28,7 +28,8 @@ La versión para Linux reproduce el comportamiento de la versión de Windows 0.1
 - **Cookies de Google Chrome, Chromium, Brave, Vivaldi, Opera y Microsoft Edge**: leídas con el navegador **cerrado**, tras abrir cada navegador una vez e iniciar sesión en YouTube (véase la [sección 5](#s5)). La descarga individual y el Inspector de listas de reproducción funcionaron.
 - **LibreWolf**: solo se leen mientras está abierto y con la sesión iniciada (por defecto borra sus cookies al cerrarse).
 - **Vídeo privado** con las cookies de Firefox, y una lista de tres vídeos con uno privado.
-- **Paquetes**: el AppImage y el archivo `.tar.gz` los construye la CI en Ubuntu 22.04; el `.deb` se construyó, instaló, abrió y quitó en Debian 12; «Instalar en el menú» se probó con el AppImage real en una carpeta personal desechable.
+- **Paquetes**: el AppImage y el archivo comprimido `.tar.gz` los construye la CI en Ubuntu 22.04; el `.deb` se construyó, instaló, abrió y quitó en Debian 12; el AppImage, el archivo comprimido y el `.deb` se abrieron en la máquina virtual, y «Instalar en el menú» / «Desinstalar» se probaron con el ratón usando el AppImage (icono añadido y luego quitado del menú y del Escritorio).
+- **Idioma y fuente**: coreano elegido en una máquina sin fuente coreana; la ventana «Font needed» ofrece la fuente, se descarga y se verifica, el programa se reinicia y el texto es legible.
 
 **Lo que aún no se ha probado**:
 
@@ -36,7 +37,7 @@ La versión para Linux reproduce el comportamiento de la versión de Windows 0.1
 - navegadores instalados como Flatpak o Snap (salvo la estructura de LibreWolf en Flatpak, que se observó);
 - Vivaldi, Opera o Edge **sin** Chrome ni Chromium instalados (véase la [sección 5](#s5));
 - la arquitectura aarch64 (el programa la admite, pero los paquetes solo se construyen para x86_64);
-- la ventana «Instalar en el menú» manejada con el ratón en un escritorio real (se prueba por programa);
+- un ordenador Linux real, fuera de una máquina virtual (escritorio y hardware reales);
 - las traducciones: aún deben revisarlas hablantes nativos.
 
 <a id="s2"></a>
@@ -48,13 +49,13 @@ La versión para Linux reproduce el comportamiento de la versión de Windows 0.1
 | Formato | Para quién | Derechos de administrador | Entrada en el menú |
 |---|---|---|---|
 | **AppImage** | cualquier distribución reciente de 64 bits | no | «Instalar en el menú» (sección 2.3) |
-| **Archivo `.tar.gz`** | igual, sin AppImage ni FUSE | no | «Instalar en el menú» |
+| **Archivo comprimido `.tar.gz`** | igual, sin AppImage ni FUSE | no | «Instalar en el menú» |
 | **Paquete `.deb`** | Debian, Ubuntu y derivadas | sí (`sudo`) | automática |
 | **Código fuente** | desarrolladores, pruebas | no | ninguna |
 
 Requisitos: Linux de 64 bits (x86_64) de una distribución de 2022 o más reciente (glibc 2.35 o superior), porque los paquetes se construyen en Ubuntu 22.04.
 
-**Si empieza con Linux**: solo el paquete `.deb` se instala «de verdad» y aparece en el gestor de programas. El AppImage y el archivo son archivos o carpetas normales, guardados donde quiera: para quitarlos basta con borrarlos como cualquier otro archivo (secciones 2.2 y 2.5). Sus ajustes se guardan aparte, en `~/.local/share/yt-dlp-GUI` (sección 6), y sobreviven a ese borrado.
+**Si empieza con Linux**: solo el paquete `.deb` se instala «de verdad» y aparece en el gestor de programas. El AppImage y el archivo comprimido son archivos o carpetas normales, guardados donde quiera: para quitarlos basta con borrarlos como cualquier otro archivo (secciones 2.2 y 2.5). Sus ajustes se guardan aparte, en `~/.local/share/yt-dlp-GUI` (sección 6), y sobreviven a ese borrado.
 
 Los archivos están en la [página de versiones publicadas](https://github.com/harlockSuites/YT-dlp-GUI/releases): busque las etiquetas `Linux-v…`, marcadas como «Pre-release».
 
@@ -98,6 +99,8 @@ El AppImage no se «instala»: no aparece en el gestor de programas. Para quitar
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Para encontrar el AppImage en el menú de aplicaciones, con su icono, use la función **«Instalar en el menú…» del programa** (sección 2.3): no hay ningún comando que escribir.
+
 ### 2.3 Instalar en el menú (sin administrador)
 
 Un AppImage abierto con doble clic no deja ningún icono en el menú de aplicaciones. En el programa: menú de opciones › **«Instalar en el menú…»**. La ventana:
@@ -109,7 +112,7 @@ Un AppImage abierto con doble clic no deja ningún icono en el menú de aplicaci
 
 «Desinstalar» solo quita lo que creó la instalación y **conserva sus ajustes** y las herramientas descargadas. Un lanzador sin nuestra marca interna (`X-YtDlpGui-Installer=1`) nunca se borra.
 
-Límites: la ventana está disponible desde el AppImage y el archivo. Desde el código fuente le remite al AppImage; desde el paquete `.deb` explica que el programa ya está en el menú.
+Límites: la ventana está disponible desde el AppImage y el archivo comprimido. Desde el código fuente le remite al AppImage; desde el paquete `.deb` explica que el programa ya está en el menú.
 
 Si el acceso directo del Escritorio muestra una advertencia: clic derecho en el icono › «Permitir lanzar». Algunos escritorios (GNOME por defecto) no muestran iconos en el Escritorio: el lanzador del menú funciona en todos los casos.
 
@@ -118,6 +121,8 @@ Para quitarlo todo a mano:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Si el paquete `.deb` ya está instalado, no use esta función: el programa ya está en el menú y aparecería una segunda entrada «yt-dlp GUI» (quite antes el `.deb` con `sudo apt remove yt-dlp-gui` si prefiere este método).
 
 ### 2.4 Paquete `.deb`
 
@@ -133,7 +138,7 @@ Para quitarlo (sus ajustes, en `~/.local/share/yt-dlp-GUI`, nunca se tocan):
 sudo apt remove yt-dlp-gui
 ```
 
-### 2.5 Archivo `.tar.gz`
+### 2.5 Archivo comprimido `.tar.gz`
 
 ```bash
 tar xzf yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz
@@ -151,7 +156,7 @@ touch yt-dlp-gui/portable.flag
 
 Sin este archivo, los datos van a `~/.local/share/yt-dlp-GUI` (sección 6).
 
-El archivo no se «instala»: no aparece en el gestor de programas. Para quitarlo, borre la carpeta extraída:
+El archivo comprimido no se «instala»: no aparece en el gestor de programas. Para quitarlo, borre la carpeta extraída:
 
 ```bash
 rm -rf yt-dlp-gui
@@ -175,11 +180,11 @@ Hace falta Python 3 con Tkinter:
 
 ### 2.7 Actualizaciones
 
-Una comprobación diaria (que se puede desactivar en el menú de opciones) busca las versiones `Linux-vX.Y.Z`, incluidas las preliminares, y **nunca** propone una versión de Windows. Abre la página de descarga del archivo que corresponde a su instalación (AppImage, archivo o `.deb`); **no se instala nada automáticamente**. Para actualizar:
+Una comprobación diaria (que se puede desactivar en el menú de opciones) busca las versiones `Linux-vX.Y.Z`, incluidas las preliminares, y **nunca** propone una versión de Windows. Abre la página de descarga del archivo que corresponde a su instalación (AppImage, archivo comprimido o `.deb`); **no se instala nada automáticamente**. Para actualizar:
 
-- **AppImage o archivo instalado en el menú**: descargue el nuevo AppImage, ejecútelo y luego «Instalar en el menú… › Actualizar»;
+- **AppImage o archivo comprimido instalado en el menú**: descargue el nuevo AppImage, ejecútelo y luego «Instalar en el menú… › Actualizar»;
 - **`.deb`**: `sudo apt install ./new-file.deb`;
-- **archivo no instalado**: extraiga el nuevo archivo en lugar del anterior.
+- **archivo comprimido no instalado**: extraiga el nuevo archivo comprimido en lugar del anterior.
 
 ### 2.8 Quitarlo todo, datos incluidos
 
@@ -195,7 +200,7 @@ Sus vídeos descargados nunca están en esta carpeta.
 
 ## 3. Primer inicio y dependencias
 
-En el primer inicio, el asistente de instalación propone descargar **yt-dlp** (`yt-dlp_linux`), **ffmpeg** (el archivo `.tar.xz` de las compilaciones oficiales de yt-dlp) y **deno** desde sus repositorios de GitHub. Se verifican las sumas SHA-256, no se piden derechos de administrador, y los archivos van a `~/.local/share/yt-dlp-GUI` (yt-dlp) y a `~/.local/share/yt-dlp-GUI/bin` (ffmpeg, ffprobe, deno). Sigue disponible en el menú de opciones.
+En el primer inicio, el asistente de instalación propone descargar **yt-dlp** (`yt-dlp_linux`), **ffmpeg** (el archivo comprimido `.tar.xz` de las compilaciones oficiales de yt-dlp) y **deno** desde sus repositorios de GitHub. Se verifican las sumas SHA-256, no se piden derechos de administrador, y los archivos van a `~/.local/share/yt-dlp-GUI` (yt-dlp) y a `~/.local/share/yt-dlp-GUI/bin` (ffmpeg, ffprobe, deno). Sigue disponible en el menú de opciones.
 
 Solo ffmpeg y ffprobe son imprescindibles; deno es recomendable (pistas de audio secundarias). **AtomicParsley, MKVToolNix y aria2** son opcionales: la ventana «Dependencias» muestra el comando de su gestor de paquetes, para copiarlo en un terminal. El programa nunca lo ejecuta por sí mismo. Los mismos comandos:
 
@@ -410,7 +415,7 @@ La carpeta de datos es `$XDG_DATA_HOME/yt-dlp-GUI` (por defecto `~/.local/share/
 | El arrastrar y soltar entre el anfitrión y una máquina virtual no funciona | es una función de VirtualBox (Guest Additions), no del programa |
 | La interfaz tiene un tamaño incorrecto | el programa sigue las fuentes del sistema (Tk); pruebe otro tamaño de fuente del sistema |
 | Falla la actualización de yt-dlp | use «Actualización y Diagnóstico» en el menú de opciones; si no, descargue `yt-dlp_linux` y elíjalo en la ventana de sustitución (el archivo elegido se vuelve ejecutable) |
-| Cuadrados en lugar del texto (coreano, chino, japonés…) | ninguna fuente del sistema contiene esos caracteres; en Debian y Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), y después cerrar y volver a abrir el programa; en otras distribuciones, instalar el paquete «Noto Sans CJK» de la distribución ; el programa también puede descargar la fuente por sí mismo (coreano, japonés, chino) al elegir el idioma, sin derechos de administrador |
+| Cuadrados en lugar del texto (coreano, chino, japonés…) | ninguna fuente del sistema contiene esos caracteres; en Debian y Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), y después cerrar y volver a abrir el programa; en otras distribuciones, instalar el paquete «Noto Sans CJK» de la distribución; el programa también puede descargar la fuente por sí mismo (coreano, japonés, chino) al elegir el idioma, sin derechos de administrador |
 
 <a id="s8"></a>
 
@@ -426,7 +431,7 @@ cat /etc/os-release
 echo "$XDG_CURRENT_DESKTOP $XDG_SESSION_TYPE"
 ```
 
-e indique **cómo** instaló el programa (AppImage, archivo, `.deb`, código fuente) y, si el problema son las cookies, **el resultado de la prueba en el terminal** (sección 4), sin pegar sus cookies.
+e indique **cómo** instaló el programa (AppImage, archivo comprimido, `.deb`, código fuente) y, si el problema son las cookies, **el resultado de la prueba en el terminal** (sección 4), sin pegar sus cookies.
 
 <a id="s9"></a>
 
@@ -456,6 +461,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 El único error de forma conocido es `dir-or-file-in-opt` (programa incluido en `/opt`).
 
-**Publicar**: comprobar `__version__` en `yt-dlp-gui.pyw`, fechar la sección de la versión en `CHANGELOG-linux.md`, hacer el commit y después crear y subir la etiqueta `Linux-vX.Y.Z`. El flujo «Release Linux» ejecuta las pruebas, construye el AppImage, el archivo y el `.deb`, calcula las sumas y crea la versión como **versión preliminar**, nunca como «última versión» (la comprobación de actualizaciones de la versión de Windows 0.1.7 no debe encontrar ahí ninguna etiqueta de Linux).
+**Publicar**: comprobar `__version__` en `yt-dlp-gui.pyw`, fechar la sección de la versión en `CHANGELOG-linux.md`, hacer el commit y después crear y subir la etiqueta `Linux-vX.Y.Z`. El flujo «Release Linux» ejecuta las pruebas, construye el AppImage, el archivo comprimido y el `.deb`, calcula las sumas y crea la versión como **versión preliminar**, nunca como «última versión» (la comprobación de actualizaciones de la versión de Windows 0.1.7 no debe encontrar ahí ninguna etiqueta de Linux).
 
 Licencia: MIT, como el resto del repositorio (véase [LICENSE](../LICENSE)).

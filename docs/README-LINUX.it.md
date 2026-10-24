@@ -28,7 +28,8 @@ La versione per Linux riproduce il comportamento della versione per Windows 0.1.
 - **Cookie di Google Chrome, Chromium, Brave, Vivaldi, Opera e Microsoft Edge**: letti con il browser **chiuso**, dopo aver avviato ogni browser una volta e aver effettuato l'accesso a YouTube (vedi la [sezione 5](#s5)). Il download singolo e l'Ispettore di playlist hanno funzionato.
 - **LibreWolf**: letti solo mentre è aperto e con l'accesso effettuato (per impostazione predefinita elimina i cookie alla chiusura).
 - **Video privato** con i cookie di Firefox, e una playlist di tre video di cui uno privato.
-- **Pacchetti**: l'AppImage e l'archivio `.tar.gz` sono costruiti dalla CI su Ubuntu 22.04; il `.deb` è stato costruito, installato, avviato e rimosso su Debian 12; «Installa nel menu» è stato provato con la vera AppImage in una cartella personale usa e getta.
+- **Pacchetti**: l'AppImage e l'archivio `.tar.gz` sono costruiti dalla CI su Ubuntu 22.04; il `.deb` è stato costruito, installato, avviato e rimosso su Debian 12; l'AppImage, l'archivio e il `.deb` sono stati avviati nella macchina virtuale, e «Installa nel menu» / «Disinstalla» sono stati provati con il mouse usando l'AppImage (icona aggiunta e poi rimossa dal menu e dal Desktop).
+- **Lingua e font**: coreano scelto su una macchina senza font coreano; la finestra «Font needed» propone il font, che viene scaricato e verificato, il programma si riavvia e il testo è leggibile.
 
 **Cosa non è ancora stato provato**:
 
@@ -36,7 +37,7 @@ La versione per Linux riproduce il comportamento della versione per Windows 0.1.
 - browser installati come Flatpak o Snap (tranne la struttura di LibreWolf in Flatpak, che è stata osservata);
 - Vivaldi, Opera o Edge **senza** Chrome né Chromium installati (vedi la [sezione 5](#s5));
 - l'architettura aarch64 (il programma la prevede, ma i pacchetti sono costruiti solo per x86_64);
-- la finestra «Installa nel menu» usata con il mouse su un desktop reale (è testata via programma);
+- un computer Linux reale, fuori da una macchina virtuale (desktop e hardware reali);
 - le traduzioni: devono ancora essere riviste da madrelingua.
 
 <a id="s2"></a>
@@ -98,6 +99,8 @@ L'AppImage non è «installata»: non compare nel gestore di software. Per rimuo
 rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
+Per trovare l'AppImage nel menu delle applicazioni, con la sua icona, usa la funzione **«Installa nel menu…» del programma** (sezione 2.3): non c'è alcun comando da digitare.
+
 ### 2.3 Installa nel menu (senza amministratore)
 
 Un'AppImage avviata con un doppio clic non lascia alcuna icona nel menu delle applicazioni. Nel programma: menu delle opzioni › **«Installa nel menu…»**. La finestra:
@@ -118,6 +121,8 @@ Per rimuovere tutto a mano:
 ```bash
 rm -rf ~/.local/share/yt-dlp-GUI/app ~/.local/share/applications/yt-dlp-gui.desktop ~/.local/share/icons/hicolor/256x256/apps/yt-dlp-gui.png ~/Desktop/yt-dlp-gui.desktop
 ```
+
+Se il pacchetto `.deb` è già installato, non usare questa funzione: il programma è già nel menu e comparirebbe una seconda voce «yt-dlp GUI» (rimuovi prima il `.deb` con `sudo apt remove yt-dlp-gui` se preferisci questo metodo).
 
 ### 2.4 Pacchetto `.deb`
 
@@ -410,7 +415,7 @@ La cartella dei dati è `$XDG_DATA_HOME/yt-dlp-GUI` (per impostazione predefinit
 | Il trascinamento tra host e macchina virtuale non funziona | è una funzione di VirtualBox (Guest Additions), non del programma |
 | L'interfaccia ha una dimensione errata | il programma segue i caratteri di sistema (Tk); provare un'altra dimensione dei caratteri di sistema |
 | L'aggiornamento di yt-dlp non riesce | usare «Aggiornamento & Diagnostica» nel menu delle opzioni; altrimenti scaricare `yt-dlp_linux` e sceglierlo nella finestra di sostituzione (il file scelto diventa eseguibile) |
-| Quadrati al posto del testo (coreano, cinese, giapponese…) | nessun font del sistema contiene questi caratteri; su Debian e Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), poi chiudere e riaprire il programma; altrove, installare il pacchetto «Noto Sans CJK» della distribuzione ; il programma può anche scaricare il font da sé (coreano, giapponese, cinese) quando scegli la lingua, senza diritti di amministratore |
+| Quadrati al posto del testo (coreano, cinese, giapponese…) | nessun font del sistema contiene questi caratteri; su Debian e Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), poi chiudere e riaprire il programma; altrove, installare il pacchetto «Noto Sans CJK» della distribuzione; il programma può anche scaricare il font da sé (coreano, giapponese, cinese) quando scegli la lingua, senza diritti di amministratore |
 
 <a id="s8"></a>
 
