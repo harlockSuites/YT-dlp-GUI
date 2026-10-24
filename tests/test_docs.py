@@ -129,9 +129,19 @@ class DocsTests(unittest.TestCase):
                 for needle in ("yt-dlp-gui-X.Y.Z-x86_64.AppImage", "chmod +x", "libfuse2", "--appimage-extract-and-run",
                                "yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz", "tar xzf", "~/.local/share/yt-dlp-GUI",
                                "SHA256SUMS-linux.txt", "sha256sum -c SHA256SUMS-linux.txt --ignore-missing", "glibc 2.35",
-                               "Linux-v", "Pre-release"):   # où trouver les fichiers : releases « Linux-v… » en préversion
+                               "Linux-v", "Pre-release",   # où trouver les fichiers : releases « Linux-v… » en préversion
+                               "yt-dlp-gui_X.Y.Z_amd64.deb", "sudo apt install ./yt-dlp-gui_X.Y.Z_amd64.deb",
+                               "sudo apt remove yt-dlp-gui", "~/.local/share/yt-dlp-GUI/app"):   # .deb et menu
                     self.assertIn(needle, section)
-                self.assertEqual(sum(1 for l in section.splitlines() if l.startswith("- **Linux")), 3)
+                # AppImage, archive, ajout au menu, paquet .deb, configuration requise
+                self.assertEqual(sum(1 for l in section.splitlines() if l.startswith("- **Linux")), 5)
+
+    def test_the_menu_install_bullet_quotes_the_window_title_of_the_same_language(self):
+        import json
+        for code, path in _all_docs().items():
+            lang = json.loads(_read(os.path.join(ROOT, "lang", f"{code}.json")))
+            with self.subTest(lang=code):
+                self.assertIn(lang["menu_install.title"], _read(path))
 
     def test_prerequisites_quick_start_and_dependencies_mention_linux(self):
         for code, path in _all_docs().items():

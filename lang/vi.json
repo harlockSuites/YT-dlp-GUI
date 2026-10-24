@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Cài đặt chùm khóa và Seahorse (công cụ quản lý):",
   "browsers.keyring_check": "Xem chùm khóa nào là mặc định (trả lời '/' nghĩa là không có):",
   "browsers.keyring_open": "Mở “Mật khẩu và khóa” (Seahorse) để tạo hoặc mở khóa một chùm khóa:",
-  "browsers.btn_open": "Mở"
+  "browsers.btn_open": "Mở",
+  "toolbar.menu_install_menu": "🚀  Cài vào menu…",
+  "menu_install.title": "Cài vào menu",
+  "menu_install.explain": "Thêm yt-dlp GUI vào menu ứng dụng của máy tính, kèm biểu tượng, để mở như mọi chương trình khác. Không cần quyền quản trị. Cài đặt và công cụ đã tải của bạn không bị đụng đến.",
+  "menu_install.cb_desktop": "Thêm cả lối tắt trên Màn hình nền",
+  "menu_install.state_none": "Chưa được cài vào menu.",
+  "menu_install.state_installed": "Đã cài vào menu (chương trình được sao chép vào {path}).",
+  "menu_install.btn_install": "Cài đặt",
+  "menu_install.btn_update": "Cập nhật",
+  "menu_install.btn_remove": "Gỡ cài đặt",
+  "menu_install.done": "Đã cài. Hãy tìm “yt-dlp GUI” trong menu ứng dụng.",
+  "menu_install.desktop_added": "Đã thêm lối tắt trên Màn hình nền. Nếu máy hiện cảnh báo, hãy nhấp chuột phải vào biểu tượng rồi chọn “Cho phép khởi chạy”.",
+  "menu_install.desktop_missing": "Không tìm thấy thư mục Màn hình nền: chưa tạo lối tắt.",
+  "menu_install.removed": "Đã gỡ khỏi menu. Cài đặt và công cụ đã tải vẫn được giữ lại.",
+  "menu_install.err_source": "Chỉ dùng được từ AppImage hoặc tệp nén .tar.gz, không dùng được từ mã nguồn.",
+  "menu_install.deb": "yt-dlp GUI được cài bằng gói .deb: nó đã có trong menu ứng dụng. Để gỡ: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Thất bại: {error}"
 }

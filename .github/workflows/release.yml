@@ -4,7 +4,7 @@
 # Pour publier : 1) vérifier __version__ dans yt-dlp-gui.pyw ; 2) dater la section de cette version dans
 # CHANGELOG-linux.md ; 3) commiter et pousser la branche Linux ; 4) créer et pousser l'étiquette correspondante :
 #     git tag Linux-v0.1.0 && git push origin Linux-v0.1.0
-# Le workflow lance les tests, construit l'AppImage et l'archive .tar.gz, calcule les sommes SHA-256 puis crée la
+# Le workflow lance les tests, construit l'AppImage, l'archive .tar.gz et le paquet .deb, calcule les sommes SHA-256 puis crée la
 # release GitHub **en préversion** (jamais « dernière version » : la recherche de mise à jour du logiciel Windows
 # interroge la dernière version et ne doit pas y trouver une étiquette Linux) avec les notes de CHANGELOG-linux.md.
 # Lancé à la main (« Run workflow »), il construit seulement les fichiers sans publier.
@@ -50,6 +50,12 @@ jobs:
       - name: Construire l'archive et l'AppImage
         run: python3 -X utf8 packaging/build_linux.py
 
+      - name: Construire le paquet .deb
+        run: |
+          python3 -X utf8 packaging/build_deb.py
+          dpkg-deb --info dist/yt-dlp-gui_*_amd64.deb
+          dpkg-deb --contents dist/yt-dlp-gui_*_amd64.deb | head -40
+
       - name: Notes de version et sommes de contrôle
         run: |
           python3 -X utf8 packaging/release_tools.py notes --changelog CHANGELOG-linux.md --out dist/release-notes.md
@@ -61,6 +67,7 @@ jobs:
           path: |
             dist/yt-dlp-gui-*-x86_64.AppImage
             dist/yt-dlp-gui-linux-*-x86_64.tar.gz
+            dist/yt-dlp-gui_*_amd64.deb
             dist/SHA256SUMS-linux.txt
           if-no-files-found: error
 
@@ -76,4 +83,5 @@ jobs:
           files: |
             dist/yt-dlp-gui-*-x86_64.AppImage
             dist/yt-dlp-gui-linux-*-x86_64.tar.gz
+            dist/yt-dlp-gui_*_amd64.deb
             dist/SHA256SUMS-linux.txt

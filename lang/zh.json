@@ -534,5 +534,21 @@
   "browsers.keyring_install": "安装密钥环和 Seahorse（其管理工具）：",
   "browsers.keyring_check": "查看默认密钥环是哪一个（返回 '/' 表示没有）：",
   "browsers.keyring_open": "打开“密码和密钥”（Seahorse）以创建或解锁密钥环：",
-  "browsers.btn_open": "打开"
+  "browsers.btn_open": "打开",
+  "toolbar.menu_install_menu": "🚀  安装到菜单…",
+  "menu_install.title": "安装到菜单",
+  "menu_install.explain": "把 yt-dlp GUI 连同图标添加到桌面的应用程序菜单，像其他程序一样启动。无需管理员权限。您的设置和已下载的工具不会受到影响。",
+  "menu_install.cb_desktop": "同时在桌面添加快捷方式",
+  "menu_install.state_none": "尚未安装到菜单。",
+  "menu_install.state_installed": "已安装到菜单（程序已复制到 {path}）。",
+  "menu_install.btn_install": "安装",
+  "menu_install.btn_update": "更新",
+  "menu_install.btn_remove": "卸载",
+  "menu_install.done": "已安装。请在应用程序菜单中查找“yt-dlp GUI”。",
+  "menu_install.desktop_added": "已在桌面添加快捷方式。如果桌面显示警告，请右键单击图标并选择“允许启动”。",
+  "menu_install.desktop_missing": "找不到桌面文件夹：未创建快捷方式。",
+  "menu_install.removed": "已从菜单中移除。您的设置和已下载的工具已保留。",
+  "menu_install.err_source": "仅可从 AppImage 或 .tar.gz 压缩包使用，不能从源文件使用。",
+  "menu_install.deb": "yt-dlp GUI 是通过 .deb 软件包安装的：它已在应用程序菜单中。如需移除：sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "失败：{error}"
 }

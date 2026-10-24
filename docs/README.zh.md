@@ -66,6 +66,8 @@
 - **便携版**：下载 `yt-dlp-gui-portable-X.Y.Z.zip`，解压到任意位置并运行 `yt-dlp-gui.exe`；设置保存在该文件夹中。
 - **Linux，AppImage（预览版）**：从[发布页面](https://github.com/harlockSuites/YT-dlp-GUI/releases)下载 `yt-dlp-gui-X.Y.Z-x86_64.AppImage`，赋予可执行权限（`chmod +x`）后运行。需要 `libfuse2`（软件包 `libfuse2` 或 `fuse-libs`）；没有时请加上 `--appimage-extract-and-run` 运行。
 - **Linux，压缩包（预览版）**：下载 `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`，解压（`tar xzf`）后运行 `./yt-dlp-gui/yt-dlp-gui`。设置和已下载的工具位于 `~/.local/share/yt-dlp-GUI`；卸载时，请删除该文件夹以及软件的文件或文件夹。
+- **Linux，添加到应用程序菜单（预览版）**：在 AppImage 或压缩包中运行时，选项菜单 ›“安装到菜单”会把程序复制到 `~/.local/share/yt-dlp-GUI/app`，把启动器和图标加入桌面菜单，并可按需在桌面添加快捷方式，无需管理员权限。同一窗口还可更新或卸载；您的设置会保留。
+- **Linux，.deb 软件包（预览版）**：在 Debian、Ubuntu 及其衍生版上，下载 `yt-dlp-gui_X.Y.Z_amd64.deb`，用 `sudo apt install ./yt-dlp-gui_X.Y.Z_amd64.deb` 安装。程序会带着图标出现在应用程序菜单中；`sudo apt remove yt-dlp-gui` 可将其移除，您的设置（`~/.local/share/yt-dlp-GUI`）会保留。
 - **Linux，系统要求与校验**：64 位 Linux（x86_64），发行版为 2022 年或更新（glibc 2.35 或更高）。要校验文件，请同时下载 `SHA256SUMS-linux.txt`，并在同一文件夹中运行：`sha256sum -c SHA256SUMS-linux.txt --ignore-missing`。Linux 文件单独发布，位于标签以“Linux-v”开头的版本中（在 GitHub 上标为“Pre-release”）；页面默认显示的版本是 Windows 版。
 - **从源代码运行**：请参阅下方的“系统要求”和“快速开始”。
 - **卸载**：Windows 设置 › 应用 › 已安装的应用 › yt-dlp GUI，或开始菜单中的“卸载”快捷方式。软件会询问是否一并删除其数据（设置、队列、已下载的 yt-dlp 和 ffmpeg）；您的视频绝不会被删除。由于安装属于各个 Windows 账户，软件只出现在安装它的账户的列表中。便携版只需删除其文件夹。通过 Chocolatey 单独安装的工具（ffmpeg、Deno 等）不会被移除。

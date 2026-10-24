@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Installer le trousseau et Seahorse (son outil de gestion) :",
   "browsers.keyring_check": "Voir quel est le trousseau par défaut (une réponse « '/' » veut dire qu'il n'y en a aucun) :",
   "browsers.keyring_open": "Ouvrir « Mots de passe et clés » (Seahorse) pour créer ou déverrouiller un trousseau :",
-  "browsers.btn_open": "Ouvrir"
+  "browsers.btn_open": "Ouvrir",
+  "toolbar.menu_install_menu": "🚀  Installer dans le menu…",
+  "menu_install.title": "Installer dans le menu",
+  "menu_install.explain": "Ajoute yt-dlp GUI au menu des applications de votre bureau, avec son icône, pour le lancer comme n'importe quel programme. Aucun droit administrateur n'est nécessaire. Vos réglages et vos outils téléchargés ne sont pas touchés.",
+  "menu_install.cb_desktop": "Ajouter aussi un raccourci sur le Bureau",
+  "menu_install.state_none": "Pas encore installé dans le menu.",
+  "menu_install.state_installed": "Installé dans le menu (programme copié dans {path}).",
+  "menu_install.btn_install": "Installer",
+  "menu_install.btn_update": "Mettre à jour",
+  "menu_install.btn_remove": "Désinstaller",
+  "menu_install.done": "Installé. Cherchez « yt-dlp GUI » dans le menu des applications.",
+  "menu_install.desktop_added": "Raccourci ajouté sur le Bureau. Si votre bureau affiche un avertissement, faites un clic droit sur l'icône puis « Autoriser le lancement ».",
+  "menu_install.desktop_missing": "Dossier du Bureau introuvable : raccourci non créé.",
+  "menu_install.removed": "Retiré du menu. Vos réglages et vos outils téléchargés sont conservés.",
+  "menu_install.err_source": "Disponible seulement depuis l'AppImage ou l'archive .tar.gz, pas depuis les sources.",
+  "menu_install.deb": "yt-dlp GUI est installé par le paquet .deb : il est déjà dans le menu des applications. Pour le retirer : sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Échec : {error}"
 }

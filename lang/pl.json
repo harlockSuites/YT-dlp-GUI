@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Zainstaluj pęk kluczy i Seahorse (narzędzie do jego obsługi):",
   "browsers.keyring_check": "Sprawdź, który pęk kluczy jest domyślny (odpowiedź '/' oznacza, że żadnego nie ma):",
   "browsers.keyring_open": "Otwórz „Hasła i klucze” (Seahorse), aby utworzyć lub odblokować pęk kluczy:",
-  "browsers.btn_open": "Otwórz"
+  "browsers.btn_open": "Otwórz",
+  "toolbar.menu_install_menu": "🚀  Zainstaluj w menu…",
+  "menu_install.title": "Zainstaluj w menu",
+  "menu_install.explain": "Dodaje yt-dlp GUI do menu aplikacji pulpitu wraz z ikoną, aby uruchamiać go jak każdy inny program. Nie są potrzebne uprawnienia administratora. Ustawienia i pobrane narzędzia pozostają nietknięte.",
+  "menu_install.cb_desktop": "Dodaj też skrót na Pulpicie",
+  "menu_install.state_none": "Jeszcze nie zainstalowano w menu.",
+  "menu_install.state_installed": "Zainstalowano w menu (program skopiowany do {path}).",
+  "menu_install.btn_install": "Zainstaluj",
+  "menu_install.btn_update": "Zaktualizuj",
+  "menu_install.btn_remove": "Odinstaluj",
+  "menu_install.done": "Zainstalowano. Szukaj „yt-dlp GUI” w menu aplikacji.",
+  "menu_install.desktop_added": "Dodano skrót na Pulpicie. Jeśli pulpit pokaże ostrzeżenie, kliknij ikonę prawym przyciskiem i wybierz „Zezwól na uruchamianie”.",
+  "menu_install.desktop_missing": "Nie znaleziono folderu Pulpitu: skrót nie został utworzony.",
+  "menu_install.removed": "Usunięto z menu. Ustawienia i pobrane narzędzia zostały zachowane.",
+  "menu_install.err_source": "Dostępne tylko z AppImage lub archiwum .tar.gz, nie ze źródeł.",
+  "menu_install.deb": "yt-dlp GUI jest zainstalowany z pakietu .deb: jest już w menu aplikacji. Aby go usunąć: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Niepowodzenie: {error}"
 }

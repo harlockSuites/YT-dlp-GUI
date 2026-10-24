@@ -534,5 +534,21 @@
   "browsers.keyring_install": "키링과 Seahorse(관리 도구) 설치:",
   "browsers.keyring_check": "기본 키링이 무엇인지 확인(응답이 '/'이면 없다는 뜻):",
   "browsers.keyring_open": "'암호 및 키'(Seahorse)를 열어 키링 만들기 또는 잠금 해제:",
-  "browsers.btn_open": "열기"
+  "browsers.btn_open": "열기",
+  "toolbar.menu_install_menu": "🚀  메뉴에 설치…",
+  "menu_install.title": "메뉴에 설치",
+  "menu_install.explain": "yt-dlp GUI를 아이콘과 함께 데스크톱의 응용 프로그램 메뉴에 추가해 다른 프로그램처럼 실행할 수 있게 합니다. 관리자 권한은 필요하지 않습니다. 설정과 내려받은 도구는 건드리지 않습니다.",
+  "menu_install.cb_desktop": "바탕 화면에도 바로 가기 추가",
+  "menu_install.state_none": "아직 메뉴에 설치되지 않았습니다.",
+  "menu_install.state_installed": "메뉴에 설치됨(프로그램을 {path}에 복사했습니다).",
+  "menu_install.btn_install": "설치",
+  "menu_install.btn_update": "업데이트",
+  "menu_install.btn_remove": "제거",
+  "menu_install.done": "설치했습니다. 응용 프로그램 메뉴에서 'yt-dlp GUI'를 찾아보세요.",
+  "menu_install.desktop_added": "바탕 화면에 바로 가기를 추가했습니다. 경고가 표시되면 아이콘을 마우스 오른쪽 버튼으로 눌러 '실행 허용'을 선택하세요.",
+  "menu_install.desktop_missing": "바탕 화면 폴더를 찾을 수 없어 바로 가기를 만들지 못했습니다.",
+  "menu_install.removed": "메뉴에서 제거했습니다. 설정과 내려받은 도구는 그대로 남아 있습니다.",
+  "menu_install.err_source": "AppImage 또는 .tar.gz 압축 파일에서만 사용할 수 있으며, 소스 파일에서는 사용할 수 없습니다.",
+  "menu_install.deb": "yt-dlp GUI는 .deb 패키지로 설치되어 있어 이미 응용 프로그램 메뉴에 있습니다. 제거하려면: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "실패: {error}"
 }

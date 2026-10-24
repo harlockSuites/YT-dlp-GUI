@@ -66,6 +66,8 @@
 - **ポータブル版**：`yt-dlp-gui-portable-X.Y.Z.zip` をダウンロードし、好きな場所に展開して `yt-dlp-gui.exe` を実行します。設定はそのフォルダ内に保存されます。
 - **Linux、AppImage（プレビュー版）**：[リリースページ](https://github.com/harlockSuites/YT-dlp-GUI/releases)から `yt-dlp-gui-X.Y.Z-x86_64.AppImage` をダウンロードし、実行権限を付けて（`chmod +x`）実行します。`libfuse2`（パッケージ `libfuse2` または `fuse-libs`）が必要です。ない場合は `--appimage-extract-and-run` を付けて実行してください。
 - **Linux、アーカイブ（プレビュー版）**：`yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz` をダウンロードして展開し（`tar xzf`）、`./yt-dlp-gui/yt-dlp-gui` を実行します。設定とダウンロードしたツールは `~/.local/share/yt-dlp-GUI` にあります。アンインストールするには、このフォルダーとソフトウェアのファイルまたはフォルダーを削除してください。
+- **Linux、アプリケーションメニューへの追加（プレビュー）**: AppImage またはアーカイブから実行すると、オプションメニュー ›「メニューにインストール」がプログラムを `~/.local/share/yt-dlp-GUI/app` にコピーし、ランチャーとアイコンをデスクトップのメニューに追加します（希望すればデスクトップのショートカットも）。管理者権限は不要です。同じウィンドウから更新やアンインストールもでき、設定は残ります。
+- **Linux、.deb パッケージ（プレビュー）**: Debian、Ubuntu とその派生版では、`yt-dlp-gui_X.Y.Z_amd64.deb` をダウンロードして `sudo apt install ./yt-dlp-gui_X.Y.Z_amd64.deb` でインストールします。アイコン付きでアプリケーションメニューに表示され、`sudo apt remove yt-dlp-gui` で削除できます。設定（`~/.local/share/yt-dlp-GUI`）は残ります。
 - **Linux、動作環境と検証**：64 ビット Linux（x86_64）で、2022 年以降のディストリビューション（glibc 2.35 以上）が対象です。ファイルを検証するには `SHA256SUMS-linux.txt` も一緒にダウンロードし、同じフォルダーで次を実行します：`sha256sum -c SHA256SUMS-linux.txt --ignore-missing`。Linux 向けのファイルは別に公開されており、タグが「Linux-v」で始まるリリース（GitHub では「Pre-release」と表示）に含まれます。ページに既定で表示されるリリースは Windows 版です。
 - **ソースから**：下の「必要条件」と「クイックスタート」を参照してください。
 - **アンインストール**：Windows の設定 › アプリ › インストールされているアプリ › yt-dlp GUI、またはスタートメニューの「アンインストール」ショートカット。ソフトウェアは自身のデータ（設定、キュー、ダウンロードした yt-dlp と ffmpeg）も削除するか尋ねます。動画は決して削除されません。インストールは Windows アカウントごとのため、インストールしたアカウントの一覧にのみ表示されます。ポータブル版はフォルダーを削除するだけです。Chocolatey で別途インストールしたツール（ffmpeg、Deno など）は削除されません。

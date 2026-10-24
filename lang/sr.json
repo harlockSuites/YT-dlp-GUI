@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Instalirajte priveznik ključeva i Seahorse (alat za upravljanje):",
   "browsers.keyring_check": "Pogledajte koji je priveznik podrazumevani (odgovor '/' znači da ga nema):",
   "browsers.keyring_open": "Otvorite „Lozinke i ključevi” (Seahorse) da biste napravili ili otključali priveznik:",
-  "browsers.btn_open": "Otvori"
+  "browsers.btn_open": "Otvori",
+  "toolbar.menu_install_menu": "🚀  Instaliraj u meni…",
+  "menu_install.title": "Instaliraj u meni",
+  "menu_install.explain": "Dodaje yt-dlp GUI u meni aplikacija vaše radne površine, sa ikonom, da ga pokrećete kao bilo koji drugi program. Nisu potrebna administratorska prava. Vaša podešavanja i preuzeti alati ostaju netaknuti.",
+  "menu_install.cb_desktop": "Dodaj i prečicu na radnu površinu",
+  "menu_install.state_none": "Još nije instalirano u meni.",
+  "menu_install.state_installed": "Instalirano u meni (program je kopiran u {path}).",
+  "menu_install.btn_install": "Instaliraj",
+  "menu_install.btn_update": "Ažuriraj",
+  "menu_install.btn_remove": "Deinstaliraj",
+  "menu_install.done": "Instalirano. Potražite „yt-dlp GUI” u meniju aplikacija.",
+  "menu_install.desktop_added": "Prečica je dodata na radnu površinu. Ako radna površina prikaže upozorenje, kliknite desnim tasterom na ikonu i izaberite „Dozvoli pokretanje”.",
+  "menu_install.desktop_missing": "Fascikla radne površine nije pronađena: prečica nije napravljena.",
+  "menu_install.removed": "Uklonjeno iz menija. Podešavanja i preuzeti alati su sačuvani.",
+  "menu_install.err_source": "Dostupno samo iz AppImage-a ili .tar.gz arhive, ne iz izvornih fajlova.",
+  "menu_install.deb": "yt-dlp GUI je instaliran iz .deb paketa: već je u meniju aplikacija. Za uklanjanje: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Neuspeh: {error}"
 }

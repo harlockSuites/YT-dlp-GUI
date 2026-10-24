@@ -534,5 +534,21 @@
   "browsers.keyring_install": "A kulcstartó és a Seahorse (a kezelőeszköze) telepítése:",
   "browsers.keyring_check": "Az alapértelmezett kulcstartó megtekintése ('/' válasz azt jelenti, hogy nincs ilyen):",
   "browsers.keyring_open": "A „Jelszavak és kulcsok” (Seahorse) megnyitása kulcstartó létrehozásához vagy feloldásához:",
-  "browsers.btn_open": "Megnyitás"
+  "browsers.btn_open": "Megnyitás",
+  "toolbar.menu_install_menu": "🚀  Telepítés a menübe…",
+  "menu_install.title": "Telepítés a menübe",
+  "menu_install.explain": "Hozzáadja a yt-dlp GUI-t az asztal alkalmazásmenüjéhez az ikonjával együtt, hogy bármely más programhoz hasonlóan indíthassa. Nincs szükség rendszergazdai jogra. A beállításai és a letöltött eszközök érintetlenek maradnak.",
+  "menu_install.cb_desktop": "Parancsikon hozzáadása az Asztalhoz is",
+  "menu_install.state_none": "Még nincs telepítve a menübe.",
+  "menu_install.state_installed": "Telepítve a menübe (a program ide másolva: {path}).",
+  "menu_install.btn_install": "Telepítés",
+  "menu_install.btn_update": "Frissítés",
+  "menu_install.btn_remove": "Eltávolítás",
+  "menu_install.done": "Telepítve. Keresse a „yt-dlp GUI” nevet az alkalmazásmenüben.",
+  "menu_install.desktop_added": "A parancsikon felkerült az Asztalra. Ha az asztal figyelmeztetést mutat, kattintson jobb gombbal az ikonra, és válassza az „Indítás engedélyezése” lehetőséget.",
+  "menu_install.desktop_missing": "Az Asztal mappa nem található: a parancsikon nem jött létre.",
+  "menu_install.removed": "Eltávolítva a menüből. A beállítások és a letöltött eszközök megmaradtak.",
+  "menu_install.err_source": "Csak az AppImage-ből vagy a .tar.gz archívumból érhető el, a forrásfájlokból nem.",
+  "menu_install.deb": "A yt-dlp GUI a .deb csomaggal van telepítve: már szerepel az alkalmazásmenüben. Eltávolítás: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Sikertelen: {error}"
 }

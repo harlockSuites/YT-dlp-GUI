@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Instalar o chaveiro e o Seahorse (a ferramenta de gerenciamento):",
   "browsers.keyring_check": "Ver qual é o chaveiro padrão (a resposta '/' significa que não há nenhum):",
   "browsers.keyring_open": "Abrir «Senhas e chaves» (Seahorse) para criar ou desbloquear um chaveiro:",
-  "browsers.btn_open": "Abrir"
+  "browsers.btn_open": "Abrir",
+  "toolbar.menu_install_menu": "🚀  Instalar no menu…",
+  "menu_install.title": "Instalar no menu",
+  "menu_install.explain": "Adiciona o yt-dlp GUI ao menu de aplicativos da sua área de trabalho, com o ícone, para abri-lo como qualquer outro programa. Não são necessários direitos de administrador. Suas configurações e as ferramentas baixadas não são alteradas.",
+  "menu_install.cb_desktop": "Adicionar também um atalho na Área de Trabalho",
+  "menu_install.state_none": "Ainda não instalado no menu.",
+  "menu_install.state_installed": "Instalado no menu (programa copiado em {path}).",
+  "menu_install.btn_install": "Instalar",
+  "menu_install.btn_update": "Atualizar",
+  "menu_install.btn_remove": "Desinstalar",
+  "menu_install.done": "Instalado. Procure «yt-dlp GUI» no menu de aplicativos.",
+  "menu_install.desktop_added": "Atalho adicionado à Área de Trabalho. Se a sua área de trabalho mostrar um aviso, clique com o botão direito no ícone e escolha «Permitir execução».",
+  "menu_install.desktop_missing": "Pasta da Área de Trabalho não encontrada: atalho não criado.",
+  "menu_install.removed": "Removido do menu. Suas configurações e as ferramentas baixadas foram mantidas.",
+  "menu_install.err_source": "Disponível apenas a partir do AppImage ou do arquivo .tar.gz, não a partir dos arquivos-fonte.",
+  "menu_install.deb": "O yt-dlp GUI foi instalado pelo pacote .deb: já está no menu de aplicativos. Para removê-lo: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Falha: {error}"
 }

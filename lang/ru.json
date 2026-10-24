@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Установить связку ключей и Seahorse (инструмент управления):",
   "browsers.keyring_check": "Узнать, какая связка ключей используется по умолчанию (ответ '/' означает, что её нет):",
   "browsers.keyring_open": "Открыть «Пароли и ключи» (Seahorse), чтобы создать или разблокировать связку ключей:",
-  "browsers.btn_open": "Открыть"
+  "browsers.btn_open": "Открыть",
+  "toolbar.menu_install_menu": "🚀  Установить в меню…",
+  "menu_install.title": "Установить в меню",
+  "menu_install.explain": "Добавляет yt-dlp GUI в меню приложений рабочего стола вместе со значком, чтобы запускать его как любую другую программу. Права администратора не нужны. Ваши настройки и загруженные инструменты не затрагиваются.",
+  "menu_install.cb_desktop": "Также добавить ярлык на рабочий стол",
+  "menu_install.state_none": "Ещё не установлено в меню.",
+  "menu_install.state_installed": "Установлено в меню (программа скопирована в {path}).",
+  "menu_install.btn_install": "Установить",
+  "menu_install.btn_update": "Обновить",
+  "menu_install.btn_remove": "Удалить",
+  "menu_install.done": "Установлено. Ищите «yt-dlp GUI» в меню приложений.",
+  "menu_install.desktop_added": "Ярлык добавлен на рабочий стол. Если рабочий стол показывает предупреждение, щёлкните значок правой кнопкой и выберите «Разрешить запуск».",
+  "menu_install.desktop_missing": "Папка рабочего стола не найдена: ярлык не создан.",
+  "menu_install.removed": "Удалено из меню. Ваши настройки и загруженные инструменты сохранены.",
+  "menu_install.err_source": "Доступно только из AppImage или архива .tar.gz, но не из исходных файлов.",
+  "menu_install.deb": "yt-dlp GUI установлен пакетом .deb: он уже есть в меню приложений. Чтобы удалить: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Ошибка: {error}"
 }

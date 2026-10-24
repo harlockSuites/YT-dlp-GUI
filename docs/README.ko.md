@@ -66,6 +66,8 @@
 - **휴대용 버전**: `yt-dlp-gui-portable-X.Y.Z.zip`을 내려받아 원하는 곳에 압축을 풀고 `yt-dlp-gui.exe`를 실행하세요. 설정은 그 폴더에 저장됩니다.
 - **Linux, AppImage(미리보기 버전)**: [릴리스 페이지](https://github.com/harlockSuites/YT-dlp-GUI/releases)에서 `yt-dlp-gui-X.Y.Z-x86_64.AppImage`를 내려받아 실행 권한을 주고(`chmod +x`) 실행하세요. `libfuse2`(패키지 `libfuse2` 또는 `fuse-libs`)가 필요하며, 없으면 `--appimage-extract-and-run` 옵션으로 실행하세요.
 - **Linux, 압축 파일(미리보기 버전)**: `yt-dlp-gui-linux-X.Y.Z-x86_64.tar.gz`를 내려받아 압축을 풀고(`tar xzf`) `./yt-dlp-gui/yt-dlp-gui`를 실행하세요. 설정과 내려받은 도구는 `~/.local/share/yt-dlp-GUI`에 있으며, 삭제하려면 이 폴더와 프로그램 파일 또는 폴더를 지우세요.
+- **Linux, 응용 프로그램 메뉴에 추가(미리 보기)**: AppImage나 압축 파일에서 실행하면 옵션 메뉴 ›'메뉴에 설치'가 프로그램을 `~/.local/share/yt-dlp-GUI/app`에 복사하고, 실행기와 아이콘을 데스크톱 메뉴에 추가하며, 원하면 바탕 화면 바로 가기도 만듭니다. 관리자 권한은 필요 없습니다. 같은 창에서 업데이트나 제거도 할 수 있으며 설정은 보존됩니다.
+- **Linux, .deb 패키지(미리 보기)**: Debian, Ubuntu 및 파생 배포판에서는 `yt-dlp-gui_X.Y.Z_amd64.deb`를 내려받아 `sudo apt install ./yt-dlp-gui_X.Y.Z_amd64.deb`로 설치합니다. 프로그램이 아이콘과 함께 응용 프로그램 메뉴에 나타나며, `sudo apt remove yt-dlp-gui`로 제거할 수 있고 설정(`~/.local/share/yt-dlp-GUI`)은 보존됩니다.
 - **Linux, 요구 사항과 검증**: 2022년 이후 배포판의 64비트 Linux(x86_64)(glibc 2.35 이상). 파일을 검증하려면 `SHA256SUMS-linux.txt`도 함께 내려받아 같은 폴더에서 `sha256sum -c SHA256SUMS-linux.txt --ignore-missing`을 실행하세요. Linux 파일은 따로 게시되며, 태그가 'Linux-v'로 시작하는 릴리스(GitHub에서 'Pre-release'로 표시)에 있습니다. 페이지에 기본으로 표시되는 릴리스는 Windows용입니다.
 - **소스에서 실행**: 아래의 '요구 사항'과 '빠른 시작'을 참고하세요.
 - **제거**: Windows 설정 › 앱 › 설치된 앱 › yt-dlp GUI, 또는 시작 메뉴의 '제거' 바로 가기. 소프트웨어가 자체 데이터(설정, 대기열, 내려받은 yt-dlp와 ffmpeg)도 삭제할지 묻습니다. 동영상은 절대 삭제되지 않습니다. 설치는 Windows 계정별로 이루어지므로, 소프트웨어는 설치한 계정의 목록에만 나타납니다. 포터블 버전은 폴더만 삭제하면 됩니다. Chocolatey로 따로 설치한 도구(ffmpeg, Deno 등)는 제거되지 않습니다.

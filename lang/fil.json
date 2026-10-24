@@ -534,5 +534,21 @@
   "browsers.keyring_install": "I-install ang key ring at ang Seahorse (ang tool sa pamamahala nito):",
   "browsers.keyring_check": "Tingnan kung aling key ring ang default (ang sagot na '/' ay nangangahulugang wala):",
   "browsers.keyring_open": "Buksan ang “Passwords and Keys” (Seahorse) para gumawa o mag-unlock ng key ring:",
-  "browsers.btn_open": "Buksan"
+  "browsers.btn_open": "Buksan",
+  "toolbar.menu_install_menu": "🚀  I-install sa menu…",
+  "menu_install.title": "I-install sa menu",
+  "menu_install.explain": "Idinaragdag ang yt-dlp GUI sa menu ng mga application ng desktop mo, kasama ang icon nito, para mabuksan mo ito tulad ng ibang program. Hindi kailangan ng karapatan ng administrator. Hindi ginagalaw ang mga setting mo at ang mga na-download na tool.",
+  "menu_install.cb_desktop": "Magdagdag din ng shortcut sa Desktop",
+  "menu_install.state_none": "Hindi pa naka-install sa menu.",
+  "menu_install.state_installed": "Naka-install sa menu (kinopya ang program sa {path}).",
+  "menu_install.btn_install": "I-install",
+  "menu_install.btn_update": "I-update",
+  "menu_install.btn_remove": "I-uninstall",
+  "menu_install.done": "Naka-install na. Hanapin ang “yt-dlp GUI” sa menu ng mga application.",
+  "menu_install.desktop_added": "Naidagdag ang shortcut sa Desktop. Kung magpakita ng babala ang desktop mo, i-right-click ang icon at piliin ang “Allow Launching”.",
+  "menu_install.desktop_missing": "Hindi nakita ang folder ng Desktop: hindi nagawa ang shortcut.",
+  "menu_install.removed": "Naalis sa menu. Nananatili ang mga setting mo at ang mga na-download na tool.",
+  "menu_install.err_source": "Magagamit lang mula sa AppImage o sa .tar.gz archive, hindi mula sa mga source file.",
+  "menu_install.deb": "Naka-install ang yt-dlp GUI sa pamamagitan ng .deb package: nasa menu na ito ng mga application. Para alisin: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Nabigo: {error}"
 }

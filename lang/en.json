@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Install the key ring and Seahorse (its management tool):",
   "browsers.keyring_check": "See which key ring is the default (an answer of '/' means there is none):",
   "browsers.keyring_open": "Open “Passwords and Keys” (Seahorse) to create or unlock a key ring:",
-  "browsers.btn_open": "Open"
+  "browsers.btn_open": "Open",
+  "toolbar.menu_install_menu": "🚀  Install in the menu…",
+  "menu_install.title": "Install in the menu",
+  "menu_install.explain": "Adds yt-dlp GUI to your desktop's applications menu, with its icon, so you can start it like any other program. No administrator rights are needed. Your settings and downloaded tools are not touched.",
+  "menu_install.cb_desktop": "Also add a shortcut on the Desktop",
+  "menu_install.state_none": "Not installed in the menu yet.",
+  "menu_install.state_installed": "Installed in the menu (program copied to {path}).",
+  "menu_install.btn_install": "Install",
+  "menu_install.btn_update": "Update",
+  "menu_install.btn_remove": "Uninstall",
+  "menu_install.done": "Installed. Look for “yt-dlp GUI” in the applications menu.",
+  "menu_install.desktop_added": "Shortcut added on the Desktop. If your desktop shows a warning, right-click the icon and choose “Allow Launching”.",
+  "menu_install.desktop_missing": "Desktop folder not found: shortcut not created.",
+  "menu_install.removed": "Removed from the menu. Your settings and downloaded tools are kept.",
+  "menu_install.err_source": "Only available from the AppImage or the .tar.gz archive, not from the source files.",
+  "menu_install.deb": "yt-dlp GUI is installed by the .deb package: it is already in the applications menu. To remove it: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Failed: {error}"
 }

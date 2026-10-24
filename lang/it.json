@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Installare il portachiavi e Seahorse (il suo strumento di gestione):",
   "browsers.keyring_check": "Vedere qual è il portachiavi predefinito (la risposta '/' significa che non ce n'è nessuno):",
   "browsers.keyring_open": "Aprire «Password e chiavi» (Seahorse) per creare o sbloccare un portachiavi:",
-  "browsers.btn_open": "Apri"
+  "browsers.btn_open": "Apri",
+  "toolbar.menu_install_menu": "🚀  Installa nel menu…",
+  "menu_install.title": "Installa nel menu",
+  "menu_install.explain": "Aggiunge yt-dlp GUI al menu delle applicazioni del desktop, con la sua icona, per avviarlo come qualsiasi altro programma. Non servono i diritti di amministratore. Le impostazioni e gli strumenti scaricati non vengono toccati.",
+  "menu_install.cb_desktop": "Aggiungi anche un collegamento sul Desktop",
+  "menu_install.state_none": "Non ancora installato nel menu.",
+  "menu_install.state_installed": "Installato nel menu (programma copiato in {path}).",
+  "menu_install.btn_install": "Installa",
+  "menu_install.btn_update": "Aggiorna",
+  "menu_install.btn_remove": "Disinstalla",
+  "menu_install.done": "Installato. Cerca «yt-dlp GUI» nel menu delle applicazioni.",
+  "menu_install.desktop_added": "Collegamento aggiunto sul Desktop. Se il desktop mostra un avviso, fai clic destro sull'icona e scegli «Consenti avvio».",
+  "menu_install.desktop_missing": "Cartella del Desktop non trovata: collegamento non creato.",
+  "menu_install.removed": "Rimosso dal menu. Le impostazioni e gli strumenti scaricati sono conservati.",
+  "menu_install.err_source": "Disponibile solo dall'AppImage o dall'archivio .tar.gz, non dai file sorgente.",
+  "menu_install.deb": "yt-dlp GUI è installato dal pacchetto .deb: è già nel menu delle applicazioni. Per rimuoverlo: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Errore: {error}"
 }

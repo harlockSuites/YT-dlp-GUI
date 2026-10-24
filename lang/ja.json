@@ -534,5 +534,21 @@
   "browsers.keyring_install": "キーリングと Seahorse（管理ツール）をインストールする:",
   "browsers.keyring_check": "既定のキーリングを確認する（応答が '/' なら存在しません）:",
   "browsers.keyring_open": "「パスワードと鍵」（Seahorse）を開いてキーリングを作成またはロック解除する:",
-  "browsers.btn_open": "開く"
+  "browsers.btn_open": "開く",
+  "toolbar.menu_install_menu": "🚀  メニューにインストール…",
+  "menu_install.title": "メニューにインストール",
+  "menu_install.explain": "yt-dlp GUI をアイコンとともにデスクトップのアプリケーションメニューに追加し、ほかのプログラムと同じように起動できるようにします。管理者権限は不要です。設定とダウンロード済みのツールには手を加えません。",
+  "menu_install.cb_desktop": "デスクトップにもショートカットを追加する",
+  "menu_install.state_none": "まだメニューにインストールされていません。",
+  "menu_install.state_installed": "メニューにインストール済み（プログラムのコピー先: {path}）。",
+  "menu_install.btn_install": "インストール",
+  "menu_install.btn_update": "更新",
+  "menu_install.btn_remove": "アンインストール",
+  "menu_install.done": "インストールしました。アプリケーションメニューで「yt-dlp GUI」を探してください。",
+  "menu_install.desktop_added": "デスクトップにショートカットを追加しました。警告が表示された場合は、アイコンを右クリックして「起動を許可」を選んでください。",
+  "menu_install.desktop_missing": "デスクトップのフォルダーが見つかりません。ショートカットは作成されませんでした。",
+  "menu_install.removed": "メニューから削除しました。設定とダウンロード済みのツールは残っています。",
+  "menu_install.err_source": "AppImage または .tar.gz アーカイブからのみ利用できます（ソースファイルからは利用できません）。",
+  "menu_install.deb": "yt-dlp GUI は .deb パッケージでインストールされています。すでにアプリケーションメニューにあります。削除するには: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "失敗: {error}"
 }

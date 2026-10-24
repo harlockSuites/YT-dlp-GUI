@@ -19,7 +19,7 @@ import signal
 import webbrowser
 from urllib.parse import quote
 
-__version__ = "0.1.1"   # version Linux (étiquette Linux-v0.1.1) ; la version Windows 0.1.7 est figée sur la branche main
+__version__ = "0.1.2"   # version Linux (étiquette Linux-v0.1.2) ; la version Windows 0.1.7 est figée sur la branche main
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 # ══════════════════════════════════════════════════════════════════
@@ -949,6 +949,188 @@ def linux_keyring_install_command(manager=None):
     if manager not in LINUX_KEYRING_PACKAGES:
         return None
     return f"{_LINUX_INSTALL_COMMANDS[manager]} {LINUX_KEYRING_PACKAGES[manager]}"
+
+
+# Linux : « Installer dans le menu » (sans droits administrateur). Le programme (AppImage ou dossier de l'archive) est
+# copié sous $XDG_DATA_HOME/yt-dlp-GUI/app, un lanceur .desktop et l'icône sont écrits dans les dossiers de
+# l'utilisateur, avec un raccourci facultatif sur le Bureau. Le paquet .deb, lui, s'installe dans /opt/yt-dlp-gui.
+MENU_MARKER = "X-YtDlpGui-Installer=1"   # marque nos lanceurs : on ne supprime jamais un fichier qui n'est pas le nôtre
+DEB_INSTALL_DIR = "/opt/yt-dlp-gui"
+
+
+class MenuInstallError(Exception):
+    """Échec de l'installation dans le menu ; `key` est une clé de traduction."""
+
+    def __init__(self, key, **params):
+        super().__init__(key)
+        self.key, self.params = key, params
+
+    def text(self):
+        return t(self.key, **self.params)
+
+
+def xdg_data_home(env=None):
+    env = os.environ if env is None else env
+    xdg = env.get("XDG_DATA_HOME")
+    return xdg if xdg and os.path.isabs(xdg) else os.path.join(os.path.expanduser("~"), ".local", "share")
+
+
+def linux_menu_paths(env=None):
+    base = xdg_data_home(env)
+    return {"app_dir": os.path.join(base, "yt-dlp-GUI", "app"),
+            "launcher": os.path.join(base, "applications", "yt-dlp-gui.desktop"),
+            "icon": os.path.join(base, "icons", "hicolor", "256x256", "apps", "yt-dlp-gui.png")}
+
+
+def desktop_exec_quote(path):
+    """Chemin prêt pour la clé Exec d'un fichier .desktop : entre guillemets, avec les échappements de la
+    spécification (", `, $ et \\ précédés d'une barre, puis chaque barre doublée dans le fichier ; % devient %%)."""
+    quoted = path.replace("\\", "\\\\").replace('"', '\\"').replace("`", "\\`").replace("$", "\\$")
+    return '"' + quoted.replace("\\", "\\\\").replace("%", "%%") + '"'
+
+
+def menu_launcher_text(exec_path, icon_path):
+    if "\n" in exec_path or "\n" in icon_path:
+        raise MenuInstallError("menu_install.err_copy", error="chemin invalide")
+    return "\n".join(["[Desktop Entry]", "Type=Application", "Version=1.0", "Name=yt-dlp GUI",
+                      "GenericName=Video downloader", "Comment=Graphical interface for yt-dlp",
+                      f"Exec={desktop_exec_quote(exec_path)}", f"Icon={icon_path}", "Terminal=false",
+                      "Categories=AudioVideo;Video;", "Keywords=youtube;download;video;audio;yt-dlp;",
+                      "StartupWMClass=yt-dlp-gui", MENU_MARKER, ""])
+
+
+def _run_quiet(cmd):
+    """Lance un petit utilitaire du bureau s'il existe ; un échec n'a pas d'importance (actualisation facultative)."""
+    if not shutil.which(cmd[0]):
+        return ""
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def linux_desktop_dirs(home=None):
+    """Dossiers « Bureau » possibles, le plus fiable (xdg-user-dir) d'abord, qui existent."""
+    home = home or os.path.expanduser("~")
+    found = []
+    for path in (_run_quiet(["xdg-user-dir", "DESKTOP"]), os.path.join(home, "Desktop"), os.path.join(home, "Bureau")):
+        if path and os.path.isabs(path) and os.path.isdir(path) and path not in found:
+            found.append(path)
+    return found
+
+
+def _is_ours(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            return MENU_MARKER in f.read()
+    except OSError:
+        return False
+
+
+def menu_install_source(kind=None, env=None, executable=None):
+    """Ce qu'il faut copier : ("appimage", fichier) ou ("folder", dossier du programme), sinon MenuInstallError."""
+    kind = kind or _install_kind()
+    env = os.environ if env is None else env
+    if kind == "deb":
+        raise MenuInstallError("menu_install.deb")
+    if kind == "appimage" and os.path.isfile(env.get("APPIMAGE", "")):
+        return "appimage", env["APPIMAGE"]
+    if kind == "portable":
+        return "folder", os.path.dirname(os.path.abspath(executable or sys.executable))
+    raise MenuInstallError("menu_install.err_source")
+
+
+def _same_file(a, b):
+    try:
+        return os.path.exists(a) and os.path.exists(b) and os.path.samefile(a, b)
+    except OSError:
+        return False
+
+
+def _copy_replace_file(src, dst):
+    if _same_file(src, dst):
+        return
+    part = dst + ".part"
+    shutil.copy2(src, part)
+    os.chmod(part, 0o755)
+    os.replace(part, dst)
+
+
+def _copy_replace_tree(src, dst):
+    if _same_file(src, dst):
+        return
+    part = dst + ".part"
+    shutil.rmtree(part, ignore_errors=True)
+    shutil.copytree(src, part, symlinks=True, ignore=shutil.ignore_patterns("portable.flag"))
+    shutil.rmtree(dst, ignore_errors=True)
+    os.replace(part, dst)
+
+
+def _write_launcher(path, text):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+    os.chmod(path, 0o755)
+
+
+def linux_menu_state(env=None, desktop_dirs=None):
+    """{"installed": lanceur du menu présent, "shortcut": raccourci du Bureau présent}."""
+    paths = linux_menu_paths(env)
+    dirs = linux_desktop_dirs() if desktop_dirs is None else desktop_dirs
+    return {"installed": _is_ours(paths["launcher"]),
+            "shortcut": any(_is_ours(os.path.join(d, "yt-dlp-gui.desktop")) for d in dirs)}
+
+
+def linux_menu_install(desktop_shortcut=False, kind=None, env=None, executable=None, icon_source=None,
+                       desktop_dirs=None):
+    """Copie le programme, écrit le lanceur et l'icône (et, si demandé, le raccourci du Bureau). Retourne
+    {"exec", "launcher", "shortcut" (chemin ou None), "desktop_missing"} ; MenuInstallError en cas d'échec."""
+    source_kind, source = menu_install_source(kind, env, executable)
+    paths = linux_menu_paths(env)
+    result = {"launcher": paths["launcher"], "shortcut": None, "desktop_missing": False}
+    try:
+        os.makedirs(paths["app_dir"], exist_ok=True)
+        if source_kind == "appimage":
+            exec_path = os.path.join(paths["app_dir"], "yt-dlp-gui.AppImage")
+            _copy_replace_file(source, exec_path)
+        else:
+            target = os.path.join(paths["app_dir"], "yt-dlp-gui")
+            _copy_replace_tree(source, target)
+            exec_path = os.path.join(target, "yt-dlp-gui")
+        result["exec"] = exec_path
+        os.makedirs(os.path.dirname(paths["icon"]), exist_ok=True)
+        shutil.copy2(icon_source or ICON_PNG, paths["icon"])
+        text = menu_launcher_text(exec_path, paths["icon"])
+        _write_launcher(paths["launcher"], text)
+        _run_quiet(["update-desktop-database", os.path.dirname(paths["launcher"])])
+        if desktop_shortcut:
+            dirs = linux_desktop_dirs() if desktop_dirs is None else desktop_dirs
+            if dirs:
+                result["shortcut"] = os.path.join(dirs[0], "yt-dlp-gui.desktop")
+                _write_launcher(result["shortcut"], text)
+                _run_quiet(["gio", "set", result["shortcut"], "metadata::trusted", "true"])   # GNOME : lancement autorisé
+            else:
+                result["desktop_missing"] = True
+    except OSError as exc:
+        raise MenuInstallError("menu_install.err_copy", error=exc)
+    return result
+
+
+def linux_menu_uninstall(env=None, desktop_dirs=None):
+    """Retire le lanceur, l'icône, le raccourci du Bureau et la copie du programme faits par l'installation. Les
+    réglages et les outils téléchargés (dossier yt-dlp-GUI) ne sont jamais touchés."""
+    paths = linux_menu_paths(env)
+    dirs = linux_desktop_dirs() if desktop_dirs is None else desktop_dirs
+    try:
+        for path in [paths["launcher"]] + [os.path.join(d, "yt-dlp-gui.desktop") for d in dirs]:
+            if _is_ours(path):
+                os.remove(path)
+        if os.path.isfile(paths["icon"]):
+            os.remove(paths["icon"])
+        shutil.rmtree(paths["app_dir"], ignore_errors=True)
+        _run_quiet(["update-desktop-database", os.path.dirname(paths["launcher"])])
+    except OSError as exc:
+        raise MenuInstallError("menu_install.err_copy", error=exc)
 
 
 def dep_direct(dep):
@@ -2278,6 +2460,87 @@ class LinuxBrowsersWindow(tk.Toplevel):
         for key, var in self._vars.items():
             var.set(key in LINUX_DEFAULT_BROWSERS)
         self._save()
+
+
+class LinuxMenuInstallWindow(tk.Toplevel):
+    """Linux : ajoute yt-dlp GUI au menu des applications (et, au choix, au Bureau), sans droits administrateur."""
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title(t("menu_install.title"))
+        self.resizable(False, False)
+        self.transient(parent)
+        frm = ttk.Frame(self, padding=14)
+        frm.pack(fill="both", expand=True)
+        # Boutons packés en premier côté bas : toujours visibles.
+        btns = ttk.Frame(frm)
+        btns.pack(side="bottom", fill="x", pady=(12, 0))
+        self.btn_install = ttk.Button(btns, command=self._install)
+        self.btn_install.pack(side="left", ipadx=8)
+        self.btn_remove = ttk.Button(btns, text=t("menu_install.btn_remove"), command=self._remove)
+        self.btn_remove.pack(side="left", padx=(8, 0), ipadx=8)
+        ttk.Button(btns, text=t("browsers.close"), command=self.destroy).pack(side="right", ipadx=8)
+        ttk.Label(frm, text=t("menu_install.explain"), wraplength=460, justify="left").pack(anchor="w")
+        self.lbl_state = ttk.Label(frm, wraplength=460, justify="left")
+        self.lbl_state.pack(anchor="w", pady=(10, 0))
+        self.var_desktop = tk.BooleanVar(value=True)
+        self.chk_desktop = ttk.Checkbutton(frm, text=t("menu_install.cb_desktop"), variable=self.var_desktop)
+        self.chk_desktop.pack(anchor="w", pady=(8, 0))
+        self.lbl_result = tk.Label(frm, text="", wraplength=460, justify="left", anchor="w", font=(UI_FONT, 9))
+        self.lbl_result.pack(anchor="w", pady=(10, 0))
+        self._refresh()
+
+    def _blocked(self):
+        """Message si l'installation dans le menu n'a pas de sens ici (paquet .deb, sources), sinon None."""
+        try:
+            menu_install_source()
+        except MenuInstallError as exc:
+            return exc.text()
+        return None
+
+    def _refresh(self):
+        blocked = self._blocked()
+        state = linux_menu_state()
+        if blocked:
+            self.lbl_state.configure(text=blocked)
+            for w in (self.btn_install, self.btn_remove, self.chk_desktop):
+                w.configure(state="disabled")
+            self.btn_install.configure(text=t("menu_install.btn_install"))
+            return
+        installed = state["installed"]
+        self.lbl_state.configure(text=t("menu_install.state_installed", path=linux_menu_paths()["app_dir"])
+                                 if installed else t("menu_install.state_none"))
+        self.btn_install.configure(text=t("menu_install.btn_update" if installed else "menu_install.btn_install"),
+                                   state="normal")
+        self.btn_remove.configure(state="normal" if installed else "disabled")
+        self.chk_desktop.configure(state="normal")
+        self.var_desktop.set(state["shortcut"] or not installed)
+
+    def _say(self, text, ok):
+        self.lbl_result.configure(text=text, fg="#1e7e34" if ok else WARN_TEXT)
+
+    def _install(self):
+        try:
+            result = linux_menu_install(self.var_desktop.get())
+        except MenuInstallError as exc:
+            self._say(exc.text(), False)
+            return
+        text = t("menu_install.done")
+        if result["shortcut"]:
+            text += "\n" + t("menu_install.desktop_added")
+        elif result["desktop_missing"]:
+            text += "\n" + t("menu_install.desktop_missing")
+        self._refresh()
+        self._say(text, True)
+
+    def _remove(self):
+        try:
+            linux_menu_uninstall()
+        except MenuInstallError as exc:
+            self._say(exc.text(), False)
+            return
+        self._refresh()
+        self._say(t("menu_install.removed"), True)
 
 
 class MultiCheckSelect(ttk.Frame):
@@ -5325,13 +5588,15 @@ def linux_arch_name(machine=None):
 
 def release_asset_patterns(windows, machine=None):
     """Motifs des fichiers à proposer selon le type d'installation. Windows : installateur et version portable ;
-    Linux : AppImage et archive .tar.gz, pour l'architecture de cette machine."""
+    Linux : AppImage, archive .tar.gz et paquet .deb, pour l'architecture de cette machine."""
     if windows:
         return {"installer": "yt-dlp-gui-setup-*.exe", "portable": "yt-dlp-gui-portable-*.zip"}
     arch = linux_arch_name(machine)
     if not arch:
         return {}
-    return {"appimage": f"yt-dlp-gui-*-{arch}.AppImage", "portable": f"yt-dlp-gui-linux-*-{arch}.tar.gz"}
+    deb_arch = {"x86_64": "amd64", "aarch64": "arm64"}[arch]
+    return {"appimage": f"yt-dlp-gui-*-{arch}.AppImage", "portable": f"yt-dlp-gui-linux-*-{arch}.tar.gz",
+            "deb": f"yt-dlp-gui_*_{deb_arch}.deb"}
 
 
 _ASSET_PATTERNS = release_asset_patterns(IS_WINDOWS)
@@ -5378,14 +5643,18 @@ def _is_github_url(url):
 
 
 def _install_kind(frozen=None, executable=None, env=None):
-    """« source », « portable », « installer » (Windows) ou « appimage » (Linux) : détermine quel fichier proposer."""
+    """« source », « portable », « installer » (Windows), « appimage » ou « deb » (Linux) : détermine quel fichier
+    proposer."""
     frozen = getattr(sys, "frozen", False) if frozen is None else frozen
     if not frozen:
         return "source"
     if not IS_WINDOWS and (os.environ if env is None else env).get("APPIMAGE"):
         return "appimage"   # lancé depuis un AppImage : le chemin de l'exécutable est dans son montage temporaire
     if not IS_WINDOWS:
-        return "portable"   # archive .tar.gz extraite : il n'y a pas d'installateur sous Linux
+        exe_dir = os.path.dirname(os.path.abspath(executable or sys.executable))
+        if os.path.normpath(os.path.splitdrive(exe_dir)[1]) == os.path.normpath(DEB_INSTALL_DIR):
+            return "deb"   # paquet .deb : programme dans /opt/yt-dlp-gui
+        return "portable"   # archive .tar.gz extraite
     exe_dir = os.path.dirname(os.path.abspath(executable or sys.executable))
     return "portable" if os.path.isfile(os.path.join(exe_dir, "portable.flag")) else "installer"
 
@@ -6094,6 +6363,8 @@ class YtDlpGui(tk.Tk):
         menu.add_command(label=t("toolbar.menu_setup"),  command=self._open_setup)
         menu.add_command(label=t("toolbar.menu_browsers"),
                          command=lambda: (BrowserOptionsWindow if IS_WINDOWS else LinuxBrowsersWindow)(self))
+        if not IS_WINDOWS:
+            menu.add_command(label=t("toolbar.menu_install_menu"), command=lambda: LinuxMenuInstallWindow(self))
         menu.add_separator()
         menu.add_command(label="🌐  Langue / Language…", command=self._open_lang_dialog)
         menu.tk_popup(self.winfo_pointerx(), self.winfo_pointery())

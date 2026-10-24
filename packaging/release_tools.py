@@ -13,7 +13,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARTIFACT_PATTERNS = ("yt-dlp-gui-setup-*.exe", "yt-dlp-gui-portable-*.zip")
-LINUX_ARTIFACT_PATTERNS = ("yt-dlp-gui-*-*.AppImage", "yt-dlp-gui-linux-*.tar.gz")
+LINUX_ARTIFACT_PATTERNS = ("yt-dlp-gui-*-*.AppImage", "yt-dlp-gui-linux-*.tar.gz", "yt-dlp-gui_*_*.deb")
 
 
 def read_version(root=ROOT):

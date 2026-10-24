@@ -40,8 +40,10 @@ class ReleaseAssetsForUpdateTests(unittest.TestCase):
 
     def test_linux_patterns_follow_the_architecture(self):
         self.assertEqual(m.release_asset_patterns(False, "x86_64"),
-                         {"appimage": "yt-dlp-gui-*-x86_64.AppImage", "portable": "yt-dlp-gui-linux-*-x86_64.tar.gz"})
+                         {"appimage": "yt-dlp-gui-*-x86_64.AppImage", "portable": "yt-dlp-gui-linux-*-x86_64.tar.gz",
+                          "deb": "yt-dlp-gui_*_amd64.deb"})
         self.assertEqual(m.release_asset_patterns(False, "arm64")["appimage"], "yt-dlp-gui-*-aarch64.AppImage")
+        self.assertEqual(m.release_asset_patterns(False, "arm64")["deb"], "yt-dlp-gui_*_arm64.deb")
         self.assertEqual(m.release_asset_patterns(False, "riscv64"), {})
 
     def test_published_names_match_the_patterns_the_program_looks_for(self):
@@ -62,10 +64,12 @@ class ReleaseAssetsForUpdateTests(unittest.TestCase):
     def test_asset_choice_for_linux_install_kinds(self):
         info = {"assets": [{"name": n, "url": "https://github.com/x/" + n, "size": 1} for n in (
             "yt-dlp-gui-setup-9.0.0.exe", "yt-dlp-gui-portable-9.0.0.zip", "yt-dlp-gui-9.0.0-x86_64.AppImage",
-            "yt-dlp-gui-linux-9.0.0-x86_64.tar.gz", "yt-dlp-gui-9.0.0-aarch64.AppImage")]}
+            "yt-dlp-gui-linux-9.0.0-x86_64.tar.gz", "yt-dlp-gui-9.0.0-aarch64.AppImage",
+            "yt-dlp-gui_9.0.0_arm64.deb", "yt-dlp-gui_9.0.0_amd64.deb")]}
         with mock.patch.object(m, "_ASSET_PATTERNS", m.release_asset_patterns(False, "x86_64")):
             self.assertEqual(m.pick_asset(info, "appimage")["name"], "yt-dlp-gui-9.0.0-x86_64.AppImage")
             self.assertEqual(m.pick_asset(info, "portable")["name"], "yt-dlp-gui-linux-9.0.0-x86_64.tar.gz")
+            self.assertEqual(m.pick_asset(info, "deb")["name"], "yt-dlp-gui_9.0.0_amd64.deb")
             self.assertIsNone(m.pick_asset(info, "installer"))
             self.assertIsNone(m.pick_asset(info, "source"))
 
@@ -85,12 +89,18 @@ class ReleaseAssetsForUpdateTests(unittest.TestCase):
 
 class InstallKindTests(unittest.TestCase):
     def test_linux_kinds(self):
-        exe = "/opt/yt-dlp-gui/yt-dlp-gui"
+        exe = "/home/u/yt-dlp-gui/yt-dlp-gui"
         with mock.patch.object(m, "IS_WINDOWS", False):
             self.assertEqual(m._install_kind(frozen=False), "source")
             self.assertEqual(m._install_kind(True, exe, env={}), "portable")
             self.assertEqual(m._install_kind(True, exe, env={"APPIMAGE": "/home/u/yt-dlp-gui.AppImage"}), "appimage")
             self.assertEqual(m._install_kind(True, exe, env={"APPIMAGE": ""}), "portable")
+
+    def test_the_deb_package_is_recognised_by_its_install_folder(self):
+        with mock.patch.object(m, "IS_WINDOWS", False):
+            self.assertEqual(m._install_kind(True, "/opt/yt-dlp-gui/yt-dlp-gui", env={}), "deb")
+            self.assertEqual(m._install_kind(True, "/opt/yt-dlp-gui-copy/yt-dlp-gui", env={}), "portable")
+            self.assertEqual(m._install_kind(True, "/home/u/opt/yt-dlp-gui/yt-dlp-gui", env={}), "portable")
 
     def test_windows_ignores_the_appimage_variable(self):
         d = tempfile.mkdtemp()

@@ -534,5 +534,21 @@
   "browsers.keyring_install": "की-रिंग और Seahorse (उसका प्रबंधन टूल) इंस्टॉल करें:",
   "browsers.keyring_check": "देखें कि डिफ़ॉल्ट की-रिंग कौन-सी है (उत्तर '/' का मतलब है कि कोई नहीं है):",
   "browsers.keyring_open": "की-रिंग बनाने या अनलॉक करने के लिए “पासवर्ड और कुंजियाँ” (Seahorse) खोलें:",
-  "browsers.btn_open": "खोलें"
+  "browsers.btn_open": "खोलें",
+  "toolbar.menu_install_menu": "🚀  मेनू में इंस्टॉल करें…",
+  "menu_install.title": "मेनू में इंस्टॉल करें",
+  "menu_install.explain": "yt-dlp GUI को आपके डेस्कटॉप के एप्लिकेशन मेनू में आइकन के साथ जोड़ता है, ताकि इसे किसी भी अन्य प्रोग्राम की तरह चलाया जा सके। एडमिनिस्ट्रेटर अधिकार ज़रूरी नहीं हैं। आपकी सेटिंग और डाउनलोड किए गए टूल को छुआ नहीं जाता।",
+  "menu_install.cb_desktop": "डेस्कटॉप पर शॉर्टकट भी जोड़ें",
+  "menu_install.state_none": "अभी मेनू में इंस्टॉल नहीं है।",
+  "menu_install.state_installed": "मेनू में इंस्टॉल है (प्रोग्राम {path} में कॉपी किया गया)।",
+  "menu_install.btn_install": "इंस्टॉल करें",
+  "menu_install.btn_update": "अपडेट करें",
+  "menu_install.btn_remove": "अनइंस्टॉल करें",
+  "menu_install.done": "इंस्टॉल हो गया। एप्लिकेशन मेनू में “yt-dlp GUI” खोजें।",
+  "menu_install.desktop_added": "डेस्कटॉप पर शॉर्टकट जोड़ा गया। यदि डेस्कटॉप चेतावनी दिखाए, तो आइकन पर राइट-क्लिक करके “Allow Launching” चुनें।",
+  "menu_install.desktop_missing": "डेस्कटॉप फ़ोल्डर नहीं मिला: शॉर्टकट नहीं बना।",
+  "menu_install.removed": "मेनू से हटा दिया गया। आपकी सेटिंग और डाउनलोड किए गए टूल सुरक्षित हैं।",
+  "menu_install.err_source": "केवल AppImage या .tar.gz संग्रह से उपलब्ध है, स्रोत फ़ाइलों से नहीं।",
+  "menu_install.deb": "yt-dlp GUI .deb पैकेज से इंस्टॉल है: यह पहले से एप्लिकेशन मेनू में है। हटाने के लिए: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "विफल: {error}"
 }

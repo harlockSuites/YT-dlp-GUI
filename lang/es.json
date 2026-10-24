@@ -534,5 +534,21 @@
   "browsers.keyring_install": "Instalar el llavero y Seahorse (su herramienta de gestión):",
   "browsers.keyring_check": "Ver cuál es el llavero predeterminado (la respuesta '/' significa que no hay ninguno):",
   "browsers.keyring_open": "Abrir «Contraseñas y claves» (Seahorse) para crear o desbloquear un llavero:",
-  "browsers.btn_open": "Abrir"
+  "browsers.btn_open": "Abrir",
+  "toolbar.menu_install_menu": "🚀  Instalar en el menú…",
+  "menu_install.title": "Instalar en el menú",
+  "menu_install.explain": "Añade yt-dlp GUI al menú de aplicaciones de su escritorio, con su icono, para abrirlo como cualquier otro programa. No hacen falta derechos de administrador. Sus ajustes y las herramientas descargadas no se tocan.",
+  "menu_install.cb_desktop": "Añadir también un acceso directo en el Escritorio",
+  "menu_install.state_none": "Aún no está instalado en el menú.",
+  "menu_install.state_installed": "Instalado en el menú (programa copiado en {path}).",
+  "menu_install.btn_install": "Instalar",
+  "menu_install.btn_update": "Actualizar",
+  "menu_install.btn_remove": "Desinstalar",
+  "menu_install.done": "Instalado. Busque «yt-dlp GUI» en el menú de aplicaciones.",
+  "menu_install.desktop_added": "Acceso directo añadido al Escritorio. Si su escritorio muestra una advertencia, haga clic derecho en el icono y elija «Permitir lanzar».",
+  "menu_install.desktop_missing": "No se encontró la carpeta del Escritorio: no se creó el acceso directo.",
+  "menu_install.removed": "Quitado del menú. Sus ajustes y las herramientas descargadas se conservan.",
+  "menu_install.err_source": "Solo disponible desde el AppImage o el archivo .tar.gz, no desde los archivos fuente.",
+  "menu_install.deb": "yt-dlp GUI está instalado con el paquete .deb: ya está en el menú de aplicaciones. Para quitarlo: sudo apt remove yt-dlp-gui",
+  "menu_install.err_copy": "Error: {error}"
 }
