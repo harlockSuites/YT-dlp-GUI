@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Restablecer los cinco por defecto",
   "browsers.linux_found": "✔ encontrado en este equipo",
   "cookie.hint_zero": "No se leyó ninguna cookie de {browser} («Extracted 0 cookies»). Quizá las borra al cerrarse (LibreWolf lo hace por defecto) o su perfil no tiene la sesión de YouTube iniciada. Manténgalo abierto y con la sesión iniciada, o desactive el borrado de cookies al cerrar en sus ajustes de privacidad, y repita la prueba.",
-  "cookie.hint_keyring": "El llavero del escritorio (GNOME Keyring, KWallet) no existe o está bloqueado: yt-dlp no puede leer la clave que descifra las cookies de {browser} (mensaje «Item does not exist!»). Abra «Contraseñas y claves» (Seahorse), cree o desbloquee el llavero predeterminado y vuelva a iniciar sesión en YouTube en {browser}. Firefox y sus derivados (LibreWolf, Waterfox, Floorp, Zen) no lo necesitan."
+  "cookie.hint_keyring": "yt-dlp no pudo leer en el llavero del escritorio (GNOME Keyring, KWallet) la clave que descifra las cookies de {browser} (mensaje «Item does not exist!»). Suele pasar cuando {browser} nunca se ha abierto o no ha iniciado sesión en YouTube: su clave todavía no existe. Ábralo una vez, inicie sesión en YouTube y repita la prueba. Si no basta, la ventana «Navegadores para cookies» (menú de opciones) ofrece los comandos para comprobar el llavero. Firefox y sus derivados (LibreWolf, Waterfox, Floorp, Zen) no lo necesitan.",
+  "cookie.note_librewolf": "LibreWolf borra sus cookies al cerrarse por defecto: manténgalo abierto y con la sesión de YouTube iniciada, o desactive ese borrado en sus ajustes de privacidad.",
+  "browsers.keyring_title": "Llavero del escritorio (navegadores de la familia Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera y Edge guardan la clave que cifra sus cookies en el llavero del escritorio (GNOME Keyring, KWallet). Esa clave solo existe después de abrir el navegador una vez: si la prueba de cookies falla, ábralo una vez, inicie sesión en YouTube, ciérrelo y repita la prueba. Los comandos de abajo son para copiarlos en una terminal; el programa nunca los ejecuta.",
+  "browsers.keyring_install": "Instalar el llavero y Seahorse (su herramienta de gestión):",
+  "browsers.keyring_check": "Ver cuál es el llavero predeterminado (la respuesta '/' significa que no hay ninguno):",
+  "browsers.keyring_open": "Abrir «Contraseñas y claves» (Seahorse) para crear o desbloquear un llavero:",
+  "browsers.btn_open": "Abrir"
 }

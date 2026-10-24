@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Ripristina i cinque predefiniti",
   "browsers.linux_found": "✔ trovato su questo computer",
   "cookie.hint_zero": "Nessun cookie è stato letto da {browser} («Extracted 0 cookies»). Potrebbe eliminarli alla chiusura (LibreWolf lo fa per impostazione predefinita) oppure il suo profilo non è connesso a YouTube. Tienilo aperto e connesso, oppure disattiva l'eliminazione dei cookie alla chiusura nelle sue impostazioni sulla privacy, poi ripeti il test.",
-  "cookie.hint_keyring": "Il portachiavi del desktop (GNOME Keyring, KWallet) non esiste o è bloccato: yt-dlp non riesce a leggere la chiave che decifra i cookie di {browser} (messaggio «Item does not exist!»). Apri «Password e chiavi» (Seahorse), crea o sblocca il portachiavi predefinito, poi accedi di nuovo a YouTube in {browser}. Firefox e i suoi derivati (LibreWolf, Waterfox, Floorp, Zen) non ne hanno bisogno."
+  "cookie.hint_keyring": "yt-dlp non è riuscito a leggere, nel portachiavi del desktop (GNOME Keyring, KWallet), la chiave che decifra i cookie di {browser} (messaggio «Item does not exist!»). Succede spesso quando {browser} non è mai stato avviato o connesso a YouTube: la sua chiave non esiste ancora. Aprilo una volta, accedi a YouTube, poi ripeti il test. Altrimenti la finestra «Browser per i cookie» (menu delle opzioni) mostra i comandi per controllare il portachiavi. Firefox e i suoi derivati (LibreWolf, Waterfox, Floorp, Zen) non ne hanno bisogno.",
+  "cookie.note_librewolf": "LibreWolf elimina i cookie alla chiusura per impostazione predefinita: tienilo aperto e connesso a YouTube, oppure disattiva questa eliminazione nelle sue impostazioni sulla privacy.",
+  "browsers.keyring_title": "Portachiavi del desktop (browser della famiglia Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera ed Edge conservano la chiave che cifra i loro cookie nel portachiavi del desktop (GNOME Keyring, KWallet). Questa chiave esiste solo dopo il primo avvio del browser: se il test dei cookie fallisce, aprilo una volta, accedi a YouTube, chiudilo e ripeti il test. I comandi qui sotto vanno copiati in un terminale; il programma non li esegue mai.",
+  "browsers.keyring_install": "Installare il portachiavi e Seahorse (il suo strumento di gestione):",
+  "browsers.keyring_check": "Vedere qual è il portachiavi predefinito (la risposta '/' significa che non ce n'è nessuno):",
+  "browsers.keyring_open": "Aprire «Password e chiavi» (Seahorse) per creare o sbloccare un portachiavi:",
+  "browsers.btn_open": "Apri"
 }

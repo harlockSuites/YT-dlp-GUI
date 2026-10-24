@@ -64,7 +64,25 @@ class HintTests(unittest.TestCase):
                 hint = m._cookie_hint(text, "chromium")
                 self.assertIn("Chromium", hint, text)
                 self.assertIn("trousseau", hint, text)
-                self.assertIn("Seahorse", hint, text)
+                self.assertIn("Navigateurs pour les cookies", hint, text)
+
+    def test_the_keyring_hint_does_not_claim_the_keyring_is_missing_or_locked(self):
+        # Constaté dans la VM : le trousseau existait, déverrouillé ; la clé du navigateur n'existait pas encore
+        # parce qu'il n'avait jamais été lancé. Le conseil dit donc d'abord de lancer le navigateur.
+        hint = m.t("cookie.hint_keyring", browser="Chromium")
+        self.assertNotIn("introuvable", hint)
+        self.assertNotIn("verrouillé", hint)
+        self.assertIn("jamais été lancé", hint)
+
+    def test_librewolf_gets_its_own_note_on_linux_only(self):
+        frame = types.SimpleNamespace(_var=types.SimpleNamespace(get=lambda: "librewolf"))
+        with mock.patch.object(m, "IS_WINDOWS", False):
+            self.assertEqual(m.CookieFrame._note_key(frame), "cookie.note_librewolf")
+            frame._var = types.SimpleNamespace(get=lambda: "firefox")
+            self.assertEqual(m.CookieFrame._note_key(frame), "")
+            frame._var = types.SimpleNamespace(get=lambda: "chromium")
+            self.assertEqual(m.CookieFrame._note_key(frame), "cookie.note_keyring")
+        self.assertIn("LibreWolf", m.t("cookie.note_librewolf"))
 
     def test_windows_does_not_get_the_keyring_hint(self):
         with mock.patch.object(m, "IS_WINDOWS", True):
@@ -133,7 +151,8 @@ class CheckTests(unittest.TestCase):
             frame, _ = self._check("chromium", returncode=1,
                                    stderr=b"Extracting cookies from chromium\nERROR: Item does not exist!\n")
         self.assertEqual(frame.state, "fail")
-        self.assertIn("Seahorse", frame.detail)
+        self.assertIn("trousseau", frame.detail)
+        self.assertIn("jamais été lancé", frame.detail)
 
 
 @unittest.skipUnless(tk_available(), "pas d'affichage Tk disponible")

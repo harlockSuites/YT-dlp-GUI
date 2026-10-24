@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Przywróć pięć domyślnych",
   "browsers.linux_found": "✔ znaleziono na tym komputerze",
   "cookie.hint_zero": "Z przeglądarki {browser} nie odczytano żadnego ciasteczka („Extracted 0 cookies”). Być może usuwa je przy zamknięciu (LibreWolf robi tak domyślnie) albo jej profil nie jest zalogowany w YouTube. Zostaw ją otwartą i zalogowaną albo wyłącz usuwanie ciasteczek przy zamknięciu w ustawieniach prywatności, a potem powtórz test.",
-  "cookie.hint_keyring": "Pęk kluczy pulpitu (GNOME Keyring, KWallet) nie istnieje lub jest zablokowany: yt-dlp nie może odczytać klucza odszyfrowującego ciasteczka przeglądarki {browser} (komunikat „Item does not exist!”). Otwórz „Hasła i klucze” (Seahorse), utwórz lub odblokuj domyślny pęk kluczy, a potem zaloguj się ponownie w YouTube w {browser}. Firefox i jego pochodne (LibreWolf, Waterfox, Floorp, Zen) go nie potrzebują."
+  "cookie.hint_keyring": "yt-dlp nie mógł odczytać z pęku kluczy pulpitu (GNOME Keyring, KWallet) klucza odszyfrowującego ciasteczka przeglądarki {browser} (komunikat „Item does not exist!”). Często zdarza się to, gdy {browser} nigdy nie był uruchomiony ani zalogowany w YouTube: jego klucz jeszcze nie istnieje. Otwórz go raz, zaloguj się w YouTube i powtórz test. Jeśli to nie pomoże, okno „Przeglądarki dla cookies” (menu opcji) podaje polecenia do sprawdzenia pęku kluczy. Firefox i jego pochodne (LibreWolf, Waterfox, Floorp, Zen) go nie potrzebują.",
+  "cookie.note_librewolf": "LibreWolf domyślnie usuwa ciasteczka przy zamknięciu: zostaw go otwartego i zalogowanego w YouTube albo wyłącz to usuwanie w jego ustawieniach prywatności.",
+  "browsers.keyring_title": "Pęk kluczy pulpitu (przeglądarki z rodziny Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera i Edge przechowują klucz szyfrujący ich ciasteczka w pęku kluczy pulpitu (GNOME Keyring, KWallet). Ten klucz powstaje dopiero po pierwszym uruchomieniu przeglądarki: jeśli test ciasteczek się nie powiedzie, otwórz przeglądarkę raz, zaloguj się w YouTube, zamknij ją i powtórz test. Poniższe polecenia należy skopiować do terminala; program nigdy ich nie uruchamia.",
+  "browsers.keyring_install": "Zainstaluj pęk kluczy i Seahorse (narzędzie do jego obsługi):",
+  "browsers.keyring_check": "Sprawdź, który pęk kluczy jest domyślny (odpowiedź '/' oznacza, że żadnego nie ma):",
+  "browsers.keyring_open": "Otwórz „Hasła i klucze” (Seahorse), aby utworzyć lub odblokować pęk kluczy:",
+  "browsers.btn_open": "Otwórz"
 }

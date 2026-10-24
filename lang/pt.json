@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Restaurar os cinco padrão",
   "browsers.linux_found": "✔ encontrado neste computador",
   "cookie.hint_zero": "Nenhum cookie foi lido de {browser} («Extracted 0 cookies»). Ele pode apagar os cookies ao fechar (o LibreWolf faz isso por padrão) ou o perfil não está conectado ao YouTube. Mantenha-o aberto e conectado, ou desative a exclusão de cookies ao fechar nas configurações de privacidade dele, e repita o teste.",
-  "cookie.hint_keyring": "O chaveiro da área de trabalho (GNOME Keyring, KWallet) não existe ou está bloqueado: o yt-dlp não consegue ler a chave que descriptografa os cookies de {browser} (mensagem «Item does not exist!»). Abra «Senhas e chaves» (Seahorse), crie ou desbloqueie o chaveiro padrão e conecte-se novamente ao YouTube em {browser}. O Firefox e seus derivados (LibreWolf, Waterfox, Floorp, Zen) não precisam dele."
+  "cookie.hint_keyring": "O yt-dlp não conseguiu ler, no chaveiro da área de trabalho (GNOME Keyring, KWallet), a chave que descriptografa os cookies de {browser} (mensagem «Item does not exist!»). Isso costuma acontecer quando {browser} nunca foi aberto ou conectado ao YouTube: a chave dele ainda não existe. Abra-o uma vez, conecte-se ao YouTube e repita o teste. Se não bastar, a janela «Navegadores para cookies» (menu de opções) mostra os comandos para verificar o chaveiro. O Firefox e seus derivados (LibreWolf, Waterfox, Floorp, Zen) não precisam dele.",
+  "cookie.note_librewolf": "O LibreWolf apaga os cookies ao fechar por padrão: mantenha-o aberto e conectado ao YouTube, ou desative essa exclusão nas configurações de privacidade dele.",
+  "browsers.keyring_title": "Chaveiro da área de trabalho (navegadores da família Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera e Edge guardam a chave que criptografa os cookies no chaveiro da área de trabalho (GNOME Keyring, KWallet). Essa chave só existe depois que o navegador é aberto uma vez: se o teste de cookies falhar, abra-o uma vez, conecte-se ao YouTube, feche-o e repita o teste. Os comandos abaixo são para copiar em um terminal; o programa nunca os executa.",
+  "browsers.keyring_install": "Instalar o chaveiro e o Seahorse (a ferramenta de gerenciamento):",
+  "browsers.keyring_check": "Ver qual é o chaveiro padrão (a resposta '/' significa que não há nenhum):",
+  "browsers.keyring_open": "Abrir «Senhas e chaves» (Seahorse) para criar ou desbloquear um chaveiro:",
+  "browsers.btn_open": "Abrir"
 }

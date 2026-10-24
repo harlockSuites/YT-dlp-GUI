@@ -527,5 +527,12 @@
   "browsers.linux_reset": "恢复默认的五个",
   "browsers.linux_found": "✔ 在此电脑上找到",
   "cookie.hint_zero": "没有从 {browser} 读取到任何 Cookie（“Extracted 0 cookies”）。它可能在关闭时删除 Cookie（LibreWolf 默认如此），或其配置文件尚未登录 YouTube。请保持它打开并已登录，或在其隐私设置中关闭“关闭时删除 Cookie”，然后重新测试。",
-  "cookie.hint_keyring": "桌面密钥环（GNOME Keyring、KWallet）不存在或已锁定：yt-dlp 无法读取用于解密 {browser} 的 Cookie 的密钥（提示“Item does not exist!”）。请打开“密码和密钥”（Seahorse），创建或解锁默认密钥环，然后在 {browser} 中重新登录 YouTube。Firefox 及其衍生版本（LibreWolf、Waterfox、Floorp、Zen）不需要密钥环。"
+  "cookie.hint_keyring": "yt-dlp 无法从桌面密钥环（GNOME Keyring、KWallet）中读取用于解密 {browser} 的 Cookie 的密钥（提示“Item does not exist!”）。这通常是因为 {browser} 从未启动过或尚未登录 YouTube：它的密钥还不存在。请打开它一次，登录 YouTube，然后重新测试。若仍不行，“用于 Cookie 的浏览器”窗口（选项菜单）提供了检查密钥环的命令。Firefox 及其衍生版本（LibreWolf、Waterfox、Floorp、Zen）不需要密钥环。",
+  "cookie.note_librewolf": "LibreWolf 默认在关闭时删除 Cookie：请保持它打开并已登录 YouTube，或在其隐私设置中关闭此删除功能。",
+  "browsers.keyring_title": "桌面密钥环（Chromium 系浏览器）",
+  "browsers.keyring_explain": "Chrome、Chromium、Brave、Vivaldi、Opera 和 Edge 把加密 Cookie 的密钥存放在桌面密钥环（GNOME Keyring、KWallet）中。这个密钥只有在浏览器启动过一次之后才会存在：如果 Cookie 测试失败，请打开浏览器一次，登录 YouTube，关闭后重新测试。下面的命令需要自行复制到终端中运行，本软件绝不会自动执行。",
+  "browsers.keyring_install": "安装密钥环和 Seahorse（其管理工具）：",
+  "browsers.keyring_check": "查看默认密钥环是哪一个（返回 '/' 表示没有）：",
+  "browsers.keyring_open": "打开“密码和密钥”（Seahorse）以创建或解锁密钥环：",
+  "browsers.btn_open": "打开"
 }

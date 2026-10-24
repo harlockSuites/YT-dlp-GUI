@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Rétablir les cinq par défaut",
   "browsers.linux_found": "✔ trouvé sur cet ordinateur",
   "cookie.hint_zero": "Aucun cookie n'a été lu dans {browser} (« Extracted 0 cookies »). Il supprime peut-être ses cookies à la fermeture (c'est le réglage par défaut de LibreWolf) ou son profil n'est pas connecté à YouTube. Laissez-le ouvert et connecté, ou désactivez la suppression des cookies à la fermeture dans ses réglages de vie privée, puis relancez le test.",
-  "cookie.hint_keyring": "Le trousseau de clés du bureau (GNOME Keyring, KWallet) est introuvable ou verrouillé : yt-dlp ne peut pas lire la clé qui déchiffre les cookies de {browser} (message « Item does not exist! »). Ouvrez « Mots de passe et clés » (Seahorse), créez ou déverrouillez le trousseau par défaut, puis reconnectez-vous à YouTube dans {browser}. Firefox et ses dérivés (LibreWolf, Waterfox, Floorp, Zen) n'en ont pas besoin."
+  "cookie.hint_keyring": "yt-dlp n'a pas pu lire dans le trousseau de clés du bureau (GNOME Keyring, KWallet) la clé qui déchiffre les cookies de {browser} (message « Item does not exist! »). Cela arrive souvent quand {browser} n'a jamais été lancé ou connecté à YouTube : sa clé n'existe pas encore. Ouvrez-le une fois, connectez-vous à YouTube, puis relancez le test. Sinon, la fenêtre « Navigateurs pour les cookies » (menu des options) donne les commandes pour vérifier le trousseau. Firefox et ses dérivés (LibreWolf, Waterfox, Floorp, Zen) n'en ont pas besoin.",
+  "cookie.note_librewolf": "LibreWolf supprime ses cookies à sa fermeture par défaut : laissez-le ouvert et connecté à YouTube, ou désactivez cette suppression dans ses réglages de vie privée.",
+  "browsers.keyring_title": "Trousseau de clés du bureau (navigateurs de la famille Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera et Edge rangent la clé qui chiffre leurs cookies dans le trousseau de clés du bureau (GNOME Keyring, KWallet). Cette clé n'existe qu'après le premier lancement du navigateur : si le test de cookies échoue, ouvrez-le une fois, connectez-vous à YouTube, fermez-le et refaites le test. Les commandes ci-dessous sont à copier dans un terminal ; le logiciel ne les lance jamais.",
+  "browsers.keyring_install": "Installer le trousseau et Seahorse (son outil de gestion) :",
+  "browsers.keyring_check": "Voir quel est le trousseau par défaut (une réponse « '/' » veut dire qu'il n'y en a aucun) :",
+  "browsers.keyring_open": "Ouvrir « Mots de passe et clés » (Seahorse) pour créer ou déverrouiller un trousseau :",
+  "browsers.btn_open": "Ouvrir"
 }

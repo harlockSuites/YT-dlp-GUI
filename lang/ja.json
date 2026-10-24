@@ -527,5 +527,12 @@
   "browsers.linux_reset": "初期設定の 5 つに戻す",
   "browsers.linux_found": "✔ このコンピューターで見つかりました",
   "cookie.hint_zero": "{browser} から Cookie が 1 つも読み取れませんでした（「Extracted 0 cookies」）。閉じるときに Cookie を削除する設定（LibreWolf は初期設定で削除します）か、プロファイルが YouTube にログインしていない可能性があります。ブラウザーを開いたままログインした状態にするか、プライバシー設定で終了時の Cookie 削除をオフにして、もう一度テストしてください。",
-  "cookie.hint_keyring": "デスクトップのキーリング（GNOME Keyring、KWallet）が存在しないかロックされています。yt-dlp は {browser} の Cookie を復号する鍵を読み取れません（メッセージ「Item does not exist!」）。「パスワードと鍵」（Seahorse）を開いて既定のキーリングを作成またはロック解除し、{browser} で YouTube に再度ログインしてください。Firefox とその派生版（LibreWolf、Waterfox、Floorp、Zen）にはキーリングは不要です。"
+  "cookie.hint_keyring": "yt-dlp はデスクトップのキーリング（GNOME Keyring、KWallet）から、{browser} の Cookie を復号する鍵を読み取れませんでした（メッセージ「Item does not exist!」）。{browser} を一度も起動していない、または YouTube にログインしていない場合によく起こります。鍵がまだ存在しないためです。一度開いて YouTube にログインし、もう一度テストしてください。それでも解決しない場合は、オプションメニューの「Cookie 用ブラウザー」ウィンドウに、キーリングを確認するコマンドがあります。Firefox とその派生版（LibreWolf、Waterfox、Floorp、Zen）にはキーリングは不要です。",
+  "cookie.note_librewolf": "LibreWolf は初期設定で終了時に Cookie を削除します。開いたまま YouTube にログインした状態にするか、プライバシー設定でこの削除をオフにしてください。",
+  "browsers.keyring_title": "デスクトップのキーリング（Chromium 系ブラウザー）",
+  "browsers.keyring_explain": "Chrome、Chromium、Brave、Vivaldi、Opera、Edge は、Cookie を暗号化する鍵をデスクトップのキーリング（GNOME Keyring、KWallet）に保存します。この鍵はブラウザーを一度起動した後にしか存在しません。Cookie のテストが失敗したら、ブラウザーを一度開いて YouTube にログインし、閉じてからもう一度テストしてください。以下のコマンドはターミナルにコピーして使うものです。このソフトが自動で実行することはありません。",
+  "browsers.keyring_install": "キーリングと Seahorse（管理ツール）をインストールする:",
+  "browsers.keyring_check": "既定のキーリングを確認する（応答が '/' なら存在しません）:",
+  "browsers.keyring_open": "「パスワードと鍵」（Seahorse）を開いてキーリングを作成またはロック解除する:",
+  "browsers.btn_open": "開く"
 }

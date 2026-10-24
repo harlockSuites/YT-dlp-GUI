@@ -527,5 +527,12 @@
   "browsers.linux_reset": "기본 5개로 되돌리기",
   "browsers.linux_found": "✔ 이 컴퓨터에서 찾음",
   "cookie.hint_zero": "{browser}에서 쿠키를 하나도 읽지 못했습니다('Extracted 0 cookies'). 종료할 때 쿠키를 삭제하는 설정(LibreWolf는 기본값)이거나 프로필이 YouTube에 로그인되어 있지 않을 수 있습니다. 브라우저를 열어 둔 채 로그인한 상태로 두거나, 개인정보 설정에서 종료 시 쿠키 삭제를 끈 다음 테스트를 다시 실행하세요.",
-  "cookie.hint_keyring": "데스크톱 키링(GNOME Keyring, KWallet)이 없거나 잠겨 있습니다. yt-dlp가 {browser}의 쿠키를 해독하는 키를 읽을 수 없습니다(메시지 'Item does not exist!'). '암호 및 키'(Seahorse)를 열어 기본 키링을 만들거나 잠금을 해제한 뒤, {browser}에서 YouTube에 다시 로그인하세요. Firefox와 그 파생 브라우저(LibreWolf, Waterfox, Floorp, Zen)는 키링이 필요하지 않습니다."
+  "cookie.hint_keyring": "yt-dlp가 데스크톱 키링(GNOME Keyring, KWallet)에서 {browser}의 쿠키를 해독하는 키를 읽지 못했습니다(메시지 'Item does not exist!'). {browser}를 한 번도 실행하지 않았거나 YouTube에 로그인하지 않았을 때 자주 발생합니다. 아직 키가 만들어지지 않았기 때문입니다. 한 번 열어 YouTube에 로그인한 뒤 테스트를 다시 실행하세요. 그래도 안 되면 옵션 메뉴의 '쿠키용 브라우저' 창에서 키링을 확인하는 명령을 볼 수 있습니다. Firefox와 그 파생 브라우저(LibreWolf, Waterfox, Floorp, Zen)는 키링이 필요하지 않습니다.",
+  "cookie.note_librewolf": "LibreWolf는 기본적으로 종료할 때 쿠키를 삭제합니다. 열어 둔 채 YouTube에 로그인한 상태로 두거나, 개인정보 설정에서 이 삭제를 끄세요.",
+  "browsers.keyring_title": "데스크톱 키링 (Chromium 계열 브라우저)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera, Edge는 쿠키를 암호화하는 키를 데스크톱 키링(GNOME Keyring, KWallet)에 보관합니다. 이 키는 브라우저를 한 번 실행한 뒤에야 생깁니다. 쿠키 테스트가 실패하면 브라우저를 한 번 열어 YouTube에 로그인하고 닫은 다음 다시 테스트하세요. 아래 명령은 터미널에 복사해 쓰는 것이며, 이 프로그램이 직접 실행하지는 않습니다.",
+  "browsers.keyring_install": "키링과 Seahorse(관리 도구) 설치:",
+  "browsers.keyring_check": "기본 키링이 무엇인지 확인(응답이 '/'이면 없다는 뜻):",
+  "browsers.keyring_open": "'암호 및 키'(Seahorse)를 열어 키링 만들기 또는 잠금 해제:",
+  "browsers.btn_open": "열기"
 }

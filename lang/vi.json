@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Khôi phục năm trình duyệt mặc định",
   "browsers.linux_found": "✔ có trên máy tính này",
   "cookie.hint_zero": "Không đọc được cookie nào từ {browser} (“Extracted 0 cookies”). Có thể nó xóa cookie khi đóng (LibreWolf làm vậy theo mặc định) hoặc hồ sơ chưa đăng nhập YouTube. Hãy để nó mở và đã đăng nhập, hoặc tắt việc xóa cookie khi đóng trong cài đặt quyền riêng tư, rồi chạy lại kiểm tra.",
-  "cookie.hint_keyring": "Chùm khóa của máy tính (GNOME Keyring, KWallet) không tồn tại hoặc đang bị khóa: yt-dlp không đọc được khóa giải mã cookie của {browser} (thông báo “Item does not exist!”). Hãy mở “Mật khẩu và khóa” (Seahorse), tạo hoặc mở khóa chùm khóa mặc định, rồi đăng nhập lại YouTube trong {browser}. Firefox và các bản phái sinh (LibreWolf, Waterfox, Floorp, Zen) không cần đến nó."
+  "cookie.hint_keyring": "yt-dlp không đọc được từ chùm khóa của máy tính (GNOME Keyring, KWallet) khóa giải mã cookie của {browser} (thông báo “Item does not exist!”). Điều này thường xảy ra khi {browser} chưa từng được mở hoặc chưa đăng nhập YouTube: khóa của nó chưa tồn tại. Hãy mở nó một lần, đăng nhập YouTube rồi chạy lại kiểm tra. Nếu vẫn chưa được, cửa sổ “Trình duyệt cho cookie” (menu tùy chọn) có các lệnh để kiểm tra chùm khóa. Firefox và các bản phái sinh (LibreWolf, Waterfox, Floorp, Zen) không cần đến nó.",
+  "cookie.note_librewolf": "LibreWolf mặc định xóa cookie khi đóng: hãy để nó mở và đã đăng nhập YouTube, hoặc tắt việc xóa này trong cài đặt quyền riêng tư.",
+  "browsers.keyring_title": "Chùm khóa của máy tính (trình duyệt họ Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera và Edge lưu khóa mã hóa cookie trong chùm khóa của máy tính (GNOME Keyring, KWallet). Khóa này chỉ có sau lần mở trình duyệt đầu tiên: nếu kiểm tra cookie thất bại, hãy mở trình duyệt một lần, đăng nhập YouTube, đóng nó rồi kiểm tra lại. Các lệnh bên dưới để sao chép vào terminal; phần mềm không bao giờ tự chạy chúng.",
+  "browsers.keyring_install": "Cài đặt chùm khóa và Seahorse (công cụ quản lý):",
+  "browsers.keyring_check": "Xem chùm khóa nào là mặc định (trả lời '/' nghĩa là không có):",
+  "browsers.keyring_open": "Mở “Mật khẩu và khóa” (Seahorse) để tạo hoặc mở khóa một chùm khóa:",
+  "browsers.btn_open": "Mở"
 }

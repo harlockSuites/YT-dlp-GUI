@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Vrati pet podrazumevanih",
   "browsers.linux_found": "✔ pronađeno na ovom računaru",
   "cookie.hint_zero": "Iz pregledača {browser} nije pročitan nijedan kolačić („Extracted 0 cookies”). Možda ih briše pri zatvaranju (LibreWolf to radi podrazumevano) ili njegov profil nije prijavljen na YouTube. Ostavite ga otvorenog i prijavljenog, ili isključite brisanje kolačića pri zatvaranju u podešavanjima privatnosti, pa ponovite test.",
-  "cookie.hint_keyring": "Priveznik ključeva radne površine (GNOME Keyring, KWallet) ne postoji ili je zaključan: yt-dlp ne može da pročita ključ koji dešifruje kolačiće pregledača {browser} (poruka „Item does not exist!”). Otvorite „Lozinke i ključevi” (Seahorse), napravite ili otključajte podrazumevani priveznik, pa se ponovo prijavite na YouTube u {browser}. Firefox i njegovi derivati (LibreWolf, Waterfox, Floorp, Zen) ga ne trebaju."
+  "cookie.hint_keyring": "yt-dlp nije mogao da pročita iz priveznika ključeva radne površine (GNOME Keyring, KWallet) ključ koji dešifruje kolačiće pregledača {browser} (poruka „Item does not exist!”). To se često dešava kada {browser} nikada nije pokrenut ili prijavljen na YouTube: njegov ključ još ne postoji. Otvorite ga jednom, prijavite se na YouTube i ponovite test. Ako to nije dovoljno, prozor „Pregledači za kolačiće” (meni opcija) daje komande za proveru priveznika. Firefox i njegovi derivati (LibreWolf, Waterfox, Floorp, Zen) ga ne trebaju.",
+  "cookie.note_librewolf": "LibreWolf podrazumevano briše kolačiće pri zatvaranju: ostavite ga otvorenog i prijavljenog na YouTube, ili isključite to brisanje u podešavanjima privatnosti.",
+  "browsers.keyring_title": "Priveznik ključeva radne površine (pregledači iz porodice Chromium)",
+  "browsers.keyring_explain": "Chrome, Chromium, Brave, Vivaldi, Opera i Edge čuvaju ključ koji šifruje njihove kolačiće u priveznik ključeva radne površine (GNOME Keyring, KWallet). Taj ključ postoji tek nakon prvog pokretanja pregledača: ako test kolačića ne uspe, otvorite pregledač jednom, prijavite se na YouTube, zatvorite ga i ponovite test. Komande ispod kopirajte u terminal; program ih nikada ne pokreće.",
+  "browsers.keyring_install": "Instalirajte priveznik ključeva i Seahorse (alat za upravljanje):",
+  "browsers.keyring_check": "Pogledajte koji je priveznik podrazumevani (odgovor '/' znači da ga nema):",
+  "browsers.keyring_open": "Otvorite „Lozinke i ključevi” (Seahorse) da biste napravili ili otključali priveznik:",
+  "browsers.btn_open": "Otvori"
 }

@@ -934,6 +934,23 @@ def linux_install_command(tool_names, manager=None):
     return f"{_LINUX_INSTALL_COMMANDS[manager]} {' '.join(packages)}"
 
 
+# Linux : trousseau de clés du bureau (les navigateurs de la famille Chromium y rangent la clé qui chiffre leurs cookies).
+# Commandes affichées dans la fenêtre des navigateurs, à copier ; le logiciel ne les lance jamais.
+LINUX_KEYRING_PACKAGES = {"apt": "gnome-keyring seahorse libsecret-tools", "dnf": "gnome-keyring seahorse libsecret",
+                          "pacman": "gnome-keyring seahorse libsecret", "zypper": "gnome-keyring seahorse libsecret-tools"}
+LINUX_KEYRING_CHECK_COMMAND = ("gdbus call --session --dest org.freedesktop.secrets --object-path "
+                               "/org/freedesktop/secrets --method org.freedesktop.Secret.Service.ReadAlias default")
+
+
+def linux_keyring_install_command(manager=None):
+    """Commande à copier pour installer le trousseau de clés et son outil de gestion (Seahorse), ou None si le
+    gestionnaire de paquets est inconnu."""
+    manager = manager or linux_package_manager()
+    if manager not in LINUX_KEYRING_PACKAGES:
+        return None
+    return f"{_LINUX_INSTALL_COMMANDS[manager]} {LINUX_KEYRING_PACKAGES[manager]}"
+
+
 def dep_direct(dep):
     """L'assistant sait-il installer cet outil lui-même (téléchargement vérifié, sans droits administrateur) ?
     Deno partout ; ffmpeg et ffprobe sous Linux (sous Windows ils passent par Chocolatey)."""
@@ -2195,18 +2212,63 @@ class LinuxBrowsersWindow(tk.Toplevel):
         self.transient(parent)
         frm = ttk.Frame(self, padding=14)
         frm.pack(fill="both", expand=True)
-        ttk.Label(frm, text=t("browsers.linux_explain"), wraplength=460, justify="left",
+        # Boutons packés en premier côté bas : toujours visibles, même si la fenêtre est haute.
+        btns = ttk.Frame(frm)
+        btns.pack(side="bottom", fill="x", pady=(12, 0))
+        ttk.Button(btns, text=t("browsers.linux_reset"), command=self._reset).pack(side="left", ipadx=8)
+        ttk.Button(btns, text=t("browsers.close"), command=self.destroy).pack(side="right", ipadx=8)
+        ttk.Label(frm, text=t("browsers.linux_explain"), wraplength=580, justify="left",
                   foreground="#555555").pack(anchor="w", pady=(0, 10))
         chosen = set(selected_linux_browsers())
         self._vars = {}
-        for key, label, _ytdlp, _dirs in LINUX_BROWSER_CATALOG:
+        grid = ttk.Frame(frm)
+        grid.pack(anchor="w")
+        rows = (len(LINUX_BROWSER_CATALOG) + 1) // 2   # deux colonnes : la fenêtre reste basse
+        for index, (key, label, _ytdlp, _dirs) in enumerate(LINUX_BROWSER_CATALOG):
             self._vars[key] = tk.BooleanVar(value=key in chosen)
             found = "      " + t("browsers.linux_found") if linux_browser_found(key) else ""
-            ttk.Checkbutton(frm, text=label + found, variable=self._vars[key], command=self._save).pack(anchor="w", pady=1)
-        btns = ttk.Frame(frm)
-        btns.pack(fill="x", pady=(12, 0))
-        ttk.Button(btns, text=t("browsers.linux_reset"), command=self._reset).pack(side="left", ipadx=8)
-        ttk.Button(btns, text=t("browsers.close"), command=self.destroy).pack(side="right", ipadx=8)
+            ttk.Checkbutton(grid, text=label + found, variable=self._vars[key], command=self._save).grid(
+                row=index % rows, column=index // rows, sticky="w", padx=(0, 24), pady=1)
+        self._build_keyring_help(frm)
+
+    def _build_keyring_help(self, parent):
+        """Trousseau de clés du bureau : explication courte et commandes à copier dans un terminal (jamais lancées
+        par le logiciel ; seul Seahorse peut être ouvert d'un clic s'il est installé)."""
+        box = ttk.LabelFrame(parent, text=t("browsers.keyring_title"), padding=8)
+        box.pack(fill="x", pady=(12, 0))
+        ttk.Label(box, text=t("browsers.keyring_explain"), wraplength=560, justify="left").pack(anchor="w", pady=(0, 6))
+        self._copied = ttk.Label(box, text="", foreground="#1e7e34")
+        self._copied.pack(side="bottom", anchor="w")
+        install = linux_keyring_install_command()
+        rows = ((t("browsers.keyring_install"), install or t("deps.linux_no_manager"), install is not None, False),
+                (t("browsers.keyring_check"), LINUX_KEYRING_CHECK_COMMAND, True, False),
+                (t("browsers.keyring_open"), "seahorse", True, True))
+        self._keyring_rows = []
+        for label, command, copyable, openable in rows:
+            ttk.Label(box, text=label, wraplength=560, justify="left").pack(anchor="w", pady=(4, 0))
+            line = ttk.Frame(box)
+            line.pack(fill="x")
+            var = tk.StringVar(value=command)
+            ttk.Entry(line, textvariable=var, state="readonly", font=(MONO_FONT, 9)).pack(side="left", fill="x", expand=True)
+            copy = ttk.Button(line, text=t("deps.btn_copy_command"), command=lambda v=var: self._copy(v.get()),
+                              state="normal" if copyable else "disabled")
+            copy.pack(side="left", padx=(6, 0))
+            if openable:
+                ttk.Button(line, text=t("browsers.btn_open"), command=self._open_seahorse,
+                           state="normal" if shutil.which("seahorse") else "disabled").pack(side="left", padx=(6, 0))
+            self._keyring_rows.append((var, copy))
+
+    def _copy(self, command):
+        self.clipboard_clear()
+        self.clipboard_append(command)
+        self._copied.configure(text=t("deps.linux_command_copied"))
+
+    def _open_seahorse(self):
+        try:
+            subprocess.Popen(["seahorse"], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL, start_new_session=True)
+        except OSError:
+            pass
 
     def _save(self):
         update_config("linux_browsers", [k for k in LINUX_BROWSER_KEYS if self._vars[k].get()])
@@ -3125,6 +3187,8 @@ class CookieFrame(ttk.LabelFrame):
         """Limite connue du navigateur choisi (clé de traduction) ou chaîne vide."""
         browser = self._var.get()
         if not IS_WINDOWS:
+            if browser == "librewolf":   # supprime ses cookies à sa fermeture par défaut
+                return "cookie.note_librewolf"
             return "cookie.note_keyring" if browser in _LINUX_KEYRING_BROWSERS else ""
         if browser in _COOKIE_ENCRYPTED_BROWSERS:
             return "cookie.note_blocked"

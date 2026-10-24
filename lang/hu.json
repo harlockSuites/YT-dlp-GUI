@@ -527,5 +527,12 @@
   "browsers.linux_reset": "Az öt alapértelmezett visszaállítása",
   "browsers.linux_found": "✔ megtalálható ezen a számítógépen",
   "cookie.hint_zero": "A(z) {browser} böngészőből egyetlen sütit sem olvastunk ki („Extracted 0 cookies”). Lehet, hogy bezáráskor törli a sütiket (a LibreWolf alapértelmezés szerint így tesz), vagy a profilja nincs bejelentkezve a YouTube-ra. Hagyja nyitva és bejelentkezve, vagy kapcsolja ki a sütik bezáráskori törlését az adatvédelmi beállításokban, majd ismételje meg a tesztet.",
-  "cookie.hint_keyring": "Az asztali kulcstartó (GNOME Keyring, KWallet) nem létezik vagy zárolva van: a yt-dlp nem tudja kiolvasni a(z) {browser} sütijeit visszafejtő kulcsot (üzenet: „Item does not exist!”). Nyissa meg a „Jelszavak és kulcsok” (Seahorse) alkalmazást, hozza létre vagy oldja fel az alapértelmezett kulcstartót, majd jelentkezzen be újra a YouTube-ra a(z) {browser} böngészőben. A Firefoxnak és származékainak (LibreWolf, Waterfox, Floorp, Zen) nincs rá szüksége."
+  "cookie.hint_keyring": "A yt-dlp nem tudta kiolvasni az asztali kulcstartóból (GNOME Keyring, KWallet) a(z) {browser} sütijeit visszafejtő kulcsot (üzenet: „Item does not exist!”). Ez gyakran akkor történik, ha a(z) {browser} böngészőt még sosem indították el, vagy nincs bejelentkezve a YouTube-ra: a kulcsa még nem létezik. Nyissa meg egyszer, jelentkezzen be a YouTube-ra, majd ismételje meg a tesztet. Ha ez nem elég, a „Böngészők a cookie-khoz” ablak (beállítások menü) megadja a kulcstartó ellenőrzéséhez szükséges parancsokat. A Firefoxnak és származékainak (LibreWolf, Waterfox, Floorp, Zen) nincs rá szüksége.",
+  "cookie.note_librewolf": "A LibreWolf alapértelmezés szerint bezáráskor törli a sütiket: hagyja nyitva és bejelentkezve a YouTube-ra, vagy kapcsolja ki ezt a törlést az adatvédelmi beállításokban.",
+  "browsers.keyring_title": "Asztali kulcstartó (a Chromium családba tartozó böngészők)",
+  "browsers.keyring_explain": "A Chrome, a Chromium, a Brave, a Vivaldi, az Opera és az Edge a sütiket titkosító kulcsot az asztali kulcstartóban (GNOME Keyring, KWallet) tárolja. Ez a kulcs csak a böngésző első indítása után létezik: ha a sütiteszt sikertelen, nyissa meg egyszer a böngészőt, jelentkezzen be a YouTube-ra, zárja be, és ismételje meg a tesztet. Az alábbi parancsokat egy terminálba kell másolni; a program soha nem futtatja őket.",
+  "browsers.keyring_install": "A kulcstartó és a Seahorse (a kezelőeszköze) telepítése:",
+  "browsers.keyring_check": "Az alapértelmezett kulcstartó megtekintése ('/' válasz azt jelenti, hogy nincs ilyen):",
+  "browsers.keyring_open": "A „Jelszavak és kulcsok” (Seahorse) megnyitása kulcstartó létrehozásához vagy feloldásához:",
+  "browsers.btn_open": "Megnyitás"
 }

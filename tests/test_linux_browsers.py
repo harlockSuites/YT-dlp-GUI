@@ -271,6 +271,80 @@ class WindowTests(unittest.TestCase):
         marked = [t for t in texts(win) if m.t("browsers.linux_found") in t]
         self.assertEqual(sorted(x.split()[0] for x in marked), ["Firefox", "Zen"])
 
+    def _entries(self, win):
+        return [var.get() for var, _copy in win._keyring_rows]
+
+    def test_the_keyring_help_offers_three_commands_to_copy(self):
+        with mock.patch.object(m, "linux_package_manager", return_value="apt"):
+            win = self._window()
+        install, check, seahorse = self._entries(win)
+        self.assertEqual(install, "sudo apt install gnome-keyring seahorse libsecret-tools")
+        self.assertTrue(check.startswith("gdbus call --session --dest org.freedesktop.secrets"))
+        self.assertIn("ReadAlias default", check)
+        self.assertEqual(seahorse, "seahorse")
+
+    def test_the_install_command_follows_the_package_manager(self):
+        self.assertEqual(m.linux_keyring_install_command("dnf"), "sudo dnf install gnome-keyring seahorse libsecret")
+        self.assertEqual(m.linux_keyring_install_command("pacman"), "sudo pacman -S gnome-keyring seahorse libsecret")
+        self.assertEqual(m.linux_keyring_install_command("zypper"),
+                         "sudo zypper install gnome-keyring seahorse libsecret-tools")
+        with mock.patch.object(m, "linux_package_manager", return_value=None):
+            self.assertIsNone(m.linux_keyring_install_command())
+
+    def test_without_a_known_package_manager_the_install_row_says_so_and_cannot_be_copied(self):
+        with mock.patch.object(m, "linux_package_manager", return_value=None):
+            win = self._window()
+        install_var, install_copy = win._keyring_rows[0]
+        self.assertEqual(install_var.get(), m.t("deps.linux_no_manager"))
+        self.assertEqual(str(install_copy.cget("state")), "disabled")
+
+    def test_copy_puts_the_command_on_the_clipboard_and_never_runs_anything(self):
+        win = self._window()
+        with mock.patch.object(m.subprocess, "run") as run, mock.patch.object(m.subprocess, "Popen") as popen:
+            win._copy(m.LINUX_KEYRING_CHECK_COMMAND)
+        self.assertEqual(win.clipboard_get(), m.LINUX_KEYRING_CHECK_COMMAND)
+        self.assertEqual(win._copied.cget("text"), m.t("deps.linux_command_copied"))
+        run.assert_not_called()
+        popen.assert_not_called()
+
+    def test_seahorse_is_opened_only_by_its_own_button_and_only_when_installed(self):
+        with mock.patch.object(m.shutil, "which", return_value=None):
+            win = self._window()
+        buttons = [w for w in self._all_widgets(win) if w.winfo_class() == "TButton"
+                   and str(w.cget("text")) == m.t("browsers.btn_open")]
+        self.assertEqual(len(buttons), 1)
+        self.assertEqual(str(buttons[0].cget("state")), "disabled")
+        with mock.patch.object(m.shutil, "which", return_value="/usr/bin/seahorse"):
+            win2 = self._window()
+        button = [w for w in self._all_widgets(win2) if w.winfo_class() == "TButton"
+                  and str(w.cget("text")) == m.t("browsers.btn_open")][0]
+        self.assertEqual(str(button.cget("state")), "normal")
+        with mock.patch.object(m.subprocess, "Popen") as popen:
+            win2._open_seahorse()
+        self.assertEqual(popen.call_args.args[0], ["seahorse"])
+        with mock.patch.object(m.subprocess, "Popen", side_effect=OSError):
+            win2._open_seahorse()   # un échec de lancement ne fait pas planter la fenêtre
+
+    def _all_widgets(self, widget):
+        for child in widget.winfo_children():
+            yield child
+            yield from self._all_widgets(child)
+
+    def test_the_window_fits_a_small_screen_and_always_shows_its_buttons(self):
+        win = self._window()
+        win.transient("")   # transitoire d'une fenêtre principale masquée : sinon elle ne s'afficherait pas dans le test
+        win.deiconify()
+        for _ in range(30):
+            self.app.update()
+        self.assertLessEqual(win.winfo_reqheight(), 720, "la fenêtre doit tenir sur un écran de 768 px de haut")
+        bottom = win.winfo_rooty() + win.winfo_height()
+        buttons = [w for w in self._all_widgets(win) if w.winfo_class() == "TButton"
+                   and str(w.cget("text")) in (m.t("browsers.linux_reset"), m.t("browsers.close"))]
+        self.assertEqual(len(buttons), 2)
+        for b in buttons:
+            self.assertTrue(b.winfo_viewable())
+            self.assertLessEqual(b.winfo_rooty() + b.winfo_height(), bottom)
+
     def test_the_options_menu_opens_this_window_on_linux_and_the_windows_one_on_windows(self):
         with open(m.__file__, encoding="utf-8") as f:
             source = f.read()
@@ -287,6 +361,24 @@ class TranslationsTests(unittest.TestCase):
                 self.assertTrue(data[key].strip(), (name, key))
             for browser in ("Firefox", "Google Chrome", "Chromium", "Brave", "Vivaldi", "LibreWolf", "Zen Browser"):
                 self.assertIn(browser, data["browsers.linux_explain"], (name, browser))
+
+    def test_the_keyring_help_texts_exist_in_every_language(self):
+        base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lang")
+        keys = ("browsers.keyring_title", "browsers.keyring_explain", "browsers.keyring_install",
+                "browsers.keyring_check", "browsers.keyring_open", "browsers.btn_open", "cookie.note_librewolf")
+        for name in sorted(os.listdir(base)):
+            with open(os.path.join(base, name), encoding="utf-8") as f:
+                data = json.load(f)
+            for key in keys:
+                self.assertTrue(data[key].strip(), (name, key))
+            self.assertIn("LibreWolf", data["cookie.note_librewolf"], name)
+            self.assertIn("Seahorse", data["browsers.keyring_install"], name)
+            self.assertIn("Seahorse", data["browsers.keyring_open"], name)
+            self.assertIn("'/'", data["browsers.keyring_check"], name)
+            self.assertNotIn("{", data["browsers.keyring_explain"], name)
+            self.assertIn("{browser}", data["cookie.hint_keyring"], name)
+            self.assertIn("Item does not exist", data["cookie.hint_keyring"], name)
+            self.assertIn(data["browsers.title"], data["cookie.hint_keyring"], name)
 
 
 if __name__ == "__main__":
