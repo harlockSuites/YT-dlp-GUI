@@ -2,7 +2,7 @@
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [Non publié]
+## [0.1.8] — 2026-10-24
 
 ### Ajouté
 - File d'attente : sélection multiple. Ctrl+clic (ajouter ou retirer une ligne), Maj+clic (plage), clic-glissé dans le tableau (avec défilement aux bords) et Ctrl+A. « Supprimer sél. » et la touche Suppr retirent toutes les lignes choisies, après une confirmation quand il y en a plusieurs ; la vidéo en cours de téléchargement n'est jamais retirée, et retirer des éléments pendant que la file tourne ne décale plus la file.
