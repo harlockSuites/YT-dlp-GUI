@@ -12,6 +12,9 @@ _SESSION_DIR = tempfile.mkdtemp(prefix="ytgui-tests-")
 def load_gui():
     if "ytgui" in sys.modules:
         return sys.modules["ytgui"]
+    # Hors Windows, même lancé depuis les sources, le logiciel range ses données sous $XDG_DATA_HOME : les tests ne
+    # doivent jamais toucher à celles de l'utilisateur.
+    os.environ["XDG_DATA_HOME"] = os.path.join(_SESSION_DIR, "xdg-data")
     path = os.path.join(ROOT, "yt-dlp-gui.pyw")
     # Le chargeur est donné explicitement : hors Windows, importlib ne reconnaît pas l'extension .pyw.
     spec = importlib.util.spec_from_file_location("ytgui", path, loader=SourceFileLoader("ytgui", path))

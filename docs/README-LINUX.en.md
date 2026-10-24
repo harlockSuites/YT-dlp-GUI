@@ -50,6 +50,8 @@ The Linux version reproduces the behaviour of the Windows version 0.1.7 (frozen,
 
 Requirements: 64-bit Linux (x86_64) from a 2022 or newer distribution (glibc 2.35 or later), because the packages are built on Ubuntu 22.04.
 
+**If you are new to Linux**: only the `.deb` package is installed "for real" and shows up in the software manager. The AppImage and the archive are ordinary files or folders, kept wherever you like: to remove them, you delete them like any other file (sections 2.2 and 2.5). Their settings are kept apart, in `~/.local/share/yt-dlp-GUI` (section 6), and survive that deletion.
+
 Files are on the [releases page](https://github.com/harlockSuites/YT-dlp-GUI/releases): look for the `Linux-v…` tags, marked "Pre-release".
 
 ### 2.1 Verifying the download
@@ -84,6 +86,12 @@ Without FUSE, start it anyway; it extracts itself into a temporary folder:
 
 ```bash
 ./yt-dlp-gui-X.Y.Z-x86_64.AppImage --appimage-extract-and-run
+```
+
+The AppImage is not "installed": it does not show up in the software manager. To remove it, delete the file:
+
+```bash
+rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
 ### 2.3 Install in the menu (no administrator)
@@ -139,11 +147,19 @@ touch yt-dlp-gui/portable.flag
 
 Without this file, data goes to `~/.local/share/yt-dlp-GUI` (section 6).
 
+The archive is not "installed": it does not show up in the software manager. To remove it, delete the extracted folder:
+
+```bash
+rm -rf yt-dlp-gui
+```
+
 ### 2.6 From source files
 
 ```bash
 python3 yt-dlp-gui.pyw
 ```
+
+From source files, settings and downloaded tools go to the same folder as for the installed versions (`~/.local/share/yt-dlp-GUI`): downloading the sources again or deleting their folder does not erase them. To keep the data inside the sources folder (trace-free test), create an empty `portable.flag` file next to `yt-dlp-gui.pyw`.
 
 You need Python 3 with Tkinter:
 
@@ -356,7 +372,7 @@ Deleting `login.keyring` erases **all** the passwords it holds (Wi-Fi, online ac
 
 ## 6. Where the files are
 
-The data folder is `$XDG_DATA_HOME/yt-dlp-GUI` (by default `~/.local/share/yt-dlp-GUI`), unless `portable.flag` sits next to the archive's executable.
+The data folder is `$XDG_DATA_HOME/yt-dlp-GUI` (by default `~/.local/share/yt-dlp-GUI`), unless `portable.flag` sits next to the archive's executable (or the `yt-dlp-gui.pyw` script).
 
 | File or folder | Content |
 |---|---|

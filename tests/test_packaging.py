@@ -24,9 +24,24 @@ def _read(path):
 
 
 class ResolveDirsTests(unittest.TestCase):
-    def test_from_sources_everything_stays_next_to_the_script(self):
-        res, data = m._resolve_dirs(False, r"C:\Python\python.exe", r"C:\src\app", None, {})
+    def test_from_sources_on_windows_everything_stays_next_to_the_script(self):
+        res, data = m._resolve_dirs(False, r"C:\Python\python.exe", r"C:\src\app", None, {}, windows=True)
         self.assertEqual((res, data), (r"C:\src\app", r"C:\src\app"))
+
+    def test_from_sources_on_linux_the_data_is_shared_with_the_installed_versions(self):
+        d = tempfile.mkdtemp()
+        res, data = m._resolve_dirs(False, "/usr/bin/python3", d, None, {"XDG_DATA_HOME": os.path.join(d, "xdg")},
+                                    windows=False)
+        self.assertEqual(res, d)
+        self.assertEqual(data, os.path.join(d, "xdg", "yt-dlp-GUI"), "retélécharger les sources ne doit rien effacer")
+        _, default = m._resolve_dirs(False, "/usr/bin/python3", d, None, {}, windows=False)
+        self.assertEqual(default, os.path.join(os.path.expanduser("~"), ".local", "share", "yt-dlp-GUI"))
+
+    def test_from_sources_on_linux_portable_flag_keeps_data_next_to_the_script(self):
+        d = tempfile.mkdtemp()
+        with open(os.path.join(d, "portable.flag"), "w") as f:
+            f.write("x")
+        self.assertEqual(m._resolve_dirs(False, "/usr/bin/python3", d, None, {}, windows=False), (d, d))
 
     def test_installed_exe_uses_local_app_data(self):
         d = tempfile.mkdtemp()
@@ -71,7 +86,10 @@ class ResolveDirsTests(unittest.TestCase):
 
     def test_current_constants_are_consistent(self):
         self.assertEqual(m.RESOURCE_DIR, ROOT)
-        self.assertEqual(m.DATA_DIR, ROOT)
+        if m.IS_WINDOWS:
+            self.assertEqual(m.DATA_DIR, ROOT)
+        else:   # les tests isolent $XDG_DATA_HOME (voir _loader)
+            self.assertEqual(m.DATA_DIR, os.path.join(os.environ["XDG_DATA_HOME"], "yt-dlp-GUI"))
         self.assertEqual(os.path.dirname(m.YTDLP), m.DATA_DIR)
         self.assertEqual(os.path.dirname(m.LOCAL_BIN), m.DATA_DIR)
         self.assertTrue(os.path.isdir(os.path.join(m.RESOURCE_DIR, "lang")))

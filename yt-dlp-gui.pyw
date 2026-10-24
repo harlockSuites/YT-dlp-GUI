@@ -127,19 +127,29 @@ def use_system_fonts():
     MONO_FONT = tkfont.nametofont("TkFixedFont").actual("family")
 
 
+def _xdg_data_home(env):
+    """$XDG_DATA_HOME s'il est absolu, sinon ~/.local/share."""
+    xdg = env.get("XDG_DATA_HOME")
+    return xdg if xdg and os.path.isabs(xdg) else os.path.join(os.path.expanduser("~"), ".local", "share")
+
+
 def _resolve_dirs(frozen, executable, script_dir, meipass, env, windows=None):
     """Retourne (RESOURCE_DIR, DATA_DIR).
     - RESOURCE_DIR : fichiers du programme en lecture seule (traductions, images, icône).
     - DATA_DIR : fichiers modifiables (config, file d'attente, yt-dlp, ffmpeg).
-    Depuis les sources, tout reste à côté du script. Dans l'exécutable : à côté de l'exécutable si
-    le fichier « portable.flag » s'y trouve (version portable), sinon dans %LOCALAPPDATA%\\yt-dlp-GUI
+    Depuis les sources, sous Windows, tout reste à côté du script ; sous Linux, les données vont dans le même
+    dossier que pour les versions installées (réglages et outils partagés, et conservés quand on retélécharge les
+    sources), sauf si un fichier « portable.flag » est placé à côté du script. Dans l'exécutable : à côté de
+    l'exécutable si le fichier « portable.flag » s'y trouve (version portable), sinon dans %LOCALAPPDATA%\\yt-dlp-GUI
     (le dossier d'installation, ex. Program Files, n'est pas modifiable sans droits administrateur) ;
     sous Linux, dans $XDG_DATA_HOME/yt-dlp-GUI (par défaut ~/.local/share/yt-dlp-GUI).
     `windows` force le système (tests) ; par défaut, celui qui exécute le logiciel."""
     if windows is None:
         windows = IS_WINDOWS
     if not frozen:
-        return script_dir, script_dir
+        if windows or os.path.isfile(os.path.join(script_dir, "portable.flag")):
+            return script_dir, script_dir
+        return script_dir, os.path.join(_xdg_data_home(env), "yt-dlp-GUI")
     exe_dir = os.path.dirname(os.path.abspath(executable))
     resources = meipass or exe_dir
     if os.path.isfile(os.path.join(exe_dir, "portable.flag")):
@@ -147,8 +157,7 @@ def _resolve_dirs(frozen, executable, script_dir, meipass, env, windows=None):
     if windows:
         base = env.get("LOCALAPPDATA") or os.path.join(os.path.expanduser("~"), "AppData", "Local")
     else:
-        xdg = env.get("XDG_DATA_HOME")
-        base = xdg if xdg and os.path.isabs(xdg) else os.path.join(os.path.expanduser("~"), ".local", "share")
+        base = _xdg_data_home(env)
     return resources, os.path.join(base, "yt-dlp-GUI")
 
 
@@ -970,9 +979,7 @@ class MenuInstallError(Exception):
 
 
 def xdg_data_home(env=None):
-    env = os.environ if env is None else env
-    xdg = env.get("XDG_DATA_HOME")
-    return xdg if xdg and os.path.isabs(xdg) else os.path.join(os.path.expanduser("~"), ".local", "share")
+    return _xdg_data_home(os.environ if env is None else env)
 
 
 def linux_menu_paths(env=None):

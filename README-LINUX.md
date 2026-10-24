@@ -50,6 +50,8 @@ La version Linux reprend le comportement de la version Windows 0.1.7 (figée, qu
 
 Configuration requise : Linux 64 bits (x86_64) d'une distribution de 2022 ou plus récente (glibc 2.35 ou plus), car les paquets sont construits sur Ubuntu 22.04.
 
+**Si vous débutez sous Linux** : seul le paquet `.deb` s'installe « pour de vrai » et apparaît dans le gestionnaire de logiciels. L'AppImage et l'archive sont des fichiers ou des dossiers ordinaires, rangés où vous voulez : pour les retirer, on les supprime comme n'importe quel fichier (sections 2.2 et 2.5). Leurs réglages restent à part, dans `~/.local/share/yt-dlp-GUI` (section 6), et survivent à cette suppression.
+
 Les fichiers sont sur la page des [versions publiées](https://github.com/harlockSuites/YT-dlp-GUI/releases) : cherchez les étiquettes `Linux-v…`, marquées « Pre-release ».
 
 ### 2.1 Vérifier le téléchargement
@@ -84,6 +86,12 @@ Sans FUSE, lancez-la quand même, elle s'extrait d'elle-même dans un dossier te
 
 ```bash
 ./yt-dlp-gui-X.Y.Z-x86_64.AppImage --appimage-extract-and-run
+```
+
+L'AppImage n'est pas « installée » : elle n'apparaît pas dans le gestionnaire de logiciels. Pour la retirer, supprimez le fichier :
+
+```bash
+rm yt-dlp-gui-X.Y.Z-x86_64.AppImage
 ```
 
 ### 2.3 Installer dans le menu (sans administrateur)
@@ -139,11 +147,19 @@ touch yt-dlp-gui/portable.flag
 
 Sans ce fichier, les données vont dans `~/.local/share/yt-dlp-GUI` (section 6).
 
+L'archive n'est pas « installée » : elle n'apparaît pas dans le gestionnaire de logiciels. Pour la retirer, supprimez le dossier extrait :
+
+```bash
+rm -rf yt-dlp-gui
+```
+
 ### 2.6 Depuis les sources
 
 ```bash
 python3 yt-dlp-gui.pyw
 ```
+
+Depuis les sources, les réglages et les outils téléchargés vont dans le même dossier que pour les versions installées (`~/.local/share/yt-dlp-GUI`) : retélécharger ou supprimer le dossier des sources ne les efface pas. Pour garder les données dans le dossier des sources (essai sans trace), créez un fichier vide `portable.flag` à côté de `yt-dlp-gui.pyw`.
 
 Il faut Python 3 avec Tkinter :
 
@@ -356,7 +372,7 @@ Supprimer `login.keyring` efface **tous** les mots de passe qu'il contient (Wi-F
 
 ## 6. Où sont les fichiers
 
-Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/share/yt-dlp-GUI`), sauf si `portable.flag` est à côté de l'exécutable de l'archive.
+Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/share/yt-dlp-GUI`), sauf si `portable.flag` est à côté de l'exécutable de l'archive (ou du script `yt-dlp-gui.pyw`).
 
 | Fichier ou dossier | Contenu |
 |---|---|
