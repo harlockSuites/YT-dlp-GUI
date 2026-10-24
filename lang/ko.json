@@ -523,7 +523,7 @@
   "cookie.hint_decrypt_linux": "{browser}의 쿠키를 해독할 수 없습니다. Linux에서는 쿠키가 데스크톱 키링(GNOME Keyring 또는 KWallet)으로 보호되며, 키링이 잠금 해제되어 있어야 합니다. 일반 그래픽 세션을 사용하거나 Firefox를 사용하세요(권장).",
   "cookie.note_keyring": "이 브라우저의 쿠키는 데스크톱 키링(GNOME Keyring, KWallet)으로 보호됩니다. 키링이 잠금 해제되어 있어야 하므로 그래픽 세션이 열려 있어야 합니다. Firefox를 권장합니다.",
   "upd.replace_title_dialog_linux": "새 yt-dlp 파일 선택",
-  "browsers.linux_explain": "쿠키 목록에 표시할 브라우저를 선택하세요. 기본값은 Linux에서 가장 많이 쓰는 Firefox, Google Chrome, Chromium, Brave, Vivaldi입니다. yt-dlp는 처음 7개를 직접 읽고, LibreWolf, Waterfox, Floorp, Zen Browser는 Firefox 파생 브라우저로 프로필 폴더를 통해 읽습니다(경로는 아직 검증되지 않음). Chromium 계열 브라우저는 데스크톱 키링이 잠금 해제되어 있어야 하며, Firefox를 권장합니다.",
+  "browsers.linux_explain": "쿠키 목록에 표시할 브라우저를 선택하세요. 기본값은 Linux에서 가장 많이 쓰는 Firefox, Google Chrome, Chromium, Brave, Vivaldi입니다. yt-dlp는 처음 7개를 직접 읽고, LibreWolf, Waterfox, Floorp, Zen Browser는 Firefox 파생 브라우저로 프로필 폴더를 통해 읽습니다. Chromium 계열 브라우저는 데스크톱 키링이 잠금 해제되어 있어야 하며, Firefox를 권장합니다.",
   "browsers.linux_reset": "기본 5개로 되돌리기",
   "browsers.linux_found": "✔ 이 컴퓨터에서 찾음",
   "cookie.hint_zero": "{browser}에서 쿠키를 하나도 읽지 못했습니다('Extracted 0 cookies'). 종료할 때 쿠키를 삭제하는 설정(LibreWolf는 기본값)이거나 프로필이 YouTube에 로그인되어 있지 않을 수 있습니다. 브라우저를 열어 둔 채 로그인한 상태로 두거나, 개인정보 설정에서 종료 시 쿠키 삭제를 끈 다음 테스트를 다시 실행하세요.",

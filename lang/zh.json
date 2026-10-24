@@ -523,7 +523,7 @@
   "cookie.hint_decrypt_linux": "无法解密 {browser} 的 Cookie：在 Linux 上，它们由桌面密钥环（GNOME Keyring 或 KWallet）保护，密钥环必须处于解锁状态。请使用正常的图形会话，或使用 Firefox（推荐）。",
   "cookie.note_keyring": "此浏览器的 Cookie 由桌面密钥环（GNOME Keyring、KWallet）保护：密钥环必须解锁，也就是说需要已打开的图形会话。推荐使用 Firefox。",
   "upd.replace_title_dialog_linux": "选择新的 yt-dlp 文件",
-  "browsers.linux_explain": "勾选要在 Cookie 列表中提供的浏览器。默认：Firefox、Google Chrome、Chromium、Brave 和 Vivaldi，它们是 Linux 上最常用的。yt-dlp 直接读取前七个；LibreWolf、Waterfox、Floorp 和 Zen Browser 是 Firefox 的衍生版本，通过其配置文件夹读取（路径尚未验证）。Chromium 系浏览器需要桌面密钥环处于解锁状态；推荐使用 Firefox。",
+  "browsers.linux_explain": "勾选要在 Cookie 列表中提供的浏览器。默认：Firefox、Google Chrome、Chromium、Brave 和 Vivaldi，它们是 Linux 上最常用的。yt-dlp 直接读取前七个；LibreWolf、Waterfox、Floorp 和 Zen Browser 是 Firefox 的衍生版本，通过其配置文件夹读取。Chromium 系浏览器需要桌面密钥环处于解锁状态；推荐使用 Firefox。",
   "browsers.linux_reset": "恢复默认的五个",
   "browsers.linux_found": "✔ 在此电脑上找到",
   "cookie.hint_zero": "没有从 {browser} 读取到任何 Cookie（“Extracted 0 cookies”）。它可能在关闭时删除 Cookie（LibreWolf 默认如此），或其配置文件尚未登录 YouTube。请保持它打开并已登录，或在其隐私设置中关闭“关闭时删除 Cookie”，然后重新测试。",

@@ -362,6 +362,15 @@ class TranslationsTests(unittest.TestCase):
             for browser in ("Firefox", "Google Chrome", "Chromium", "Brave", "Vivaldi", "LibreWolf", "Zen Browser"):
                 self.assertIn(browser, data["browsers.linux_explain"], (name, browser))
 
+    def test_the_browsers_window_no_longer_says_the_profile_paths_are_unverified(self):
+        base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lang")
+        for name in sorted(os.listdir(base)):
+            with open(os.path.join(base, name), encoding="utf-8") as f:
+                text = json.load(f)["browsers.linux_explain"]
+            # Waterfox, Floorp, Zen et LibreWolf ont été essayés dans la VM : plus aucune réserve entre parenthèses
+            self.assertNotIn("(", text, name)
+            self.assertNotIn("（", text, name)
+
     def test_the_keyring_help_texts_exist_in_every_language(self):
         base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lang")
         keys = ("browsers.keyring_title", "browsers.keyring_explain", "browsers.keyring_install",

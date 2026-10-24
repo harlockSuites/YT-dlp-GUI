@@ -523,7 +523,7 @@
   "cookie.hint_decrypt_linux": "Unable to decrypt the cookies of {browser}: on Linux they are protected by the desktop key ring (GNOME Keyring or KWallet), which must be unlocked. Use a normal graphical session, or use Firefox (recommended).",
   "cookie.note_keyring": "This browser's cookies are protected by the desktop key ring (GNOME Keyring, KWallet): it must be unlocked, so a graphical session must be open. Firefox is recommended.",
   "upd.replace_title_dialog_linux": "Choose the new yt-dlp file",
-  "browsers.linux_explain": "Tick the browsers to offer in the cookie lists. By default: Firefox, Google Chrome, Chromium, Brave and Vivaldi, the most used on Linux. yt-dlp reads the first seven directly; LibreWolf, Waterfox, Floorp and Zen Browser are Firefox derivatives read through their profile folder (path not yet verified). Chromium-family browsers need the desktop key ring to be unlocked; Firefox is recommended.",
+  "browsers.linux_explain": "Tick the browsers to offer in the cookie lists. By default: Firefox, Google Chrome, Chromium, Brave and Vivaldi, the most used on Linux. yt-dlp reads the first seven directly; LibreWolf, Waterfox, Floorp and Zen Browser are Firefox derivatives read through their profile folder. Chromium-family browsers need the desktop key ring to be unlocked; Firefox is recommended.",
   "browsers.linux_reset": "Restore the five defaults",
   "browsers.linux_found": "✔ found on this computer",
   "cookie.hint_zero": "No cookie was read from {browser} (“Extracted 0 cookies”). It may delete its cookies when it closes (LibreWolf does by default) or its profile is not signed in to YouTube. Keep it open and signed in, or turn off cookie deletion on close in its privacy settings, then run the test again.",
