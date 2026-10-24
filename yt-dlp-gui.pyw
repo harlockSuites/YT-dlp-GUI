@@ -2989,10 +2989,22 @@ LINUX_BROWSER_CATALOG = (
     ("vivaldi", "Vivaldi", "vivaldi", ("{cfg}/vivaldi",)),
     ("opera", "Opera", "opera", ("{cfg}/opera",)),
     ("edge", "Microsoft Edge", "edge", ("{cfg}/microsoft-edge",)),
-    ("librewolf", "LibreWolf", "firefox", ("~/.librewolf", "~/.var/app/io.gitlab.librewolf-community/.librewolf")),
-    ("waterfox", "Waterfox", "firefox", ("~/.waterfox", "~/.var/app/net.waterfox.waterfox/.waterfox")),
-    ("floorp", "Floorp", "firefox", ("~/.floorp", "~/.var/app/one.ablaze.floorp/.floorp")),
-    ("zen", "Zen Browser", "firefox", ("~/.zen", "~/.var/app/app.zen_browser.zen/.zen")),
+    # Dérivés de Firefox : dossiers où chercher leurs profils, anciens (~/.nom) et récents (XDG : {cfg}/nom/nom), en
+    # installation normale et en Flatpak. Le profil est le dossier qui contient « cookies.sqlite » (voir
+    # _firefox_profile_dirs). Agencement relevé sur LibreWolf Flatpak (2026-10-23) :
+    # ~/.var/app/io.gitlab.librewolf-community/config/librewolf/librewolf/<profil>/cookies.sqlite
+    ("librewolf", "LibreWolf", "firefox", (
+        "~/.librewolf", "{cfg}/librewolf", "~/.var/app/io.gitlab.librewolf-community/.librewolf",
+        "~/.var/app/io.gitlab.librewolf-community/config/librewolf")),
+    ("waterfox", "Waterfox", "firefox", (
+        "~/.waterfox", "{cfg}/waterfox", "~/.var/app/net.waterfox.waterfox/.waterfox",
+        "~/.var/app/net.waterfox.waterfox/config/waterfox")),
+    ("floorp", "Floorp", "firefox", (
+        "~/.floorp", "{cfg}/floorp", "~/.var/app/one.ablaze.floorp/.floorp",
+        "~/.var/app/one.ablaze.floorp/config/floorp")),
+    ("zen", "Zen Browser", "firefox", (
+        "~/.zen", "{cfg}/zen", "~/.var/app/app.zen_browser.zen/.zen",
+        "~/.var/app/app.zen_browser.zen/config/zen")),
 )
 LINUX_BROWSER_KEYS = tuple(entry[0] for entry in LINUX_BROWSER_CATALOG)
 LINUX_DEFAULT_BROWSERS = ("firefox", "chrome", "chromium", "brave", "vivaldi")   # les plus utilisés sous Linux
@@ -3028,15 +3040,36 @@ def selected_linux_browsers(cfg=None):
     return [k for k in LINUX_BROWSER_KEYS if k in chosen]
 
 
+def _firefox_profile_dirs(bases, max_depth=3):
+    """Dossiers de profil (ceux qui contiennent « cookies.sqlite », au plus `max_depth` niveaux sous un des dossiers
+    `bases`), du plus récemment utilisé au plus ancien. Les agencements varient (~/.librewolf/<profil>,
+    ~/.config/librewolf/librewolf/<profil>…) : on cherche la base de cookies plutôt que de supposer un chemin."""
+    found = []
+    for base in bases:
+        if not os.path.isdir(base):
+            continue
+        for root, dirs, files in os.walk(base):
+            if "cookies.sqlite" in files:
+                try:
+                    found.append((os.path.getmtime(os.path.join(root, "cookies.sqlite")), root))
+                except OSError:
+                    pass
+            if os.path.relpath(root, base).count(os.sep) + (0 if root == base else 1) >= max_depth:
+                dirs[:] = []   # pas plus profond
+    return [folder for _mtime, folder in sorted(found, reverse=True)]
+
+
 def cookie_browser_arg(browser, env=None):
     """Valeur à donner à « --cookies-from-browser » pour ce navigateur. Windows et les navigateurs que yt-dlp connaît
-    par leur nom : le nom tel quel. Un dérivé de Firefox sous Linux : « firefox:<dossier du profil> » (le premier
-    dossier existant, sinon le plus courant : yt-dlp expliquera alors qu'il ne trouve pas la base de cookies)."""
+    par leur nom : le nom tel quel. Un dérivé de Firefox sous Linux : « firefox:<dossier du profil> », le profil dont
+    les cookies ont servi en dernier ; sans profil trouvé, le premier dossier existant (sinon le plus courant) :
+    yt-dlp expliquera alors qu'il ne trouve pas la base de cookies."""
     entry = None if IS_WINDOWS else _linux_browser_entry(browser)
     if entry is None or entry[2] == browser:
         return browser
     dirs = linux_browser_dirs(browser, env)
-    return f"{entry[2]}:{next((d for d in dirs if os.path.isdir(d)), dirs[0])}"
+    profiles = _firefox_profile_dirs(dirs)
+    return f"{entry[2]}:{profiles[0] if profiles else next((d for d in dirs if os.path.isdir(d)), dirs[0])}"
 
 
 def browser_label(browser):

@@ -8,7 +8,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 
 ### Ajouté
 - **Navigateurs pour les cookies, au choix** : par défaut, les listes proposent les cinq navigateurs les plus utilisés sous Linux (Firefox, Google Chrome, Chromium, Brave, Vivaldi). La fenêtre « Navigateurs pour les cookies » du menu des options propose 11 navigateurs (Opera, Microsoft Edge, LibreWolf, Waterfox, Floorp et Zen Browser en plus) : l'utilisateur coche ceux dont il a besoin ; un ✔ marque ceux dont le dossier de profil existe sur l'ordinateur ; « Rétablir les cinq par défaut » revient au départ. Le choix est enregistré (réglage `linux_browsers`) et le navigateur déjà sélectionné reste toujours dans la liste.
-- LibreWolf, Waterfox, Floorp et Zen Browser, dérivés de Firefox, sont lus par le dossier de leur profil (`--cookies-from-browser firefox:/chemin`, y compris les installations Flatpak). Leurs dossiers n'ont pas encore été vérifiés sur une machine qui les a installés.
+- LibreWolf, Waterfox, Floorp et Zen Browser, dérivés de Firefox, sont lus par le dossier de leur profil (`--cookies-from-browser firefox:/chemin`, y compris les installations Flatpak). Le logiciel cherche leur base de cookies (`cookies.sqlite`, jusqu'à trois niveaux sous leurs dossiers habituels : anciens `~/.nom` et récents `~/.config/nom`, Flatpak compris) et donne à yt-dlp le dossier du profil le plus récemment utilisé. Agencement relevé et confirmé pour LibreWolf en Flatpak (VM, 2026-10-23 : `config/librewolf/librewolf/<profil>`, `.librewolf` étant vide) ; Waterfox, Floorp et Zen restent à confirmer sur une machine qui les a installés.
 - 3 clés de traduction (fenêtre de choix) dans les 15 langues, à faire relire ; puce « Cookies » des 15 README mise à jour.
 
 ### Modifié

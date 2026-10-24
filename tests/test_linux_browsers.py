@@ -119,15 +119,51 @@ class CookieArgumentTests(unittest.TestCase):
         for browser in ("firefox", "chrome", "chromium", "brave", "vivaldi", "opera", "edge", "whale"):
             self.assertEqual(m.cookie_browser_arg(browser), browser)
 
+    def _profile(self, *parts, age=0):
+        """Crée <maison>/<parts>/cookies.sqlite (plus ancien de `age` secondes) et renvoie le dossier du profil."""
+        folder = os.path.join(self.home, *parts)
+        os.makedirs(folder, exist_ok=True)
+        db = os.path.join(folder, "cookies.sqlite")
+        with open(db, "wb") as f:
+            f.write(b"")
+        if age:
+            past = os.path.getmtime(db) - age
+            os.utime(db, (past, past))
+        return folder
+
     def test_a_firefox_fork_is_read_by_the_folder_of_its_profile(self):
-        folder = os.path.join(self.home, ".librewolf")
-        os.makedirs(folder)
+        folder = self._profile(".librewolf", "abc123.default")
         self.assertEqual(m.cookie_browser_arg("librewolf"), f"firefox:{folder}")
 
-    def test_a_flatpak_fork_is_found_when_the_usual_folder_is_missing(self):
-        folder = os.path.join(self.home, ".var", "app", "app.zen_browser.zen", ".zen")
-        os.makedirs(folder)
+    def test_the_real_layout_of_librewolf_flatpak_is_found(self):
+        """Relevé dans la VM le 2026-10-23 : le profil est sous config/librewolf/librewolf, et ~/.librewolf est vide."""
+        os.makedirs(os.path.join(self.home, ".var", "app", "io.gitlab.librewolf-community", ".librewolf"))
+        folder = self._profile(".var", "app", "io.gitlab.librewolf-community", "config", "librewolf", "librewolf",
+                               "ysn3qqrm.default-release")
+        self.assertEqual(m.cookie_browser_arg("librewolf"), f"firefox:{folder}")
+        self.assertTrue(m.linux_browser_found("librewolf", {"XDG_CONFIG_HOME": ""}))
+
+    def test_the_xdg_layout_of_a_normal_installation_is_found(self):
+        folder = self._profile(".config", "waterfox", "waterfox", "x.default-release")
+        self.assertEqual(m.cookie_browser_arg("waterfox"), f"firefox:{folder}")
+
+    def test_another_flatpak_fork_is_found_when_the_usual_folder_is_missing(self):
+        folder = self._profile(".var", "app", "app.zen_browser.zen", ".zen", "p1.Default (release)")
         self.assertEqual(m.cookie_browser_arg("zen"), f"firefox:{folder}")
+
+    def test_the_most_recently_used_profile_wins(self):
+        self._profile(".floorp", "old.default", age=5000)
+        newer = self._profile(".var", "app", "one.ablaze.floorp", "config", "floorp", "floorp", "new.default", age=10)
+        self.assertEqual(m.cookie_browser_arg("floorp"), f"firefox:{newer}")
+
+    def test_a_database_buried_too_deep_is_ignored(self):
+        self._profile(".zen", "a", "b", "c", "d")
+        self.assertEqual(m.cookie_browser_arg("zen"), "firefox:" + os.path.join(self.home, ".zen"))
+
+    def test_a_fork_without_profile_yet_points_to_its_first_existing_folder(self):
+        folder = os.path.join(self.home, ".var", "app", "net.waterfox.waterfox", ".waterfox")
+        os.makedirs(folder)
+        self.assertEqual(m.cookie_browser_arg("waterfox"), f"firefox:{folder}")
 
     def test_a_missing_fork_still_gets_a_path_so_yt_dlp_can_explain(self):
         self.assertEqual(m.cookie_browser_arg("waterfox"), "firefox:" + os.path.join(self.home, ".waterfox"))
@@ -236,7 +272,8 @@ class WindowTests(unittest.TestCase):
         self.assertEqual(sorted(x.split()[0] for x in marked), ["Firefox", "Zen"])
 
     def test_the_options_menu_opens_this_window_on_linux_and_the_windows_one_on_windows(self):
-        source = open(m.__file__, encoding="utf-8").read()
+        with open(m.__file__, encoding="utf-8") as f:
+            source = f.read()
         self.assertIn("(BrowserOptionsWindow if IS_WINDOWS else LinuxBrowsersWindow)(self)", source)
 
 
