@@ -550,5 +550,8 @@
   "menu_install.removed": "已从菜单中移除。您的设置和已下载的工具已保留。",
   "menu_install.err_source": "仅可从 AppImage 或 .tar.gz 压缩包使用，不能从源文件使用。",
   "menu_install.deb": "yt-dlp GUI 是通过 .deb 软件包安装的：它已在应用程序菜单中。如需移除：sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "失败：{error}"
+  "menu_install.err_copy": "失败：{error}",
+  "ui.tab_options": "选项",
+  "ui.log_frame": "日志",
+  "ui.debug_log_frame": "调试日志"
 }

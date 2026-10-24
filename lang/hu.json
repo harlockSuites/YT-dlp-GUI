@@ -550,5 +550,8 @@
   "menu_install.removed": "Eltávolítva a menüből. A beállítások és a letöltött eszközök megmaradtak.",
   "menu_install.err_source": "Csak az AppImage-ből vagy a .tar.gz archívumból érhető el, a forrásfájlokból nem.",
   "menu_install.deb": "A yt-dlp GUI a .deb csomaggal van telepítve: már szerepel az alkalmazásmenüben. Eltávolítás: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "Sikertelen: {error}"
+  "menu_install.err_copy": "Sikertelen: {error}",
+  "ui.tab_options": "Beállítások",
+  "ui.log_frame": "Napló",
+  "ui.debug_log_frame": "Hibakeresési napló"
 }

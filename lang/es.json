@@ -550,5 +550,8 @@
   "menu_install.removed": "Quitado del menú. Sus ajustes y las herramientas descargadas se conservan.",
   "menu_install.err_source": "Solo disponible desde el AppImage o el archivo .tar.gz, no desde los archivos fuente.",
   "menu_install.deb": "yt-dlp GUI está instalado con el paquete .deb: ya está en el menú de aplicaciones. Para quitarlo: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "Error: {error}"
+  "menu_install.err_copy": "Error: {error}",
+  "ui.tab_options": "Opciones",
+  "ui.log_frame": "Registro",
+  "ui.debug_log_frame": "Registro de depuración"
 }

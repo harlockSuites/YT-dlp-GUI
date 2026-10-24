@@ -6,6 +6,8 @@
 
 > **परियोजना विकासाधीन है।** कुछ सुविधाएँ बदल सकती हैं, अधूरी हो सकती हैं या उनमें त्रुटियाँ हो सकती हैं। Windows के लिए उपलब्ध; **Linux के लिए पूर्वावलोकन संस्करण** भी दिया गया है, जिसका परीक्षण कम हुआ है।
 
+🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+
 ![yt-dlp GUI](img/main.en.png)
 
 ![yt-dlp GUI](img/inspector.en.png)

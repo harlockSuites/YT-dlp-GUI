@@ -550,5 +550,8 @@
   "menu_install.removed": "Uklonjeno iz menija. Podešavanja i preuzeti alati su sačuvani.",
   "menu_install.err_source": "Dostupno samo iz AppImage-a ili .tar.gz arhive, ne iz izvornih fajlova.",
   "menu_install.deb": "yt-dlp GUI je instaliran iz .deb paketa: već je u meniju aplikacija. Za uklanjanje: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "Neuspeh: {error}"
+  "menu_install.err_copy": "Neuspeh: {error}",
+  "ui.tab_options": "Opcije",
+  "ui.log_frame": "Dnevnik",
+  "ui.debug_log_frame": "Dnevnik za otklanjanje grešaka"
 }

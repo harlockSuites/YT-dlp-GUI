@@ -6,6 +6,8 @@ Grafički interfejs za [yt-dlp](https://github.com/yt-dlp/yt-dlp), osmišljen da
 
 > **Projekat je u razvoju.** Neke funkcije mogu se menjati, biti nepotpune ili sadržati greške. Dostupno za Windows; nudi se i **probna verzija za Linux**, manje isprobana.
 
+🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+
 ![yt-dlp GUI](img/main.en.png)
 
 ![yt-dlp GUI](img/inspector.en.png)

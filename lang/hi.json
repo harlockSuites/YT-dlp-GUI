@@ -550,5 +550,8 @@
   "menu_install.removed": "मेनू से हटा दिया गया। आपकी सेटिंग और डाउनलोड किए गए टूल सुरक्षित हैं।",
   "menu_install.err_source": "केवल AppImage या .tar.gz संग्रह से उपलब्ध है, स्रोत फ़ाइलों से नहीं।",
   "menu_install.deb": "yt-dlp GUI .deb पैकेज से इंस्टॉल है: यह पहले से एप्लिकेशन मेनू में है। हटाने के लिए: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "विफल: {error}"
+  "menu_install.err_copy": "विफल: {error}",
+  "ui.tab_options": "विकल्प",
+  "ui.log_frame": "लॉग",
+  "ui.debug_log_frame": "डीबग लॉग"
 }

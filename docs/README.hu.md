@@ -6,6 +6,8 @@ Grafikus felület a [yt-dlp](https://github.com/yt-dlp/yt-dlp) programhoz, amely
 
 > **Fejlesztés alatt álló projekt.** Egyes funkciók változhatnak, hiányosak lehetnek vagy hibákat tartalmazhatnak. Windowson érhető el; **Linuxra előzetes verzió** is elérhető, kevésbé kipróbálva.
 
+🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+
 ![yt-dlp GUI](img/main.en.png)
 
 ![yt-dlp GUI](img/inspector.en.png)

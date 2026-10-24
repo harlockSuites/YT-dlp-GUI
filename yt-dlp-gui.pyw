@@ -2780,7 +2780,7 @@ class MultiCheckSelect(ttk.Frame):
 
         # ── Onglet Options (gestion des blocs) ────────────────────
         frm_opts_tab = ttk.Frame(nb)
-        nb.add(frm_opts_tab, text="  ⚙ Options  ")
+        nb.add(frm_opts_tab, text=f"  ⚙ {t('ui.tab_options')}  ")
         self._build_blocks_options_tab(frm_opts_tab, pop, nb, tab_rows, tab_canvases, check_vars)
 
     def _build_blocks_options_tab(self, frm, pop, nb, tab_rows, tab_canvases, check_vars):
@@ -3986,7 +3986,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._canvas.bind("<Shift-Button-5>", lambda e: self._canvas.xview_scroll(1, "units"))
 
         # ── Panneau de log (caché par défaut) ─────────────────────
-        self._log_frame = ttk.LabelFrame(self, text=" Journal de debug ", padding=4)
+        self._log_frame = ttk.LabelFrame(self, text=f" {t('ui.debug_log_frame')} ", padding=4)
         # Pas de pack() ici — _toggle_log le gère
         self._log_text = tk.Text(self._log_frame, height=6, state="disabled",
                                  font=(MONO_FONT, 8), bg="#1e1e1e", fg="#d4d4d4",
@@ -6301,7 +6301,7 @@ class YtDlpGui(tk.Tk):
         frm_page.pack(fill="both", expand=True)
 
         # ── Journal ────────────────────────────────
-        frm_log = ttk.LabelFrame(paned, text=" Journal ", padding=6)
+        frm_log = ttk.LabelFrame(paned, text=f" {t('ui.log_frame')} ", padding=6)
         paned.add(frm_log, stretch="always")
         self._frm_log = frm_log
 

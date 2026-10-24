@@ -550,5 +550,8 @@
   "menu_install.removed": "Naalis sa menu. Nananatili ang mga setting mo at ang mga na-download na tool.",
   "menu_install.err_source": "Magagamit lang mula sa AppImage o sa .tar.gz archive, hindi mula sa mga source file.",
   "menu_install.deb": "Naka-install ang yt-dlp GUI sa pamamagitan ng .deb package: nasa menu na ito ng mga application. Para alisin: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "Nabigo: {error}"
+  "menu_install.err_copy": "Nabigo: {error}",
+  "ui.tab_options": "Mga Opsyon",
+  "ui.log_frame": "Log",
+  "ui.debug_log_frame": "Debug log"
 }

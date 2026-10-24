@@ -6,6 +6,8 @@ Graficzny interfejs dla [yt-dlp](https://github.com/yt-dlp/yt-dlp), stworzony, a
 
 > **Projekt w trakcie rozwoju.** Niektóre funkcje mogą się zmienić, być niekompletne lub zawierać błędy. Dostępny dla systemu Windows; oferowana jest też **wersja zapoznawcza dla Linuksa**, mniej przetestowana.
 
+🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+
 ![yt-dlp GUI](img/main.en.png)
 
 ![yt-dlp GUI](img/inspector.en.png)

@@ -550,5 +550,8 @@
   "menu_install.removed": "Đã gỡ khỏi menu. Cài đặt và công cụ đã tải vẫn được giữ lại.",
   "menu_install.err_source": "Chỉ dùng được từ AppImage hoặc tệp nén .tar.gz, không dùng được từ mã nguồn.",
   "menu_install.deb": "yt-dlp GUI được cài bằng gói .deb: nó đã có trong menu ứng dụng. Để gỡ: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "Thất bại: {error}"
+  "menu_install.err_copy": "Thất bại: {error}",
+  "ui.tab_options": "Tùy chọn",
+  "ui.log_frame": "Nhật ký",
+  "ui.debug_log_frame": "Nhật ký gỡ lỗi"
 }

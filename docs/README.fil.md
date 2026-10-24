@@ -6,6 +6,8 @@ Isang graphical interface para sa [yt-dlp](https://github.com/yt-dlp/yt-dlp), na
 
 > **Ginagawa pa ang proyekto.** Maaaring magbago, hindi pa kumpleto o may mga bug ang ilang feature. Available para sa Windows; may iniaalok ding **preview para sa Linux**, na mas kaunti ang nasubukan.
 
+🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+
 ![yt-dlp GUI](img/main.en.png)
 
 ![yt-dlp GUI](img/inspector.en.png)

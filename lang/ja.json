@@ -550,5 +550,8 @@
   "menu_install.removed": "メニューから削除しました。設定とダウンロード済みのツールは残っています。",
   "menu_install.err_source": "AppImage または .tar.gz アーカイブからのみ利用できます（ソースファイルからは利用できません）。",
   "menu_install.deb": "yt-dlp GUI は .deb パッケージでインストールされています。すでにアプリケーションメニューにあります。削除するには: sudo apt remove yt-dlp-gui",
-  "menu_install.err_copy": "失敗: {error}"
+  "menu_install.err_copy": "失敗: {error}",
+  "ui.tab_options": "オプション",
+  "ui.log_frame": "ログ",
+  "ui.debug_log_frame": "デバッグログ"
 }

@@ -6,6 +6,8 @@
 
 > **開発中のプロジェクトです。** 一部の機能は変更されたり、未完成だったり、不具合を含んだりする場合があります。Windows 版を提供しており、**Linux 向けプレビュー版**も提供していますが、検証は十分ではありません。
 
+🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+
 ![yt-dlp GUI](img/main.en.png)
 
 ![yt-dlp GUI](img/inspector.en.png)
