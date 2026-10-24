@@ -395,6 +395,7 @@ Ang data folder ay `$XDG_DATA_HOME/yt-dlp-GUI` (bilang default, `~/.local/share/
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | mga pansamantalang configuration file ng yt-dlp |
 | `app/` | kopya ng programang ginawa ng "I-install sa menu" |
+| `~/.local/share/fonts/yt-dlp-GUI/` (sa labas ng data folder) | Noto font na na-download para sa Korean, Japanese o Chinese; para alisin ito: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ Ang data folder ay `$XDG_DATA_HOME/yt-dlp-GUI` (bilang default, `~/.local/share/
 | Hindi gumagana ang drag and drop sa pagitan ng host at ng virtual machine | tampok ito ng VirtualBox (Guest Additions), hindi ng software |
 | Mali ang laki ng interface | sinusunod ng software ang mga font ng system (Tk); subukan ang ibang laki ng font ng system |
 | Nabibigo ang update ng yt-dlp | gamitin ang "I-update at Diagnostics" sa menu ng mga opsyon; kung hindi, i-download ang `yt-dlp_linux` at piliin ito sa window ng pagpapalit (gagawing executable ang napiling file) |
+| Mga parisukat sa halip na teksto (Korean, Chinese, Japanese…) | walang font sa system na naglalaman ng mga karakter na ito; sa Debian at Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), pagkatapos ay isara at buksan ulit ang software; sa ibang distribution, i-install ang package na "Noto Sans CJK" ng distribution ; kaya ring i-download mismo ng software ang font (Korean, Japanese, Chinese) kapag pinili mo ang wika, nang walang karapatan ng administrator |
 
 <a id="s8"></a>
 

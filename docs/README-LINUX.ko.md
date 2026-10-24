@@ -395,6 +395,7 @@ cp -a ~/.local/share/keyrings ~/keyrings-backup
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | yt-dlp의 임시 구성 파일 |
 | `app/` | '메뉴에 설치'가 만든 프로그램 사본 |
+| `~/.local/share/fonts/yt-dlp-GUI/` (데이터 폴더 밖) | 한국어, 일본어, 중국어용으로 내려받은 Noto 글꼴. 제거하려면: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ cp -a ~/.local/share/keyrings ~/keyrings-backup
 | 호스트와 가상 머신 사이의 끌어서 놓기가 작동하지 않음 | VirtualBox(Guest Additions)의 기능이며 소프트웨어의 기능이 아닙니다 |
 | 화면 크기가 맞지 않음 | 소프트웨어는 시스템 글꼴(Tk)을 따릅니다. 시스템 글꼴 크기를 바꿔 보세요 |
 | yt-dlp 업데이트 실패 | 옵션 메뉴의 '업데이트 & 진단'을 사용하세요. 그래도 안 되면 `yt-dlp_linux`를 내려받아 교체 창에서 선택합니다(선택한 파일은 실행 가능하게 됩니다) |
+| 텍스트 대신 네모가 표시됨(한국어, 중국어, 일본어 등) | 시스템에 이 문자를 담은 글꼴이 없습니다. Debian과 Ubuntu에서는 `sudo apt install fonts-noto-cjk`(약 90 MB)를 실행한 뒤 소프트웨어를 닫았다가 다시 여세요. 다른 배포판에서는 그 배포판의 'Noto Sans CJK' 패키지를 설치하세요. 언어를 선택할 때 소프트웨어가 글꼴을 직접 내려받을 수도 있습니다(한국어, 일본어, 중국어, 관리자 권한 불필요) |
 
 <a id="s8"></a>
 

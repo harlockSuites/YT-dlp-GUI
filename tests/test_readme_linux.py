@@ -201,6 +201,22 @@ class LinuxReadmeTests(unittest.TestCase):
             with self.subTest(lang=code):
                 self.assertEqual(found - allowed, set())
 
+    def test_the_troubleshooting_explains_squares_instead_of_text_with_the_font_command(self):
+        for code, path in _existing().items():
+            text = _read(path)
+            section = text.split('<a id="s7"></a>')[1].split('<a id="s8"></a>')[0]
+            with self.subTest(lang=code):
+                self.assertEqual(section.count("sudo apt install fonts-noto-cjk"), 1)
+                self.assertIn("Noto Sans CJK", section)
+
+    def test_the_files_table_lists_the_downloaded_font_folder_and_how_to_remove_it(self):
+        for code, path in _existing().items():
+            section = _read(path).split('<a id="s6"></a>')[1].split('<a id="s7"></a>')[0]
+            with self.subTest(lang=code):
+                self.assertIn("~/.local/share/fonts/yt-dlp-GUI/", section)
+                self.assertEqual(section.count("rm -rf ~/.local/share/fonts/yt-dlp-GUI"), 1)
+                self.assertTrue(m.linux_fonts_dir({}).replace("\\", "/").endswith("/.local/share/fonts/yt-dlp-GUI"))
+
     def test_all_fifteen_readmes_point_to_the_guide_of_their_own_language(self):
         for code, path in ALL_READMES.items():
             with self.subTest(lang=code):

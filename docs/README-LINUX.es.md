@@ -395,6 +395,7 @@ La carpeta de datos es `$XDG_DATA_HOME/yt-dlp-GUI` (por defecto `~/.local/share/
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | archivos de configuración temporales de yt-dlp |
 | `app/` | copia del programa hecha por «Instalar en el menú» |
+| `~/.local/share/fonts/yt-dlp-GUI/` (fuera de la carpeta de datos) | fuente Noto descargada para el coreano, el japonés o el chino; para quitarla: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ La carpeta de datos es `$XDG_DATA_HOME/yt-dlp-GUI` (por defecto `~/.local/share/
 | El arrastrar y soltar entre el anfitrión y una máquina virtual no funciona | es una función de VirtualBox (Guest Additions), no del programa |
 | La interfaz tiene un tamaño incorrecto | el programa sigue las fuentes del sistema (Tk); pruebe otro tamaño de fuente del sistema |
 | Falla la actualización de yt-dlp | use «Actualización y Diagnóstico» en el menú de opciones; si no, descargue `yt-dlp_linux` y elíjalo en la ventana de sustitución (el archivo elegido se vuelve ejecutable) |
+| Cuadrados en lugar del texto (coreano, chino, japonés…) | ninguna fuente del sistema contiene esos caracteres; en Debian y Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), y después cerrar y volver a abrir el programa; en otras distribuciones, instalar el paquete «Noto Sans CJK» de la distribución ; el programa también puede descargar la fuente por sí mismo (coreano, japonés, chino) al elegir el idioma, sin derechos de administrador |
 
 <a id="s8"></a>
 

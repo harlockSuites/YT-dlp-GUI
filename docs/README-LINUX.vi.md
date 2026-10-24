@@ -395,6 +395,7 @@ Thư mục dữ liệu là `$XDG_DATA_HOME/yt-dlp-GUI` (theo mặc định `~/.l
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | các tệp cấu hình tạm của yt-dlp |
 | `app/` | bản sao chương trình do «Cài vào menu» tạo ra |
+| `~/.local/share/fonts/yt-dlp-GUI/` (nằm ngoài thư mục dữ liệu) | phông chữ Noto đã tải cho tiếng Hàn, Nhật hoặc Trung; để gỡ nó: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ Thư mục dữ liệu là `$XDG_DATA_HOME/yt-dlp-GUI` (theo mặc định `~/.l
 | Kéo và thả giữa máy chủ và máy ảo không hoạt động | đó là tính năng của VirtualBox (Guest Additions), không phải của phần mềm |
 | Giao diện có kích thước sai | phần mềm theo phông chữ của hệ thống (Tk); hãy thử cỡ phông chữ hệ thống khác |
 | Cập nhật yt-dlp thất bại | dùng «Cập nhật & Chẩn đoán» trong menu tùy chọn; nếu không, tải `yt-dlp_linux` và chọn nó trong cửa sổ thay thế (tệp được chọn sẽ được cấp quyền thực thi) |
+| Hiện ô vuông thay cho chữ (tiếng Hàn, Trung, Nhật…) | hệ thống không có phông chữ nào chứa các ký tự này; trên Debian và Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), rồi đóng và mở lại phần mềm; trên bản phân phối khác, cài gói «Noto Sans CJK» của bản phân phối đó ; phần mềm cũng có thể tự tải phông chữ (tiếng Hàn, Nhật, Trung) khi bạn chọn ngôn ngữ, không cần quyền quản trị |
 
 <a id="s8"></a>
 

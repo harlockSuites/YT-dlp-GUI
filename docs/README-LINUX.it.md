@@ -395,6 +395,7 @@ La cartella dei dati è `$XDG_DATA_HOME/yt-dlp-GUI` (per impostazione predefinit
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | file di configurazione temporanei di yt-dlp |
 | `app/` | copia del programma fatta da «Installa nel menu» |
+| `~/.local/share/fonts/yt-dlp-GUI/` (fuori dalla cartella dei dati) | font Noto scaricato per coreano, giapponese o cinese; per rimuoverlo: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ La cartella dei dati è `$XDG_DATA_HOME/yt-dlp-GUI` (per impostazione predefinit
 | Il trascinamento tra host e macchina virtuale non funziona | è una funzione di VirtualBox (Guest Additions), non del programma |
 | L'interfaccia ha una dimensione errata | il programma segue i caratteri di sistema (Tk); provare un'altra dimensione dei caratteri di sistema |
 | L'aggiornamento di yt-dlp non riesce | usare «Aggiornamento & Diagnostica» nel menu delle opzioni; altrimenti scaricare `yt-dlp_linux` e sceglierlo nella finestra di sostituzione (il file scelto diventa eseguibile) |
+| Quadrati al posto del testo (coreano, cinese, giapponese…) | nessun font del sistema contiene questi caratteri; su Debian e Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), poi chiudere e riaprire il programma; altrove, installare il pacchetto «Noto Sans CJK» della distribuzione ; il programma può anche scaricare il font da sé (coreano, giapponese, cinese) quando scegli la lingua, senza diritti di amministratore |
 
 <a id="s8"></a>
 

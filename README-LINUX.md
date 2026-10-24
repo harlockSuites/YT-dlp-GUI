@@ -395,6 +395,7 @@ Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/sh
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | fichiers de configuration éphémères de yt-dlp |
 | `app/` | copie du programme faite par « Installer dans le menu » |
+| `~/.local/share/fonts/yt-dlp-GUI/` (hors du dossier de données) | police Noto téléchargée pour le coréen, le japonais ou le chinois ; pour la retirer : `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/sh
 | Le glisser-déposer entre la machine hôte et une machine virtuelle ne marche pas | c'est une fonction de VirtualBox (Additions invité), pas du logiciel |
 | L'interface est mal dimensionnée | le logiciel suit les polices du système (Tk) ; essayez une autre taille de police système |
 | La mise à jour de yt-dlp échoue | utiliser « Mise à jour & Diagnostic » du menu des options ; sinon télécharger `yt-dlp_linux` et le choisir dans la fenêtre de remplacement (le fichier choisi est rendu exécutable) |
+| Des carrés à la place du texte (coréen, chinois, japonais…) | aucune police du système ne contient ces caractères ; sous Debian et Ubuntu : `sudo apt install fonts-noto-cjk` (~90 Mo), puis fermer et rouvrir le logiciel ; ailleurs, installer le paquet « Noto Sans CJK » de la distribution ; le logiciel peut aussi télécharger la police lui-même (coréen, japonais, chinois) quand vous choisissez la langue, sans droits administrateur |
 
 <a id="s8"></a>
 

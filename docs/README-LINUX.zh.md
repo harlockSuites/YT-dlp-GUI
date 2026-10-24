@@ -395,6 +395,7 @@ cp -a ~/.local/share/keyrings ~/keyrings-backup
 | `bin/` | ffmpeg、ffprobe、deno |
 | `cmd/` | yt-dlp 的临时配置文件 |
 | `app/` | “安装到菜单”制作的程序副本 |
+| `~/.local/share/fonts/yt-dlp-GUI/` （在数据文件夹之外） | 为韩文、日文或中文下载的 Noto 字体；移除方法：`rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ cp -a ~/.local/share/keyrings ~/keyrings-backup
 | 主机与虚拟机之间的拖放不起作用 | 这是 VirtualBox（Guest Additions）的功能，不是本软件的 |
 | 界面大小不对 | 软件遵循系统字体（Tk）；请尝试其他系统字体大小 |
 | yt-dlp 更新失败 | 使用选项菜单中的“更新与诊断”；否则下载 `yt-dlp_linux` 并在替换窗口中选择它（所选文件会被设为可执行） |
+| 显示方块而不是文字（韩文、中文、日文……） | 系统中没有包含这些字符的字体；在 Debian 和 Ubuntu 上：`sudo apt install fonts-noto-cjk`（约 90 MB），然后关闭并重新打开软件；在其他发行版上，请安装该发行版的“Noto Sans CJK”软件包；选择语言时，软件也可以自行下载字体（韩文、日文、中文），无需管理员权限 |
 
 <a id="s8"></a>
 

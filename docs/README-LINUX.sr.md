@@ -395,6 +395,7 @@ Folder sa podacima je `$XDG_DATA_HOME/yt-dlp-GUI` (podrazumevano `~/.local/share
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | privremeni konfiguracioni fajlovi programa yt-dlp |
 | `app/` | kopija programa koju je napravilo „Instaliraj u meni” |
+| `~/.local/share/fonts/yt-dlp-GUI/` (van foldera sa podacima) | Noto font preuzet za korejski, japanski ili kineski; da ga uklonite: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ Folder sa podacima je `$XDG_DATA_HOME/yt-dlp-GUI` (podrazumevano `~/.local/share
 | Prevlačenje između domaćina i virtuelne mašine ne radi | to je funkcija VirtualBoxa (Guest Additions), a ne programa |
 | Interfejs je pogrešne veličine | program prati sistemske fontove (Tk); probajte drugu veličinu sistemskog fonta |
 | Ažuriranje programa yt-dlp ne uspeva | koristite „Ažuriranje i dijagnostika” u meniju opcija; inače preuzmite `yt-dlp_linux` i izaberite ga u prozoru za zamenu (izabrani fajl postaje izvršni) |
+| Kvadratići umesto teksta (korejski, kineski, japanski…) | nijedan sistemski font ne sadrži ove znakove; na Debianu i Ubuntuu: `sudo apt install fonts-noto-cjk` (~90 MB), pa zatvorite i ponovo otvorite program; na drugim distribucijama instalirajte paket „Noto Sans CJK” te distribucije ; program može i sam da preuzme font (korejski, japanski, kineski) kada izaberete jezik, bez administratorskih prava |
 
 <a id="s8"></a>
 

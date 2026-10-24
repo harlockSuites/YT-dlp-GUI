@@ -1140,6 +1140,168 @@ def linux_menu_uninstall(env=None, desktop_dirs=None):
         raise MenuInstallError("menu_install.err_copy", error=exc)
 
 
+# Linux : polices du coréen, du japonais et du chinois. Le système n'en a pas toujours : le texte s'affiche alors en
+# carrés. Quand on choisit une de ces langues, le logiciel regarde si les caractères de l'interface sont couverts par
+# les polices installées (fontconfig) et, sinon, propose de télécharger une police Noto (licence SIL OFL) : version
+# figée, somme SHA-256 vérifiée, rangée dans le dossier des polices de l'utilisateur (aucun droit administrateur).
+FONT_COMMIT = "f8d157532fbfaeda587e826d4cd5b21a49186f7c"   # dépôt notofonts/noto-cjk
+FONT_BASE_URL = f"https://raw.githubusercontent.com/notofonts/noto-cjk/{FONT_COMMIT}/Sans/"
+FONT_PACKS = {
+    "ko": {"family": "Noto Sans KR", "path": "SubsetOTF/KR/NotoSansKR-Regular.otf", "size": 4644748,
+           "sha256": "69975a0ac8472717870aefeab0a4d52739308d90856b9955313b2ad5e0148d68"},
+    "ja": {"family": "Noto Sans JP", "path": "SubsetOTF/JP/NotoSansJP-Regular.otf", "size": 4533028,
+           "sha256": "dff723ba59d57d136764a04b9b2d03205544f7cd785a711442d6d2d085ac5073"},
+    "zh": {"family": "Noto Sans SC", "path": "SubsetOTF/SC/NotoSansSC-Regular.otf", "size": 8331336,
+           "sha256": "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9"},
+}
+FONT_LICENSE = {"path": "LICENSE", "name": "LICENSE-OFL.txt", "size": 4301,
+                "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"}
+FONT_MISSING_THRESHOLD = 0.01   # au-delà de 1 % de caractères sans police, on propose la police
+FONT_APT_COMMAND = "sudo apt install fonts-noto-cjk"
+# Noms anglais des langues, affichés en premier sous Linux : quelqu'un qui n'a pas la police de sa langue peut ainsi
+# la reconnaître dans la liste.
+LANGUAGE_ENGLISH_NAMES = {
+    "fr": "French", "en": "English", "es": "Spanish", "pt": "Portuguese (Brazil)", "it": "Italian", "pl": "Polish",
+    "hu": "Hungarian", "sr": "Serbian", "ru": "Russian", "vi": "Vietnamese", "zh": "Chinese (Simplified)",
+    "hi": "Hindi", "ja": "Japanese", "ko": "Korean", "fil": "Filipino"}
+# Texte de la boîte de dialogue : en anglais seulement, car la langue choisie n'est pas encore lisible
+FONT_DIALOG = {
+    "title": "Font needed",
+    "body": "{language} needs a font that is not installed on this computer. Without it, the text appears as empty "
+            "squares.",
+    "detail": "The software can download {family} ({size} MB, SIL Open Font License) for your user only: no "
+              "administrator rights are needed. The file is checked against its SHA-256 checksum, and the new "
+              "language is used the next time the software starts.",
+    "apt": "For every user of this computer instead, run this in a terminal:",
+    "apt_other": "For every user of this computer instead, install the \"Noto Sans CJK\" package of your distribution.",
+    "download": "Download font", "anyway": "Use anyway", "cancel": "Cancel", "copy": "Copy",
+    "copied": "Command copied: paste it into a terminal.",
+    "downloading": "Downloading… {percent}%", "installing": "Verifying and installing…",
+    "done_unseen": "Font installed, but the system does not list it yet. The text may show squares until you log "
+                   "out and back in.",
+    "err_network": "Download failed: {error}", "err_checksum": "The downloaded file does not match its expected "
+                   "checksum: it was deleted.", "err_disk": "Could not write the font: {error}",
+    "cancelled": "Download cancelled."}
+
+
+class FontInstallError(Exception):
+    """Échec du téléchargement ou de l'installation d'une police (message en anglais)."""
+
+
+def language_label(code, native):
+    """Nom d'une langue dans la liste, anglais d'abord : « Korean — 한국어 » (« English » reste « English »)."""
+    english = LANGUAGE_ENGLISH_NAMES.get(code, native)
+    return english if english == native else f"{english} — {native}"
+
+
+def linux_fonts_dir(env=None):
+    return os.path.join(xdg_data_home(env), "fonts", "yt-dlp-GUI")
+
+
+def parse_fc_charsets(text):
+    """Sortie de `fc-list --format '%{charset}\\n'` (plages hexadécimales « 20-7e a0-ff 3000 », une ligne par police)
+    -> liste triée et fusionnée de plages (début, fin)."""
+    ranges = []
+    for token in text.split():
+        low, _, high = token.partition("-")
+        try:
+            ranges.append((int(low, 16), int(high or low, 16)))
+        except ValueError:
+            continue
+    ranges.sort()
+    merged = []
+    for start, end in ranges:
+        if merged and start <= merged[-1][1] + 1:
+            merged[-1] = (merged[-1][0], max(end, merged[-1][1]))
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def _glyph_covered(ranges, codepoint):
+    import bisect
+    i = bisect.bisect_right(ranges, (codepoint, float("inf"))) - 1
+    return i >= 0 and ranges[i][0] <= codepoint <= ranges[i][1]
+
+
+def language_glyphs(code):
+    """Lettres non ASCII que l'interface utilise dans cette langue (lues dans son fichier de traduction)."""
+    import unicodedata
+    try:
+        with open(_LANG_DIR / f"{code}.json", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return set()
+    return {c for v in data.values() if isinstance(v, str) for c in v
+            if ord(c) > 127 and unicodedata.category(c)[0] == "L"}
+
+
+def missing_glyphs(code, run=subprocess.run):
+    """(caractères sans police, total) pour cette langue d'après fontconfig, ou None si `fc-list` est indisponible.
+    Les polices installées se complètent : un caractère est couvert si l'une d'elles le contient."""
+    chars = language_glyphs(code)
+    if not chars:
+        return 0, 0
+    try:
+        done = run(["fc-list", "--format", "%{charset}\n"], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if done.returncode != 0 or not (done.stdout or "").strip():
+        return None
+    ranges = parse_fc_charsets(done.stdout)
+    return sum(1 for c in chars if not _glyph_covered(ranges, ord(c))), len(chars)
+
+
+def language_needs_font(code, run=subprocess.run):
+    """Linux : la langue a une police à proposer et trop de ses caractères n'en ont aucune. Si fontconfig est
+    indisponible, on ne dérange pas l'utilisateur."""
+    if IS_WINDOWS or code not in FONT_PACKS:
+        return False
+    result = missing_glyphs(code, run)
+    return bool(result) and result[1] > 0 and result[0] / result[1] > FONT_MISSING_THRESHOLD
+
+
+def _download_pinned(url, sha256, dest, progress=None, stop=None, opener=None):
+    """Télécharge `url` vers `dest` et vérifie sa somme SHA-256 fixée ; le fichier est supprimé si elle diffère."""
+    _download_file(url, dest, progress, stop, opener=opener or _open_url)
+    if _sha256_file(dest) != sha256:
+        os.remove(dest)
+        raise FontInstallError(FONT_DIALOG["err_checksum"])
+
+
+def install_font_pack(code, progress=None, stop=None, env=None, opener=None, run=subprocess.run):
+    """Télécharge la police de la langue (et sa licence) dans le dossier des polices de l'utilisateur, puis
+    actualise fontconfig. Retourne True si le système voit maintenant la police, False sinon, None s'il ne peut pas
+    le dire. FontInstallError (message en anglais) en cas d'échec."""
+    import urllib.error
+    pack = FONT_PACKS[code]
+    folder = linux_fonts_dir(env)
+    try:
+        os.makedirs(folder, exist_ok=True)
+        for item, name, report in ((pack, os.path.basename(pack["path"]), progress),
+                                   (FONT_LICENSE, FONT_LICENSE["name"], None)):
+            dest = os.path.join(folder, name)
+            if os.path.isfile(dest) and _sha256_file(dest) == item["sha256"]:
+                continue   # déjà installée, intacte
+            _download_pinned(FONT_BASE_URL + item["path"], item["sha256"], dest, report, stop, opener)
+    except FontInstallError:
+        raise
+    except SetupError:
+        raise FontInstallError(FONT_DIALOG["cancelled"])
+    except (urllib.error.URLError, OSError, TimeoutError) as exc:
+        reason = str(getattr(exc, "reason", exc))
+        if isinstance(exc, urllib.error.HTTPError):
+            reason = f"HTTP {exc.code} {reason}"
+        if isinstance(exc, OSError) and not isinstance(exc, urllib.error.URLError) and exc.filename:
+            raise FontInstallError(FONT_DIALOG["err_disk"].format(error=reason))
+        raise FontInstallError(FONT_DIALOG["err_network"].format(error=reason))
+    _run_quiet(["fc-cache", "-f", folder])
+    result = missing_glyphs(code, run)
+    if result is None:
+        return None
+    return not (result[1] and result[0] / result[1] > FONT_MISSING_THRESHOLD)
+
+
 def dep_direct(dep):
     """L'assistant sait-il installer cet outil lui-même (téléchargement vérifié, sans droits administrateur) ?
     Deno partout ; ffmpeg et ffprobe sous Linux (sous Windows ils passent par Chocolatey)."""
@@ -2548,6 +2710,122 @@ class LinuxMenuInstallWindow(tk.Toplevel):
             return
         self._refresh()
         self._say(t("menu_install.removed"), True)
+
+
+class LanguageFontDialog(tk.Toplevel):
+    """Linux : la langue choisie demande une police absente du système ; propose de la télécharger. Texte en
+    anglais seulement (la langue choisie n'est pas encore lisible). `result` : « installed », « anyway » ou « cancel »."""
+
+    def __init__(self, parent, code, label, installer=None):
+        super().__init__(parent)
+        pack = FONT_PACKS[code]
+        self._code, self._installer = code, installer or install_font_pack
+        self._stop = threading.Event()
+        self._busy = False
+        self.result = "cancel"
+        self.title(FONT_DIALOG["title"])
+        self.resizable(False, False)
+        self.transient(parent)
+        frm = ttk.Frame(self, padding=14)
+        frm.pack(fill="both", expand=True)
+        # Boutons packés en premier côté bas : toujours visibles.
+        btns = ttk.Frame(frm)
+        btns.pack(side="bottom", fill="x", pady=(12, 0))
+        self.btn_download = ttk.Button(btns, text=FONT_DIALOG["download"], command=self._download)
+        self.btn_download.pack(side="left", ipadx=8)
+        self.btn_anyway = ttk.Button(btns, text=FONT_DIALOG["anyway"], command=self._anyway)
+        self.btn_anyway.pack(side="left", padx=(8, 0), ipadx=8)
+        ttk.Button(btns, text=FONT_DIALOG["cancel"], command=self._cancel).pack(side="right", ipadx=8)
+        ttk.Label(frm, text=FONT_DIALOG["body"].format(language=label), wraplength=440, justify="left",
+                  font=(UI_FONT, 10, "bold")).pack(anchor="w")
+        ttk.Label(frm, text=FONT_DIALOG["detail"].format(family=pack["family"], size=f"{pack['size'] / 1e6:.1f}"),
+                  wraplength=440, justify="left").pack(anchor="w", pady=(8, 0))
+        manager = linux_package_manager()
+        if manager == "apt":
+            ttk.Label(frm, text=FONT_DIALOG["apt"], wraplength=440, justify="left").pack(anchor="w", pady=(10, 2))
+            line = ttk.Frame(frm)
+            line.pack(fill="x")
+            self.var_command = tk.StringVar(value=FONT_APT_COMMAND)
+            ttk.Entry(line, textvariable=self.var_command, state="readonly", font=(MONO_FONT, 9)).pack(
+                side="left", fill="x", expand=True)
+            ttk.Button(line, text=FONT_DIALOG["copy"], command=self._copy).pack(side="left", padx=(6, 0))
+        else:
+            ttk.Label(frm, text=FONT_DIALOG["apt_other"], wraplength=440, justify="left").pack(anchor="w", pady=(10, 0))
+        self.progress = ttk.Progressbar(frm, mode="determinate", maximum=100)
+        self.progress.pack(fill="x", pady=(10, 0))
+        self.lbl_status = tk.Label(frm, text="", wraplength=440, justify="left", anchor="w", font=(UI_FONT, 9))
+        self.lbl_status.pack(anchor="w", pady=(4, 0))
+        self.protocol("WM_DELETE_WINDOW", self._cancel)
+        self.grab_set()
+
+    def _say(self, text, ok=True):
+        self.lbl_status.configure(text=text, fg="#1e7e34" if ok else WARN_TEXT)
+
+    def _copy(self):
+        self.clipboard_clear()
+        self.clipboard_append(self.var_command.get())
+        self._say(FONT_DIALOG["copied"])
+
+    def _download(self):
+        if self._busy:
+            return
+        self._busy = True
+        self.btn_download.configure(state="disabled")
+        self.btn_anyway.configure(state="disabled")
+        self._say(FONT_DIALOG["downloading"].format(percent=0))
+        threading.Thread(target=self._work, daemon=True).start()
+
+    def _work(self):
+        try:
+            seen = self._installer(self._code, progress=self._on_progress, stop=self._stop)
+        except FontInstallError as exc:
+            self._later(self._failed, str(exc))
+        except Exception as exc:   # jamais de fenêtre figée : toute erreur imprévue est affichée
+            self._later(self._failed, FONT_DIALOG["err_network"].format(error=exc))
+        else:
+            self._later(self._done, seen)
+
+    def _later(self, func, *args):
+        try:
+            self.after(0, func, *args)
+        except (tk.TclError, RuntimeError):
+            pass   # fenêtre déjà fermée
+
+    def _on_progress(self, done, total):
+        if total:
+            self._later(self._show_progress, int(done * 100 / total))
+
+    def _show_progress(self, percent):
+        self.progress["value"] = percent
+        self._say(FONT_DIALOG["installing"] if percent >= 100 else FONT_DIALOG["downloading"].format(percent=percent))
+
+    def _failed(self, message):
+        self._busy = False
+        self.progress["value"] = 0
+        self.btn_download.configure(state="normal")
+        self.btn_anyway.configure(state="normal")
+        self._say(message, ok=False)
+
+    def _done(self, seen):
+        self._busy = False
+        self.result = "installed"
+        if seen is False:   # installée, mais fontconfig ne la liste pas encore
+            self.progress["value"] = 100
+            self._say(FONT_DIALOG["done_unseen"], ok=False)
+            self.btn_download.configure(text="OK", state="normal", command=self.destroy)
+            return
+        self.destroy()
+
+    def _anyway(self):
+        self.result = "anyway"
+        self.destroy()
+
+    def _cancel(self):
+        if self._busy:
+            self._stop.set()   # le téléchargement s'arrête, puis le message d'annulation s'affiche
+            return
+        self.result = "cancel"
+        self.destroy()
 
 
 class MultiCheckSelect(ttk.Frame):
@@ -6394,6 +6672,8 @@ class YtDlpGui(tk.Tk):
             ("ko", "한국어"),
             ("fil", "Filipino"),
         ]
+        if not IS_WINDOWS:
+            _LANGUAGES = [(code, language_label(code, name)) for code, name in _LANGUAGES]   # anglais d'abord
         # Build selection dialog
         dlg = tk.Toplevel(self)
         dlg.title("Langue / Language")
@@ -6408,7 +6688,7 @@ class YtDlpGui(tk.Tk):
         frm_list.pack(padx=20, pady=4)
         for code, name in _LANGUAGES:
             tk.Radiobutton(frm_list, text=name, variable=var_lang, value=code,
-                           anchor="w", width=26).pack(anchor="w")
+                           anchor="w", width=26 if IS_WINDOWS else 40).pack(anchor="w")
 
         def _confirm():
             new_code = var_lang.get()
@@ -6417,11 +6697,31 @@ class YtDlpGui(tk.Tk):
                 return
             # Find display name
             new_name = next((n for c, n in _LANGUAGES if c == new_code), new_code)
+            if not self._language_font_ready(new_code, new_name, dlg):
+                dlg.grab_set()   # on reste dans la liste des langues
+                return
             dlg.destroy()
             self._show_lang_change_dialog(new_code, new_name)
 
         tk.Button(dlg, text="OK", command=_confirm, width=10).pack(pady=(8, 14))
         dlg.wait_window()
+
+    def _language_font_ready(self, code, label, parent):
+        """Linux : True si l'on peut passer à cette langue. Quand le système n'a pas la police de ses caractères
+        (coréen, japonais, chinois), la boîte de dialogue propose de la télécharger avant."""
+        if IS_WINDOWS or code not in FONT_PACKS:
+            return True
+        parent.configure(cursor="watch")
+        parent.update_idletasks()
+        try:
+            needs_font = language_needs_font(code)
+        finally:
+            parent.configure(cursor="")
+        if not needs_font:
+            return True
+        dialog = LanguageFontDialog(parent, code, label)
+        parent.wait_window(dialog)
+        return dialog.result in ("installed", "anyway")
 
     def _show_lang_change_dialog(self, new_code: str, new_name: str):
         # Load the NEW language strings for the dialog body

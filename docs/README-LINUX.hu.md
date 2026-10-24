@@ -395,6 +395,7 @@ Az adatmappa a `$XDG_DATA_HOME/yt-dlp-GUI` (alapértelmezés szerint `~/.local/s
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | a yt-dlp ideiglenes konfigurációs fájljai |
 | `app/` | a „Telepítés a menübe” által készített programmásolat |
+| `~/.local/share/fonts/yt-dlp-GUI/` (az adatmappán kívül) | a koreaihoz, japánhoz vagy kínaihoz letöltött Noto betűtípus; eltávolítása: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ Az adatmappa a `$XDG_DATA_HOME/yt-dlp-GUI` (alapértelmezés szerint `~/.local/s
 | A húzd-és-ejtsd nem működik a gazdagép és egy virtuális gép között | ez a VirtualBox (Guest Additions) funkciója, nem a programé |
 | A felület mérete rossz | a program a rendszer betűtípusait követi (Tk); próbálj másik rendszerbetűméretet |
 | A yt-dlp frissítése nem sikerül | használd a „Frissítés és diagnosztika” pontot a beállítások menüben; különben töltsd le a `yt-dlp_linux` fájlt, és válaszd ki a csere ablakban (a kiválasztott fájl futtathatóvá válik) |
+| Négyzetek a szöveg helyén (koreai, kínai, japán…) | a rendszer egyik betűtípusa sem tartalmazza ezeket a karaktereket; Debianon és Ubuntun: `sudo apt install fonts-noto-cjk` (~90 MB), majd zárd be és nyisd meg újra a programot; máshol a disztribúció „Noto Sans CJK” csomagját telepítsd ; a program a nyelv kiválasztásakor maga is le tudja tölteni a betűtípust (koreai, japán, kínai), rendszergazdai jog nélkül |
 
 <a id="s8"></a>
 

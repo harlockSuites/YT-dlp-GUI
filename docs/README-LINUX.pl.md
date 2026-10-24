@@ -395,6 +395,7 @@ Folder danych to `$XDG_DATA_HOME/yt-dlp-GUI` (domyślnie `~/.local/share/yt-dlp-
 | `bin/` | ffmpeg, ffprobe, deno |
 | `cmd/` | tymczasowe pliki konfiguracyjne yt-dlp |
 | `app/` | kopia programu wykonana przez „Zainstaluj w menu” |
+| `~/.local/share/fonts/yt-dlp-GUI/` (poza folderem danych) | czcionka Noto pobrana dla koreańskiego, japońskiego lub chińskiego; aby ją usunąć: `rm -rf ~/.local/share/fonts/yt-dlp-GUI` |
 
 <a id="s7"></a>
 
@@ -409,6 +410,7 @@ Folder danych to `$XDG_DATA_HOME/yt-dlp-GUI` (domyślnie `~/.local/share/yt-dlp-
 | Przeciąganie i upuszczanie między hostem a maszyną wirtualną nie działa | to funkcja VirtualBoxa (Guest Additions), nie programu |
 | Interfejs ma zły rozmiar | program używa czcionek systemowych (Tk); spróbuj innego rozmiaru czcionki systemowej |
 | Aktualizacja yt-dlp się nie powiodła | użyj „Aktualizacja i diagnostyka” w menu opcji; w przeciwnym razie pobierz `yt-dlp_linux` i wskaż go w oknie zamiany (wybrany plik zostanie uczyniony wykonywalnym) |
+| Kwadraty zamiast tekstu (koreański, chiński, japoński…) | żadna czcionka systemowa nie zawiera tych znaków; w Debianie i Ubuntu: `sudo apt install fonts-noto-cjk` (~90 MB), potem zamknąć i ponownie otworzyć program; w innych dystrybucjach zainstalować pakiet „Noto Sans CJK” dystrybucji ; program może też sam pobrać czcionkę (koreański, japoński, chiński) po wybraniu języka, bez uprawnień administratora |
 
 <a id="s8"></a>
 
