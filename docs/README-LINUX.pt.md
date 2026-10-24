@@ -114,6 +114,8 @@ Um AppImage aberto com duplo clique não deixa nenhum ícone no menu de aplicati
 
 Limites: a janela está disponível a partir do AppImage e do arquivo compactado. A partir do código-fonte, ela indica o AppImage; a partir do pacote `.deb`, explica que o programa já está no menu.
 
+Enquanto o programa não estiver no menu, o AppImage e o arquivo compactado oferecem eles mesmos esta instalação ao iniciar, em uma janela «Instalar no menu?»: «Sim, instalar…» abre a janela acima, «Mais tarde» perguntará de novo na próxima inicialização e «Não perguntar novamente» interrompe os convites (a função continua no menu de opções).
+
 Se o atalho da Área de Trabalho mostrar um aviso: clique com o botão direito no ícone › «Permitir execução». Alguns ambientes (o GNOME por padrão) não mostram ícones na Área de Trabalho: o lançador do menu funciona em todos os casos.
 
 Para remover tudo à mão:

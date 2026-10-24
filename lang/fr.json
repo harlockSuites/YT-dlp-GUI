@@ -553,5 +553,10 @@
   "menu_install.err_copy": "Échec : {error}",
   "ui.tab_options": "Options",
   "ui.log_frame": "Journal",
-  "ui.debug_log_frame": "Journal de debug"
+  "ui.debug_log_frame": "Journal de debug",
+  "menu_invite.title": "Installer dans le menu ?",
+  "menu_invite.text": "yt-dlp GUI n'est pas encore dans le menu des applications de votre bureau. Voulez-vous l'y ajouter, avec son icône, pour le lancer comme n'importe quel programme ? Aucun droit administrateur n'est nécessaire. Vous pourrez le faire plus tard depuis le menu des options.",
+  "menu_invite.btn_yes": "Oui, installer…",
+  "menu_invite.btn_later": "Plus tard",
+  "menu_invite.btn_never": "Ne plus demander"
 }

@@ -114,6 +114,8 @@ Inaalis lang ng "I-uninstall" ang ginawa ng pag-install at **pinananatili ang mg
 
 Mga limitasyon: available ang window mula sa AppImage at sa archive. Mula sa source code, itinuturo ka nito sa AppImage; mula sa `.deb` package, ipinapaliwanag nitong nasa menu na ang software.
 
+Hangga't wala ang programa sa menu, ang AppImage at ang archive mismo ang nag-aalok ng pag-install na ito sa pagsisimula, sa isang window na "I-install sa menu?": binubuksan ng "Oo, i-install…" ang window sa itaas, magtatanong ulit ang "Mamaya" sa susunod na pagsisimula, at itinitigil ng "Huwag nang magtanong" ang mga alok (nananatili ang function sa menu ng mga opsyon).
+
 Kung may babala ang shortcut sa Desktop: i-right-click ang icon › "Allow Launching". May mga desktop (ang GNOME bilang default) na hindi nagpapakita ng mga icon sa Desktop: gumagana sa lahat ng kaso ang launcher sa menu.
 
 Para alisin ang lahat nang mano-mano:

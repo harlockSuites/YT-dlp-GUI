@@ -553,5 +553,10 @@
   "menu_install.err_copy": "失败：{error}",
   "ui.tab_options": "选项",
   "ui.log_frame": "日志",
-  "ui.debug_log_frame": "调试日志"
+  "ui.debug_log_frame": "调试日志",
+  "menu_invite.title": "安装到菜单？",
+  "menu_invite.text": "yt-dlp GUI 还不在您桌面的应用程序菜单中。是否把它连同图标一起添加进去，以便像其他程序一样启动？无需管理员权限。您以后也可以通过选项菜单完成。",
+  "menu_invite.btn_yes": "是，安装…",
+  "menu_invite.btn_later": "稍后",
+  "menu_invite.btn_never": "不再询问"
 }

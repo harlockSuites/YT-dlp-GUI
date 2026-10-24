@@ -553,5 +553,10 @@
   "menu_install.err_copy": "Thất bại: {error}",
   "ui.tab_options": "Tùy chọn",
   "ui.log_frame": "Nhật ký",
-  "ui.debug_log_frame": "Nhật ký gỡ lỗi"
+  "ui.debug_log_frame": "Nhật ký gỡ lỗi",
+  "menu_invite.title": "Cài vào menu?",
+  "menu_invite.text": "yt-dlp GUI chưa có trong menu ứng dụng của máy tính. Bạn có muốn thêm nó vào, kèm biểu tượng, để mở như mọi chương trình khác không? Không cần quyền quản trị. Bạn có thể làm việc này sau từ menu tùy chọn.",
+  "menu_invite.btn_yes": "Có, cài đặt…",
+  "menu_invite.btn_later": "Để sau",
+  "menu_invite.btn_never": "Đừng hỏi lại"
 }

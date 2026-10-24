@@ -114,6 +114,8 @@ Un AppImage abierto con doble clic no deja ningún icono en el menú de aplicaci
 
 Límites: la ventana está disponible desde el AppImage y el archivo comprimido. Desde el código fuente le remite al AppImage; desde el paquete `.deb` explica que el programa ya está en el menú.
 
+Mientras el programa no esté en el menú, el AppImage y el archivo comprimido ofrecen por sí mismos esta instalación al arrancar, en una ventana «¿Instalar en el menú?»: «Sí, instalar…» abre la ventana anterior, «Más tarde» volverá a preguntar en el próximo arranque y «No volver a preguntar» detiene las invitaciones (la función sigue en el menú de opciones).
+
 Si el acceso directo del Escritorio muestra una advertencia: clic derecho en el icono › «Permitir lanzar». Algunos escritorios (GNOME por defecto) no muestran iconos en el Escritorio: el lanzador del menú funciona en todos los casos.
 
 Para quitarlo todo a mano:

@@ -114,6 +114,8 @@ AppImage pokrenut dvostrukim klikom ne ostavlja ikonu u meniju aplikacija. U pro
 
 Ograničenja: prozor je dostupan iz AppImage-a i iz arhive. Iz izvornog koda vas upućuje na AppImage; iz paketa `.deb` objašnjava da je program već u meniju.
 
+Dok program nije u meniju, AppImage i arhiva sami nude ovu instalaciju pri pokretanju, u prozoru „Instalirati u meni?”: „Da, instaliraj…” otvara gornji prozor, „Kasnije” pita ponovo pri sledećem pokretanju, a „Ne pitaj ponovo” prekida ponude (funkcija ostaje u meniju opcija).
+
 Ako prečica na radnoj površini prikaže upozorenje: desni klik na ikonu › „Dozvoli pokretanje”. Neke radne površine (GNOME podrazumevano) ne prikazuju ikone na radnoj površini: pokretač u meniju radi u svakom slučaju.
 
 Da sve uklonite ručno:

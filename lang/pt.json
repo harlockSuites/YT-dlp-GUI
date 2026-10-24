@@ -553,5 +553,10 @@
   "menu_install.err_copy": "Falha: {error}",
   "ui.tab_options": "Opções",
   "ui.log_frame": "Registro",
-  "ui.debug_log_frame": "Registro de depuração"
+  "ui.debug_log_frame": "Registro de depuração",
+  "menu_invite.title": "Instalar no menu?",
+  "menu_invite.text": "O yt-dlp GUI ainda não está no menu de aplicativos da sua área de trabalho. Quer adicioná-lo, com o ícone, para abri-lo como qualquer outro programa? Não são necessários direitos de administrador. Você poderá fazer isso depois pelo menu de opções.",
+  "menu_invite.btn_yes": "Sim, instalar…",
+  "menu_invite.btn_later": "Mais tarde",
+  "menu_invite.btn_never": "Não perguntar novamente"
 }

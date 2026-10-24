@@ -553,5 +553,10 @@
   "menu_install.err_copy": "失敗: {error}",
   "ui.tab_options": "オプション",
   "ui.log_frame": "ログ",
-  "ui.debug_log_frame": "デバッグログ"
+  "ui.debug_log_frame": "デバッグログ",
+  "menu_invite.title": "メニューにインストールしますか？",
+  "menu_invite.text": "yt-dlp GUI はまだデスクトップのアプリケーションメニューにありません。アイコンと一緒に追加して、ほかのプログラムと同じように起動できるようにしますか？管理者権限は不要です。あとでオプションメニューからも行えます。",
+  "menu_invite.btn_yes": "はい、インストール…",
+  "menu_invite.btn_later": "あとで",
+  "menu_invite.btn_never": "今後は確認しない"
 }

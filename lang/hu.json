@@ -553,5 +553,10 @@
   "menu_install.err_copy": "Sikertelen: {error}",
   "ui.tab_options": "Beállítások",
   "ui.log_frame": "Napló",
-  "ui.debug_log_frame": "Hibakeresési napló"
+  "ui.debug_log_frame": "Hibakeresési napló",
+  "menu_invite.title": "Telepítés a menübe?",
+  "menu_invite.text": "A yt-dlp GUI még nincs az asztal alkalmazásmenüjében. Szeretnéd hozzáadni az ikonjával együtt, hogy más programokhoz hasonlóan indíthasd? Nincs szükség rendszergazdai jogokra. Később is megteheted a beállítások menüből.",
+  "menu_invite.btn_yes": "Igen, telepítés…",
+  "menu_invite.btn_later": "Később",
+  "menu_invite.btn_never": "Ne kérdezd újra"
 }

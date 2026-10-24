@@ -209,6 +209,28 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(ctx.exception.key, "menu_install.err_copy")
         self.assertIn("disque plein", ctx.exception.text())
 
+    def _wanted(self, cfg=None, kind="appimage", **env):
+        with mock.patch.object(m, "IS_WINDOWS", False):
+            return m.linux_menu_invite_wanted(cfg or {}, kind=kind, env={**self.env, "APPIMAGE": self._appimage(), **env},
+                                              desktop_dirs=[self.desktop])
+
+    def test_the_invitation_is_for_the_appimage_and_the_archive_not_yet_in_the_menu(self):
+        self.assertTrue(self._wanted())
+        self.assertTrue(self._wanted(kind="portable"))
+
+    def test_no_invitation_from_the_deb_package_the_sources_or_windows(self):
+        self.assertFalse(self._wanted(kind="deb"))
+        self.assertFalse(self._wanted(kind="source"))
+        with mock.patch.object(m, "IS_WINDOWS", True):
+            self.assertFalse(m.linux_menu_invite_wanted({}, kind="appimage", env={**self.env, "APPIMAGE": self._appimage()}))
+
+    def test_no_invitation_once_installed_in_the_menu_or_after_never_ask_again(self):
+        self._install(APPIMAGE=self._appimage())
+        self.assertFalse(self._wanted())
+        m.linux_menu_uninstall(env=self.env, desktop_dirs=[self.desktop])
+        self.assertTrue(self._wanted())
+        self.assertFalse(self._wanted({"menu_invite": "never"}))
+
     def test_uninstall_removes_only_what_the_installation_made_and_keeps_the_users_data(self):
         self._install(APPIMAGE=self._appimage())
         paths = m.linux_menu_paths(self.env)
@@ -318,6 +340,73 @@ class WindowTests(unittest.TestCase):
             self.assertTrue(b.winfo_viewable())
             self.assertLessEqual(b.winfo_rooty() + b.winfo_height(), bottom)
 
+    def _invite(self):
+        dlg = m.LinuxMenuInviteDialog(self.app)
+        dlg.withdraw()
+        self.addCleanup(lambda: dlg.winfo_exists() and dlg.destroy())
+        return dlg
+
+    def test_the_invitation_dialog_stays_small_and_always_shows_its_three_buttons(self):
+        dlg = self._invite()
+        dlg.transient("")
+        dlg.deiconify()
+        for _ in range(30):
+            self.app.update()
+        self.assertLessEqual(dlg.winfo_reqheight(), 300)
+        bottom = dlg.winfo_rooty() + dlg.winfo_height()
+        buttons = [w for w in dlg.winfo_children()[0].winfo_children()[0].winfo_children()]
+        self.assertEqual(len(buttons), 3)
+        for b in buttons:
+            self.assertTrue(b.winfo_viewable())
+            self.assertLessEqual(b.winfo_rooty() + b.winfo_height(), bottom)
+
+    def test_yes_opens_the_install_window_later_asks_again_and_never_is_remembered(self):
+        config = os.path.join(self.tmp, "gui-config.json")
+        with mock.patch.object(m, "CONFIG_FILE", config), mock.patch.object(m, "LinuxMenuInstallWindow") as window:
+            dlg = self._invite()
+            dlg._answer("yes")
+            self.assertEqual(dlg.result, "yes")
+            window.assert_called_once_with(self.app)
+            self.assertFalse(os.path.exists(config))
+            dlg = self._invite()
+            dlg._answer("later")
+            self.assertEqual(dlg.result, "later")
+            self.assertFalse(os.path.exists(config))
+            dlg = self._invite()
+            dlg._answer("never")
+            self.assertEqual(m.load_config().get("menu_invite"), "never")
+            self.assertEqual(window.call_count, 1)
+
+    def test_closing_the_dialog_with_the_window_button_counts_as_later(self):
+        dlg = self._invite()
+        dlg.tk.call(dlg.protocol("WM_DELETE_WINDOW"))
+        self.assertEqual(dlg.result, "later")
+        self.assertFalse(dlg.winfo_exists())
+
+    def test_the_startup_shows_the_invitation_only_when_it_is_wanted(self):
+        for wanted, shown in ((True, 1), (False, 0)):
+            with mock.patch.object(m, "linux_menu_invite_wanted", return_value=wanted),                     mock.patch.object(m, "LinuxMenuInviteDialog") as dialog:
+                self.app._maybe_menu_invite()
+            self.assertEqual(dialog.call_count, shown)
+
+    def test_when_the_setup_wizard_opens_the_invitation_waits_for_it_to_close(self):
+        with mock.patch.object(m, "IS_WINDOWS", False), mock.patch.object(m, "SetupWizardWindow") as wizard,                 mock.patch.object(m, "YTDLP", os.path.join(self.tmp, "absent")),                 mock.patch.object(self.app, "_maybe_menu_invite") as invite,                 mock.patch.object(self.app, "after") as after:
+            self.app._maybe_first_run()
+            invite.assert_not_called()
+            sequence, callback = wizard.return_value.bind.call_args[0]
+            self.assertEqual(sequence, "<Destroy>")
+            callback(mock.Mock(widget=object()))   # un widget enfant de l'assistant : on attend
+            after.assert_not_called()
+            callback(mock.Mock(widget=wizard.return_value))
+            after.assert_called_once()
+            self.assertIs(after.call_args[0][1], invite)
+
+    def test_the_startup_invites_right_away_when_the_tools_are_already_there(self):
+        with mock.patch.object(m, "SetupWizardWindow") as wizard,                 mock.patch.object(m.os.path, "isfile", return_value=True),                 mock.patch.object(self.app, "_maybe_menu_invite") as invite:
+            self.app._maybe_first_run()
+        wizard.assert_not_called()
+        invite.assert_called_once()
+
     def test_the_options_menu_offers_it_on_linux_only(self):
         source = _read("yt-dlp-gui.pyw")
         self.assertRegex(source, r"if not IS_WINDOWS:\n\s+menu\.add_command\(label=t\(\"toolbar\.menu_install_menu\"\), "
@@ -329,7 +418,8 @@ class TranslationsTests(unittest.TestCase):
             "menu_install.state_none", "menu_install.state_installed", "menu_install.btn_install",
             "menu_install.btn_update", "menu_install.btn_remove", "menu_install.done",
             "menu_install.desktop_added", "menu_install.desktop_missing", "menu_install.removed",
-            "menu_install.err_source", "menu_install.deb", "menu_install.err_copy"]
+            "menu_install.err_source", "menu_install.deb", "menu_install.err_copy", "menu_invite.title",
+            "menu_invite.text", "menu_invite.btn_yes", "menu_invite.btn_later", "menu_invite.btn_never"]
 
     def test_every_text_exists_in_every_language_with_its_placeholders(self):
         names = sorted(n for n in os.listdir(LANG_DIR) if n.endswith(".json"))

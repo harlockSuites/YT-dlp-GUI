@@ -227,6 +227,15 @@ class LinuxReadmeTests(unittest.TestCase):
                 self.assertEqual(menu.count("sudo apt remove yt-dlp-gui"), 1, "2.3 : ne pas l'utiliser si le .deb est installé")
                 self.assertIn("Font needed", text.split('<a id="s2"></a>')[0], "section 1 : essai de la police")
 
+    def test_the_menu_invitation_shown_at_startup_is_described_with_its_real_texts(self):
+        for code, path in _existing().items():
+            with open(os.path.join(ROOT, "lang", f"{code}.json"), encoding="utf-8") as f:
+                data = json.load(f)
+            menu = re.search(r"\n### 2\.3 .*?(?=\n### 2\.4 )", _read(path), re.S).group(0)
+            with self.subTest(lang=code):
+                for key in ("title", "btn_yes", "btn_later", "btn_never"):
+                    self.assertEqual(menu.count(data[f"menu_invite.{key}"]), 1, key)
+
     def test_all_fifteen_readmes_point_to_the_guide_of_their_own_language(self):
         for code, path in ALL_READMES.items():
             with self.subTest(lang=code):

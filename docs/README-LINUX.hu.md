@@ -114,6 +114,8 @@ Az „Eltávolítás” csak azt távolítja el, amit a telepítés létrehozott
 
 Korlátok: az ablak az AppImage-ből és az archívumból érhető el. A forráskódból az AppImage-re irányít; a `.deb` csomagból elmagyarázza, hogy a program már benne van a menüben.
 
+Amíg a program nincs a menüben, az AppImage és az archívum maga ajánlja fel ezt a telepítést indításkor egy „Telepítés a menübe?” ablakban: „Igen, telepítés…” megnyitja a fenti ablakot, „Később” a következő indításkor újra rákérdez, „Ne kérdezd újra” pedig leállítja a felajánlásokat (a funkció megmarad a beállítások menüben).
+
 Ha az Asztal parancsikonja figyelmeztetést mutat: jobb kattintás az ikonra › „Indítás engedélyezése”. Egyes asztali környezetek (alapértelmezésben a GNOME) nem jelenítenek meg ikont az Asztalon: a menü indítója minden esetben működik.
 
 Mindent kézzel eltávolítani:

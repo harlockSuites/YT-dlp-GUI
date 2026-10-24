@@ -114,6 +114,8 @@ Une AppImage lancée par double-clic ne laisse pas d'icône dans le menu des app
 
 Limites : la fenêtre est disponible depuis l'AppImage et l'archive. Depuis les sources, elle renvoie vers l'AppImage ; depuis le paquet `.deb`, elle explique que le logiciel est déjà dans le menu.
 
+Tant que le programme n'est pas dans le menu, l'AppImage et l'archive proposent eux-mêmes cette installation au démarrage, dans une fenêtre « Installer dans le menu ? » : « Oui, installer… » ouvre la fenêtre ci-dessus, « Plus tard » redemandera au prochain lancement, « Ne plus demander » arrête les invitations (la fonction reste dans le menu des options).
+
 Si le raccourci du Bureau affiche un avertissement : clic droit sur l'icône › « Autoriser le lancement ». Certains bureaux (GNOME par défaut) n'affichent pas d'icônes sur le Bureau : le lanceur du menu fonctionne dans tous les cas.
 
 Pour tout retirer à la main :

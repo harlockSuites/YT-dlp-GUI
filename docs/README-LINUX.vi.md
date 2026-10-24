@@ -114,6 +114,8 @@ AppImage mở bằng cách nhấp đúp không để lại biểu tượng nào 
 
 Giới hạn: cửa sổ này dùng được từ AppImage và tệp nén. Từ mã nguồn, nó hướng bạn sang AppImage; từ gói `.deb`, nó giải thích rằng phần mềm đã có trong menu.
 
+Chừng nào phần mềm chưa có trong menu, AppImage và tệp nén sẽ tự đề nghị cài đặt này khi khởi động, trong cửa sổ «Cài vào menu?»: «Có, cài đặt…» mở cửa sổ ở trên, «Để sau» sẽ hỏi lại ở lần khởi động sau, còn «Đừng hỏi lại» dừng các lời mời (chức năng vẫn nằm trong menu tùy chọn).
+
 Nếu lối tắt trên Màn hình nền hiện cảnh báo: nhấp chuột phải vào biểu tượng › «Cho phép khởi chạy». Một số màn hình nền (GNOME theo mặc định) không hiện biểu tượng trên Màn hình nền: trình khởi chạy trong menu luôn hoạt động.
 
 Để gỡ mọi thứ thủ công:

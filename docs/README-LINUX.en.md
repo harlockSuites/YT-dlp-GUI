@@ -114,6 +114,8 @@ An AppImage started with a double click leaves no icon in the applications menu.
 
 Limits: the window is available from the AppImage and the archive. From source files it points you to the AppImage; from the `.deb` package it explains that the software is already in the menu.
 
+As long as the program is not in the menu, the AppImage and the archive offer this installation themselves at startup, in a window "Install in the menu?": "Yes, install…" opens the window above, "Later" asks again at the next start, "Don't ask again" stops the invitations (the function stays in the options menu).
+
 If the Desktop shortcut shows a warning: right-click the icon › "Allow Launching". Some desktops (GNOME by default) do not show icons on the Desktop: the menu launcher works in every case.
 
 To remove everything by hand:

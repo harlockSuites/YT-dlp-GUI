@@ -553,5 +553,10 @@
   "menu_install.err_copy": "Neuspeh: {error}",
   "ui.tab_options": "Opcije",
   "ui.log_frame": "Dnevnik",
-  "ui.debug_log_frame": "Dnevnik za otklanjanje grešaka"
+  "ui.debug_log_frame": "Dnevnik za otklanjanje grešaka",
+  "menu_invite.title": "Instalirati u meni?",
+  "menu_invite.text": "yt-dlp GUI još nije u meniju aplikacija na vašoj radnoj površini. Želite li da ga dodate, sa ikonom, da ga pokrećete kao bilo koji drugi program? Administratorska prava nisu potrebna. To možete učiniti i kasnije iz menija opcija.",
+  "menu_invite.btn_yes": "Da, instaliraj…",
+  "menu_invite.btn_later": "Kasnije",
+  "menu_invite.btn_never": "Ne pitaj ponovo"
 }

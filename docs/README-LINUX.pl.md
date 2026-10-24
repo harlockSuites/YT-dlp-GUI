@@ -114,6 +114,8 @@ AppImage uruchomiony dwukliknięciem nie zostawia ikony w menu aplikacji. W prog
 
 Ograniczenia: okno jest dostępne z AppImage i z archiwum. Z kodu źródłowego odsyła do AppImage; z pakietu `.deb` wyjaśnia, że program jest już w menu.
 
+Dopóki program nie jest w menu, AppImage i archiwum same proponują tę instalację przy uruchomieniu, w oknie „Zainstalować w menu?”: „Tak, zainstaluj…” otwiera okno opisane wyżej, „Później” zapyta ponownie przy następnym uruchomieniu, a „Nie pytaj ponownie” wyłącza te propozycje (funkcja pozostaje w menu opcji).
+
 Jeśli skrót na Pulpicie pokazuje ostrzeżenie: kliknij ikonę prawym przyciskiem › „Zezwól na uruchamianie”. Niektóre pulpity (domyślnie GNOME) nie pokazują ikon na Pulpicie: starter w menu działa zawsze.
 
 Aby usunąć wszystko ręcznie:

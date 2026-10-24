@@ -553,5 +553,10 @@
   "menu_install.err_copy": "Nabigo: {error}",
   "ui.tab_options": "Mga Opsyon",
   "ui.log_frame": "Log",
-  "ui.debug_log_frame": "Debug log"
+  "ui.debug_log_frame": "Debug log",
+  "menu_invite.title": "I-install sa menu?",
+  "menu_invite.text": "Wala pa ang yt-dlp GUI sa menu ng mga application ng desktop mo. Gusto mo bang idagdag ito, kasama ang icon nito, para mapatakbo mo ito tulad ng alinmang programa? Hindi kailangan ng karapatan ng administrator. Magagawa mo rin ito mamaya mula sa menu ng mga opsyon.",
+  "menu_invite.btn_yes": "Oo, i-install…",
+  "menu_invite.btn_later": "Mamaya",
+  "menu_invite.btn_never": "Huwag nang magtanong"
 }

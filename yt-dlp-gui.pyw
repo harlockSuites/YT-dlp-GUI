@@ -1088,6 +1088,21 @@ def linux_menu_state(env=None, desktop_dirs=None):
             "shortcut": any(_is_ours(os.path.join(d, "yt-dlp-gui.desktop")) for d in dirs)}
 
 
+def linux_menu_invite_wanted(cfg=None, kind=None, env=None, desktop_dirs=None):
+    """Linux : faut-il proposer « Installer dans le menu ? » au démarrage ? Seulement depuis l'AppImage ou l'archive, tant
+    que le programme n'est pas dans le menu et que l'utilisateur n'a pas répondu « Ne plus demander »."""
+    if IS_WINDOWS:
+        return False
+    cfg = load_config() if cfg is None else cfg
+    if cfg.get("menu_invite") == "never":
+        return False
+    try:
+        menu_install_source(kind, env)
+    except MenuInstallError:
+        return False
+    return not linux_menu_state(env, desktop_dirs)["installed"]
+
+
 def linux_menu_install(desktop_shortcut=False, kind=None, env=None, executable=None, icon_source=None,
                        desktop_dirs=None):
     """Copie le programme, écrit le lanceur et l'icône (et, si demandé, le raccourci du Bureau). Retourne
@@ -2725,6 +2740,41 @@ class LinuxMenuInstallWindow(tk.Toplevel):
             return
         self._refresh()
         self._say(t("menu_install.removed"), True)
+
+
+class LinuxMenuInviteDialog(tk.Toplevel):
+    """Linux : au démarrage, propose d'ajouter le programme au menu des applications. « Oui » ouvre la fenêtre
+    d'installation (où l'on choisit le raccourci du Bureau), « Plus tard » redemandera au prochain lancement, « Ne plus
+    demander » est mémorisé. `result` : « yes », « later » ou « never »."""
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.result = "later"
+        self.title(t("menu_invite.title"))
+        self.resizable(False, False)
+        self.transient(parent)
+        frm = ttk.Frame(self, padding=14)
+        frm.pack(fill="both", expand=True)
+        btns = ttk.Frame(frm)
+        btns.pack(side="bottom", fill="x", pady=(12, 0))
+        self.btn_yes = ttk.Button(btns, text=t("menu_invite.btn_yes"), command=lambda: self._answer("yes"))
+        self.btn_yes.pack(side="left", ipadx=8)
+        ttk.Button(btns, text=t("menu_invite.btn_later"), command=lambda: self._answer("later")).pack(
+            side="left", padx=(8, 0), ipadx=8)
+        ttk.Button(btns, text=t("menu_invite.btn_never"), command=lambda: self._answer("never")).pack(
+            side="right", ipadx=8)
+        ttk.Label(frm, text=t("menu_invite.text"), wraplength=440, justify="left").pack(anchor="w")
+        self.protocol("WM_DELETE_WINDOW", lambda: self._answer("later"))
+        self.btn_yes.focus_set()
+
+    def _answer(self, result):
+        self.result = result
+        if result == "never":
+            update_config("menu_invite", "never")
+        parent = self.master
+        self.destroy()
+        if result == "yes":
+            LinuxMenuInstallWindow(parent)
 
 
 class LanguageFontDialog(tk.Toplevel):
@@ -6876,10 +6926,27 @@ class YtDlpGui(tk.Tk):
 
     def _maybe_first_run(self):
         if not os.path.isfile(YTDLP):
-            self._open_setup()
+            win = self._open_setup()
+            if win is not None and not IS_WINDOWS:
+                # L'invitation attend la fin de l'assistant pour ne pas s'empiler dessus
+                win.bind("<Destroy>", lambda e, w=win: self._invite_after_setup(e.widget is w))
+        else:
+            self._maybe_menu_invite()
+
+    def _invite_after_setup(self, setup_closed):
+        if setup_closed:
+            try:
+                self.after(300, self._maybe_menu_invite)
+            except tk.TclError:   # le logiciel se ferme en même temps
+                pass
+
+    def _maybe_menu_invite(self):
+        """Linux : propose « Installer dans le menu ? » (voir linux_menu_invite_wanted)."""
+        if linux_menu_invite_wanted():
+            LinuxMenuInviteDialog(self)
 
     def _open_setup(self):
-        SetupWizardWindow(self, on_done=self._check_deps_quick)
+        return SetupWizardWindow(self, on_done=self._check_deps_quick)
 
     def _open_playlist_inspector(self):
         url = self._url(fix=True)

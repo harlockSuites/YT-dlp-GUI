@@ -114,6 +114,8 @@ Un'AppImage avviata con un doppio clic non lascia alcuna icona nel menu delle ap
 
 Limiti: la finestra è disponibile dall'AppImage e dall'archivio. Dal codice sorgente rimanda all'AppImage; dal pacchetto `.deb` spiega che il programma è già nel menu.
 
+Finché il programma non è nel menu, l'AppImage e l'archivio propongono da soli questa installazione all'avvio, in una finestra «Installare nel menu?»: «Sì, installa…» apre la finestra qui sopra, «Più tardi» richiederà al prossimo avvio e «Non chiedere più» interrompe gli inviti (la funzione resta nel menu delle opzioni).
+
 Se il collegamento sul Desktop mostra un avviso: clic destro sull'icona › «Consenti avvio». Alcuni desktop (GNOME per impostazione predefinita) non mostrano icone sul Desktop: il lanciatore del menu funziona in ogni caso.
 
 Per rimuovere tutto a mano:

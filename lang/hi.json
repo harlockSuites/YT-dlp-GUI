@@ -553,5 +553,10 @@
   "menu_install.err_copy": "विफल: {error}",
   "ui.tab_options": "विकल्प",
   "ui.log_frame": "लॉग",
-  "ui.debug_log_frame": "डीबग लॉग"
+  "ui.debug_log_frame": "डीबग लॉग",
+  "menu_invite.title": "मेनू में इंस्टॉल करें?",
+  "menu_invite.text": "yt-dlp GUI अभी आपके डेस्कटॉप के एप्लिकेशन मेनू में नहीं है। क्या आप इसे आइकन के साथ जोड़ना चाहेंगे, ताकि इसे किसी भी अन्य प्रोग्राम की तरह चलाया जा सके? एडमिनिस्ट्रेटर अधिकारों की ज़रूरत नहीं है। आप यह बाद में विकल्प मेनू से भी कर सकते हैं।",
+  "menu_invite.btn_yes": "हाँ, इंस्टॉल करें…",
+  "menu_invite.btn_later": "बाद में",
+  "menu_invite.btn_never": "दोबारा न पूछें"
 }
