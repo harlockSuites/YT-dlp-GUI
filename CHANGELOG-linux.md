@@ -11,7 +11,13 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 - LibreWolf, Waterfox, Floorp et Zen Browser, dérivés de Firefox, sont lus par le dossier de leur profil (`--cookies-from-browser firefox:/chemin`, y compris les installations Flatpak). Le logiciel cherche leur base de cookies (`cookies.sqlite`, jusqu'à trois niveaux sous leurs dossiers habituels : anciens `~/.nom` et récents `~/.config/nom`, Flatpak compris) et donne à yt-dlp le dossier du profil le plus récemment utilisé. Agencement relevé et confirmé pour LibreWolf en Flatpak (VM, 2026-10-23 : `config/librewolf/librewolf/<profil>`, `.librewolf` étant vide) ; Waterfox, Floorp et Zen restent à confirmer sur une machine qui les a installés.
 - 3 clés de traduction (fenêtre de choix) dans les 15 langues, à faire relire ; puce « Cookies » des 15 README mise à jour.
 
+- Cookies, diagnostic plus clair (2 clés de traduction, 15 langues, à faire relire) :
+  - « Extracted 0 cookies » : le navigateur a été lu mais n'a rien donné (cookies supprimés à sa fermeture, comme le fait LibreWolf par défaut, ou profil non connecté). Le voyant n'est plus vert dans ce cas (le test n'utilise plus `--quiet`, donc yt-dlp annonce le nombre de cookies) et l'infobulle, ainsi que le conseil du journal, expliquent quoi faire au lieu de laisser YouTube répondre « robot ».
+  - « Item does not exist! » avec un navigateur de la famille Chromium : le trousseau de clés du bureau n'existe pas ou est verrouillé ; le message le dit et indique « Mots de passe et clés » (Seahorse).
+
 ### Modifié
+- Les fenêtres « Téléchargement — file d'attente » et « Journal de debug » de l'Inspecteur de playlist affichent toujours leurs boutons (Mettre en pause / Sauter / Fermer, Effacer / Fermer), même dans une fenêtre basse ou avec une grande police système : les boutons sont placés en bas avant le journal, qui prend la place restante.
+- Les avertissements sur fond clair (note des cookies, avertissement des miniatures MKV, dépendances manquantes, « Recommandé ») passent à un orange brûlé (`#8a4200`, contraste d'au moins 5 : 1 sur le gris des fenêtres) au lieu d'un orange vif difficile à lire ; les journaux sur fond sombre et les voyants gardent leurs couleurs vives.
 - Sous Linux, les listes ne proposent plus d'office sept navigateurs (dont Edge, Opera) : ce sont les cinq par défaut, ou le choix de l'utilisateur. Windows n'est pas concerné.
 - Les messages d'aide sur les cookies nomment le navigateur proprement (« Zen Browser », « Google Chrome »).
 

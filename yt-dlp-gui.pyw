@@ -113,6 +113,9 @@ def open_path(path):
 # fenêtre existe, avant que le moindre contrôle ne soit créé.
 UI_FONT = "Segoe UI"
 MONO_FONT = "Consolas"
+# Texte d'avertissement sur fond clair : un orange brûlé (contraste d'au moins 5 : 1 sur le gris des fenêtres) ; les
+# orange et jaune vifs ne servent plus que sur le fond sombre des journaux et pour les voyants.
+WARN_TEXT = "#8a4200"
 
 
 def use_system_fonts():
@@ -1238,7 +1241,7 @@ class DepsWindow(tk.Toplevel):
             else:
                 level = "required" if dep["required"] else dep.get("level", "optional")
                 text, color = {"required": ("deps.status_absent", "#c0392b"),
-                               "recommended": ("deps.status_recommended", "#b9770e"),
+                               "recommended": ("deps.status_recommended", WARN_TEXT),
                                "optional": ("deps.status_optional", "#7f8c8d")}[level]
                 row["lbl_status"].configure(text=t(text), foreground=color)
                 if dep_direct(dep) or has_choco:
@@ -1550,18 +1553,10 @@ class DownloadQueueWindow(tk.Toplevel):
         ttk.Progressbar(self, variable=self.var_progress, maximum=100,
                         mode="determinate").pack(fill="x", padx=8, pady=(0, 4))
 
-        frm_log = ttk.LabelFrame(self, text=t("dlq.log_frame_label"), padding=6)
-        frm_log.pack(fill="both", expand=True, padx=8, pady=(0, 4))
-
-        self.log = tk.Text(frm_log, wrap="word", font=(MONO_FONT, 9),
-                           state="disabled", bg="#1e1e1e", fg="#d4d4d4")
-        sb = ttk.Scrollbar(frm_log, command=self.log.yview)
-        self.log.configure(yscrollcommand=sb.set)
-        sb.pack(side="right", fill="y")
-        self.log.pack(fill="both", expand=True)
-
+        # Boutons : packés en premier, côté bas, pour rester toujours visibles (le journal prend la place qui reste,
+        # même dans une fenêtre basse ou avec une police système plus grande)
         frm_btn = ttk.Frame(self, padding=(8, 0, 8, 8))
-        frm_btn.pack(fill="x")
+        frm_btn.pack(side="bottom", fill="x")
         self.btn_pause = ttk.Button(frm_btn, text=t("dlq.btn_pause"), command=self._toggle_pause)
         self.btn_pause.pack(side="left", ipadx=6)
         self.btn_skip = ttk.Button(frm_btn, text=t("dlq.btn_skip"), command=self._skip)
@@ -1569,6 +1564,16 @@ class DownloadQueueWindow(tk.Toplevel):
         self.btn_close = ttk.Button(frm_btn, text=t("dlq.btn_close"),
                                     command=self._close)
         self.btn_close.pack(side="right", ipadx=6)
+
+        frm_log = ttk.LabelFrame(self, text=t("dlq.log_frame_label"), padding=6)
+        frm_log.pack(fill="both", expand=True, padx=8, pady=(0, 4))
+
+        self.log = tk.Text(frm_log, wrap="word", font=(MONO_FONT, 9), height=8,
+                           state="disabled", bg="#1e1e1e", fg="#d4d4d4")
+        sb = ttk.Scrollbar(frm_log, command=self.log.yview)
+        self.log.configure(yscrollcommand=sb.set)
+        sb.pack(side="right", fill="y")
+        self.log.pack(fill="both", expand=True)
         self.protocol("WM_DELETE_WINDOW", self._close)
 
     def _log(self, text, color=None):
@@ -2943,10 +2948,21 @@ def _browser_combo(parent, var):
     return cb
 
 
+COOKIES_ZERO = re.compile(r"Extracted 0 cookies")
+
+
 def _cookie_hint(text, browser=""):
     """Explication claire d'une erreur de lecture des cookies (sinon chaîne vide)."""
     low = (text or "").lower()
     name = browser_label(browser)
+    if COOKIES_ZERO.search(text or ""):
+        # Le navigateur a été lu mais n'a rien donné : le plus souvent il supprime ses cookies à sa fermeture
+        # (réglage par défaut de LibreWolf) ou le profil n'a jamais été connecté ; YouTube répond alors « robot ».
+        return t("cookie.hint_zero", browser=name)
+    if not IS_WINDOWS and ("item does not exist" in low or "failed to read from keyring" in low
+                           or "secretstorage not available" in low):
+        # yt-dlp n'a pas pu interroger le trousseau de clés du bureau pour déchiffrer les cookies d'un navigateur Chromium
+        return t("cookie.hint_keyring", browser=name)
     if "database is locked" in low or ("could not copy" in low and "cookie" in low):
         running = browser_process_count(browser)
         if running:
@@ -3100,7 +3116,7 @@ class CookieFrame(ttk.LabelFrame):
                              fg="#e74c3c", font=(UI_FONT, 8), wraplength=warn_wrap)
         self.warn.grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
         self.note = tk.Label(self, text="", justify="left", anchor="w",
-                             fg="#f5a623", font=(UI_FONT, 8), wraplength=warn_wrap)
+                             fg=WARN_TEXT, font=(UI_FONT, 8), wraplength=warn_wrap)
         self.note.grid(row=2, column=0, columnspan=3, sticky="w", pady=(4, 0))
         var.trace_add("write", lambda *_: self.refresh())
         self.refresh()
@@ -3158,15 +3174,21 @@ class CookieFrame(ttk.LabelFrame):
         def _test():
             detail = ""
             try:
+                # Sans --quiet : yt-dlp dit alors « Extracted N cookies from … », ce qui permet de repérer un navigateur
+                # qui n'a rien donné (cookies supprimés à sa fermeture, profil jamais connecté…) même si la vidéo
+                # d'essai, publique, se lit sans cookies.
                 r = subprocess.run(
-                    [YTDLP, "--cookies-from-browser", cookie_browser_arg(browser), "--simulate", "--no-playlist", "--quiet",
-                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
+                    [YTDLP, "--cookies-from-browser", cookie_browser_arg(browser), "--simulate", "--no-playlist",
+                     "--no-warnings", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"],
                     capture_output=True, timeout=20, **NO_WINDOW)
                 ok = r.returncode == 0
-                if not ok:
-                    text = (r.stderr or b"").decode("utf-8", "replace").strip()
+                text = (r.stderr or b"").decode("utf-8", "replace").strip()
+                everything = ((r.stdout or b"").decode("utf-8", "replace") + "\n" + text).strip()
+                if ok and COOKIES_ZERO.search(everything):
+                    ok, detail = False, _cookie_hint(everything, browser)
+                elif not ok:
                     lines = text.splitlines()
-                    detail = _cookie_hint(text, browser) or (lines[-1][:160] if lines else "")
+                    detail = _cookie_hint(everything, browser) or (lines[-1][:160] if lines else "")
             except Exception as exc:
                 ok, detail = False, av_advice(exc) or str(exc)[:160]
 
@@ -3346,17 +3368,18 @@ class PlaylistInspectorWindow(tk.Toplevel):
         win.geometry("780x400")
         win.minsize(400, 200)
         self._log_win = win
+        # Boutons packés en premier, côté bas : toujours visibles, quelle que soit la hauteur de la fenêtre
+        frm_btn = ttk.Frame(win, padding=(6, 0, 6, 6))
+        frm_btn.pack(side="bottom", fill="x")
         frm = ttk.Frame(win, padding=6)
         frm.pack(fill="both", expand=True)
-        txt = tk.Text(frm, font=(MONO_FONT, 9), bg="#1e1e1e", fg="#d4d4d4",
+        txt = tk.Text(frm, font=(MONO_FONT, 9), bg="#1e1e1e", fg="#d4d4d4", height=8,
                       wrap="word", relief="flat", state="disabled")
         vsb = ttk.Scrollbar(frm, orient="vertical", command=txt.yview)
         txt.configure(yscrollcommand=vsb.set)
         vsb.pack(side="right", fill="y")
         txt.pack(fill="both", expand=True)
         self._log_text = txt
-        frm_btn = ttk.Frame(win, padding=(6, 0, 6, 6))
-        frm_btn.pack(fill="x")
         ttk.Button(frm_btn, text=t("insp.debug_log_btn_clear"),
                    command=lambda: (txt.configure(state="normal"),
                                     txt.delete("1.0", "end"),
@@ -3562,7 +3585,7 @@ class PlaylistInspectorWindow(tk.Toplevel):
         self._g_blocks.grid(row=0, column=1, sticky="w")
         self._lbl_mkv_warn = ttk.Label(
             g, text=t("insp.mkv_warn"),
-            foreground="#e67e22", font=(UI_FONT, 8), wraplength=360)
+            foreground=WARN_TEXT, font=(UI_FONT, 8), wraplength=360)
         self._lbl_mkv_warn.grid(row=0, column=2, sticky="w", padx=(10, 0))
         self._lbl_mkv_warn.grid_remove()
         frm_g.add(g)
@@ -5633,7 +5656,7 @@ class YtDlpGui(tk.Tk):
         self.var_dep_warn = tk.StringVar()
         self._lbl_dep_warn = ttk.Label(
             frm_toolbar, textvariable=self.var_dep_warn,
-            foreground="#e67e22", font=(UI_FONT, 9)
+            foreground=WARN_TEXT, font=(UI_FONT, 9)
         )
         self._lbl_dep_warn.pack(side="left")
         self._update_info = None
@@ -5799,7 +5822,7 @@ class YtDlpGui(tk.Tk):
         self._blocks_sel.grid(row=0, column=1, sticky="w")
         self._lbl_mkv_warn_main = ttk.Label(
             g, text=t("opts.mkv_warn"),
-            foreground="#e67e22", font=(UI_FONT, 8), wraplength=420)
+            foreground=WARN_TEXT, font=(UI_FONT, 8), wraplength=420)
         self._lbl_mkv_warn_main.grid(row=0, column=2, sticky="w", padx=(10, 0))
         self._lbl_mkv_warn_main.grid_remove()
         frm_opts.add(g)
@@ -5986,7 +6009,7 @@ class YtDlpGui(tk.Tk):
                 self.var_dep_warn.set(
                     t("app.dep_warn_required", liste=', '.join(required_missing))
                 )
-                self._lbl_dep_warn.configure(foreground="#e67e22")
+                self._lbl_dep_warn.configure(foreground=WARN_TEXT)
             else:
                 self.var_dep_warn.set(
                     t("app.dep_warn_optional", liste=', '.join(missing))

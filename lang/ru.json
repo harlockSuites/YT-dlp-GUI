@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "Выберите новый файл yt-dlp",
   "browsers.linux_explain": "Отметьте браузеры, которые будут предлагаться в списках cookie. По умолчанию: Firefox, Google Chrome, Chromium, Brave и Vivaldi — самые используемые в Linux. yt-dlp напрямую читает первые семь; LibreWolf, Waterfox, Floorp и Zen Browser — производные Firefox, они читаются через папку профиля (путь ещё не проверен). Браузерам семейства Chromium нужна разблокированная связка ключей рабочего стола; рекомендуется Firefox.",
   "browsers.linux_reset": "Вернуть пять по умолчанию",
-  "browsers.linux_found": "✔ найден на этом компьютере"
+  "browsers.linux_found": "✔ найден на этом компьютере",
+  "cookie.hint_zero": "Из браузера {browser} не прочитано ни одного cookie («Extracted 0 cookies»). Возможно, он удаляет cookie при закрытии (LibreWolf делает так по умолчанию) или его профиль не выполнил вход в YouTube. Оставьте его открытым и с выполненным входом либо отключите удаление cookie при закрытии в настройках приватности, затем повторите проверку.",
+  "cookie.hint_keyring": "Связка ключей рабочего стола (GNOME Keyring, KWallet) отсутствует или заблокирована: yt-dlp не может прочитать ключ, расшифровывающий cookie браузера {browser} (сообщение «Item does not exist!»). Откройте «Пароли и ключи» (Seahorse), создайте или разблокируйте связку по умолчанию, затем снова войдите в YouTube в {browser}. Firefox и его производные (LibreWolf, Waterfox, Floorp, Zen) в ней не нуждаются."
 }

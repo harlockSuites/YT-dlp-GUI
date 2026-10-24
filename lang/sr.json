@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "Izaberite novu datoteku yt-dlp",
   "browsers.linux_explain": "Označite pregledače koji će se nuditi u listama kolačića. Podrazumevano: Firefox, Google Chrome, Chromium, Brave i Vivaldi, najčešće korišćeni na Linuxu. yt-dlp direktno čita prvih sedam; LibreWolf, Waterfox, Floorp i Zen Browser su derivati Firefoxa koji se čitaju preko foldera profila (putanja još nije proverena). Pregledači iz porodice Chromium zahtevaju otključan priveznik ključeva radne površine; preporučuje se Firefox.",
   "browsers.linux_reset": "Vrati pet podrazumevanih",
-  "browsers.linux_found": "✔ pronađeno na ovom računaru"
+  "browsers.linux_found": "✔ pronađeno na ovom računaru",
+  "cookie.hint_zero": "Iz pregledača {browser} nije pročitan nijedan kolačić („Extracted 0 cookies”). Možda ih briše pri zatvaranju (LibreWolf to radi podrazumevano) ili njegov profil nije prijavljen na YouTube. Ostavite ga otvorenog i prijavljenog, ili isključite brisanje kolačića pri zatvaranju u podešavanjima privatnosti, pa ponovite test.",
+  "cookie.hint_keyring": "Priveznik ključeva radne površine (GNOME Keyring, KWallet) ne postoji ili je zaključan: yt-dlp ne može da pročita ključ koji dešifruje kolačiće pregledača {browser} (poruka „Item does not exist!”). Otvorite „Lozinke i ključevi” (Seahorse), napravite ili otključajte podrazumevani priveznik, pa se ponovo prijavite na YouTube u {browser}. Firefox i njegovi derivati (LibreWolf, Waterfox, Floorp, Zen) ga ne trebaju."
 }

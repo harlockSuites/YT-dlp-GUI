@@ -112,7 +112,7 @@ class DependencyBannerTests(unittest.TestCase):
         self.assertIn("⚠", text)
         self.assertIn("ffmpeg", text)
         self.assertNotIn("AtomicParsley", text, "les outils facultatifs ne sont plus listés comme manquants")
-        self.assertEqual(color, "#e67e22")
+        self.assertEqual(color, m.WARN_TEXT)
 
     def test_everything_installed_is_green(self):
         every = {d["exe"] for d in m.DEPS}

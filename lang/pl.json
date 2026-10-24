@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "Wybierz nowy plik yt-dlp",
   "browsers.linux_explain": "Zaznacz przeglądarki, które mają być w listach ciasteczek. Domyślnie: Firefox, Google Chrome, Chromium, Brave i Vivaldi, najczęściej używane w Linuksie. yt-dlp odczytuje bezpośrednio pierwsze siedem; LibreWolf, Waterfox, Floorp i Zen Browser to pochodne Firefoksa odczytywane przez folder profilu (ścieżka jeszcze niesprawdzona). Przeglądarki z rodziny Chromium wymagają odblokowanego pęku kluczy pulpitu; zalecany jest Firefox.",
   "browsers.linux_reset": "Przywróć pięć domyślnych",
-  "browsers.linux_found": "✔ znaleziono na tym komputerze"
+  "browsers.linux_found": "✔ znaleziono na tym komputerze",
+  "cookie.hint_zero": "Z przeglądarki {browser} nie odczytano żadnego ciasteczka („Extracted 0 cookies”). Być może usuwa je przy zamknięciu (LibreWolf robi tak domyślnie) albo jej profil nie jest zalogowany w YouTube. Zostaw ją otwartą i zalogowaną albo wyłącz usuwanie ciasteczek przy zamknięciu w ustawieniach prywatności, a potem powtórz test.",
+  "cookie.hint_keyring": "Pęk kluczy pulpitu (GNOME Keyring, KWallet) nie istnieje lub jest zablokowany: yt-dlp nie może odczytać klucza odszyfrowującego ciasteczka przeglądarki {browser} (komunikat „Item does not exist!”). Otwórz „Hasła i klucze” (Seahorse), utwórz lub odblokuj domyślny pęk kluczy, a potem zaloguj się ponownie w YouTube w {browser}. Firefox i jego pochodne (LibreWolf, Waterfox, Floorp, Zen) go nie potrzebują."
 }

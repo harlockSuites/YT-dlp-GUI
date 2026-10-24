@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "Válassza ki az új yt-dlp fájlt",
   "browsers.linux_explain": "Jelölje be, mely böngészők jelenjenek meg a sütilistákban. Alapértelmezés: Firefox, Google Chrome, Chromium, Brave és Vivaldi, a Linuxon leggyakrabban használtak. A yt-dlp az első hetet közvetlenül olvassa; a LibreWolf, a Waterfox, a Floorp és a Zen Browser Firefox-származékok, a profilmappájukon át olvassa őket (az elérési út még nincs ellenőrizve). A Chromium-családba tartozó böngészőkhöz feloldott asztali kulcstartó kell; a Firefox ajánlott.",
   "browsers.linux_reset": "Az öt alapértelmezett visszaállítása",
-  "browsers.linux_found": "✔ megtalálható ezen a számítógépen"
+  "browsers.linux_found": "✔ megtalálható ezen a számítógépen",
+  "cookie.hint_zero": "A(z) {browser} böngészőből egyetlen sütit sem olvastunk ki („Extracted 0 cookies”). Lehet, hogy bezáráskor törli a sütiket (a LibreWolf alapértelmezés szerint így tesz), vagy a profilja nincs bejelentkezve a YouTube-ra. Hagyja nyitva és bejelentkezve, vagy kapcsolja ki a sütik bezáráskori törlését az adatvédelmi beállításokban, majd ismételje meg a tesztet.",
+  "cookie.hint_keyring": "Az asztali kulcstartó (GNOME Keyring, KWallet) nem létezik vagy zárolva van: a yt-dlp nem tudja kiolvasni a(z) {browser} sütijeit visszafejtő kulcsot (üzenet: „Item does not exist!”). Nyissa meg a „Jelszavak és kulcsok” (Seahorse) alkalmazást, hozza létre vagy oldja fel az alapértelmezett kulcstartót, majd jelentkezzen be újra a YouTube-ra a(z) {browser} böngészőben. A Firefoxnak és származékainak (LibreWolf, Waterfox, Floorp, Zen) nincs rá szüksége."
 }

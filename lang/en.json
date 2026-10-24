@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "Choose the new yt-dlp file",
   "browsers.linux_explain": "Tick the browsers to offer in the cookie lists. By default: Firefox, Google Chrome, Chromium, Brave and Vivaldi, the most used on Linux. yt-dlp reads the first seven directly; LibreWolf, Waterfox, Floorp and Zen Browser are Firefox derivatives read through their profile folder (path not yet verified). Chromium-family browsers need the desktop key ring to be unlocked; Firefox is recommended.",
   "browsers.linux_reset": "Restore the five defaults",
-  "browsers.linux_found": "✔ found on this computer"
+  "browsers.linux_found": "✔ found on this computer",
+  "cookie.hint_zero": "No cookie was read from {browser} (“Extracted 0 cookies”). It may delete its cookies when it closes (LibreWolf does by default) or its profile is not signed in to YouTube. Keep it open and signed in, or turn off cookie deletion on close in its privacy settings, then run the test again.",
+  "cookie.hint_keyring": "The desktop key ring (GNOME Keyring, KWallet) is missing or locked: yt-dlp cannot read the key that decrypts the cookies of {browser} (message “Item does not exist!”). Open “Passwords and Keys” (Seahorse), create or unlock the default key ring, then sign in to YouTube again in {browser}. Firefox and its derivatives (LibreWolf, Waterfox, Floorp, Zen) do not need it."
 }

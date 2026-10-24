@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "新しい yt-dlp ファイルを選択",
   "browsers.linux_explain": "Cookie の一覧に表示するブラウザーにチェックを入れてください。初期設定は Linux で最もよく使われる Firefox、Google Chrome、Chromium、Brave、Vivaldi の 5 つです。yt-dlp は最初の 7 つを直接読み取ります。LibreWolf、Waterfox、Floorp、Zen Browser は Firefox の派生版で、プロファイルフォルダー経由で読み取ります（パスは未検証）。Chromium 系ブラウザーにはデスクトップのキーリングのロック解除が必要です。Firefox を推奨します。",
   "browsers.linux_reset": "初期設定の 5 つに戻す",
-  "browsers.linux_found": "✔ このコンピューターで見つかりました"
+  "browsers.linux_found": "✔ このコンピューターで見つかりました",
+  "cookie.hint_zero": "{browser} から Cookie が 1 つも読み取れませんでした（「Extracted 0 cookies」）。閉じるときに Cookie を削除する設定（LibreWolf は初期設定で削除します）か、プロファイルが YouTube にログインしていない可能性があります。ブラウザーを開いたままログインした状態にするか、プライバシー設定で終了時の Cookie 削除をオフにして、もう一度テストしてください。",
+  "cookie.hint_keyring": "デスクトップのキーリング（GNOME Keyring、KWallet）が存在しないかロックされています。yt-dlp は {browser} の Cookie を復号する鍵を読み取れません（メッセージ「Item does not exist!」）。「パスワードと鍵」（Seahorse）を開いて既定のキーリングを作成またはロック解除し、{browser} で YouTube に再度ログインしてください。Firefox とその派生版（LibreWolf、Waterfox、Floorp、Zen）にはキーリングは不要です。"
 }

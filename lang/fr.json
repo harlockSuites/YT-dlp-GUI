@@ -525,5 +525,7 @@
   "upd.replace_title_dialog_linux": "Choisir le nouveau fichier yt-dlp",
   "browsers.linux_explain": "Cochez les navigateurs à proposer dans les listes de cookies. Au départ : Firefox, Google Chrome, Chromium, Brave et Vivaldi, les plus utilisés sous Linux. yt-dlp lit directement les sept premiers ; LibreWolf, Waterfox, Floorp et Zen Browser sont des dérivés de Firefox lus par leur dossier de profil (chemin à vérifier). Les navigateurs de la famille Chromium demandent le trousseau de clés du bureau déverrouillé ; Firefox est recommandé.",
   "browsers.linux_reset": "Rétablir les cinq par défaut",
-  "browsers.linux_found": "✔ trouvé sur cet ordinateur"
+  "browsers.linux_found": "✔ trouvé sur cet ordinateur",
+  "cookie.hint_zero": "Aucun cookie n'a été lu dans {browser} (« Extracted 0 cookies »). Il supprime peut-être ses cookies à la fermeture (c'est le réglage par défaut de LibreWolf) ou son profil n'est pas connecté à YouTube. Laissez-le ouvert et connecté, ou désactivez la suppression des cookies à la fermeture dans ses réglages de vie privée, puis relancez le test.",
+  "cookie.hint_keyring": "Le trousseau de clés du bureau (GNOME Keyring, KWallet) est introuvable ou verrouillé : yt-dlp ne peut pas lire la clé qui déchiffre les cookies de {browser} (message « Item does not exist! »). Ouvrez « Mots de passe et clés » (Seahorse), créez ou déverrouillez le trousseau par défaut, puis reconnectez-vous à YouTube dans {browser}. Firefox et ses dérivés (LibreWolf, Waterfox, Floorp, Zen) n'en ont pas besoin."
 }
