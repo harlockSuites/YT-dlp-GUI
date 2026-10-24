@@ -6,7 +6,7 @@ Giao diện đồ họa cho [yt-dlp](https://github.com/yt-dlp/yt-dlp), được
 
 > **Dự án đang được phát triển.** Một số tính năng có thể thay đổi, chưa hoàn chỉnh hoặc còn lỗi. Có cho Windows; đồng thời cung cấp **bản xem trước cho Linux**, được kiểm thử ít hơn.
 
-🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+🐧 **Linux** : [README-LINUX](README-LINUX.vi.md)
 
 ![yt-dlp GUI](img/main.en.png)
 

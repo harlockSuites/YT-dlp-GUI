@@ -6,7 +6,7 @@
 
 > **개발 중인 프로젝트입니다.** 일부 기능은 변경되거나 불완전하거나 버그가 있을 수 있습니다. Windows용으로 제공되며, 검증이 덜 된 **Linux용 미리보기 버전**도 함께 제공합니다.
 
-🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+🐧 **Linux** : [README-LINUX](README-LINUX.ko.md)
 
 ![yt-dlp GUI](img/main.en.png)
 

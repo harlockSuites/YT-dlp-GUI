@@ -1,20 +1,22 @@
 # yt-dlp GUI — version Linux
 
-[Français](README-LINUX.md) · [English](docs/README-LINUX.en.md)
+[Français](README-LINUX.md) · [English](docs/README-LINUX.en.md) · [Español](docs/README-LINUX.es.md) · [Português](docs/README-LINUX.pt.md) · [Italiano](docs/README-LINUX.it.md) · [Polski](docs/README-LINUX.pl.md) · [Magyar](docs/README-LINUX.hu.md) · [Srpski](docs/README-LINUX.sr.md) · [Русский](docs/README-LINUX.ru.md) · [Tiếng Việt](docs/README-LINUX.vi.md) · [中文](docs/README-LINUX.zh.md) · [हिन्दी](docs/README-LINUX.hi.md) · [日本語](docs/README-LINUX.ja.md) · [한국어](docs/README-LINUX.ko.md) · [Filipino](docs/README-LINUX.fil.md)
 
-> **Préversion.** Ce document complète le [README principal](README.md) : c'est le même logiciel, mais ici on ne parle que de ce qui est propre à Linux (installation, cookies et trousseaux de clés, fichiers, dépannage). Les nouveautés de chaque version sont dans [CHANGELOG-linux.md](CHANGELOG-linux.md). Les autres langues viendront après relecture du français et de l'anglais.
+> **Préversion.** Ce document complète le [README principal](README.md) : c'est le même logiciel, mais ici on ne parle que de ce qui est propre à Linux (installation, cookies et trousseaux de clés, fichiers, dépannage). Les nouveautés de chaque version sont dans [CHANGELOG-linux.md](CHANGELOG-linux.md). Les traductions sont à faire relire par des locuteurs natifs ; en cas de doute, le français et l'anglais font foi.
 
 ## Sommaire
 
-1. [État de la préversion](#1-état-de-la-préversion)
-2. [Installer](#2-installer)
-3. [Premier lancement et dépendances](#3-premier-lancement-et-dépendances)
-4. [Cookies du navigateur](#4-cookies-du-navigateur)
-5. [Trousseaux de clés : manœuvres à la main](#5-trousseaux-de-clés--manœuvres-à-la-main)
-6. [Où sont les fichiers](#6-où-sont-les-fichiers)
-7. [Dépannage](#7-dépannage)
-8. [Signaler un bogue](#8-signaler-un-bogue)
-9. [Pour les développeurs](#9-pour-les-développeurs)
+1. [État de la préversion](#s1)
+2. [Installer](#s2)
+3. [Premier lancement et dépendances](#s3)
+4. [Cookies du navigateur](#s4)
+5. [Trousseaux de clés : manœuvres à la main](#s5)
+6. [Où sont les fichiers](#s6)
+7. [Dépannage](#s7)
+8. [Signaler un bogue](#s8)
+9. [Pour les développeurs](#s9)
+
+<a id="s1"></a>
 
 ## 1. État de la préversion
 
@@ -23,7 +25,7 @@ La version Linux reprend le comportement de la version Windows 0.1.7 (figée, qu
 **Ce qui a été essayé** (machine virtuelle Debian 12, bureau GNOME, Python 3.11, vrai compte YouTube connecté dans chaque navigateur, octobre 2026) :
 
 - **Cookies de Firefox, Waterfox, Floorp et Zen Browser** : lus navigateur ouvert ou fermé.
-- **Cookies de Google Chrome, Chromium, Brave, Vivaldi, Opera et Microsoft Edge** : lus navigateur **fermé**, après avoir lancé chaque navigateur une fois et s'y être connecté à YouTube (voir [la section 5](#5-trousseaux-de-clés--manœuvres-à-la-main)). Téléchargement individuel et Inspecteur de playlist réussis.
+- **Cookies de Google Chrome, Chromium, Brave, Vivaldi, Opera et Microsoft Edge** : lus navigateur **fermé**, après avoir lancé chaque navigateur une fois et s'y être connecté à YouTube (voir [la section 5](#s5)). Téléchargement individuel et Inspecteur de playlist réussis.
 - **LibreWolf** : lu seulement quand il est ouvert et connecté (il supprime ses cookies à sa fermeture par défaut).
 - **Vidéo privée** avec les cookies de Firefox, et playlist de trois vidéos dont une privée.
 - **Paquets** : l'AppImage et l'archive `.tar.gz` sont construites par la CI sur Ubuntu 22.04 ; le `.deb` a été construit, installé, lancé et retiré sous Debian 12 ; « Installer dans le menu » a été essayé avec la vraie AppImage dans un dossier personnel jetable.
@@ -32,10 +34,12 @@ La version Linux reprend le comportement de la version Windows 0.1.7 (figée, qu
 
 - les autres distributions (Ubuntu, Fedora, Arch, openSUSE…) et les bureaux autres que GNOME, KDE Plasma (KWallet) compris ;
 - les navigateurs en Flatpak ou Snap (sauf l'agencement de LibreWolf en Flatpak, relevé) ;
-- Vivaldi, Opera ou Edge **sans** Chrome ni Chromium installés (voir [la section 5](#5-trousseaux-de-clés--manœuvres-à-la-main)) ;
+- Vivaldi, Opera ou Edge **sans** Chrome ni Chromium installés (voir [la section 5](#s5)) ;
 - l'architecture aarch64 (le logiciel la prévoit, mais les paquets ne sont construits que pour x86_64) ;
 - la fenêtre « Installer dans le menu » manipulée à la souris sur un vrai bureau (elle est testée par programme) ;
 - les traductions : elles sont à faire relire par des locuteurs natifs.
+
+<a id="s2"></a>
 
 ## 2. Installer
 
@@ -187,6 +191,8 @@ rm -rf ~/.local/share/yt-dlp-GUI
 
 Vos vidéos téléchargées ne sont jamais dans ce dossier.
 
+<a id="s3"></a>
+
 ## 3. Premier lancement et dépendances
 
 Au premier lancement, l'assistant d'installation propose de télécharger **yt-dlp** (`yt-dlp_linux`), **ffmpeg** (archive `.tar.xz` des constructions officielles de yt-dlp) et **deno**, depuis leurs dépôts GitHub. Les sommes SHA-256 sont vérifiées, aucun droit administrateur n'est demandé, et les fichiers vont dans `~/.local/share/yt-dlp-GUI` (yt-dlp) et `~/.local/share/yt-dlp-GUI/bin` (ffmpeg, ffprobe, deno). Il reste accessible dans le menu des options.
@@ -199,6 +205,8 @@ Seuls ffmpeg et ffprobe sont indispensables ; deno est recommandé (pistes audio
 | dnf | `sudo dnf install AtomicParsley aria2 mkvtoolnix` |
 | pacman | `sudo pacman -S aria2 atomicparsley mkvtoolnix-cli` |
 | zypper | `sudo zypper install AtomicParsley aria2 mkvtoolnix` |
+
+<a id="s4"></a>
 
 ## 4. Cookies du navigateur
 
@@ -224,9 +232,9 @@ Le **voyant** à côté de la liste indique l'état : rouge (désactivé ou en �
 | Ce que vous voyez | Cause probable | Que faire |
 |---|---|---|
 | « Extracted 0 cookies » puis « Sign in to confirm you're not a bot » | le navigateur ne garde aucun cookie sur le disque (LibreWolf les supprime à sa fermeture par défaut ; profil jamais connecté ; mode privé) | le laisser ouvert et connecté à YouTube, ou désactiver la suppression des cookies à la fermeture dans ses réglages de vie privée |
-| « Item does not exist! » avec Chrome, Chromium, Brave, Vivaldi, Opera ou Edge | yt-dlp n'a pas trouvé la clé du navigateur dans le trousseau de clés du bureau | lancer le navigateur une fois, s'y connecter à YouTube, le fermer, refaire le test ; sinon [section 5](#5-trousseaux-de-clés--manœuvres-à-la-main) |
+| « Item does not exist! » avec Chrome, Chromium, Brave, Vivaldi, Opera ou Edge | yt-dlp n'a pas trouvé la clé du navigateur dans le trousseau de clés du bureau | lancer le navigateur une fois, s'y connecter à YouTube, le fermer, refaire le test ; sinon [section 5](#s5) |
 | « Could not copy Chrome cookie database » ou « database is locked » | le navigateur verrouille sa base pendant qu'il tourne | le fermer, puis refaire le test |
-| « Failed to decrypt » | cookies chiffrés avec une clé que yt-dlp n'a pas obtenue | [section 5](#5-trousseaux-de-clés--manœuvres-à-la-main) |
+| « Failed to decrypt » | cookies chiffrés avec une clé que yt-dlp n'a pas obtenue | [section 5](#s5) |
 
 ### Tester un navigateur depuis un terminal
 
@@ -255,6 +263,8 @@ Puis, avec le dossier qui contient `cookies.sqlite` :
 ```bash
 ~/.local/share/yt-dlp-GUI/yt-dlp --cookies-from-browser "firefox:/chemin/du/profil" -v --simulate --no-playlist "https://www.youtube.com/watch?v=IDENTIFIANT"
 ```
+
+<a id="s5"></a>
 
 ## 5. Trousseaux de clés : manœuvres à la main
 
@@ -370,6 +380,8 @@ cp -a ~/.local/share/keyrings ~/keyrings-sauvegarde
 
 Supprimer `login.keyring` efface **tous** les mots de passe qu'il contient (Wi-Fi, comptes en ligne…) : ne le faites pas sans en avoir compris les conséquences.
 
+<a id="s6"></a>
+
 ## 6. Où sont les fichiers
 
 Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/share/yt-dlp-GUI`), sauf si `portable.flag` est à côté de l'exécutable de l'archive (ou du script `yt-dlp-gui.pyw`).
@@ -384,6 +396,8 @@ Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/sh
 | `cmd/` | fichiers de configuration éphémères de yt-dlp |
 | `app/` | copie du programme faite par « Installer dans le menu » |
 
+<a id="s7"></a>
+
 ## 7. Dépannage
 
 | Problème | Piste |
@@ -395,6 +409,8 @@ Le dossier de données est `$XDG_DATA_HOME/yt-dlp-GUI` (par défaut `~/.local/sh
 | Le glisser-déposer entre la machine hôte et une machine virtuelle ne marche pas | c'est une fonction de VirtualBox (Additions invité), pas du logiciel |
 | L'interface est mal dimensionnée | le logiciel suit les polices du système (Tk) ; essayez une autre taille de police système |
 | La mise à jour de yt-dlp échoue | utiliser « Mise à jour & Diagnostic » du menu des options ; sinon télécharger `yt-dlp_linux` et le choisir dans la fenêtre de remplacement (le fichier choisi est rendu exécutable) |
+
+<a id="s8"></a>
 
 ## 8. Signaler un bogue
 
@@ -409,6 +425,8 @@ echo "$XDG_CURRENT_DESKTOP $XDG_SESSION_TYPE"
 ```
 
 et dites **comment** vous avez installé le logiciel (AppImage, archive, `.deb`, sources) et, pour un problème de cookies, **le résultat du test depuis un terminal** (section 4), sans coller vos cookies.
+
+<a id="s9"></a>
 
 ## 9. Pour les développeurs
 

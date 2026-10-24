@@ -6,7 +6,7 @@ Interface graphique pour [yt-dlp](https://github.com/yt-dlp/yt-dlp), pensée pou
 
 > **Projet en cours de développement.** Certaines fonctionnalités peuvent changer, être incomplètes ou contenir des bogues. Le logiciel est disponible sous Windows ; **une préversion pour Linux** est aussi proposée, moins éprouvée.
 
-🐧 **Linux** : [README-LINUX (français)](README-LINUX.md) · [README-LINUX (English)](docs/README-LINUX.en.md)
+🐧 **Linux** : [README-LINUX](README-LINUX.md)
 
 ![yt-dlp GUI](docs/img/main.fr.png)
 

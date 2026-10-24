@@ -1,20 +1,22 @@
 # yt-dlp GUI — Linux version
 
-[Français](../README-LINUX.md) · [English](README-LINUX.en.md)
+[Français](../README-LINUX.md) · [English](README-LINUX.en.md) · [Español](README-LINUX.es.md) · [Português](README-LINUX.pt.md) · [Italiano](README-LINUX.it.md) · [Polski](README-LINUX.pl.md) · [Magyar](README-LINUX.hu.md) · [Srpski](README-LINUX.sr.md) · [Русский](README-LINUX.ru.md) · [Tiếng Việt](README-LINUX.vi.md) · [中文](README-LINUX.zh.md) · [हिन्दी](README-LINUX.hi.md) · [日本語](README-LINUX.ja.md) · [한국어](README-LINUX.ko.md) · [Filipino](README-LINUX.fil.md)
 
-> **Preview.** This document complements the [main README](README.en.md): it is the same software, but here we only cover what is specific to Linux (installation, cookies and key rings, files, troubleshooting). What is new in each version is listed in [CHANGELOG-linux.md](../CHANGELOG-linux.md). Other languages will follow once the French and English texts have been reviewed.
+> **Preview.** This document complements the [main README](README.en.md): it is the same software, but here we only cover what is specific to Linux (installation, cookies and key rings, files, troubleshooting). What is new in each version is listed in [CHANGELOG-linux.md](../CHANGELOG-linux.md). Translations still need review by native speakers; when in doubt, the French and English texts prevail.
 
 ## Contents
 
-1. [State of the preview](#1-state-of-the-preview)
-2. [Installing](#2-installing)
-3. [First launch and dependencies](#3-first-launch-and-dependencies)
-4. [Browser cookies](#4-browser-cookies)
-5. [Key rings: manual operations](#5-key-rings-manual-operations)
-6. [Where the files are](#6-where-the-files-are)
-7. [Troubleshooting](#7-troubleshooting)
-8. [Reporting a bug](#8-reporting-a-bug)
-9. [For developers](#9-for-developers)
+1. [State of the preview](#s1)
+2. [Installing](#s2)
+3. [First launch and dependencies](#s3)
+4. [Browser cookies](#s4)
+5. [Key rings: manual operations](#s5)
+6. [Where the files are](#s6)
+7. [Troubleshooting](#s7)
+8. [Reporting a bug](#s8)
+9. [For developers](#s9)
+
+<a id="s1"></a>
 
 ## 1. State of the preview
 
@@ -23,7 +25,7 @@ The Linux version reproduces the behaviour of the Windows version 0.1.7 (frozen,
 **What has been tried** (Debian 12 virtual machine, GNOME desktop, Python 3.11, a real YouTube account signed in to each browser, October 2026):
 
 - **Cookies of Firefox, Waterfox, Floorp and Zen Browser**: read with the browser open or closed.
-- **Cookies of Google Chrome, Chromium, Brave, Vivaldi, Opera and Microsoft Edge**: read with the browser **closed**, after starting each browser once and signing in to YouTube in it (see [section 5](#5-key-rings-manual-operations)). Single download and Playlist Inspector both succeeded.
+- **Cookies of Google Chrome, Chromium, Brave, Vivaldi, Opera and Microsoft Edge**: read with the browser **closed**, after starting each browser once and signing in to YouTube in it (see [section 5](#s5)). Single download and Playlist Inspector both succeeded.
 - **LibreWolf**: read only while it is open and signed in (it deletes its cookies when it closes by default).
 - **Private video** with Firefox's cookies, and a playlist of three videos with one private.
 - **Packages**: the AppImage and the `.tar.gz` archive are built by the CI on Ubuntu 22.04; the `.deb` was built, installed, started and removed on Debian 12; "Install in the menu" was tried with the real AppImage in a disposable home folder.
@@ -32,10 +34,12 @@ The Linux version reproduces the behaviour of the Windows version 0.1.7 (frozen,
 
 - other distributions (Ubuntu, Fedora, Arch, openSUSE…) and desktops other than GNOME, including KDE Plasma (KWallet);
 - browsers installed as Flatpak or Snap (except the LibreWolf Flatpak layout, which was observed);
-- Vivaldi, Opera or Edge **without** Chrome or Chromium installed (see [section 5](#5-key-rings-manual-operations));
+- Vivaldi, Opera or Edge **without** Chrome or Chromium installed (see [section 5](#s5));
 - the aarch64 architecture (the software supports it, but packages are only built for x86_64);
 - the "Install in the menu" window driven with the mouse on a real desktop (it is tested programmatically);
 - the translations: they still need review by native speakers.
+
+<a id="s2"></a>
 
 ## 2. Installing
 
@@ -187,6 +191,8 @@ rm -rf ~/.local/share/yt-dlp-GUI
 
 Your downloaded videos are never in this folder.
 
+<a id="s3"></a>
+
 ## 3. First launch and dependencies
 
 On first launch, the setup assistant offers to download **yt-dlp** (`yt-dlp_linux`), **ffmpeg** (the `.tar.xz` archive of yt-dlp's official builds) and **deno** from their GitHub repositories. SHA-256 sums are verified, no administrator rights are requested, and the files go to `~/.local/share/yt-dlp-GUI` (yt-dlp) and `~/.local/share/yt-dlp-GUI/bin` (ffmpeg, ffprobe, deno). It stays available in the options menu.
@@ -199,6 +205,8 @@ Only ffmpeg and ffprobe are essential; deno is recommended (secondary audio trac
 | dnf | `sudo dnf install AtomicParsley aria2 mkvtoolnix` |
 | pacman | `sudo pacman -S aria2 atomicparsley mkvtoolnix-cli` |
 | zypper | `sudo zypper install AtomicParsley aria2 mkvtoolnix` |
+
+<a id="s4"></a>
 
 ## 4. Browser cookies
 
@@ -224,9 +232,9 @@ The **indicator** next to the list shows the state: red (disabled or failed), or
 | What you see | Probable cause | What to do |
 |---|---|---|
 | "Extracted 0 cookies" then "Sign in to confirm you're not a bot" | the browser keeps no cookie on disk (LibreWolf deletes them when it closes by default; profile never signed in; private mode) | keep it open and signed in to YouTube, or turn off cookie deletion on close in its privacy settings |
-| "Item does not exist!" with Chrome, Chromium, Brave, Vivaldi, Opera or Edge | yt-dlp did not find the browser's key in the desktop key ring | start the browser once, sign in to YouTube, close it, run the test again; otherwise [section 5](#5-key-rings-manual-operations) |
+| "Item does not exist!" with Chrome, Chromium, Brave, Vivaldi, Opera or Edge | yt-dlp did not find the browser's key in the desktop key ring | start the browser once, sign in to YouTube, close it, run the test again; otherwise [section 5](#s5) |
 | "Could not copy Chrome cookie database" or "database is locked" | the browser locks its database while running | close it, then run the test again |
-| "Failed to decrypt" | cookies encrypted with a key that yt-dlp did not get | [section 5](#5-key-rings-manual-operations) |
+| "Failed to decrypt" | cookies encrypted with a key that yt-dlp did not get | [section 5](#s5) |
 
 ### Testing a browser from a terminal
 
@@ -255,6 +263,8 @@ Then, with the folder that contains `cookies.sqlite`:
 ```bash
 ~/.local/share/yt-dlp-GUI/yt-dlp --cookies-from-browser "firefox:/path/to/profile" -v --simulate --no-playlist "https://www.youtube.com/watch?v=IDENTIFIER"
 ```
+
+<a id="s5"></a>
 
 ## 5. Key rings: manual operations
 
@@ -370,6 +380,8 @@ cp -a ~/.local/share/keyrings ~/keyrings-backup
 
 Deleting `login.keyring` erases **all** the passwords it holds (Wi-Fi, online accounts…): do not do it without understanding the consequences.
 
+<a id="s6"></a>
+
 ## 6. Where the files are
 
 The data folder is `$XDG_DATA_HOME/yt-dlp-GUI` (by default `~/.local/share/yt-dlp-GUI`), unless `portable.flag` sits next to the archive's executable (or the `yt-dlp-gui.pyw` script).
@@ -384,6 +396,8 @@ The data folder is `$XDG_DATA_HOME/yt-dlp-GUI` (by default `~/.local/share/yt-dl
 | `cmd/` | temporary yt-dlp configuration files |
 | `app/` | copy of the program made by "Install in the menu" |
 
+<a id="s7"></a>
+
 ## 7. Troubleshooting
 
 | Problem | Lead |
@@ -395,6 +409,8 @@ The data folder is `$XDG_DATA_HOME/yt-dlp-GUI` (by default `~/.local/share/yt-dl
 | Drag and drop between the host and a virtual machine does not work | that is a VirtualBox feature (Guest Additions), not the software's |
 | The interface is badly sized | the software follows the system fonts (Tk); try another system font size |
 | The yt-dlp update fails | use "Update & Diagnostics" in the options menu; otherwise download `yt-dlp_linux` and pick it in the replacement window (the chosen file is made executable) |
+
+<a id="s8"></a>
 
 ## 8. Reporting a bug
 
@@ -409,6 +425,8 @@ echo "$XDG_CURRENT_DESKTOP $XDG_SESSION_TYPE"
 ```
 
 and say **how** you installed the software (AppImage, archive, `.deb`, source files) and, for a cookie problem, **the result of the terminal test** (section 4), without pasting your cookies.
+
+<a id="s9"></a>
 
 ## 9. For developers
 

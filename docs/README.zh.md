@@ -6,7 +6,7 @@
 
 > **项目仍在开发中。** 部分功能可能会变化、尚不完整或存在错误。已提供 Windows 版；同时提供 **Linux 预览版**，测试较少。
 
-🐧 **Linux** : [README-LINUX (français)](../README-LINUX.md) · [README-LINUX (English)](README-LINUX.en.md)
+🐧 **Linux** : [README-LINUX](README-LINUX.zh.md)
 
 ![yt-dlp GUI](img/main.en.png)
 
