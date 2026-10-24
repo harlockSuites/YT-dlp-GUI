@@ -314,7 +314,11 @@ class DialogTests(unittest.TestCase):
         self.assertIn("Noto Sans CJK", other)
         self.assertNotIn("sudo", other)
 
-    def test_a_successful_download_closes_the_dialog_with_the_installed_result(self):
+    def test_the_dialog_says_a_restart_is_needed_before_anything_is_downloaded(self):
+        text = "\n".join(self._texts(self._dialog()))
+        self.assertIn("must restart before it can use the font", text)
+
+    def test_a_successful_download_offers_to_restart_now_or_later(self):
         calls = []
 
         def installer(code, progress=None, stop=None):
@@ -323,9 +327,50 @@ class DialogTests(unittest.TestCase):
             return True
         dlg = self._dialog(installer)
         dlg._download()
-        self._pump(lambda: not dlg.winfo_exists())
+        self._pump(lambda: dlg.result == "installed")
         self.assertEqual(calls, ["ko"])
-        self.assertEqual(dlg.result, "installed")
+        self.assertTrue(dlg.winfo_exists(), "la boîte reste ouverte pour proposer le redémarrage")
+        self.assertIn("Font installed. Restart the software", str(dlg.lbl_status.cget("text")))
+        self.assertEqual(str(dlg.btn_restart.cget("text")), "Restart now")
+        self.assertEqual(str(dlg.btn_later.cget("text")), "Restart later")
+        self.assertEqual(dlg.btn_restart.winfo_manager(), "pack")
+        self.assertEqual(dlg.btn_later.winfo_manager(), "pack")
+        for gone in (dlg.btn_download, dlg.btn_anyway, dlg.btn_cancel):
+            self.assertEqual(gone.winfo_manager(), "")
+
+    def test_restart_now_applies_the_language_through_the_callback_and_closes(self):
+        order = []
+        dlg = self._dialog(lambda code, progress=None, stop=None: True)
+        dlg._on_restart = lambda: order.append(("restart", dlg.winfo_exists()))
+        dlg._on_later = lambda: order.append("later")
+        dlg._download()
+        self._pump(lambda: dlg.result == "installed")
+        dlg._restart()
+        self.assertEqual(dlg.result, "restart")
+        self.assertEqual(order, [("restart", False)], "la boîte est fermée avant le redémarrage")
+
+    def test_restart_later_keeps_the_software_running_and_applies_the_language_at_next_start(self):
+        order = []
+        dlg = self._dialog(lambda code, progress=None, stop=None: True)
+        dlg._on_restart = lambda: order.append("restart")
+        dlg._on_later = lambda: order.append("later")
+        dlg._download()
+        self._pump(lambda: dlg.result == "installed")
+        dlg._later_start()
+        self.assertEqual(dlg.result, "later")
+        self.assertEqual(order, ["later"])
+        self.assertFalse(dlg.winfo_exists())
+
+    def test_closing_the_window_after_the_install_changes_nothing(self):
+        order = []
+        dlg = self._dialog(lambda code, progress=None, stop=None: True)
+        dlg._on_restart = lambda: order.append("restart")
+        dlg._on_later = lambda: order.append("later")
+        dlg._download()
+        self._pump(lambda: dlg.result == "installed")
+        dlg._cancel()
+        self.assertEqual(dlg.result, "cancel")
+        self.assertEqual(order, [])
 
     def test_a_failure_keeps_the_dialog_open_with_a_readable_message_and_lets_retry(self):
         def installer(code, progress=None, stop=None):
@@ -347,13 +392,14 @@ class DialogTests(unittest.TestCase):
         self._pump(lambda: "boum" in str(dlg.lbl_status.cget("text")))
         self.assertEqual(str(dlg.btn_download.cget("state")), "normal")
 
-    def test_installed_but_not_listed_by_the_system_warns_and_waits_for_ok(self):
+    def test_installed_but_not_listed_by_the_system_warns_and_still_offers_the_restart(self):
         dlg = self._dialog(lambda code, progress=None, stop=None: False)
         dlg._download()
         self._pump(lambda: dlg.result == "installed")
         self.assertIn("does not list it yet", str(dlg.lbl_status.cget("text")))
+        self.assertEqual(str(dlg.lbl_status.cget("fg")), m.WARN_TEXT)
         self.assertTrue(dlg.winfo_exists())
-        self.assertEqual(str(dlg.btn_download.cget("text")), "OK")
+        self.assertEqual(dlg.btn_restart.winfo_manager(), "pack")
 
     def test_buttons_are_locked_during_the_download_and_cancel_asks_it_to_stop(self):
         release = threading.Event()
@@ -431,43 +477,108 @@ class LanguageListTests(unittest.TestCase):
 
     def _confirm_flow(self, code, needs, result):
         parent = mock.Mock()
-        with mock.patch.object(m, "IS_WINDOWS", False), \
-                mock.patch.object(m, "language_needs_font", return_value=needs) as check, \
-                mock.patch.object(m, "LanguageFontDialog") as dialog_class:
+        with mock.patch.object(m, "IS_WINDOWS", False),                 mock.patch.object(m, "language_needs_font", return_value=needs) as check,                 mock.patch.object(m, "LanguageFontDialog") as dialog_class:
             dialog_class.return_value.result = result
-            ready = self.app._language_font_ready(code, "Label", parent)
-        return ready, check, dialog_class, parent
+            outcome = self.app._language_font_ready(code, "Label", parent)
+        return outcome, check, dialog_class, parent
 
-    def test_a_language_that_needs_no_font_goes_straight_through(self):
-        ready, check, dialog, parent = self._confirm_flow("ko", False, "cancel")
-        self.assertTrue(ready)
+    def test_a_language_that_needs_no_font_goes_straight_to_the_usual_confirmation(self):
+        outcome, check, dialog, parent = self._confirm_flow("ko", False, "cancel")
+        self.assertEqual(outcome, "go")
         dialog.assert_not_called()
         self.assertEqual(parent.configure.call_args_list[-1], mock.call(cursor=""))
 
     def test_a_latin_language_is_never_checked(self):
-        ready, check, dialog, _ = self._confirm_flow("fr", True, "cancel")
-        self.assertTrue(ready)
+        outcome, check, dialog, _ = self._confirm_flow("fr", True, "cancel")
+        self.assertEqual(outcome, "go")
         check.assert_not_called()
         dialog.assert_not_called()
 
     def test_a_missing_font_opens_the_dialog_and_follows_its_answer(self):
-        for answer, expected in (("installed", True), ("anyway", True), ("cancel", False)):
+        expected = {"restart": "done", "later": "done", "anyway": "go", "cancel": "stay", "installed": "stay"}
+        for answer, outcome_expected in expected.items():
             with self.subTest(answer=answer):
-                ready, _, dialog, parent = self._confirm_flow("ko", True, answer)
-                self.assertEqual(ready, expected)
+                outcome, _, dialog, parent = self._confirm_flow("ko", True, answer)
+                self.assertEqual(outcome, outcome_expected)
                 dialog.assert_called_once()
                 parent.wait_window.assert_called_once()
 
+    def test_the_font_dialog_applies_the_language_itself(self):
+        saved, relaunched = [], []
+        with mock.patch.object(self.app, "_save_language", side_effect=saved.append),                 mock.patch.object(self.app, "_relaunch", side_effect=lambda: relaunched.append(True)):
+            _, _, dialog_class, _ = self._confirm_flow("ko", True, "restart")
+            kwargs = dialog_class.call_args.kwargs
+            kwargs["on_later"]()
+            self.assertEqual((saved, relaunched), (["ko"], []), "plus tard : seulement enregistrer la langue")
+            kwargs["on_restart"]()
+            self.assertEqual((saved, relaunched), (["ko", "ko"], [True]), "redémarrer : enregistrer, puis relancer")
+
+    def test_closing_the_application_during_the_wait_is_not_an_error(self):
+        parent = mock.Mock()
+        parent.wait_window.side_effect = m.tk.TclError("application has been destroyed")
+        with mock.patch.object(m, "IS_WINDOWS", False), mock.patch.object(m, "language_needs_font", return_value=True),                 mock.patch.object(m, "LanguageFontDialog") as dialog_class:
+            dialog_class.return_value.result = "restart"
+            self.assertEqual(self.app._language_font_ready("ko", "Label", parent), "done")
+
     def test_windows_never_asks_for_a_font(self):
         with mock.patch.object(m, "IS_WINDOWS", True), mock.patch.object(m, "language_needs_font") as check:
-            self.assertTrue(self.app._language_font_ready("ko", "Label", mock.Mock()))
+            self.assertEqual(self.app._language_font_ready("ko", "Label", mock.Mock()), "go")
         check.assert_not_called()
 
-    def test_the_language_dialog_confirm_stays_open_when_the_user_cancels_the_font(self):
+    def test_the_language_dialog_acts_on_the_outcome(self):
         with open(m.__file__, encoding="utf-8") as f:
             source = f.read()
-        self.assertRegex(source, r"if not self\._language_font_ready\(new_code, new_name, dlg\):\n\s+dlg\.grab_set\(\)"
-                                 r".*\n\s+return")
+        source = source.replace("\r\n", "\n")
+        self.assertRegex(source, r'outcome = self\._language_font_ready\(new_code, new_name, dlg\)\n\s+'
+                                 r'if outcome == "stay":\n\s+dlg\.grab_set\(\).*\n\s+return')
+        self.assertRegex(source, r'if outcome == "go":\n\s+self\._show_lang_change_dialog\(new_code, new_name\)')
+
+    def test_language_and_restart_share_the_same_helpers_everywhere(self):
+        with open(m.__file__, encoding="utf-8") as f:
+            source = f.read()
+        self.assertNotIn("subprocess.Popen([sys.executable]", source, "un seul endroit relance le logiciel")
+        self.assertEqual(source.count("subprocess.Popen(relaunch_command())"), 1)
+
+    def test_saving_the_language_and_relaunching(self):
+        cfg_before = m.load_config()
+        self.addCleanup(m.save_config, cfg_before)
+        self.app._save_language("ko")
+        self.assertEqual(m.load_config()["lang"], "ko")
+        with mock.patch.object(m.subprocess, "Popen") as popen, mock.patch.object(m.YtDlpGui, "destroy") as destroy,                 mock.patch.object(m, "relaunch_command", return_value=["/x/app"]):
+            self.app._relaunch()
+        popen.assert_called_once_with(["/x/app"])
+        destroy.assert_called_once()
+
+
+class RelaunchTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.appimage = os.path.join(self.tmp, "yt-dlp-gui.AppImage")
+        with open(self.appimage, "wb") as f:
+            f.write(b"x")
+
+    def test_from_the_sources_it_runs_the_script_again(self):
+        with mock.patch.object(m, "IS_WINDOWS", False):
+            self.assertEqual(m.relaunch_command(False, "/usr/bin/python3", ["/s/yt-dlp-gui.pyw"], {}),
+                             ["/usr/bin/python3", "/s/yt-dlp-gui.pyw"])
+
+    def test_from_the_deb_or_the_archive_it_runs_the_program_again(self):
+        with mock.patch.object(m, "IS_WINDOWS", False):
+            self.assertEqual(m.relaunch_command(True, "/opt/yt-dlp-gui/yt-dlp-gui", [], {}),
+                             ["/opt/yt-dlp-gui/yt-dlp-gui"])
+
+    def test_from_an_appimage_it_runs_the_appimage_file_not_its_temporary_mount(self):
+        with mock.patch.object(m, "IS_WINDOWS", False):
+            self.assertEqual(m.relaunch_command(True, "/tmp/.mount_abc/usr/lib/yt-dlp-gui/yt-dlp-gui", [],
+                                                {"APPIMAGE": self.appimage}), [self.appimage])
+            self.assertEqual(m.relaunch_command(True, "/exe", [], {"APPIMAGE": self.appimage + ".absent"}), ["/exe"])
+            self.assertEqual(m.relaunch_command(True, "/exe", [], {"APPIMAGE": ""}), ["/exe"])
+
+    def test_windows_ignores_the_appimage_variable(self):
+        with mock.patch.object(m, "IS_WINDOWS", True):
+            self.assertEqual(m.relaunch_command(True, "C:/p/yt-dlp-gui.exe", [], {"APPIMAGE": self.appimage}),
+                             ["C:/p/yt-dlp-gui.exe"])
 
 
 if __name__ == "__main__":

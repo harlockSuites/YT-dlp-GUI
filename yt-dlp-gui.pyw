@@ -1170,15 +1170,17 @@ FONT_DIALOG = {
     "body": "{language} needs a font that is not installed on this computer. Without it, the text appears as empty "
             "squares.",
     "detail": "The software can download {family} ({size} MB, SIL Open Font License) for your user only: no "
-              "administrator rights are needed. The file is checked against its SHA-256 checksum, and the new "
-              "language is used the next time the software starts.",
+              "administrator rights are needed. The file is checked against its SHA-256 checksum. The software "
+              "must restart before it can use the font and the new language.",
     "apt": "For every user of this computer instead, run this in a terminal:",
     "apt_other": "For every user of this computer instead, install the \"Noto Sans CJK\" package of your distribution.",
     "download": "Download font", "anyway": "Use anyway", "cancel": "Cancel", "copy": "Copy",
     "copied": "Command copied: paste it into a terminal.",
     "downloading": "Downloading… {percent}%", "installing": "Verifying and installing…",
-    "done_unseen": "Font installed, but the system does not list it yet. The text may show squares until you log "
-                   "out and back in.",
+    "restart": "Restart now", "later": "Restart later",
+    "done": "Font installed. Restart the software to use it: the language is applied when it starts again.",
+    "done_unseen": "Font installed, but the system does not list it yet. Restart the software; if the text still "
+                   "shows squares, log out and back in.",
     "err_network": "Download failed: {error}", "err_checksum": "The downloaded file does not match its expected "
                    "checksum: it was deleted.", "err_disk": "Could not write the font: {error}",
     "cancelled": "Download cancelled."}
@@ -1300,6 +1302,19 @@ def install_font_pack(code, progress=None, stop=None, env=None, opener=None, run
     if result is None:
         return None
     return not (result[1] and result[0] / result[1] > FONT_MISSING_THRESHOLD)
+
+
+def relaunch_command(frozen=None, executable=None, argv=None, env=None):
+    """Commande qui relance le logiciel (changement de langue, nouvelle police). Depuis un AppImage, `sys.executable`
+    est dans un montage temporaire qui disparaît quand le processus courant se termine : on relance le fichier
+    AppImage lui-même (variable APPIMAGE)."""
+    frozen = getattr(sys, "frozen", False) if frozen is None else frozen
+    executable = executable or sys.executable
+    env = os.environ if env is None else env
+    if frozen:
+        appimage = "" if IS_WINDOWS else env.get("APPIMAGE", "")
+        return [appimage] if appimage and os.path.isfile(appimage) else [executable]
+    return [executable] + list(sys.argv if argv is None else argv)
 
 
 def dep_direct(dep):
@@ -2714,12 +2729,16 @@ class LinuxMenuInstallWindow(tk.Toplevel):
 
 class LanguageFontDialog(tk.Toplevel):
     """Linux : la langue choisie demande une police absente du système ; propose de la télécharger. Texte en
-    anglais seulement (la langue choisie n'est pas encore lisible). `result` : « installed », « anyway » ou « cancel »."""
+    anglais seulement (la langue choisie n'est pas encore lisible). `result` : « installed » (police installée, la
+    boîte propose de redémarrer), « restart », « later », « anyway » ou « cancel ». Un logiciel déjà ouvert ne voit pas
+    une police installée après son démarrage : une fois la police installée, c'est cette boîte qui applique la langue
+    (`on_restart` / `on_later`), pas la fenêtre de confirmation, qui s'afficherait encore en carrés."""
 
-    def __init__(self, parent, code, label, installer=None):
+    def __init__(self, parent, code, label, installer=None, on_restart=None, on_later=None):
         super().__init__(parent)
         pack = FONT_PACKS[code]
         self._code, self._installer = code, installer or install_font_pack
+        self._label, self._on_restart, self._on_later = label, on_restart, on_later
         self._stop = threading.Event()
         self._busy = False
         self.result = "cancel"
@@ -2735,7 +2754,12 @@ class LanguageFontDialog(tk.Toplevel):
         self.btn_download.pack(side="left", ipadx=8)
         self.btn_anyway = ttk.Button(btns, text=FONT_DIALOG["anyway"], command=self._anyway)
         self.btn_anyway.pack(side="left", padx=(8, 0), ipadx=8)
-        ttk.Button(btns, text=FONT_DIALOG["cancel"], command=self._cancel).pack(side="right", ipadx=8)
+        self.btn_cancel = ttk.Button(btns, text=FONT_DIALOG["cancel"], command=self._cancel)
+        self.btn_cancel.pack(side="right", ipadx=8)
+        self._btns = btns
+        # Boutons de fin (après l'installation de la police) : créés maintenant, affichés plus tard
+        self.btn_restart = ttk.Button(btns, text=FONT_DIALOG["restart"], command=self._restart)
+        self.btn_later = ttk.Button(btns, text=FONT_DIALOG["later"], command=self._later_start)
         ttk.Label(frm, text=FONT_DIALOG["body"].format(language=label), wraplength=440, justify="left",
                   font=(UI_FONT, 10, "bold")).pack(anchor="w")
         ttk.Label(frm, text=FONT_DIALOG["detail"].format(family=pack["family"], size=f"{pack['size'] / 1e6:.1f}"),
@@ -2807,14 +2831,32 @@ class LanguageFontDialog(tk.Toplevel):
         self._say(message, ok=False)
 
     def _done(self, seen):
+        """Police installée : la boîte reste ouverte et propose de redémarrer (ou de le faire plus tard)."""
         self._busy = False
         self.result = "installed"
+        self.progress["value"] = 100
+        for button in (self.btn_download, self.btn_anyway, self.btn_cancel):
+            button.pack_forget()
+        self.btn_restart.pack(side="left", ipadx=8)
+        self.btn_later.pack(side="left", padx=(8, 0), ipadx=8)
         if seen is False:   # installée, mais fontconfig ne la liste pas encore
-            self.progress["value"] = 100
             self._say(FONT_DIALOG["done_unseen"], ok=False)
-            self.btn_download.configure(text="OK", state="normal", command=self.destroy)
-            return
+        else:
+            self._say(FONT_DIALOG["done"])
+
+    def _restart(self):
+        self.result = "restart"
+        callback = self._on_restart
         self.destroy()
+        if callback:
+            callback()
+
+    def _later_start(self):
+        self.result = "later"
+        callback = self._on_later
+        self.destroy()
+        if callback:
+            callback()
 
     def _anyway(self):
         self.result = "anyway"
@@ -6697,20 +6739,36 @@ class YtDlpGui(tk.Tk):
                 return
             # Find display name
             new_name = next((n for c, n in _LANGUAGES if c == new_code), new_code)
-            if not self._language_font_ready(new_code, new_name, dlg):
+            outcome = self._language_font_ready(new_code, new_name, dlg)
+            if outcome == "stay":
                 dlg.grab_set()   # on reste dans la liste des langues
                 return
-            dlg.destroy()
-            self._show_lang_change_dialog(new_code, new_name)
+            try:
+                dlg.destroy()
+            except tk.TclError:
+                pass   # le logiciel vient de redémarrer : la fenêtre n'existe plus
+            if outcome == "go":
+                self._show_lang_change_dialog(new_code, new_name)
 
         tk.Button(dlg, text="OK", command=_confirm, width=10).pack(pady=(8, 14))
         dlg.wait_window()
 
+    def _save_language(self, code):
+        cfg = load_config()
+        cfg["lang"] = code
+        save_config(cfg)
+
+    def _relaunch(self):
+        subprocess.Popen(relaunch_command())
+        self.destroy()
+
     def _language_font_ready(self, code, label, parent):
-        """Linux : True si l'on peut passer à cette langue. Quand le système n'a pas la police de ses caractères
-        (coréen, japonais, chinois), la boîte de dialogue propose de la télécharger avant."""
+        """Linux : que faire après le choix de cette langue ? « go » : passer à la fenêtre de confirmation habituelle ;
+        « stay » : rester dans la liste des langues ; « done » : la boîte de la police a déjà appliqué la langue (elle
+        propose de redémarrer, car le logiciel ouvert ne voit pas une police installée après son démarrage, et la
+        fenêtre de confirmation s'afficherait encore en carrés)."""
         if IS_WINDOWS or code not in FONT_PACKS:
-            return True
+            return "go"
         parent.configure(cursor="watch")
         parent.update_idletasks()
         try:
@@ -6718,10 +6776,17 @@ class YtDlpGui(tk.Tk):
         finally:
             parent.configure(cursor="")
         if not needs_font:
-            return True
-        dialog = LanguageFontDialog(parent, code, label)
-        parent.wait_window(dialog)
-        return dialog.result in ("installed", "anyway")
+            return "go"
+        dialog = LanguageFontDialog(parent, code, label,
+                                    on_restart=lambda: (self._save_language(code), self._relaunch()),
+                                    on_later=lambda: self._save_language(code))
+        try:
+            parent.wait_window(dialog)
+        except tk.TclError:
+            pass   # « Restart now » a déjà fermé le logiciel pendant l'attente
+        if dialog.result in ("restart", "later"):
+            return "done"
+        return "go" if dialog.result == "anyway" else "stay"
 
     def _show_lang_change_dialog(self, new_code: str, new_name: str):
         # Load the NEW language strings for the dialog body
@@ -6751,19 +6816,13 @@ class YtDlpGui(tk.Tk):
         tk.Label(dlg, text=_nt("lang.dialog_body"), wraplength=320).pack(pady=(2, 10), padx=24)
 
         def _schedule():
-            cfg = load_config()
-            cfg["lang"] = new_code
-            save_config(cfg)
+            self._save_language(new_code)
             dlg.destroy()
 
         def _restart_now():
-            cfg = load_config()
-            cfg["lang"] = new_code
-            save_config(cfg)
+            self._save_language(new_code)
             dlg.destroy()
-            import subprocess, sys
-            subprocess.Popen([sys.executable] if getattr(sys, "frozen", False) else [sys.executable] + sys.argv)
-            self.destroy()
+            self._relaunch()
 
         def _cancel():
             dlg.destroy()
