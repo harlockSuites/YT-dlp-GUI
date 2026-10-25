@@ -1,4 +1,4 @@
-# Publication d'une version LINUX (préversion GitHub). La version Windows (étiquettes v*) est figée à la 0.1.7 et se
+# Publication d'une version LINUX (préversion GitHub). La version Windows (étiquettes v*) est figée à la 0.1.8 et se
 # publie avec le workflow de la branche main : celui-ci ne la construit pas et ne réagit qu'aux étiquettes « Linux-v* ».
 #
 # Pour publier : 1) vérifier __version__ dans yt-dlp-gui.pyw ; 2) dater la section de cette version dans

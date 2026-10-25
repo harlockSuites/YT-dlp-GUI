@@ -20,7 +20,7 @@
 
 ## 1. Tình trạng bản xem trước
 
-Phiên bản Linux tái hiện hành vi của phiên bản Windows 0.1.7 (đã đóng băng, dùng làm mẫu). Nó được phát hành dưới dạng **bản phát hành trước (pre-release) trên GitHub** với các nhãn `Linux-vX.Y.Z`: không bao giờ được trình bày là «bản phát hành mới nhất» của kho mã.
+Phiên bản Linux tái hiện hành vi của phiên bản Windows 0.1.8 (đã đóng băng, dùng làm mẫu). Nó được phát hành dưới dạng **bản phát hành trước (pre-release) trên GitHub** với các nhãn `Linux-vX.Y.Z`: không bao giờ được trình bày là «bản phát hành mới nhất» của kho mã.
 
 **Những gì đã thử** (máy ảo Debian 12, màn hình nền GNOME, Python 3.11, một tài khoản YouTube thật đã đăng nhập trong từng trình duyệt, tháng 10 năm 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 Lỗi hình thức duy nhất đã biết là `dir-or-file-in-opt` (chương trình được đặt trong `/opt`).
 
-**Phát hành**: kiểm tra `__version__` trong `yt-dlp-gui.pyw`, ghi ngày vào mục của phiên bản trong `CHANGELOG-linux.md`, commit, rồi tạo và đẩy nhãn `Linux-vX.Y.Z`. Quy trình «Release Linux» chạy các bài kiểm thử, dựng AppImage, tệp nén và `.deb`, tính các tổng kiểm và tạo bản phát hành dưới dạng **bản phát hành trước (pre-release)**, không bao giờ là «bản phát hành mới nhất» (phần kiểm tra cập nhật của phiên bản Windows 0.1.7 không được tìm thấy nhãn Linux ở đó).
+**Phát hành**: kiểm tra `__version__` trong `yt-dlp-gui.pyw`, ghi ngày vào mục của phiên bản trong `CHANGELOG-linux.md`, commit, rồi tạo và đẩy nhãn `Linux-vX.Y.Z`. Quy trình «Release Linux» chạy các bài kiểm thử, dựng AppImage, tệp nén và `.deb`, tính các tổng kiểm và tạo bản phát hành dưới dạng **bản phát hành trước (pre-release)**, không bao giờ là «bản phát hành mới nhất» (phần kiểm tra cập nhật của phiên bản Windows 0.1.8 không được tìm thấy nhãn Linux ở đó).
 
 Giấy phép: MIT, như phần còn lại của kho mã (xem [LICENSE](../LICENSE)).

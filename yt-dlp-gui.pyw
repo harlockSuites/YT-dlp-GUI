@@ -19,7 +19,7 @@ import signal
 import webbrowser
 from urllib.parse import quote
 
-__version__ = "0.1.2"   # version Linux (étiquette Linux-v0.1.2) ; la version Windows 0.1.7 est figée sur la branche main
+__version__ = "0.1.3"   # version Linux (étiquette Linux-v0.1.3) ; la version Windows 0.1.8 est figée sur la branche main
 REPO_URL = "https://github.com/harlockSuites/YT-dlp-GUI"
 
 # ══════════════════════════════════════════════════════════════════
@@ -5461,6 +5461,10 @@ class PlaylistInspectorWindow(tk.Toplevel):
             self._dl_window.lift()
             self._dl_window.focus_force()
             return
+        busy = getattr(self.master, "_download_busy", None)
+        if busy is not None and busy():
+            self.master._warn_busy(self)
+            return
         selected = [r for r in self._rows if r["var_en"].get()]
         if not selected:
             return
@@ -6246,6 +6250,306 @@ class DonateWindow(tk.Toplevel):
                    ).pack(pady=(0, 18), ipadx=14, ipady=5)
 
 
+# ══════════════════════════════════════════════════════════════════
+#  File d'attente : sélection multiple et vue étendue
+# ══════════════════════════════════════════════════════════════════
+def rows_between(children, first, last):
+    """Lignes d'un tableau comprises entre deux lignes (ordre d'affichage, bornes comprises)."""
+    children = list(children)
+    a, b = children.index(first), children.index(last)
+    return children[min(a, b):max(a, b) + 1]
+
+
+def bind_drag_select(tv, on_press=None):
+    """Sélection au clic-glissé dans un ttk.Treeview en mode « extended » (Ctrl et Maj restent natifs)."""
+    state = {"anchor": None}
+
+    def press(event):
+        if on_press:
+            on_press()
+        if tv.identify_region(event.x, event.y) in ("heading", "separator"):
+            state["anchor"] = None
+        else:
+            state["anchor"] = tv.identify_row(event.y) or None
+
+    def motion(event):
+        anchor = state["anchor"]
+        if anchor is None or event.state & 0x0005:        # Maj ou Ctrl enfoncé
+            return
+        height = tv.winfo_height()
+        if event.y < 0:
+            tv.yview_scroll(-1, "units")
+        elif event.y > height:
+            tv.yview_scroll(1, "units")
+        row = tv.identify_row(min(max(event.y, 1), max(height - 1, 1)))
+        if row and anchor in tv.get_children():
+            tv.selection_set(rows_between(tv.get_children(), anchor, row))
+
+    tv.bind("<ButtonPress-1>", press, add="+")
+    tv.bind("<B1-Motion>", motion, add="+")
+
+
+def queue_row(i, entry, url_max=40):
+    """Valeurs et étiquette d'une ligne du tableau de la file."""
+    status = entry.get("status", "pending")
+    if status == "error":
+        label, tag = t("queue.status_error"), "error"
+    else:
+        label, tag = t("queue.status_pending"), "pending"
+    url = entry.get("url", "")
+    url_short = url if len(url) <= url_max else url[:url_max - 3] + "…"
+    title = entry.get("title", "")
+    if not title and status == "pending":
+        title = t("queue.title_resolving")
+    return (i + 1, label, url_short, title, entry.get("summary", "")), tag
+
+
+def queue_count_text(queue):
+    if not queue:
+        return t("queue.count_empty")
+    pending = sum(1 for e in queue if e.get("status") == "pending")
+    return t("queue.count_label", n=len(queue), pending=pending)
+
+
+def fill_queue_tree(tv, queue, previous, url_max=40):
+    """Remplit le tableau de la file en gardant la sélection (retrouvée par entrée, pas par position).
+
+    « previous » est la liste affichée la fois d'avant ; renvoie celle qui l'est maintenant."""
+    kept = {id(previous[int(i)]) for i in tv.selection() if int(i) < len(previous)}
+    tv.delete(*tv.get_children())
+    for i, entry in enumerate(queue):
+        values, tag = queue_row(i, entry, url_max)
+        tv.insert("", "end", iid=str(i), values=values, tags=(tag,))
+    again = [str(i) for i, e in enumerate(queue) if id(e) in kept]
+    if again:
+        tv.selection_set(again)
+    return list(queue)
+
+
+class QueueExpandedWindow(tk.Toplevel):
+    """Vue étendue de la file d'attente : la même file et le même téléchargeur, avec plus de place et tous les
+    outils (sélection, suppression, lancement, journal, bilan). Elle ne lance rien elle-même : ses boutons
+    appellent ceux de la fenêtre principale, donc un seul téléchargement à la fois."""
+
+    def __init__(self, app):
+        super().__init__(app)
+        self.app = app
+        self._shown = []
+        self.title(t("qwin.title"))
+        self.geometry("1080x680")
+        self.minsize(780, 480)
+        self._build()
+        self.refresh()
+        self.set_running(app._queue_running)
+        self.set_paused(app._paused)
+        app._queue_views.append(self)
+        self.protocol("WM_DELETE_WINDOW", self.destroy)
+
+    def destroy(self):
+        if self in self.app._queue_views:
+            self.app._queue_views.remove(self)
+        super().destroy()
+
+    def _build(self):
+        app = self.app
+        top = ttk.Frame(self, padding=(10, 8, 10, 2))
+        top.pack(fill="x")
+        self.lbl_count = ttk.Label(top, font=(UI_FONT, 10, "bold"))
+        self.lbl_count.pack(side="left")
+        self.lbl_sel = ttk.Label(top, foreground="gray")
+        self.lbl_sel.pack(side="right")
+        ttk.Label(self, textvariable=app.var_status, anchor="w", font=(UI_FONT, 9)).pack(fill="x", padx=10)
+        ttk.Progressbar(self, variable=app.var_progress, maximum=100,
+                        mode="determinate").pack(fill="x", padx=10, pady=(0, 6))
+
+        # Boutons posés avant le tableau : ils restent visibles même dans une fenêtre basse
+        frm_ctl = ttk.Frame(self, padding=(10, 2, 10, 8))
+        frm_ctl.pack(side="bottom", fill="x")
+        frm_act = ttk.Frame(self, padding=(10, 2, 10, 2))
+        frm_act.pack(side="bottom", fill="x")
+
+        self.btn_pause = ttk.Button(frm_ctl, text=t("queue.btn_pause_queue"), command=app._toggle_pause,
+                                    state="disabled")
+        self.btn_pause.pack(side="left", padx=(0, 4))
+        self.btn_skip = ttk.Button(frm_ctl, text=t("queue.btn_skip"), command=app._queue_skip_current,
+                                   state="disabled")
+        self.btn_skip.pack(side="left", padx=(0, 4))
+        self.btn_stop = ttk.Button(frm_ctl, text=t("queue.btn_stop_queue"), command=app._queue_stop,
+                                   state="disabled")
+        self.btn_stop.pack(side="left", padx=(0, 14))
+        self.btn_log = ttk.Button(frm_ctl, text=t("qwin.btn_log_show"), command=self._toggle_log)
+        self.btn_log.pack(side="left")
+        ttk.Button(frm_ctl, text=t("qwin.btn_close"), command=self.destroy).pack(side="right", ipadx=6)
+
+        ttk.Button(frm_act, text=t("qwin.btn_select_all"), command=self._select_all).pack(side="left", padx=(0, 4))
+        ttk.Button(frm_act, text=t("qwin.btn_deselect_all"), command=self._select_none).pack(side="left", padx=(0, 14))
+        self.btn_dl = ttk.Button(frm_act, text=t("qwin.btn_download_none"), command=self._download_selection)
+        self.btn_dl.pack(side="left", padx=(0, 4))
+        self.btn_all = ttk.Button(frm_act, text=t("queue.btn_run_all"), command=lambda: app._queue_run(0))
+        self.btn_all.pack(side="left", padx=(0, 14))
+        ttk.Button(frm_act, text=t("queue.btn_remove_sel"), command=self._remove_selection).pack(side="left", padx=(0, 4))
+        ttk.Button(frm_act, text=t("queue.btn_clear_errors"), command=app._queue_clear_errors).pack(side="right")
+        self.btn_retry = ttk.Button(frm_act, text=t("queue.btn_retry_errors"), command=app._queue_retry_errors)
+        self.btn_retry.pack(side="right", padx=(0, 6))
+
+        # Plage « De X à Y » : sélectionne les lignes (pour les supprimer ou les télécharger) et peut les lancer
+        frm_rng = ttk.Frame(self, padding=(10, 2, 10, 2))
+        frm_rng.pack(side="bottom", fill="x")
+        ttk.Label(frm_rng, text=t("queue.label_from")).pack(side="left", padx=(0, 2))
+        self.spin_from = ttk.Spinbox(frm_rng, from_=1, to=999, width=4, command=self._select_range)
+        self.spin_from.bind("<KeyRelease>", self._select_range)
+        self.spin_from.pack(side="left")
+        ttk.Label(frm_rng, text=t("queue.label_to")).pack(side="left", padx=(4, 2))
+        self.spin_to = ttk.Spinbox(frm_rng, from_=1, to=999, width=4, command=self._select_range)
+        self.spin_to.bind("<KeyRelease>", self._select_range)
+        self.spin_to.pack(side="left")
+        self.btn_range = ttk.Button(frm_rng, text=t("queue.btn_run_range"), command=self._run_range)
+        self.btn_range.pack(side="left", padx=(6, 0))
+
+        self.frm_tv = ttk.Frame(self, padding=(10, 0, 10, 4))
+        self.frm_tv.pack(fill="both", expand=True)
+        cols = ("num", "status", "url", "title", "summary")
+        self.tv = ttk.Treeview(self.frm_tv, columns=cols, show="headings", selectmode="extended")
+        for col, key, width, stretch in (("num", "queue.col_num", 40, False), ("status", "queue.col_status", 110, False),
+                                         ("url", "queue.col_url", 300, True), ("title", "queue.col_title", 320, True),
+                                         ("summary", "queue.col_summary", 220, True)):
+            self.tv.heading(col, text=t(key))
+            self.tv.column(col, width=width, minwidth=40, stretch=stretch, anchor="center" if col == "num" else "w")
+        self.tv.tag_configure("pending", foreground="#222222")
+        self.tv.tag_configure("running", foreground="#1a5fa0")
+        self.tv.tag_configure("error", foreground="#c0392b")
+        sb = ttk.Scrollbar(self.frm_tv, command=self.tv.yview)
+        self.tv.configure(yscrollcommand=sb.set)
+        sb.pack(side="right", fill="y")
+        self.tv.pack(fill="both", expand=True)
+        self.tv.bind("<Delete>", lambda e: self._remove_selection())
+        self.tv.bind("<Control-a>", lambda e: (self._select_all(), "break")[1])
+        self.tv.bind("<<TreeviewSelect>>", lambda e: self._on_select())
+        bind_drag_select(self.tv)
+
+        # Journal de debug : même contenu que celui de la fenêtre principale, affiché sur demande
+        self.frm_log = ttk.LabelFrame(self, text=t("qwin.log_label"), padding=6)
+        src = app.log_text
+        self.log = tk.Text(self.frm_log, wrap="word", height=9, font=(MONO_FONT, 9), state="normal",
+                           bg=src.cget("bg"), fg=src.cget("fg"))
+        for tag in ("cmd", "ok", "err", "info"):
+            color = src.tag_cget(tag, "foreground") if tag in src.tag_names() else ""
+            if color:
+                self.log.tag_configure(tag, foreground=color)
+        self.log.insert("1.0", src.get("1.0", "end-1c"))
+        self.log.configure(state="disabled")
+        sb_log = ttk.Scrollbar(self.frm_log, command=self.log.yview)
+        self.log.configure(yscrollcommand=sb_log.set)
+        sb_log.pack(side="right", fill="y")
+        self.log.pack(fill="both", expand=True)
+
+    # ── contenu ────────────────────────────────────────────────────
+    def refresh(self):
+        try:
+            self._shown = fill_queue_tree(self.tv, self.app._queue, self._shown, url_max=90)
+            self.lbl_count.configure(text=queue_count_text(self.app._queue))
+            n = max(len(self.app._queue), 1)
+            self.spin_from.configure(to=n)
+            self.spin_to.configure(to=n)
+        except tk.TclError:
+            return
+        self._on_select()
+
+    def _indices(self):
+        return sorted(int(i) for i in self.tv.selection() if int(i) < len(self.app._queue))
+
+    def _on_select(self):
+        n = len(self.tv.selection())
+        self.lbl_sel.configure(text=t("qwin.selected_count", sel=n, total=len(self.app._queue)))
+        self.btn_dl.configure(text=t("qwin.btn_download_n", n=n) if n else t("qwin.btn_download_none"))
+        self._sync_buttons()
+
+    def _sync_buttons(self):
+        idle = not self.app._queue_running
+        self.btn_dl.configure(state="normal" if idle and self.tv.selection() else "disabled")
+        self.btn_all.configure(state="normal" if idle else "disabled")
+        self.btn_retry.configure(state="normal" if idle else "disabled")
+        self.btn_range.configure(state="normal" if idle else "disabled")
+
+    def _range(self):
+        """(première, dernière) lues dans les deux champs, ou None si elles ne forment pas un nombre."""
+        try:
+            return int(self.spin_from.get()), int(self.spin_to.get())
+        except ValueError:
+            return None
+
+    def _select_range(self, _event=None):
+        bounds = self._range()
+        count = len(self.app._queue)
+        if bounds is None or bounds[0] < 1 or bounds[1] < bounds[0] or bounds[0] > count:
+            return
+        rows = [str(i) for i in range(bounds[0] - 1, min(bounds[1], count))]
+        self.tv.selection_set(rows)
+        self.tv.see(rows[0])
+
+    def _run_range(self):
+        bounds = self._range()
+        if bounds is not None:
+            self.app._queue_run_range_values(bounds[0], bounds[1], parent=self)
+
+    def _select_all(self):
+        self.tv.selection_set(self.tv.get_children())
+
+    def _select_none(self):
+        self.tv.selection_remove(self.tv.selection())
+
+    def _download_selection(self):
+        self.app._queue_run_indices(self._indices(), parent=self)
+
+    def _remove_selection(self):
+        self.app._queue_remove_indices(self._indices(), parent=self)
+
+    # ── état du téléchargement (appelé par la fenêtre principale) ──
+    def set_running(self, running):
+        state = "normal" if running else "disabled"
+        for button in (self.btn_pause, self.btn_skip, self.btn_stop):
+            button.configure(state=state)
+        self._sync_buttons()
+
+    def set_paused(self, paused):
+        self.btn_pause.configure(text=t("dl.btn_resume") if paused else t("queue.btn_pause_queue"))
+
+    def mark_running(self, idx):
+        iid = str(idx)
+        if self.tv.exists(iid):
+            values, _tag = queue_row(idx, self.app._queue[idx], 90)
+            self.tv.item(iid, values=(values[0], t("queue.status_running")) + values[2:], tags=("running",))
+            self.tv.see(iid)
+
+    # ── journal ────────────────────────────────────────────────────
+    def _toggle_log(self):
+        if self.frm_log.winfo_ismapped():
+            self.frm_log.pack_forget()
+            self.btn_log.configure(text=t("qwin.btn_log_show"))
+        else:
+            self.frm_log.pack(side="bottom", fill="x", padx=10, pady=(0, 4), before=self.frm_tv)
+            self.btn_log.configure(text=t("qwin.btn_log_hide"))
+            self.log.see("end")
+
+    def log_line(self, text, tag=None):
+        try:
+            self.log.configure(state="normal")
+            self.log.insert("end", text + "\n", tag or "")
+            self.log.see("end")
+            self.log.configure(state="disabled")
+        except tk.TclError:
+            pass
+
+    def log_clear(self):
+        try:
+            self.log.configure(state="normal")
+            self.log.delete("1.0", "end")
+            self.log.configure(state="disabled")
+        except tk.TclError:
+            pass
+
+
+
 class YtDlpGui(tk.Tk):
     AUTO_SETUP = True   # ouvre l'assistant au démarrage si yt-dlp.exe est absent
     AUTO_UPDATE_CHECK = True   # vérifie en arrière-plan la présence d'une nouvelle version
@@ -6271,6 +6575,11 @@ class YtDlpGui(tk.Tk):
         self._queue_index = -1
         self._queue_end_index = -1
         self._queue_skip = False
+        self._queue_targets = None      # entrées choisies une à une (sélection) ; None = plage d'indices
+        self._queue_report = []         # bilan de la file en cours (une ligne par vidéo traitée)
+        self._queue_shown = []          # entrées affichées par le tableau (pour garder la sélection)
+        self._queue_views = []          # vues étendues de la file ouvertes
+        self._queue_sel_origin = "manual"   # « manual » : clics ; « range » : plage De X à Y
         self._cookie_hint_shown = False
         self._config = load_config()
         self._queue = load_queue()
@@ -6595,13 +6904,15 @@ class YtDlpGui(tk.Tk):
         self._lbl_queue_count.pack(side="left")
         ttk.Button(frm_qhead, text=t("queue.btn_add_url"),
                    command=self._queue_add).pack(side="right")
+        ttk.Button(frm_qhead, text=t("queue.btn_expand"),
+                   command=self._open_queue_view).pack(side="right", padx=(0, 6))
 
         frm_qtv = ttk.Frame(frm_queue)
         frm_qtv.pack(fill="both", expand=True)
 
         cols = ("num", "status", "url", "title", "summary")
         self._tv_queue = ttk.Treeview(frm_qtv, columns=cols, show="headings",
-                                      selectmode="browse")
+                                      selectmode="extended")
         self._tv_queue.heading("num",     text=t("queue.col_num"))
         self._tv_queue.heading("status",  text=t("queue.col_status"))
         self._tv_queue.heading("url",     text=t("queue.col_url"))
@@ -6616,6 +6927,9 @@ class YtDlpGui(tk.Tk):
         self._tv_queue.tag_configure("running", foreground="#1a5fa0")
         self._tv_queue.tag_configure("error",   foreground="#c0392b")
         self._tv_queue.bind("<Delete>", lambda e: self._queue_remove_selected())
+        self._tv_queue.bind("<Control-a>", self._queue_select_all)
+        self._tv_queue.bind("<<TreeviewSelect>>", lambda e: self._update_queue_buttons())
+        bind_drag_select(self._tv_queue, on_press=lambda: setattr(self, "_queue_sel_origin", "manual"))
 
         sb_q = ttk.Scrollbar(frm_qtv, command=self._tv_queue.yview)
         self._tv_queue.configure(yscrollcommand=sb_q.set)
@@ -6632,13 +6946,15 @@ class YtDlpGui(tk.Tk):
         ttk.Button(frm_ql1, text=t("queue.btn_run_one"),
                    command=self._queue_run_one).pack(side="left", padx=(0, 14))
         ttk.Label(frm_ql1, text=t("queue.label_from")).pack(side="left", padx=(0, 2))
-        self._spin_from = ttk.Spinbox(frm_ql1, from_=1, to=999, width=4)
+        self._spin_from = ttk.Spinbox(frm_ql1, from_=1, to=999, width=4, command=self._queue_select_range)
+        self._spin_from.bind("<KeyRelease>", self._queue_select_range)
         self._spin_from.pack(side="left")
         ttk.Label(frm_ql1, text=t("queue.label_to")).pack(side="left", padx=(4, 2))
-        self._spin_to = ttk.Spinbox(frm_ql1, from_=1, to=999, width=4)
+        self._spin_to = ttk.Spinbox(frm_ql1, from_=1, to=999, width=4, command=self._queue_select_range)
+        self._spin_to.bind("<KeyRelease>", self._queue_select_range)
         self._spin_to.pack(side="left")
-        ttk.Button(frm_ql1, text=t("queue.btn_run_range"),
-                   command=self._queue_run_range).pack(side="left", padx=(6, 0))
+        self.btn_q_range = ttk.Button(frm_ql1, text=t("queue.btn_run_range"), command=self._queue_run_range)
+        self.btn_q_range.pack(side="left", padx=(6, 0))
 
         # Contrôles
         frm_ql2 = ttk.Frame(frm_queue)
@@ -7238,11 +7554,15 @@ class YtDlpGui(tk.Tk):
         self.log_text.insert("end", text + "\n", tag or "")
         self.log_text.see("end")
         self.log_text.configure(state="disabled")
+        for view in self._queue_views:
+            view.log_line(text, tag)
 
     def _clear_log(self):
         self.log_text.configure(state="normal")
         self.log_text.delete("1.0", "end")
         self.log_text.configure(state="disabled")
+        for view in self._queue_views:
+            view.log_clear()
 
     # ──────────────────────────────────────────────
     #  Inspection
@@ -7442,6 +7762,9 @@ class YtDlpGui(tk.Tk):
         if not url:
             messagebox.showwarning(t("url.warn_missing_title"), t("url.warn_missing_msg"))
             return
+        if self._download_busy():
+            self._warn_busy()
+            return
         self._start_download(self._build_args())
 
     def _start_download(self, args):
@@ -7577,12 +7900,14 @@ class YtDlpGui(tk.Tk):
         idx = self._queue_index
         if self._queue_skip:
             # Sauter : l'entrée reste "pending", on passe à la suivante
+            self._queue_note(idx, "sauté")
             self._queue_skip = False
             self._queue_index += 1
             self._refresh_queue_tv()
             self._queue_run_next()
         elif success:
             # Succès : suppression automatique + avancement
+            self._queue_note(idx, "ok")
             if 0 <= idx < len(self._queue):
                 del self._queue[idx]
                 save_queue(self._queue)
@@ -7591,6 +7916,7 @@ class YtDlpGui(tk.Tk):
             self._queue_run_next()
         else:
             # Erreur : marquer et avancer
+            self._queue_note(idx, "erreur")
             if 0 <= idx < len(self._queue):
                 self._queue[idx]["status"] = "error"
                 save_queue(self._queue)
@@ -7644,6 +7970,8 @@ class YtDlpGui(tk.Tk):
             return
         if self._queue_running:
             self._queue_running = False
+            self._queue_targets = None
+            self._queue_report = []
             self._queue_skip = False
             self._queue_set_running_ui(False)
         if self._kill_current_process():      # rien à nettoyer si aucun téléchargement n'était en cours
@@ -7678,32 +8006,87 @@ class YtDlpGui(tk.Tk):
         return " · ".join(parts) if parts else t("queue.summary_default")
 
     def _refresh_queue_tv(self):
-        self._tv_queue.delete(*self._tv_queue.get_children())
-        for i, entry in enumerate(self._queue):
-            num = i + 1
-            status = entry.get("status", "pending")
-            if status == "error":
-                status_lbl, tag = t("queue.status_error"), "error"
-            else:
-                status_lbl, tag = t("queue.status_pending"), "pending"
-            url = entry.get("url", "")
-            url_short = url if len(url) <= 40 else url[:37] + "…"
-            title = entry.get("title", "")
-            title_lbl = title if title else t("queue.title_resolving") if entry.get("status") == "pending" else ""
-            self._tv_queue.insert("", "end", iid=str(i),
-                                  values=(num, status_lbl, url_short, title_lbl, entry.get("summary", "")),
-                                  tags=(tag,))
-        count = len(self._queue)
-        pending = sum(1 for e in self._queue if e.get("status") == "pending")
-        if count == 0:
-            self._lbl_queue_count.configure(text=t("queue.count_empty"))
-        else:
-            self._lbl_queue_count.configure(
-                text=t("queue.count_label", n=count, pending=pending))
-        n = max(count, 1)
+        self._queue_shown = fill_queue_tree(self._tv_queue, self._queue, self._queue_shown)
+        self._lbl_queue_count.configure(text=queue_count_text(self._queue))
+        n = max(len(self._queue), 1)
         self._spin_from.configure(to=n)
         self._spin_to.configure(to=n)
+        self._update_queue_buttons()
+        for view in list(self._queue_views):
+            if view.winfo_exists():
+                view.refresh()
+            else:
+                self._queue_views.remove(view)
 
+    # ── Sélection multiple ──────────────────────────────────────────
+    def _queue_selected_indices(self):
+        """Positions des lignes sélectionnées, dans l'ordre de la file."""
+        return sorted(int(i) for i in self._tv_queue.selection() if int(i) < len(self._queue))
+
+    def _queue_select_all(self, _event=None):
+        self._queue_sel_origin = "manual"
+        self._tv_queue.selection_set(self._tv_queue.get_children())
+        return "break"
+
+    def _queue_select_range(self, _event=None):
+        """Plage « De X à Y » : les lignes correspondantes sont sélectionnées (suppression et lancement)."""
+        try:
+            first = int(self._spin_from.get())
+            last = int(self._spin_to.get())
+        except ValueError:
+            return
+        count = len(self._queue)
+        if first < 1 or last < first or first > count:
+            return
+        rows = [str(i) for i in range(first - 1, min(last, count))]
+        self._queue_sel_origin = "range"
+        self._tv_queue.selection_set(rows)
+        self._tv_queue.see(rows[0])
+
+    def _update_queue_buttons(self):
+        """Le bouton de la plage devient « Télécharger sél. » quand plusieurs lignes sont choisies à la main."""
+        n = len(self._tv_queue.selection())
+        if self._queue_sel_origin == "manual" and n >= 2:
+            self.btn_q_range.configure(text=t("queue.btn_run_selection", n=n), command=self._queue_run_selection)
+        else:
+            self.btn_q_range.configure(text=t("queue.btn_run_range"), command=self._queue_run_range)
+
+    def _open_queue_view(self):
+        for view in self._queue_views:
+            if view.winfo_exists():
+                view.lift()
+                view.focus_force()
+                return
+        QueueExpandedWindow(self)
+
+    # ── Un seul téléchargeur à la fois ──────────────────────────────
+    def _download_busy(self):
+        """Vrai si un téléchargement est déjà en cours : ici, dans la file ou dans un inspecteur de playlist."""
+        if self._process is not None or self._queue_running:
+            return True
+        for win in self.winfo_children():
+            if isinstance(win, PlaylistInspectorWindow):
+                dl = win._dl_window
+                if dl is not None and dl.winfo_exists() and getattr(dl, "_downloading", False):
+                    return True
+        return False
+
+    def _warn_busy(self, parent=None):
+        messagebox.showinfo(t("busy.title"), t("busy.msg"), parent=parent or self)
+
+    # ── Bilan de la file ────────────────────────────────────────────
+    def _queue_note(self, idx, status):
+        if 0 <= idx < len(self._queue):
+            entry = self._queue[idx]
+            self._queue_report.append({"title": entry.get("title") or entry.get("url", ""),
+                                       "status": status, "dropped": [], "rc": 0 if status == "ok" else 1})
+
+    def _queue_show_report(self):
+        report, self._queue_report = self._queue_report, []
+        if len(report) < 2:
+            return
+        parent = next((v for v in self._queue_views if v.winfo_exists()), self)
+        self.after(200, lambda: DownloadReportWindow(parent, report))
     def _queue_fetch_title(self, idx):
         entry = self._queue[idx]
         url = entry.get("url", "")
@@ -7754,17 +8137,30 @@ class YtDlpGui(tk.Tk):
             self._refresh_queue_tv()
 
     def _queue_remove_selected(self):
-        sel = self._tv_queue.selection()
-        if not sel:
-            return
-        idx = int(sel[0])
-        if self._queue_running and idx == self._queue_index:
-            return  # ne pas supprimer l'entrée en cours de téléchargement
-        self._queue_remove(idx)
+        self._queue_remove_indices(self._queue_selected_indices())
 
+    def _queue_remove_indices(self, indices, parent=None):
+        """Retire des éléments de la file (jamais celui qui se télécharge) ; confirmation s'il y en a plusieurs."""
+        indices = [i for i in indices
+                   if 0 <= i < len(self._queue) and not (self._queue_running and i == self._queue_index)]
+        if not indices:
+            return
+        if len(indices) > 1 and not messagebox.askyesno(
+                t("queue.confirm_remove_title"), t("queue.confirm_remove_msg", n=len(indices)),
+                parent=parent or self):
+            return
+        if self._queue_running:
+            # la file en cours garde sa place : les positions suivantes reculent des éléments retirés avant elle
+            self._queue_index -= sum(1 for i in indices if i < self._queue_index)
+            self._queue_end_index -= sum(1 for i in indices if i <= self._queue_end_index)
+        for i in sorted(indices, reverse=True):
+            del self._queue[i]
+        save_queue(self._queue)
+        self._refresh_queue_tv()
     def _queue_retry_errors(self):
         """Remet en attente tous les éléments en erreur puis relance la file (les autres sont ignorés)."""
-        if self._queue_running:
+        if self._download_busy():
+            self._warn_busy()
             return
         failed = [e for e in self._queue if e.get("status") == "error"]
         if not failed:
@@ -7775,7 +8171,6 @@ class YtDlpGui(tk.Tk):
         save_queue(self._queue)
         self._refresh_queue_tv()
         self._queue_run(0)
-
     def _queue_clear_errors(self):
         self._queue = [e for e in self._queue if e.get("status") != "error"]
         save_queue(self._queue)
@@ -7787,34 +8182,70 @@ class YtDlpGui(tk.Tk):
         self.btn_q_stop.configure(state=state)
         self.btn_q_pause.configure(state=state)
         self.btn_pause.configure(state=state)
-
-    def _queue_run(self, start_idx, end_idx=None):
-        if self._queue_running:
+        for view in list(self._queue_views):
+            view.set_running(running)
+    def _queue_run(self, start_idx, end_idx=None, targets=None):
+        """Lance la file de start_idx à end_idx, ou seulement les entrées de « targets » (sélection)."""
+        if self._download_busy():
+            self._warn_busy()
             return
         if not self._queue:
             messagebox.showinfo(t("queue.warn_empty_title"), t("queue.warn_empty_msg"), parent=self)
             return
         self._queue_running = True
+        self._queue_targets = targets
+        self._queue_report = []
         self._queue_index = start_idx
         self._queue_end_index = end_idx if end_idx is not None else len(self._queue) - 1
         self._queue_skip = False
         self._queue_set_running_ui(True)
         self._queue_run_next()
 
+    def _queue_run_indices(self, indices, parent=None):
+        """Télécharge les éléments choisis (dans l'ordre de la file) ; ceux en erreur sont retentés."""
+        indices = [i for i in indices if 0 <= i < len(self._queue)]
+        if not indices:
+            messagebox.showwarning(t("queue.warn_no_sel_title"), t("queue.warn_no_sel_msg"),
+                                   parent=parent or self)
+            return
+        if self._download_busy():
+            self._warn_busy(parent)
+            return
+        entries = [self._queue[i] for i in indices]
+        for entry in entries:
+            if entry.get("status") == "error":
+                entry["status"] = "pending"
+        save_queue(self._queue)
+        self._refresh_queue_tv()
+        self._queue_run(indices[0], indices[-1], targets=entries)
+
+    def _queue_run_selection(self):
+        self._queue_run_indices(self._queue_selected_indices())
     def _queue_run_next(self):
-        while self._queue_index <= self._queue_end_index:
-            if self._queue_index >= len(self._queue):
-                break
-            if self._queue[self._queue_index].get("status") == "pending":
-                self._queue_run_entry(self._queue_index)
-                return
-            self._queue_index += 1
+        if self._queue_targets is not None:
+            # sélection : les entrées sont retrouvées par identité, leurs positions changent quand on en retire
+            while self._queue_targets:
+                entry = self._queue_targets.pop(0)
+                idx = next((i for i, e in enumerate(self._queue) if e is entry), None)
+                if idx is not None and entry.get("status") == "pending":
+                    self._queue_index = idx
+                    self._queue_run_entry(idx)
+                    return
+        else:
+            while self._queue_index <= self._queue_end_index:
+                if self._queue_index >= len(self._queue):
+                    break
+                if self._queue[self._queue_index].get("status") == "pending":
+                    self._queue_run_entry(self._queue_index)
+                    return
+                self._queue_index += 1
         # Plus rien à faire dans la plage
         self._queue_running = False
+        self._queue_targets = None
         self._queue_set_running_ui(False)
         self._refresh_queue_tv()
         self.var_status.set(t("app.status_queue_done"))
-
+        self._queue_show_report()
     def _queue_run_entry(self, idx):
         entry = self._queue[idx]
         iid = str(idx)
@@ -7826,6 +8257,8 @@ class YtDlpGui(tk.Tk):
                                     entry.get("title", ""), entry.get("summary", "")),
                             tags=("running",))
         self._tv_queue.see(iid)
+        for view in list(self._queue_views):
+            view.mark_running(idx)
 
         # Déduplication : patcher le -o si le titre est connu et le fichier existe déjà
         args = list(entry["args"])
@@ -7867,6 +8300,8 @@ class YtDlpGui(tk.Tk):
         if not self._confirm_stop_scope():
             return
         self._queue_running = False
+        self._queue_targets = None
+        self._queue_report = []
         self._queue_skip = False
         self._queue_set_running_ui(False)
         if self._kill_current_process():
@@ -7875,34 +8310,35 @@ class YtDlpGui(tk.Tk):
         self._refresh_queue_tv()
 
     def _queue_run_from_selection(self):
-        sel = self._tv_queue.selection()
+        sel = self._queue_selected_indices()
         if not sel:
             messagebox.showwarning(t("queue.warn_no_sel_title"),
                                    t("queue.warn_no_sel_msg"), parent=self)
             return
-        self._queue_run(int(sel[0]))
-
+        self._queue_run(sel[0])
     def _queue_run_one(self):
-        sel = self._tv_queue.selection()
+        sel = self._queue_selected_indices()
         if not sel:
             messagebox.showwarning(t("queue.warn_no_sel_title"),
                                    t("queue.warn_no_sel_msg"), parent=self)
             return
-        idx = int(sel[0])
-        self._queue_run(idx, end_idx=idx)
-
+        self._queue_run(sel[0], end_idx=sel[0])
     def _queue_run_range(self):
         try:
-            a = int(self._spin_from.get()) - 1
-            b = int(self._spin_to.get()) - 1
+            first = int(self._spin_from.get())
+            last = int(self._spin_to.get())
         except ValueError:
             return
+        self._queue_run_range_values(first, last)
+
+    def _queue_run_range_values(self, first, last, parent=None):
+        """Lance les vidéos de la position « first » à « last » (comptées à partir de 1)."""
+        a, b = first - 1, last - 1
         if a < 0 or b < a or a >= len(self._queue):
             messagebox.showwarning(t("queue.warn_bad_range_title"),
-                                   t("queue.warn_bad_range_msg"), parent=self)
+                                   t("queue.warn_bad_range_msg"), parent=parent or self)
             return
-        b = min(b, len(self._queue) - 1)
-        self._queue_run(a, end_idx=b)
+        self._queue_run(a, end_idx=min(b, len(self._queue) - 1))
 
     def _cleanup_partial_files(self):
         """Supprime les fichiers partiels du téléchargement interrompu."""
@@ -8008,6 +8444,8 @@ class YtDlpGui(tk.Tk):
             self._paused = False
             self.btn_pause.configure(text=t("dl.btn_pause"))
             self.var_status.set(t("app.status_resumed"))
+        for view in list(self._queue_views):
+            view.set_paused(self._paused)
 
     def _suspend_process(self, pid):
         suspend_process_tree(pid)

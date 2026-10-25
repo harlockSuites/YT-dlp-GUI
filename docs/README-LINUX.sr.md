@@ -20,7 +20,7 @@
 
 ## 1. Stanje pretpremijere
 
-Linux verzija reprodukuje ponašanje Windows verzije 0.1.7 (zamrznute, koja služi kao uzor). Objavljuje se kao **GitHub pretpremijera (pre-release)** pod oznakama `Linux-vX.Y.Z`: nikada se ne predstavlja kao „najnovije izdanje” repozitorijuma.
+Linux verzija reprodukuje ponašanje Windows verzije 0.1.8 (zamrznute, koja služi kao uzor). Objavljuje se kao **GitHub pretpremijera (pre-release)** pod oznakama `Linux-vX.Y.Z`: nikada se ne predstavlja kao „najnovije izdanje” repozitorijuma.
 
 **Šta je isprobano** (virtuelna mašina Debian 12, GNOME radna površina, Python 3.11, pravi YouTube nalog prijavljen u svakom pregledaču, oktobar 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 Jedina poznata greška u obliku je `dir-or-file-in-opt` (program smešten u `/opt`).
 
-**Objavljivanje**: proveriti `__version__` u `yt-dlp-gui.pyw`, datirati odeljak verzije u `CHANGELOG-linux.md`, napraviti commit, pa napraviti i poslati oznaku `Linux-vX.Y.Z`. Tok „Release Linux” pokreće testove, gradi AppImage, arhivu i `.deb`, računa zbirove i pravi izdanje kao **pretpremijeru (pre-release)**, nikada kao „najnovije izdanje” (provera ažuriranja Windows verzije 0.1.7 ne sme tamo da nađe Linux oznaku).
+**Objavljivanje**: proveriti `__version__` u `yt-dlp-gui.pyw`, datirati odeljak verzije u `CHANGELOG-linux.md`, napraviti commit, pa napraviti i poslati oznaku `Linux-vX.Y.Z`. Tok „Release Linux” pokreće testove, gradi AppImage, arhivu i `.deb`, računa zbirove i pravi izdanje kao **pretpremijeru (pre-release)**, nikada kao „najnovije izdanje” (provera ažuriranja Windows verzije 0.1.8 ne sme tamo da nađe Linux oznaku).
 
 Licenca: MIT, kao i ostatak repozitorijuma (vidi [LICENSE](../LICENSE)).

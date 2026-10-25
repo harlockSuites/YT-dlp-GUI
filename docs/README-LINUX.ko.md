@@ -20,7 +20,7 @@
 
 ## 1. 미리 보기 버전의 상태
 
-Linux 버전은 Windows 버전 0.1.7(동결되어 있으며 기준으로 쓰입니다)의 동작을 그대로 따릅니다. `Linux-vX.Y.Z` 태그의 **GitHub 시험판(pre-release)**으로 공개되며, 저장소의 '최신 릴리스'로 표시되는 일은 결코 없습니다.
+Linux 버전은 Windows 버전 0.1.8(동결되어 있으며 기준으로 쓰입니다)의 동작을 그대로 따릅니다. `Linux-vX.Y.Z` 태그의 **GitHub 시험판(pre-release)**으로 공개되며, 저장소의 '최신 릴리스'로 표시되는 일은 결코 없습니다.
 
 **시도해 본 것** (Debian 12 가상 머신, GNOME 데스크톱, Python 3.11, 각 브라우저에 실제 YouTube 계정으로 로그인한 상태, 2026년 10월):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 알려진 형식상 오류는 `dir-or-file-in-opt`(프로그램이 `/opt`에 포함됨) 하나뿐입니다.
 
-**배포**: `yt-dlp-gui.pyw`의 `__version__`을 확인하고, `CHANGELOG-linux.md`에서 해당 버전 절에 날짜를 적고, 커밋한 다음 `Linux-vX.Y.Z` 태그를 만들어 푸시합니다. 'Release Linux' 워크플로가 시험을 실행하고, AppImage, 아카이브, `.deb`를 빌드하고, 합계를 계산하여 릴리스를 **시험판(pre-release)**으로 만듭니다. '최신 릴리스'가 되는 일은 없습니다(Windows 버전 0.1.7의 업데이트 확인이 거기서 Linux 태그를 찾아서는 안 되기 때문입니다).
+**배포**: `yt-dlp-gui.pyw`의 `__version__`을 확인하고, `CHANGELOG-linux.md`에서 해당 버전 절에 날짜를 적고, 커밋한 다음 `Linux-vX.Y.Z` 태그를 만들어 푸시합니다. 'Release Linux' 워크플로가 시험을 실행하고, AppImage, 아카이브, `.deb`를 빌드하고, 합계를 계산하여 릴리스를 **시험판(pre-release)**으로 만듭니다. '최신 릴리스'가 되는 일은 없습니다(Windows 버전 0.1.8의 업데이트 확인이 거기서 Linux 태그를 찾아서는 안 되기 때문입니다).
 
 라이선스: MIT, 저장소의 나머지와 같습니다([LICENSE](../LICENSE) 참조).

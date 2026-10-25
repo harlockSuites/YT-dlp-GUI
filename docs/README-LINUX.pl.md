@@ -20,7 +20,7 @@
 
 ## 1. Stan wersji zapoznawczej
 
-Wersja dla Linuksa odtwarza zachowanie wersji dla Windows 0.1.7 (zamrożonej, służącej za wzór). Jest publikowana jako **wersja wstępna (pre-release) na GitHubie** pod znacznikami `Linux-vX.Y.Z`: nigdy nie jest przedstawiana jako „najnowsze wydanie” repozytorium.
+Wersja dla Linuksa odtwarza zachowanie wersji dla Windows 0.1.8 (zamrożonej, służącej za wzór). Jest publikowana jako **wersja wstępna (pre-release) na GitHubie** pod znacznikami `Linux-vX.Y.Z`: nigdy nie jest przedstawiana jako „najnowsze wydanie” repozytorium.
 
 **Co wypróbowano** (maszyna wirtualna Debian 12, pulpit GNOME, Python 3.11, prawdziwe konto YouTube zalogowane w każdej przeglądarce, październik 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 Jedyny znany błąd formalny to `dir-or-file-in-opt` (program umieszczony w `/opt`).
 
-**Publikowanie**: sprawdzić `__version__` w `yt-dlp-gui.pyw`, opatrzyć datą sekcję wersji w `CHANGELOG-linux.md`, zrobić commit, potem utworzyć i wypchnąć znacznik `Linux-vX.Y.Z`. Przepływ „Release Linux” uruchamia testy, buduje AppImage, archiwum i `.deb`, liczy sumy i tworzy wydanie jako **wersję wstępną (pre-release)**, nigdy jako „najnowsze wydanie” (sprawdzanie aktualizacji wersji dla Windows 0.1.7 nie może tam znaleźć znacznika Linuksa).
+**Publikowanie**: sprawdzić `__version__` w `yt-dlp-gui.pyw`, opatrzyć datą sekcję wersji w `CHANGELOG-linux.md`, zrobić commit, potem utworzyć i wypchnąć znacznik `Linux-vX.Y.Z`. Przepływ „Release Linux” uruchamia testy, buduje AppImage, archiwum i `.deb`, liczy sumy i tworzy wydanie jako **wersję wstępną (pre-release)**, nigdy jako „najnowsze wydanie” (sprawdzanie aktualizacji wersji dla Windows 0.1.8 nie może tam znaleźć znacznika Linuksa).
 
 Licencja: MIT, jak reszta repozytorium (zob. [LICENSE](../LICENSE)).

@@ -20,7 +20,7 @@
 
 ## 1. Stato dell'anteprima
 
-La versione per Linux riproduce il comportamento della versione per Windows 0.1.7 (congelata, usata come modello). È pubblicata come **anteprima (pre-release) di GitHub** con tag `Linux-vX.Y.Z`: non viene mai presentata come «ultima versione» del repository.
+La versione per Linux riproduce il comportamento della versione per Windows 0.1.8 (congelata, usata come modello). È pubblicata come **anteprima (pre-release) di GitHub** con tag `Linux-vX.Y.Z`: non viene mai presentata come «ultima versione» del repository.
 
 **Cosa è stato provato** (macchina virtuale Debian 12, desktop GNOME, Python 3.11, un vero account YouTube con accesso effettuato in ogni browser, ottobre 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 L'unico errore di forma noto è `dir-or-file-in-opt` (programma incluso in `/opt`).
 
-**Pubblicare**: verificare `__version__` in `yt-dlp-gui.pyw`, datare la sezione della versione in `CHANGELOG-linux.md`, fare il commit, poi creare e inviare il tag `Linux-vX.Y.Z`. Il workflow «Release Linux» esegue i test, costruisce l'AppImage, l'archivio e il `.deb`, calcola le somme e crea la release come **anteprima (pre-release)**, mai come «ultima versione» (il controllo degli aggiornamenti della versione per Windows 0.1.7 non deve trovarvi alcun tag Linux).
+**Pubblicare**: verificare `__version__` in `yt-dlp-gui.pyw`, datare la sezione della versione in `CHANGELOG-linux.md`, fare il commit, poi creare e inviare il tag `Linux-vX.Y.Z`. Il workflow «Release Linux» esegue i test, costruisce l'AppImage, l'archivio e il `.deb`, calcola le somme e crea la release come **anteprima (pre-release)**, mai come «ultima versione» (il controllo degli aggiornamenti della versione per Windows 0.1.8 non deve trovarvi alcun tag Linux).
 
 Licenza: MIT, come il resto del repository (vedi [LICENSE](../LICENSE)).

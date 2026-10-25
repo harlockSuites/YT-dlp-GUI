@@ -20,7 +20,7 @@
 
 ## 1. État de la préversion
 
-La version Linux reprend le comportement de la version Windows 0.1.7 (figée, qui sert de modèle). Elle est publiée comme **préversion GitHub** sous des étiquettes `Linux-vX.Y.Z` : elle n'est jamais présentée comme « dernière version » du dépôt.
+La version Linux reprend le comportement de la version Windows 0.1.8 (figée, qui sert de modèle). Elle est publiée comme **préversion GitHub** sous des étiquettes `Linux-vX.Y.Z` : elle n'est jamais présentée comme « dernière version » du dépôt.
 
 **Ce qui a été essayé** (machine virtuelle Debian 12, bureau GNOME, Python 3.11, vrai compte YouTube connecté dans chaque navigateur, octobre 2026) :
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 La seule erreur de forme connue est `dir-or-file-in-opt` (programme embarqué dans `/opt`).
 
-**Publier** : vérifier `__version__` dans `yt-dlp-gui.pyw`, dater la section de la version dans `CHANGELOG-linux.md`, commiter, puis créer et pousser l'étiquette `Linux-vX.Y.Z`. Le workflow « Release Linux » lance les tests, construit l'AppImage, l'archive et le `.deb`, calcule les sommes et crée la release en **préversion**, jamais « dernière version » (la recherche de mise à jour de la version Windows 0.1.7 ne doit pas y trouver d'étiquette Linux).
+**Publier** : vérifier `__version__` dans `yt-dlp-gui.pyw`, dater la section de la version dans `CHANGELOG-linux.md`, commiter, puis créer et pousser l'étiquette `Linux-vX.Y.Z`. Le workflow « Release Linux » lance les tests, construit l'AppImage, l'archive et le `.deb`, calcule les sommes et crée la release en **préversion**, jamais « dernière version » (la recherche de mise à jour de la version Windows 0.1.8 ne doit pas y trouver d'étiquette Linux).
 
 Licence : MIT, comme le reste du dépôt (voir [LICENSE](LICENSE)).

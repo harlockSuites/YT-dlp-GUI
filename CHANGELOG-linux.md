@@ -1,8 +1,17 @@
 # Journal des modifications — version Linux
 
-Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes sont de la forme `Linux-vX.Y.Z` et ses versions sont publiées comme **préversions GitHub**. La version Windows a son propre journal, [CHANGELOG.md](CHANGELOG.md), et ses propres étiquettes (`vX.Y.Z`) : elle est figée à la 0.1.7 et sert de modèle au comportement et aux fonctionnalités de la version Linux.
+Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes sont de la forme `Linux-vX.Y.Z` et ses versions sont publiées comme **préversions GitHub**. La version Windows a son propre journal, [CHANGELOG.md](CHANGELOG.md), et ses propres étiquettes (`vX.Y.Z`) : elle est figée à la 0.1.8 et sert de modèle au comportement et aux fonctionnalités de la version Linux.
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
+
+## [0.1.3] — non publiée
+
+### Modifié
+- **Reprise de la version Windows 0.1.8** (fusion de `main`) : file d'attente avec **sélection multiple** (Ctrl+clic, Maj+clic, clic-glissé, Ctrl+A), bouton « Télécharger sél. (N) », plage « De X à Y » qui sélectionne les lignes, **vue étendue** de la file (bouton « Étendre l'affiche »), **un seul téléchargement à la fois** (message « Téléchargement en cours »), bilan de fin de file à partir de 2 vidéos, et correction du décalage de la file quand on retire un élément pendant qu'elle tourne. 16 clés de traduction dans les 15 langues (fournies par la version Windows). Les 3 polices écrites en dur dans le nouveau code (`Segoe UI` ×2, `Consolas`) passent par `UI_FONT` et `MONO_FONT`.
+- README-LINUX (15 langues) : la version Windows qui sert de modèle est maintenant la 0.1.8.
+
+### Vérifié
+- Pas encore essayé : le clic-glissé, la molette et la vue étendue de la file sur un vrai bureau X11 (seuls les tests automatiques sous Xvfb l'ont été).
 
 ## [0.1.2] — 2026-10-24
 

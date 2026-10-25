@@ -63,11 +63,12 @@ class RetryErrorsTests(AppCase):
         info.assert_called_once()
         run.assert_not_called()
 
-    def test_ignored_while_the_queue_is_running(self):
+    def test_refused_with_a_message_while_the_queue_is_running(self):
         self.app._queue_running = True
-        with mock.patch.object(self.app, "_queue_run") as run:
+        with mock.patch.object(m.messagebox, "showinfo") as info, mock.patch.object(self.app, "_queue_run") as run:
             self.app._queue_retry_errors()
         run.assert_not_called()
+        info.assert_called_once()
         self.assertEqual(self.app._queue[0]["status"], "error")
 
 

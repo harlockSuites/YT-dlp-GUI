@@ -20,7 +20,7 @@
 
 ## 1. 预览版的状态
 
-Linux 版本复现 Windows 版本 0.1.7（已冻结，用作参照）的行为。它以 **GitHub 预发布版（pre-release）** 的形式发布，标签为 `Linux-vX.Y.Z`：从不被当作仓库的“最新发布版”。
+Linux 版本复现 Windows 版本 0.1.8（已冻结，用作参照）的行为。它以 **GitHub 预发布版（pre-release）** 的形式发布，标签为 `Linux-vX.Y.Z`：从不被当作仓库的“最新发布版”。
 
 **已经试过的内容**（Debian 12 虚拟机，GNOME 桌面，Python 3.11，每个浏览器中都登录了真实的 YouTube 账号，2026 年 10 月）：
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 唯一已知的格式错误是 `dir-or-file-in-opt`（程序打包在 `/opt` 中）。
 
-**发布**：检查 `yt-dlp-gui.pyw` 中的 `__version__`，在 `CHANGELOG-linux.md` 中为该版本的小节标注日期，提交，然后创建并推送 `Linux-vX.Y.Z` 标签。“Release Linux”工作流会运行测试，构建 AppImage、压缩包和 `.deb`，计算校验和，并把发布创建为**预发布版（pre-release）**，绝不是“最新发布版”（Windows 版本 0.1.7 的更新检查不应在那里找到 Linux 标签）。
+**发布**：检查 `yt-dlp-gui.pyw` 中的 `__version__`，在 `CHANGELOG-linux.md` 中为该版本的小节标注日期，提交，然后创建并推送 `Linux-vX.Y.Z` 标签。“Release Linux”工作流会运行测试，构建 AppImage、压缩包和 `.deb`，计算校验和，并把发布创建为**预发布版（pre-release）**，绝不是“最新发布版”（Windows 版本 0.1.8 的更新检查不应在那里找到 Linux 标签）。
 
 许可证：MIT，与仓库的其余部分相同（见 [LICENSE](../LICENSE)）。

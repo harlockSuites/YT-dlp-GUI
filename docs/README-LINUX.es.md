@@ -20,7 +20,7 @@
 
 ## 1. Estado de la versión preliminar
 
-La versión para Linux reproduce el comportamiento de la versión de Windows 0.1.7 (congelada, usada como modelo). Se publica como **versión preliminar de GitHub** con etiquetas `Linux-vX.Y.Z`: nunca se presenta como la «última versión» del repositorio.
+La versión para Linux reproduce el comportamiento de la versión de Windows 0.1.8 (congelada, usada como modelo). Se publica como **versión preliminar de GitHub** con etiquetas `Linux-vX.Y.Z`: nunca se presenta como la «última versión» del repositorio.
 
 **Lo que se ha probado** (máquina virtual Debian 12, escritorio GNOME, Python 3.11, una cuenta real de YouTube con sesión iniciada en cada navegador, octubre de 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 El único error de forma conocido es `dir-or-file-in-opt` (programa incluido en `/opt`).
 
-**Publicar**: comprobar `__version__` en `yt-dlp-gui.pyw`, fechar la sección de la versión en `CHANGELOG-linux.md`, hacer el commit y después crear y subir la etiqueta `Linux-vX.Y.Z`. El flujo «Release Linux» ejecuta las pruebas, construye el AppImage, el archivo comprimido y el `.deb`, calcula las sumas y crea la versión como **versión preliminar**, nunca como «última versión» (la comprobación de actualizaciones de la versión de Windows 0.1.7 no debe encontrar ahí ninguna etiqueta de Linux).
+**Publicar**: comprobar `__version__` en `yt-dlp-gui.pyw`, fechar la sección de la versión en `CHANGELOG-linux.md`, hacer el commit y después crear y subir la etiqueta `Linux-vX.Y.Z`. El flujo «Release Linux» ejecuta las pruebas, construye el AppImage, el archivo comprimido y el `.deb`, calcula las sumas y crea la versión como **versión preliminar**, nunca como «última versión» (la comprobación de actualizaciones de la versión de Windows 0.1.8 no debe encontrar ahí ninguna etiqueta de Linux).
 
 Licencia: MIT, como el resto del repositorio (véase [LICENSE](../LICENSE)).

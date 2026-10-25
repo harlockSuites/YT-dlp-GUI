@@ -20,7 +20,7 @@
 
 ## 1. Estado do pré-lançamento
 
-A versão para Linux reproduz o comportamento da versão para Windows 0.1.7 (congelada, usada como modelo). Ela é publicada como **pré-lançamento do GitHub** com etiquetas `Linux-vX.Y.Z`: nunca é apresentada como a «última versão» do repositório.
+A versão para Linux reproduz o comportamento da versão para Windows 0.1.8 (congelada, usada como modelo). Ela é publicada como **pré-lançamento do GitHub** com etiquetas `Linux-vX.Y.Z`: nunca é apresentada como a «última versão» do repositório.
 
 **O que foi testado** (máquina virtual Debian 12, ambiente GNOME, Python 3.11, uma conta real do YouTube com sessão iniciada em cada navegador, outubro de 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 O único erro de forma conhecido é `dir-or-file-in-opt` (programa incluído em `/opt`).
 
-**Publicar**: verificar `__version__` em `yt-dlp-gui.pyw`, datar a seção da versão em `CHANGELOG-linux.md`, fazer o commit e depois criar e enviar a etiqueta `Linux-vX.Y.Z`. O fluxo «Release Linux» executa os testes, constrói o AppImage, o arquivo compactado e o `.deb`, calcula as somas e cria a versão como **pré-lançamento**, nunca como «última versão» (a verificação de atualizações da versão para Windows 0.1.7 não deve encontrar ali nenhuma etiqueta do Linux).
+**Publicar**: verificar `__version__` em `yt-dlp-gui.pyw`, datar a seção da versão em `CHANGELOG-linux.md`, fazer o commit e depois criar e enviar a etiqueta `Linux-vX.Y.Z`. O fluxo «Release Linux» executa os testes, constrói o AppImage, o arquivo compactado e o `.deb`, calcula as somas e cria a versão como **pré-lançamento**, nunca como «última versão» (a verificação de atualizações da versão para Windows 0.1.8 não deve encontrar ali nenhuma etiqueta do Linux).
 
 Licença: MIT, como o resto do repositório (veja [LICENSE](../LICENSE)).

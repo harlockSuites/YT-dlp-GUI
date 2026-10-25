@@ -20,7 +20,7 @@
 
 ## 1. Kalagayan ng preview
 
-Ginagaya ng bersyon para sa Linux ang kilos ng bersyon para sa Windows na 0.1.7 (naka-freeze at ginagamit na batayan). Inilalathala ito bilang **GitHub pre-release** na may mga tag na `Linux-vX.Y.Z`: hindi ito kailanman ipinapakita bilang "pinakabagong release" ng repository.
+Ginagaya ng bersyon para sa Linux ang kilos ng bersyon para sa Windows na 0.1.8 (naka-freeze at ginagamit na batayan). Inilalathala ito bilang **GitHub pre-release** na may mga tag na `Linux-vX.Y.Z`: hindi ito kailanman ipinapakita bilang "pinakabagong release" ng repository.
 
 **Ang mga nasubukan na** (Debian 12 virtual machine, GNOME desktop, Python 3.11, totoong YouTube account na naka-sign in sa bawat browser, Oktubre 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 Ang tanging kilalang error sa anyo ay ang `dir-or-file-in-opt` (programang nasa loob ng `/opt`).
 
-**Paglalathala**: suriin ang `__version__` sa `yt-dlp-gui.pyw`, lagyan ng petsa ang seksyon ng bersyon sa `CHANGELOG-linux.md`, mag-commit, pagkatapos ay gumawa at mag-push ng tag na `Linux-vX.Y.Z`. Pinapatakbo ng workflow na "Release Linux" ang mga pagsubok, binubuo ang AppImage, ang archive at ang `.deb`, kinukuwenta ang mga sum, at ginagawa ang release bilang **pre-release**, hindi kailanman bilang "pinakabagong release" (hindi dapat makakita ng tag ng Linux doon ang pagsusuri ng update ng bersyon para sa Windows na 0.1.7).
+**Paglalathala**: suriin ang `__version__` sa `yt-dlp-gui.pyw`, lagyan ng petsa ang seksyon ng bersyon sa `CHANGELOG-linux.md`, mag-commit, pagkatapos ay gumawa at mag-push ng tag na `Linux-vX.Y.Z`. Pinapatakbo ng workflow na "Release Linux" ang mga pagsubok, binubuo ang AppImage, ang archive at ang `.deb`, kinukuwenta ang mga sum, at ginagawa ang release bilang **pre-release**, hindi kailanman bilang "pinakabagong release" (hindi dapat makakita ng tag ng Linux doon ang pagsusuri ng update ng bersyon para sa Windows na 0.1.8).
 
 Lisensya: MIT, tulad ng iba pang bahagi ng repository (tingnan ang [LICENSE](../LICENSE)).

@@ -20,7 +20,7 @@
 
 ## 1. State of the preview
 
-The Linux version reproduces the behaviour of the Windows version 0.1.7 (frozen, used as the model). It is published as a **GitHub pre-release** under `Linux-vX.Y.Z` tags: it is never presented as the repository's "latest release".
+The Linux version reproduces the behaviour of the Windows version 0.1.8 (frozen, used as the model). It is published as a **GitHub pre-release** under `Linux-vX.Y.Z` tags: it is never presented as the repository's "latest release".
 
 **What has been tried** (Debian 12 virtual machine, GNOME desktop, Python 3.11, a real YouTube account signed in to each browser, October 2026):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 The only known form error is `dir-or-file-in-opt` (program bundled in `/opt`).
 
-**Publishing**: check `__version__` in `yt-dlp-gui.pyw`, date the version's section in `CHANGELOG-linux.md`, commit, then create and push the `Linux-vX.Y.Z` tag. The "Release Linux" workflow runs the tests, builds the AppImage, the archive and the `.deb`, computes the sums and creates the release as a **pre-release**, never "latest release" (the update check of the Windows version 0.1.7 must not find a Linux tag there).
+**Publishing**: check `__version__` in `yt-dlp-gui.pyw`, date the version's section in `CHANGELOG-linux.md`, commit, then create and push the `Linux-vX.Y.Z` tag. The "Release Linux" workflow runs the tests, builds the AppImage, the archive and the `.deb`, computes the sums and creates the release as a **pre-release**, never "latest release" (the update check of the Windows version 0.1.8 must not find a Linux tag there).
 
 Licence: MIT, like the rest of the repository (see [LICENSE](../LICENSE)).

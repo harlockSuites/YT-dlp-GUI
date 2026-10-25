@@ -20,7 +20,7 @@
 
 ## 1. Az előzetes változat állapota
 
-A linuxos változat a Windows 0.1.7 változat (befagyasztott, mintaként szolgáló) viselkedését követi. **GitHub előzetes kiadásként (pre-release)** jelenik meg `Linux-vX.Y.Z` címkékkel: soha nem a tároló „legfrissebb kiadásaként” szerepel.
+A linuxos változat a Windows 0.1.8 változat (befagyasztott, mintaként szolgáló) viselkedését követi. **GitHub előzetes kiadásként (pre-release)** jelenik meg `Linux-vX.Y.Z` címkékkel: soha nem a tároló „legfrissebb kiadásaként” szerepel.
 
 **Amit kipróbáltunk** (Debian 12 virtuális gép, GNOME asztal, Python 3.11, minden böngészőben bejelentkezett valódi YouTube-fiók, 2026 októbere):
 
@@ -463,6 +463,6 @@ lintian dist/yt-dlp-gui_*_amd64.deb
 
 Az egyetlen ismert formai hiba a `dir-or-file-in-opt` (az `/opt` alá csomagolt program).
 
-**Közzététel**: ellenőrizd a `__version__` értékét a `yt-dlp-gui.pyw` fájlban, keltezd a verzió szakaszát a `CHANGELOG-linux.md` fájlban, készíts commitot, majd hozd létre és told fel a `Linux-vX.Y.Z` címkét. A „Release Linux” munkafolyamat lefuttatja a teszteket, megépíti az AppImage-et, az archívumot és a `.deb` csomagot, kiszámolja az összegeket, és a kiadást **előzetes kiadásként (pre-release)** hozza létre, soha nem „legfrissebb kiadásként” (a Windows 0.1.7 változat frissítésellenőrzése nem találhat ott Linux-címkét).
+**Közzététel**: ellenőrizd a `__version__` értékét a `yt-dlp-gui.pyw` fájlban, keltezd a verzió szakaszát a `CHANGELOG-linux.md` fájlban, készíts commitot, majd hozd létre és told fel a `Linux-vX.Y.Z` címkét. A „Release Linux” munkafolyamat lefuttatja a teszteket, megépíti az AppImage-et, az archívumot és a `.deb` csomagot, kiszámolja az összegeket, és a kiadást **előzetes kiadásként (pre-release)** hozza létre, soha nem „legfrissebb kiadásként” (a Windows 0.1.8 változat frissítésellenőrzése nem találhat ott Linux-címkét).
 
 Licenc: MIT, mint a tároló többi része (lásd [LICENSE](../LICENSE)).

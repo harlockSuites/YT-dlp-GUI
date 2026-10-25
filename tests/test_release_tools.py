@@ -96,7 +96,7 @@ class NotesTests(unittest.TestCase):
         self.addCleanup(shutil.rmtree, d, ignore_errors=True)
         out = os.path.join(d, "sub", "notes.md")
         self.assertEqual(rt.main(["notes", "--changelog", "CHANGELOG-linux.md", "--out", out]), 0)
-        self.assertIn("Installer dans le menu", _read(out))   # notes de la version en cours (0.1.2)
+        self.assertIn("sélection multiple", _read(out))   # notes de la version en cours (0.1.3)
 
     def test_the_windows_changelog_is_left_alone_and_has_no_linux_release(self):
         """Windows est figé : son journal ne décrit que Windows et ne contient pas la version Linux."""
