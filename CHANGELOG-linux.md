@@ -4,7 +4,7 @@ Ce journal est celui de la **version Linux** de yt-dlp GUI : ses étiquettes son
 
 Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/).
 
-## [0.1.3] — non publiée
+## [0.1.3] — 2026-10-24
 
 ### Modifié
 - **Reprise de la version Windows 0.1.8** (fusion de `main`) : file d'attente avec **sélection multiple** (Ctrl+clic, Maj+clic, clic-glissé, Ctrl+A), bouton « Télécharger sél. (N) », plage « De X à Y » qui sélectionne les lignes, **vue étendue** de la file (bouton « Étendre l'affiche »), **un seul téléchargement à la fois** (message « Téléchargement en cours »), bilan de fin de file à partir de 2 vidéos, et correction du décalage de la file quand on retire un élément pendant qu'elle tourne. 16 clés de traduction dans les 15 langues (fournies par la version Windows). Les 3 polices écrites en dur dans le nouveau code (`Segoe UI` ×2, `Consolas`) passent par `UI_FONT` et `MONO_FONT`.
