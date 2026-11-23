@@ -5,7 +5,7 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) 
 ## [Non publié]
 
 ### Corrigé
-- README (15 langues) : les résultats VirusTotal affichés sont ceux de la version 0.1.8 (installateur 1/69, archive ZIP 0/66, lanceur 0/71) au lieu de ceux de la 0.1.7.
+- README (15 langues) : les résultats VirusTotal affichés sont ceux de la version 0.1.8 (installateur 1/70, archive ZIP 0/64, lanceur 0/70) au lieu de ceux de la 0.1.7.
 
 ## [0.1.8] — 2026-10-24
 
